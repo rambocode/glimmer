@@ -49,12 +49,12 @@ computer
 ## 技术选型
 
 候选窗口本质上只有四个原语：若干行 (序号, 候选词, 译文)、一行高亮、跟随光标定位、异步补画译文。
-这么小的 UI 不值得引入跨平台 GUI 框架，每个平台用原生绘制，几百行以内。
+这么小的 UI 不值得引入跨平台 GUI 框架。目前每个平台各自绘制；为了主题像素级一致，正在验证改为一个 Rust 自绘渲染器出位图、各平台只贴图，见 [rendering.md](rendering.md)。
 
 | 平台 | 方案 | 理由 |
 |---|---|---|
 | macOS | `objc2-app-kit`：非激活的 NSPanel + 自定义 NSView，用 NSAttributedString / Core Text 画行 | Squirrel 同款做法。窗口必须不抢焦点、浮在所有应用之上、瞬间出现，只有 AppKit 能稳定满足 |
-| Windows | Server 进程里用 Direct2D + DirectWrite 画到 layered window | Weasel 同款做法。避开 WebView2 依赖（水杉 issue #68 就是安装环境缺 WebView2） |
+| Windows | Server 进程里 GDI 画到 layered window（`server/src/ui/layered/`） | 避开 WebView2 依赖（水杉 issue #68 就是安装环境缺 WebView2）。原计划改 Direct2D + DirectWrite，暂停等自绘渲染器 spike |
 | Linux | 自绘窗口（wayland-client / x11rb），不用 IBus / Fcitx 自带面板 | IBus 的 lookup table 没有 comment 字段，Fcitx5 有但样式受面板限制。kime 走的也是自绘 |
 
 macOS 面板的层级与 Space：层级 `kCGPopUpMenuWindowLevel`（101，与系统候选框同级；不能 `setFloatingPanel`，它会把层级改回 3，全屏应用里就看不见），
@@ -71,7 +71,7 @@ collection behavior 是 CanJoinAllSpaces + FullScreenAuxiliary + Stationary。�
 - **egui / iced / GPUI 等 Rust GUI 框架**：它们假设自己拥有窗口和事件循环，
   和「非激活浮层」这种系统级窗口语义打架，为几百行绘制引入整套框架不划算。
 
-主题化通过配置（字体、字号、前景背景色、行距、圆角）实现，不提供 HTML/CSS 皮肤。
+主题化通过主题文件（字体、字号、配色、行距、圆角、阴影、透明、渐变、布局）实现，不提供 HTML/CSS 皮肤；主题渲染的方向见 [rendering.md](rendering.md)。
 
 ## 平台层的职责
 
