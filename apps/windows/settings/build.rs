@@ -1,4 +1,5 @@
 //! 编译时抓 git 构建标识（分支@短哈希 (日期)，工作区有改动短哈希后加 +，与 macOS 的 bundle.sh 一致）塞进 `GLIMMER_BUILD`，「关于」页显示；拿不到就不设。
+//! 版本号是 `-dev` 时再接短哈希塞进 `GLIMMER_VERSION`（与安装包的版本一致，见 installer\build.ps1）。
 //! 在 Windows 上编时把微明图标嵌进 exe（开始菜单 / 任务栏 / 搜索里显示的就是它）。
 
 use std::process::Command;
@@ -8,6 +9,7 @@ fn main() {
     if let Some(build) = git_build() {
         println!("cargo:rustc-env=GLIMMER_BUILD={build}");
     }
+    println!("cargo:rustc-env=GLIMMER_VERSION={}", dev_version());
     embed_icon();
     stage_windows_runtime();
 }
@@ -49,6 +51,21 @@ fn stage_windows_runtime() {
 
 #[cfg(not(windows))]
 fn stage_windows_runtime() {}
+
+/// `CARGO_PKG_VERSION`，`-dev` 结尾时接 `-<短哈希>`（脏加 +）。
+fn dev_version() -> String {
+    let version = env!("CARGO_PKG_VERSION").to_owned();
+    if !version.ends_with("-dev") {
+        return version;
+    }
+    let Some(mut hash) = git(&["rev-parse", "--short", "HEAD"]) else {
+        return version;
+    };
+    if git(&["status", "--porcelain"]).is_some() {
+        hash.push('+');
+    }
+    format!("{version}-{hash}")
+}
 
 fn git_build() -> Option<String> {
     let branch = git(&["rev-parse", "--abbrev-ref", "HEAD"])?;

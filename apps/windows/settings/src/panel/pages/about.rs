@@ -45,7 +45,8 @@ pub(crate) fn view(_settings: &Settings, context: &mut ViewContext<Settings>) ->
     }
     let body = StackPanel::new().spacing(12.0).children([
         TextBlock::new()
-            .text(concat!("微明 Windows ", env!("CARGO_PKG_VERSION")))
+            // GLIMMER_VERSION 由 build.rs 给：-dev 版接 git 短哈希
+            .text(concat!("微明 Windows ", env!("GLIMMER_VERSION")))
             .font_size(16.0)
             .font_weight(FontWeight::SEMI_BOLD)
             .into(),

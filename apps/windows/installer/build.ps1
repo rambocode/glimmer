@@ -4,7 +4,7 @@
 .DESCRIPTION
     在编译机（MSVC 工具链 + Inno Setup）上跑。步骤：
       1) cargo build --release 出 DLL / Server / 设置程序；
-      2) 从 apps\windows\server\Cargo.toml 读版本号；
+      2) 从 apps\windows\server\Cargo.toml 读版本号（-dev 版接 git 短哈希，工作区有改动再加 +，与 macOS 的 bundle.sh 一致）；
       3) 找 ISCC.exe（PATH 或常见安装位置）；
       4) iscc /DAppVersion=<版本> 编脚本，成品在 target\installer\Glimmer-<版本>-Setup.exe。
     随包数据（.qj / .tsv）直接由 .iss 从仓库 data\generated 与 assets 里取，不另建暂存目录；
@@ -76,6 +76,17 @@ $cargoToml = Get-Content (Join-Path $Repo 'apps\windows\server\Cargo.toml')
 $verLine = $cargoToml | Where-Object { $_ -match '^\s*version\s*=\s*"(.+)"' } | Select-Object -First 1
 if (-not ($verLine -match '"(.+)"')) { throw '在 server\Cargo.toml 里没找到 version' }
 $Version = $Matches[1]
+# 开发版接 git 短哈希（0.1.0-alpha.3-dev-1a2b3c4，脏加 +），有 bug 能定位到哪次改动；发版提交去掉 -dev 就不接。
+if ($Version.EndsWith('-dev')) {
+    Push-Location $Repo
+    try {
+        $rev = (git rev-parse --short HEAD 2>$null)
+        if ($LASTEXITCODE -eq 0 -and $rev) {
+            if (git status --porcelain 2>$null) { $rev = "$rev+" }
+            $Version = "$Version-$rev"
+        }
+    } finally { Pop-Location }
+}
 # Inno 的 VersionInfoVersion 只认数字：去掉 -alpha.1 这类预发布后缀。
 $VersionNumeric = $Version -replace '-.*$', ''
 Write-Host "版本 $Version" -ForegroundColor Cyan
