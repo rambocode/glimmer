@@ -12,11 +12,13 @@ objc2-app-kit.workspace = true
 objc2-foundation.workspace = true
 objc2-input-method-kit.workspace = true
 objc2-core-foundation.workspace = true
+objc2-core-text.workspace = true
 glimmer-core.workspace = true
 glimmer-dictionary.workspace = true
 glimmer-learning.workspace = true
 glimmer-platform.workspace = true
 glimmer-predict.workspace = true
+glimmer-render.workspace = true
 glimmer-lm.workspace = true
 glimmer-neural = { workspace = true, features = ["metal"] }
 glimmer-translate.workspace = true

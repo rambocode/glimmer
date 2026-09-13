@@ -35,6 +35,8 @@ impl Host {
         self.apps = config.apps.clone();
         self.window.set_theme(config.general.theme);
         self.window.set_layout(config.general.layout);
+        self.window.set_font(&config.general.font);
+        self.window.set_renderer(config.general.renderer);
         self.apply_learning_language(&config.general.learning_language);
         if self.input_log_enabled != Some(config.general.input_log) {
             self.input_log_enabled = Some(config.general.input_log);

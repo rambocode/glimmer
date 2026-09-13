@@ -1,19 +1,24 @@
 //! 候选窗口的内容视图：自绘顶部拼音行与若干候选，竖排一行一个、横排排成一行，一项高亮。
+//!
+//! 有两条画法：缺省交给 `glimmer-render` 出位图再贴（[`BitmapPainter`]），配置 `[general] renderer = "system"`
+//! 走下面用 AppKit 逐项绘制的旧路径（过渡期的退路，渲染器稳定一个版本后删）。
 
 use std::cell::{Cell, RefCell};
 
-use glimmer_platform::LayoutMode;
+use glimmer_platform::{CandidateRenderer, LayoutMode};
 use objc2::rc::Retained;
 use objc2::runtime::AnyObject;
 use objc2::{DefinedClass, MainThreadMarker, MainThreadOnly, define_class, msg_send};
 use objc2_app_kit::{
+    NSAppearanceCustomization, NSAppearanceNameAqua, NSAppearanceNameDarkAqua,
     NSAttributedStringNSStringDrawing, NSBezierPath, NSColor, NSFont, NSFontAttributeName,
     NSForegroundColorAttributeName, NSStrikethroughStyleAttributeName, NSView,
 };
 use objc2_foundation::{
-    NSAttributedString, NSDictionary, NSNumber, NSPoint, NSRect, NSSize, NSString,
+    NSArray, NSAttributedString, NSDictionary, NSNumber, NSPoint, NSRect, NSSize, NSString,
 };
 
+use super::bitmap::BitmapPainter;
 use super::cloud_icon::CloudIcon;
 use super::frame::Frame;
 use super::preedit::Preedit;
@@ -34,6 +39,12 @@ pub struct Ivars {
 
     /// 主题。
     theme: Theme,
+
+    /// 位图渲染器；`None` 走 AppKit 逐项绘制。按配置建或丢。
+    bitmap: RefCell<Option<BitmapPainter>>,
+
+    /// 用户选的字族名（空为系统字体），换了要重建渲染器。
+    font: RefCell<String>,
 }
 
 /// preedit 光标的宽度。
@@ -90,7 +101,11 @@ define_class!(
 
         #[unsafe(method(drawRect:))]
         fn draw_rect(&self, _dirty: NSRect) {
-            self.draw();
+            if let Some(bitmap) = &mut *self.ivars().bitmap.borrow_mut() {
+                bitmap.draw(self.is_dark(), self.backing_scale());
+            } else {
+                self.draw();
+            }
         }
     }
 );
@@ -103,8 +118,59 @@ impl CandidateView {
             layout: Cell::new(LayoutMode::default()),
             cloud,
             theme,
+            bitmap: RefCell::new(None),
+            font: RefCell::new(String::new()),
         });
         unsafe { msg_send![super(this), initWithFrame: NSRect::ZERO] }
+    }
+
+    /// 候选窗字体（字族名，空为系统字体）。渲染器在用就当场重建。
+    pub fn set_font(&self, font: &str) {
+        if *self.ivars().font.borrow() == font {
+            return;
+        }
+        *self.ivars().font.borrow_mut() = font.to_owned();
+        let mut bitmap = self.ivars().bitmap.borrow_mut();
+        if bitmap.is_some() {
+            *bitmap = BitmapPainter::new(font);
+            drop(bitmap);
+            self.setNeedsDisplay(true);
+        }
+    }
+
+    /// 微明渲染器 / 系统绘制。渲染器字体库加载失败就留在系统绘制。
+    pub fn set_renderer(&self, renderer: CandidateRenderer) {
+        let mut bitmap = self.ivars().bitmap.borrow_mut();
+        match renderer {
+            CandidateRenderer::Glimmer if bitmap.is_none() => {
+                *bitmap = BitmapPainter::new(&self.ivars().font.borrow());
+            }
+            CandidateRenderer::System if bitmap.is_some() => {
+                tracing::info!("候选窗切回 AppKit 绘制");
+                *bitmap = None;
+            }
+            _ => return,
+        }
+        drop(bitmap);
+        self.setNeedsDisplay(true);
+    }
+
+    /// 当前生效的外观是不是深色。
+    fn is_dark(&self) -> bool {
+        // SAFETY: 只读 AppKit 导出的常量名
+        let names =
+            unsafe { NSArray::from_slice(&[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]) };
+        let matched = self
+            .effectiveAppearance()
+            .bestMatchFromAppearancesWithNames(&names);
+        // SAFETY: 同上
+        matched.is_some_and(|name| unsafe { name.isEqualToString(NSAppearanceNameDarkAqua) })
+    }
+
+    /// 所在屏幕的倍数；还没进窗口时按 Retina 算。
+    fn backing_scale(&self) -> f32 {
+        self.window()
+            .map_or(2.0, |window| window.backingScaleFactor() as f32)
     }
 
     pub fn theme(&self) -> &Theme {
@@ -119,6 +185,14 @@ impl CandidateView {
     pub fn set_frame(&self, frame: &Frame) -> NSSize {
         *self.ivars().frame.borrow_mut() = frame.clone();
         self.setNeedsDisplay(true);
+        if let Some(bitmap) = &mut *self.ivars().bitmap.borrow_mut() {
+            return bitmap.set_frame(
+                frame,
+                self.ivars().layout.get(),
+                self.is_dark(),
+                self.backing_scale(),
+            );
+        }
         self.preferred_size()
     }
 

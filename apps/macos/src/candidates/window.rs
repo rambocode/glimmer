@@ -1,6 +1,6 @@
 //! 候选窗口：非激活的浮动 NSPanel，跟随光标，内容由 [`CandidateView`] 绘制。
 
-use glimmer_platform::{LayoutMode, ThemeMode};
+use glimmer_platform::{CandidateRenderer, LayoutMode, ThemeMode};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::{
@@ -117,6 +117,16 @@ impl CandidateWindow {
     /// 竖排 / 横排。下一帧生效。
     pub fn set_layout(&self, layout: LayoutMode) {
         self.view.set_layout(layout);
+    }
+
+    /// 微明渲染器 / 系统绘制。下一帧生效。
+    pub fn set_renderer(&self, renderer: CandidateRenderer) {
+        self.view.set_renderer(renderer);
+    }
+
+    /// 候选窗字体（字族名，空为系统字体），只对微明渲染器生效。
+    pub fn set_font(&self, font: &str) {
+        self.view.set_font(font);
     }
 
     pub fn max_rows(&self) -> usize {

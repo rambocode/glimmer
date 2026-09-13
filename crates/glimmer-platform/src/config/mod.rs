@@ -1,4 +1,5 @@
 mod apps;
+mod candidate_renderer;
 mod dictionaries;
 mod general;
 mod key_combo;
@@ -26,6 +27,7 @@ pub use apps::{
     AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF, DEFAULT_ENGLISH_CANDIDATES_OFF_MACOS,
     DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS,
 };
+pub use candidate_renderer::CandidateRenderer;
 pub use dictionaries::{DEFAULT_DOMAINS, DictionariesConfig};
 pub use general::{DEFAULT_PAGE_KEYS, GeneralConfig, MAX_PAGE_SIZE, PAGE_KEY_OPTIONS};
 pub use key_combo::KeyCombo;
@@ -172,6 +174,10 @@ page_keys = "[]"
 theme = "system"
 # 候选窗口排布：vertical 竖排 / horizontal 横排（横排只给高亮候选显示译文）
 layout = "vertical"
+# 候选窗口由谁绘制：glimmer 微明渲染器（各平台一致，主题走它）/ system 系统原生绘制（渲染器有问题时的退路）
+renderer = "glimmer"
+# 候选窗口字体（字族名，如 "LXGW WenKai"）；空为系统字体。只对微明渲染器生效，没装这个字体时自动回到系统字体
+font = ""
 # 组句中的拼音显示在哪：both 行内和候选窗口 / inline 只在行内 / window 只在候选窗口（应用里不放 marked text）
 preedit = "both"
 # 英文模式（Caps Lock 亮着）是否给英文候选：Tab 或方向键选词，空格、回车、标点仍原样上屏敲的字母；false 就是纯直通

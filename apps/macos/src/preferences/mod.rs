@@ -11,6 +11,7 @@
 mod controls;
 mod edit_menu;
 mod file_dialog;
+mod font_picker;
 mod key_recorder;
 mod layout;
 mod pager;
@@ -29,6 +30,9 @@ pub use key_recorder::KeyRecorder;
 pub use pages::{REPOSITORY_URL, WEBSITE_URL};
 pub use setting::{Setting, SettingValue, WUBI_VARIANTS};
 pub use window::PreferencesWindow;
+
+/// 字体组合框里代表「用系统字体」的那一项。
+pub const DEFAULT_FONT_LABEL: &str = "系统默认";
 
 /// 从 `changed:` 的 sender 认出是哪个设置、现在的值是什么。
 pub fn setting_from_sender(sender: Option<&AnyObject>) -> Option<(Setting, SettingValue)> {

@@ -35,7 +35,7 @@ use glimmer_learning::{FrequencyLearner, InputLog, UsageStats, VocabularyBook};
 use glimmer_lm::BigramModel;
 use glimmer_platform::extra_dictionaries;
 use glimmer_platform::{
-    AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF, DictionariesConfig, KeyCombo, LayoutMode,
+    AppsConfig, CandidateRenderer, DEFAULT_ENGLISH_CANDIDATES_OFF, DictionariesConfig, KeyCombo, LayoutMode,
     LocalModelConfig, LogLevel, ModeSwitch, Modifiers, PAGE_KEY_OPTIONS, PreeditMode,
     ShortcutConfig, ThemeMode,
 };
