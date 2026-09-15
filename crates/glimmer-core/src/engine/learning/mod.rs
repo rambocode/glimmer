@@ -1,6 +1,11 @@
 //! 学习与统计的挂钩：释义兜底回填、词汇曝光、输入统计、输入日志、删候选、定时落盘。
 
-use super::*;
+use super::Engine;
+use super::input_log::{CommitEntry, InputLogEntry, InputLogger, InputSource, LOGGED_CANDIDATES};
+use super::statistics::Usage;
+use super::vocabulary::{FRESH_UNTIL, VocabularySummary};
+use crate::candidate::{Candidate, CandidateKind, Translation};
+use crate::sentence;
 
 mod forgotten;
 mod learner;
@@ -31,7 +36,7 @@ impl Engine {
         self.vocabulary.summary(self.translator.language())
     }
 
-    /// 壳画完候选窗口后告知当前页上的候选：页上的译词在用户上屏那一刻记成「看到过」（[`VocabularyTracker`]）。
+    /// 壳画完候选窗口后告知当前页上的候选：页上的译词在用户上屏那一刻记成「看到过」（[`super::vocabulary::VocabularyTracker`]）。
     /// 每次重画都换掉上一页，逐键刷新时一闪而过的候选不算；窗口收起时传空。
     pub fn note_displayed<'a>(&mut self, candidates: impl IntoIterator<Item = &'a Candidate>) {
         self.displayed.clear();
@@ -53,6 +58,11 @@ impl Engine {
 
     /// 上屏了：当前页上的译词都算看到过一轮。
     pub(super) fn record_exposures(&mut self) {
+        if self.private {
+            // 私密输入中的候选页不能污染词汇记录；同时丢掉暂存页，避免之后恢复普通输入时补记。
+            self.displayed.clear();
+            return;
+        }
         for (language, word) in std::mem::take(&mut self.displayed) {
             self.vocabulary.record_exposure(language, &word);
         }

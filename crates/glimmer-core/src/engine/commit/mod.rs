@@ -1,7 +1,19 @@
 //! 上屏：译词标注、按候选消耗缓冲区、对齐音节、学习与撤销、自动造词。
 
+use super::alignment::Alignment;
+use super::annotation::AnnotationReport;
+use super::input_log::{InputLogEntry, InputLogger, InputSource};
+use super::learning::Learner;
 use super::query::EnglishTail;
-use super::*;
+use super::{
+    AUTO_WORD_MAX_CHARS, AUTO_WORD_THRESHOLD, AUTO_WORD_THRESHOLD_SAME_BUFFER,
+    EXPLICIT_TRANSITION_WEIGHT, Engine, choice_key, segment_longest_prefix,
+};
+use crate::candidate::{Candidate, CandidateKind, CandidateList, Language};
+use crate::correction::typo;
+use crate::{parser, sentence};
+use glimmer_dictionary::Dictionary;
+use std::time::Instant;
 
 mod chain;
 mod last;
@@ -139,7 +151,8 @@ impl Engine {
         let log_id = self.log_commit(&keys, &candidate.text, source);
         self.meter_commit(&candidate.text, source, false);
         // 上屏带译词的中文候选：那一刻用户看着这条译词，记进词汇（英文候选的中文释义不是学习语言，不记）
-        if candidate.kind != CandidateKind::English
+        if !self.private
+            && candidate.kind != CandidateKind::English
             && let Some(translation) = &candidate.translation
         {
             for (index, sense) in translation.senses().iter().enumerate() {

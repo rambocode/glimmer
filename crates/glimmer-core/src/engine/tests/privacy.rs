@@ -1,6 +1,13 @@
 //! 私密输入：不学、不记、不发云端；离开后恢复。
 
-use super::*;
+use super::{
+    CountingLearner, EchoPredictor, FixedTranslator, LearningTranslator, MemoryFiller,
+    MemoryLogger, MemoryVocabulary, engine,
+};
+use crate::Language;
+use crate::{CandidateKind, Engine, EngineSession};
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
 
 fn pick(engine: &mut Engine, input: &str, text: &str) {
     engine.set_input(input);
@@ -89,4 +96,101 @@ fn private_input_sends_nothing_to_the_cloud() {
     );
     pick(&mut engine, "kaifa", "开放");
     assert_eq!(requested.lock().unwrap().as_slice(), ["开放"]);
+}
+
+#[test]
+fn private_input_does_not_write_vocabulary_and_normal_input_recovers() {
+    let book = Arc::new(Mutex::new(HashMap::new()));
+    let mut engine = engine()
+        .with_translator(Box::new(FixedTranslator))
+        .with_vocabulary_tracker(Box::new(MemoryVocabulary(book.clone())));
+
+    engine.set_private(true);
+    engine.set_input("kaifa");
+    let mut query = engine.query().unwrap();
+    engine.annotate(&mut query.candidates);
+    let candidate = query.candidates.items[0].clone();
+    engine.note_displayed(query.candidates.items.iter());
+    assert_eq!(engine.commit(&candidate), "开发");
+    assert!(book.lock().unwrap().is_empty());
+
+    engine.set_input("kaifa");
+    let mut query = engine.query().unwrap();
+    engine.annotate(&mut query.candidates);
+    let candidate = query.candidates.items[0].clone();
+    engine.note_displayed(query.candidates.items.iter());
+    assert_eq!(
+        engine.commit_translation(&candidate, 0).as_deref(),
+        Some("develop")
+    );
+    assert!(book.lock().unwrap().is_empty());
+
+    engine.set_private(false);
+    engine.set_input("kaifa");
+    let mut query = engine.query().unwrap();
+    engine.annotate(&mut query.candidates);
+    let candidate = query.candidates.items[0].clone();
+    engine.note_displayed(query.candidates.items.iter());
+    engine.commit(&candidate);
+    assert_eq!(
+        book.lock()
+            .unwrap()
+            .get(&(Language::English, "develop".into())),
+        Some(&(1, 1, 0))
+    );
+
+    engine.set_input("kaifa");
+    let mut query = engine.query().unwrap();
+    engine.annotate(&mut query.candidates);
+    let candidate = query.candidates.items[0].clone();
+    engine.note_displayed(query.candidates.items.iter());
+    assert_eq!(
+        engine.commit_translation(&candidate, 0).as_deref(),
+        Some("develop")
+    );
+    assert_eq!(
+        book.lock()
+            .unwrap()
+            .get(&(Language::English, "develop".into())),
+        Some(&(2, 2, 1))
+    );
+}
+
+#[test]
+fn explicit_discard_removes_private_history_and_saved_input_state() {
+    let mut engine = engine();
+    engine.set_private(true);
+    pick(&mut engine, "kaifa", "开发");
+    engine.note_passthrough('S');
+    engine.set_input("kaifa");
+    engine.query().unwrap();
+    engine.discard_input();
+    engine.set_private(false);
+    assert!(engine.history().is_empty());
+    assert!(engine.composition().is_empty());
+    assert!(engine.passthrough_pending.is_empty());
+    assert!(engine.recent_commits.is_empty());
+    assert!(engine.chain.previous().is_none());
+    assert!(engine.chain.buffer_key().is_empty());
+    assert!(engine.last_query.borrow().is_none());
+
+    engine.set_input("private");
+    engine.history_mut().record("secret");
+    let mut saved = EngineSession::default();
+    engine.swap_session(&mut saved);
+    saved.discard_input();
+    engine.swap_session(&mut saved);
+    assert!(engine.composition().is_empty());
+    assert!(engine.history().is_empty());
+}
+
+#[test]
+fn reporting_privacy_after_first_frame_does_not_discard_that_frame() {
+    let mut engine = engine();
+    engine.set_input("k");
+    engine.query().unwrap();
+    engine.set_private(true);
+    assert_eq!(engine.composition().text(), "k");
+    engine.set_private(false);
+    assert_eq!(engine.composition().text(), "k");
 }
