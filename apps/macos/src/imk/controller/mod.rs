@@ -103,7 +103,9 @@ define_class!(
                 if let Some(bundle) = &bundle {
                     tracing::debug!(%bundle, "当前应用");
                 }
+                let me = self.address();
                 host::with(|h| {
+                    h.active_controller = Some(me);
                     h.engine.set_application(bundle);
                     h.reload_config_if_changed();
                     h.indicator.activate();
@@ -129,9 +131,25 @@ define_class!(
             }
         }
 
+        /// 只有当前激活的会话停用才拆全局状态。同一应用里换焦点（浏览器换文本框）时 IMK 先 activate 新会话、
+        /// 后 deactivate 旧会话，旧会话若也走完整收尾，会把新会话正在敲的拼音原样上屏、收掉状态项、停掉配置监视。
         #[unsafe(method(deactivateServer:))]
         fn deactivate_server(&self, sender: Option<&AnyObject>) {
             self.ivars().borrow_mut().reset();
+            let me = self.address();
+            let current = host::with(|h| {
+                if h.active_controller == Some(me) {
+                    h.active_controller = None;
+                    true
+                } else {
+                    false
+                }
+            })
+            .unwrap_or(true);
+            if !current {
+                tracing::info!("deactivateServer（旧会话，跳过收尾）");
+                return;
+            }
             tracing::info!("deactivateServer");
             let client = sender.map(TextClient::new);
             let done = catch_panic("deactivateServer", || {
@@ -187,6 +205,11 @@ fn digit_key(key_code: u16) -> Option<usize> {
 }
 
 impl QingjianInputController {
+    /// 控制器对象地址，只用来在 Host 里比对「谁是当前激活的会话」，不解引用。
+    fn address(&self) -> usize {
+        self as *const Self as usize
+    }
+
     /// Option+数字：上屏当前页第几个候选的译文（学习和拼音消耗与选那个候选一样）。
     /// 不在组句中时不管；候选没有译文就吞掉按键不动，免得 ¡™£ 进应用。
     /// 翻译应用里选中的文字：云服务关着、密码框、没有选区都不动（键交回应用）。

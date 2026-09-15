@@ -27,7 +27,15 @@ impl ShiftTap {
         );
         // 56 / 60 是 macOS 左 / 右 Shift 的事件键码，只用于识别物理事件。
         let is_shift = matches!(key, 56 | 60);
-        let pending = self.pending.take();
+        // Chromium 系浏览器会把同一个 flagsChanged 送两遍：第二遍的按下事件里 Shift 已经是按住状态，
+        // 不能把待确认的单击清掉，否则随后的松开事件永远配不上按下，浏览器里 Shift 就切不了中英。
+        let repeated_press =
+            shift && self.down && !other && self.pending.is_some_and(|(pressed, _)| pressed == key);
+        let pending = if repeated_press {
+            self.pending
+        } else {
+            self.pending.take()
+        };
         let tapped = !shift
             && self.down
             && is_shift
@@ -65,6 +73,15 @@ mod tests {
             assert!(tap.flags_changed(key, NSEventModifierFlags::empty(), 1.2));
             assert!(!tap.flags_changed(key, NSEventModifierFlags::empty(), 1.3));
         }
+    }
+
+    #[test]
+    fn duplicated_events_from_chromium_still_toggle_once() {
+        let mut tap = ShiftTap::default();
+        assert!(!tap.flags_changed(56, NSEventModifierFlags::Shift, 1.0));
+        assert!(!tap.flags_changed(56, NSEventModifierFlags::Shift, 1.001));
+        assert!(tap.flags_changed(56, NSEventModifierFlags::empty(), 1.2));
+        assert!(!tap.flags_changed(56, NSEventModifierFlags::empty(), 1.201));
     }
 
     #[test]

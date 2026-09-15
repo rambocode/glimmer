@@ -128,6 +128,7 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
             settings,
             watch,
             last_flush: std::time::Instant::now(),
+            active_controller: None,
             applied_predict: PredictConfig::default(),
             applied_dictionaries: DictionariesConfig::default(),
             dictionary_list: Vec::new(),

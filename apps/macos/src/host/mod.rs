@@ -180,6 +180,10 @@ pub struct Host {
 
     /// 最近一次绘制时的光标矩形，联想结果到达后在同一位置重画。
     pub anchor: NSRect,
+
+    /// 当前激活的输入控制器（对象地址，只用来比对）。IMK 在同一应用里换焦点时先 activate 新会话、
+    /// 再 deactivate 旧会话（Chromium 系浏览器里能隔两百多毫秒），旧会话的 deactivate 不能把全局状态拆掉。
+    pub active_controller: Option<usize>,
 }
 
 thread_local! {
