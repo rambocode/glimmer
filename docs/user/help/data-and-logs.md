@@ -11,6 +11,8 @@ description: 微明在本机保存的文件及其内容、云联想发送的内�
 - **macOS**：「~/Library/Application Support/Glimmer/」（访达中按 `⇧⌘G` 输入此路径）。
 - **Windows**：「%APPDATA%\Glimmer」（在资源管理器地址栏中直接输入此路径）。
 
+从「青简」升级来的用户：macOS 上首次运行时会把原来的「~/Library/Application Support/Qingjian/」整个搬到新位置，学习数据与配置都会保留。
+
 均为纯文本，可随时打开查看：
 
 | 文件 | 内容 | 是否含输入内容 |
