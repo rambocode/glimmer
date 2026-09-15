@@ -1,6 +1,8 @@
 use glimmer_core::ShuangpinScheme;
 use glimmer_platform::protocol::KeyModifiers;
-use glimmer_platform::{AppsConfig, Config, KeyCombo, LayoutMode, ThemeMode};
+use glimmer_platform::{AppsConfig, CandidateRenderer, Config, KeyCombo, LayoutMode, ThemeMode};
+
+use super::RenderSettings;
 
 /// Router 要用的配置项，与 macOS 壳的 `Host` 字段对齐。
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -16,6 +18,12 @@ pub struct RouterConfig {
 
     /// 候选窗口外观（`[general] theme`）。
     pub theme: ThemeMode,
+
+    /// 候选窗口 / 状态条由微明渲染器还是 GDI 画（`[general] renderer`）。
+    pub renderer: CandidateRenderer,
+
+    /// 候选窗口字体的字族名（`[general] font`），空为系统字体；只对微明渲染器生效。
+    pub font: String,
 
     /// 翻页键对（`[general] page_keys`，上一页 / 下一页）。
     pub page_keys: (char, char),
@@ -59,6 +67,14 @@ impl RouterConfig {
     pub fn english_candidates_in(&self, app: Option<&str>) -> bool {
         self.english_candidates && !app.is_some_and(|app| self.apps.english_candidates_off(app))
     }
+
+    /// 交给 UI 线程的画法。
+    pub fn render_settings(&self) -> RenderSettings {
+        RenderSettings {
+            renderer: self.renderer,
+            font: self.font.clone(),
+        }
+    }
 }
 
 impl From<&Config> for RouterConfig {
@@ -68,6 +84,8 @@ impl From<&Config> for RouterConfig {
             cloud_slots: config.predict.slots,
             layout: config.general.layout,
             theme: config.general.theme,
+            renderer: config.general.renderer,
+            font: config.general.font.trim().to_owned(),
             page_keys: config.general.page_keys(),
             english_candidates: config.general.english_candidates,
             full_width: config.general.full_width_punctuation,

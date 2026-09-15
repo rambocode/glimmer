@@ -1,11 +1,12 @@
-//! 候选窗口一次绘制要用的全部内容，由帧换算而来。
+//! 候选窗口一次绘制要用的全部内容，由帧换算而来；渲染器要的帧由 [`RenderData::render_frame`] 再换一次。
 
 use std::rc::Rc;
 
 use glimmer_platform::protocol::{Frame, PreeditKind};
 use glimmer_platform::{LayoutMode, ThemeMode};
+use glimmer_render::{Preedit, PreeditSegment, PreeditStyle, Row};
 
-use super::row::Row;
+use super::row;
 use super::theme::Theme;
 
 /// 一次绘制要用的全部内容。
@@ -71,12 +72,39 @@ impl RenderData {
             .items
             .iter()
             .enumerate()
-            .map(|(i, candidate)| Row::from_candidate(i, candidate))
+            .map(|(i, candidate)| row::from_candidate(i, candidate))
             .collect();
         self.highlight = frame.highlight;
         self.footer =
             (frame.page_count > 1).then(|| format!("{}/{}", frame.page + 1, frame.page_count));
         self.sentence = frame.sentence.clone();
         self.notice = frame.notice.clone();
+    }
+
+    /// 渲染器要的帧。提示（删了什么词）在渲染器里画在拼音行右侧，与 macOS 一致。
+    pub(super) fn render_frame(&self) -> glimmer_render::Frame {
+        let preedit = (!self.preedit.is_empty()).then(|| Preedit {
+            segments: self
+                .preedit
+                .iter()
+                .map(|(text, kind)| PreeditSegment {
+                    text: text.clone(),
+                    style: match kind {
+                        PreeditKind::Typed => PreeditStyle::Typed,
+                        PreeditKind::Rest => PreeditStyle::Rest,
+                        PreeditKind::Corrected => PreeditStyle::Struck,
+                    },
+                })
+                .collect(),
+            cursor: self.cursor,
+        });
+        glimmer_render::Frame {
+            preedit,
+            rows: self.rows.clone(),
+            highlighted: self.highlight,
+            footer: self.footer.clone(),
+            sentence: self.sentence.clone(),
+            status: self.notice.clone(),
+        }
     }
 }

@@ -1577,6 +1577,7 @@ dependencies = [
  "tiny-skia",
  "tracing",
  "tracing-subscriber",
+ "windows",
 ]
 
 [[package]]
@@ -1615,6 +1616,7 @@ dependencies = [
  "embed-manifest",
  "glimmer-core",
  "glimmer-platform",
+ "glimmer-render",
  "glimmer-server",
  "tracing",
  "tracing-appender",
@@ -1632,6 +1634,7 @@ dependencies = [
  "glimmer-learning",
  "glimmer-platform",
  "glimmer-predict",
+ "glimmer-render",
  "glimmer-translate",
  "jiff",
  "rfd",

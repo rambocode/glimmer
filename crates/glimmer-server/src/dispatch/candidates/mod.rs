@@ -4,7 +4,7 @@ mod sink;
 
 use glimmer_platform::protocol::{Frame, ScreenRect, SessionId};
 
-pub use self::sink::{CandidateSink, NoopSink};
+pub use self::sink::{CandidateSink, NoopSink, RenderSettings};
 use super::Router;
 
 impl Router {

@@ -115,7 +115,12 @@ impl Router {
         self.engine
             .set_punctuation_mode(config.general.punctuation_mode);
         self.engine.set_mode_keys(config.shortcut.mode);
+        let previous = self.config.render_settings();
         self.config = RouterConfig::from(config);
+        let settings = self.config.render_settings();
+        if settings != previous {
+            self.candidates.configure(settings);
+        }
         self.reconcile_status();
         self.apply_model_config(&config.model);
 

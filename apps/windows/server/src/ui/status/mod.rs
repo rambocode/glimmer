@@ -1,4 +1,5 @@
-//! 悬浮状态条：桌面上常驻、可拖动的三格浮窗 `[中 / 英][，。/ ,.][⚙]`，复用分层窗口合成器与候选窗口主题。
+//! 悬浮状态条：桌面上常驻、可拖动的三格浮窗 `[中 / 英][，。/ ,.][⚙]`。缺省由微明渲染器画（[`super::painter`]），
+//! `renderer = "system"` 时复用分层窗口合成器与候选窗口的 GDI 主题。
 //!
 //! 按下鼠标先 `DragDetect`：挪出拖动阈值就交给系统的移动循环（`WM_NCLBUTTONDOWN` + `HTCAPTION`），
 //! 结束时 `WM_EXITSIZEMOVE` 报新位置；没挪就是点击，按 x 落进哪格。`WM_MOUSEACTIVATE` 回 `MA_NOACTIVATE` 不抢焦点。
@@ -11,7 +12,9 @@ use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
 use std::rc::Rc;
 
-use windows::Win32::Foundation::{COLORREF, HWND, LPARAM, LRESULT, POINT, RECT, SIZE, WPARAM};
+use windows::Win32::Foundation::{
+    COLORREF, E_INVALIDARG, HWND, LPARAM, LRESULT, POINT, RECT, SIZE, WPARAM,
+};
 use windows::Win32::Graphics::Gdi::{GetDC, HDC, ReleaseDC, SetBkMode, TRANSPARENT};
 use windows::Win32::UI::HiDpi::{GetDpiForSystem, GetDpiForWindow};
 use windows::Win32::UI::Input::KeyboardAndMouse::{DragDetect, ReleaseCapture};
@@ -21,10 +24,11 @@ use windows::Win32::UI::WindowsAndMessaging::{
     WM_LBUTTONDOWN, WM_MOUSEACTIVATE, WM_NCHITTEST, WM_NCLBUTTONDOWN, WNDCLASSEXW, WS_EX_LAYERED,
     WS_EX_NOACTIVATE, WS_EX_TOOLWINDOW, WS_EX_TOPMOST, WS_POPUP,
 };
-use windows::core::{PCWSTR, Result, w};
+use windows::core::{Error, PCWSTR, Result, w};
 
 use glimmer_platform::ThemeMode;
 use glimmer_server::dispatch::StatusView;
+use glimmer_render::StatusCell;
 
 use self::cell::CellSpec;
 use self::placement::{Placement, StatusAction};
@@ -34,6 +38,7 @@ use super::candidates::theme::Theme;
 use super::candidates::view;
 use super::layered::{self, Layered};
 use super::monitor;
+use super::painter::SharedPainter;
 use super::window_class::WindowClass;
 
 const CLASS_NAME: PCWSTR = w!("GlimmerStatusBar");
@@ -65,11 +70,21 @@ pub(super) struct StatusBar {
 
     /// 摆放状态，与窗口过程共享。
     placement: Rc<Placement>,
+
+    /// 微明渲染器；`None` 走 GDI。
+    painter: SharedPainter,
 }
+
+/// 三格从左到右的动作。
+const ACTIONS: [StatusAction; 3] = [
+    StatusAction::ToggleMode,
+    StatusAction::TogglePunctuation,
+    StatusAction::OpenSettings,
+];
 
 impl StatusBar {
     /// 建一个隐藏的状态条窗口。
-    pub(super) fn new(events: StatusEvents) -> Result<Self> {
+    pub(super) fn new(events: StatusEvents, painter: SharedPainter) -> Result<Self> {
         CLASS.ensure(|| WNDCLASSEXW {
             lpfnWndProc: Some(wndproc),
             hInstance: super::module_handle(),
@@ -105,6 +120,7 @@ impl StatusBar {
             dpi: Cell::new(dpi),
             dark: Cell::new(dark),
             placement,
+            painter,
         })
     }
 
@@ -142,13 +158,9 @@ impl StatusBar {
         }
     }
 
-    /// 三格从左到右：模式（品牌色）、标点（生效时品牌色，否则灰）、齿轮（灰）。
-    fn cells(&self, theme: &Theme) -> Vec<CellSpec> {
-        let data = self.data.borrow();
-        let Some(view) = data.as_ref() else {
-            return Vec::new();
-        };
-        let mode = if view.english {
+    /// 模式格的文字：中 / 英 / 注，开着双拼时跟方案名。
+    fn mode_text(view: &StatusView) -> String {
+        if view.english {
             "英".to_owned()
         } else if view.zhuyin {
             "注".to_owned()
@@ -157,11 +169,28 @@ impl StatusBar {
                 Some(scheme) => format!("中 · {scheme}"),
                 None => "中".to_owned(),
             }
+        }
+    }
+
+    /// 渲染器要的三格：模式（品牌色）、标点（生效时品牌色，否则灰）、齿轮。
+    fn status_cells(view: &StatusView) -> Vec<StatusCell> {
+        vec![
+            StatusCell::text(Self::mode_text(view), true),
+            StatusCell::text(if view.full_width { "，。" } else { ",." }, view.full_width),
+            StatusCell::Gear,
+        ]
+    }
+
+    /// GDI 画法的三格，顺序同 [`ACTIONS`]。
+    fn cells(&self, theme: &Theme) -> Vec<CellSpec> {
+        let data = self.data.borrow();
+        let Some(view) = data.as_ref() else {
+            return Vec::new();
         };
         let punctuation_active = view.full_width;
         vec![
             CellSpec {
-                text: mode,
+                text: Self::mode_text(view),
                 font: theme.text_font,
                 color: theme.cloud_color,
                 action: StatusAction::ToggleMode,
@@ -185,8 +214,66 @@ impl StatusBar {
         ]
     }
 
-    /// 量各格、算内容尺寸、摆位置、合成贴上；顺带记下各格边界给点击用。
+    /// 画好贴上并显示；顺带记下各格边界给点击用。渲染器画不成就走 GDI。
     fn render(&self) {
+        let rendered = {
+            let data = self.data.borrow();
+            let mut painter = self.painter.borrow_mut();
+            match (data.as_ref(), painter.as_mut()) {
+                (Some(view), Some(painter)) => painter.render_status(
+                    &Self::status_cells(view),
+                    self.dark.get(),
+                    self.dpi.get(),
+                ),
+                _ => None,
+            }
+        };
+        let updated = match rendered {
+            Some(rendered) => {
+                let bitmap = &rendered.rendered;
+                let content = (bitmap.content_width as i32, bitmap.content_height as i32);
+                if content.0 <= 0 || content.1 <= 0 {
+                    self.hide();
+                    return;
+                }
+                let margin = bitmap.content_x as i32;
+                self.placement.margin.set(margin);
+                *self.placement.cells.borrow_mut() = rendered
+                    .cell_edges
+                    .iter()
+                    .zip(ACTIONS)
+                    .map(|(edge, action)| (edge.round() as i32, action))
+                    .collect();
+                let anchor = self.anchor(content, margin);
+                layered::present(
+                    self.hwnd,
+                    &bitmap.pixmap,
+                    (anchor.0 - margin, anchor.1 - margin),
+                )
+            }
+            None => self.render_gdi(),
+        };
+        if updated.is_ok() {
+            let _ = unsafe { ShowWindow(self.hwnd, SW_SHOWNA) };
+        } else {
+            self.hide();
+        }
+    }
+
+    /// 内容左上角：记住的位置，没有就右下角，再夹进工作区；顺带记下。
+    fn anchor(&self, content: (i32, i32), margin: i32) -> (i32, i32) {
+        let anchor = self
+            .placement
+            .pos
+            .get()
+            .unwrap_or_else(|| default_anchor(content, margin));
+        let anchor = clamp_anchor(anchor, content, margin);
+        self.placement.pos.set(Some(anchor));
+        anchor
+    }
+
+    /// GDI 画法：量各格、算内容尺寸、摆位置、合成贴上。
+    fn render_gdi(&self) -> Result<()> {
         let theme = self.theme.borrow().clone();
         let margin = layered::shadow_margin(self.dpi.get());
         self.placement.margin.set(margin);
@@ -205,8 +292,7 @@ impl StatusBar {
             .collect();
         let content = (widths.iter().sum::<i32>(), line + theme.padding);
         if content.0 <= 0 || content.1 <= 0 || cells.is_empty() {
-            self.hide();
-            return;
+            return Err(Error::from(E_INVALIDARG));
         }
         let mut right = 0;
         let bounds: Vec<(i32, StatusAction)> = cells
@@ -218,18 +304,11 @@ impl StatusBar {
             })
             .collect();
         *self.placement.cells.borrow_mut() = bounds;
-
-        let anchor = self
-            .placement
-            .pos
-            .get()
-            .unwrap_or_else(|| default_anchor(content, margin));
-        let anchor = clamp_anchor(anchor, content, margin);
-        self.placement.pos.set(Some(anchor));
+        let anchor = self.anchor(content, margin);
 
         let separator = theme.pos_color;
         let inset = theme.padding / 2;
-        let updated = layered::composite(
+        layered::composite(
             self.hwnd,
             &Layered {
                 content,
@@ -243,12 +322,7 @@ impl StatusBar {
                     paint_cells(hdc, client, &cells, &sizes, &widths, separator, inset);
                 },
             },
-        );
-        if updated.is_ok() {
-            let _ = unsafe { ShowWindow(self.hwnd, SW_SHOWNA) };
-        } else {
-            self.hide();
-        }
+        )
     }
 }
 

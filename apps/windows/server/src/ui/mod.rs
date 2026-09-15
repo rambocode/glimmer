@@ -8,9 +8,12 @@ mod candidates;
 mod command;
 mod layered;
 mod monitor;
+mod painter;
 mod status;
 mod window_class;
 
+use std::cell::RefCell;
+use std::rc::Rc;
 use std::sync::mpsc::{self, Receiver, Sender};
 use std::thread;
 
@@ -26,10 +29,11 @@ use windows::Win32::UI::WindowsAndMessaging::{
 use windows::core::{Error, Result};
 
 use glimmer_platform::protocol::{Frame, ScreenRect};
-use glimmer_server::dispatch::{CandidateSink, StatusEvent, StatusSink, StatusView};
+use glimmer_server::dispatch::{CandidateSink, RenderSettings, StatusEvent, StatusSink, StatusView};
 
 use self::candidates::CandidateWindow;
 use self::command::UiCommand;
+use self::painter::{Painter, SharedPainter};
 use self::status::StatusBar;
 
 /// 状态条上的操作（点格子 / 拖动结束）回给 Router 的回调，UI 线程上调。
@@ -83,6 +87,10 @@ impl CandidateSink for UiHandle {
     fn hide(&self) {
         self.post(UiCommand::Hide);
     }
+
+    fn configure(&self, settings: RenderSettings) {
+        self.post(UiCommand::Configure(settings));
+    }
 }
 
 impl StatusSink for UiHandle {
@@ -106,8 +114,10 @@ fn run(commands: Receiver<UiCommand>, ready: &Sender<Option<u32>>, on_status: St
     // 按物理像素定位，与应用报来的组句屏幕矩形对齐；已设过会失败，忽略。
     let _ = unsafe { SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) };
     let thread_id = unsafe { GetCurrentThreadId() };
+    // 渲染器候选窗口与状态条共用（字体库与字形缓存一份）；装上时按配置建。
+    let painter: SharedPainter = Rc::new(RefCell::new(None));
     // 先建窗口再报 id：建窗口顺带建起本线程的消息队列，之后 PostThreadMessageW 才有处可投。
-    let window = match CandidateWindow::new() {
+    let window = match CandidateWindow::new(painter.clone()) {
         Ok(window) => window,
         Err(error) => {
             tracing::error!(%error, "建候选窗口失败，Server 将不显示候选框");
@@ -115,7 +125,7 @@ fn run(commands: Receiver<UiCommand>, ready: &Sender<Option<u32>>, on_status: St
             return;
         }
     };
-    let status = match StatusBar::new(on_status) {
+    let status = match StatusBar::new(on_status, painter.clone()) {
         Ok(status) => Some(status),
         Err(error) => {
             tracing::error!(%error, "建悬浮状态条失败，将不显示状态条");
@@ -134,7 +144,7 @@ fn run(commands: Receiver<UiCommand>, ready: &Sender<Option<u32>>, on_status: St
         if msg.message == WM_WAKE {
             // 一次唤醒排空整个队列，保住 Hide→Show 的先后。
             while let Ok(command) = commands.try_recv() {
-                apply(&window, status.as_ref(), command);
+                apply(&window, status.as_ref(), &painter, command);
             }
             continue;
         }
@@ -145,7 +155,12 @@ fn run(commands: Receiver<UiCommand>, ready: &Sender<Option<u32>>, on_status: St
     }
 }
 
-fn apply(window: &CandidateWindow, status: Option<&StatusBar>, command: UiCommand) {
+fn apply(
+    window: &CandidateWindow,
+    status: Option<&StatusBar>,
+    painter: &SharedPainter,
+    command: UiCommand,
+) {
     match command {
         UiCommand::Show(payload) => {
             let (frame, rect) = *payload;
@@ -163,6 +178,7 @@ fn apply(window: &CandidateWindow, status: Option<&StatusBar>, command: UiComman
                 status.hide();
             }
         }
+        UiCommand::Configure(settings) => Painter::configure(painter, &settings),
     }
 }
 

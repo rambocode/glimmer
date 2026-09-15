@@ -18,6 +18,8 @@ toml_edit.workspace = true
 # UI 本体只在 Windows 编
 [target."cfg(windows)".dependencies]
 windows-reactor = "0.100"
+# 只用它的 system_fonts（DirectWrite 列字族）
+glimmer-render.workspace = true
 glimmer-learning.workspace = true
 glimmer-core.workspace = true
 glimmer-translate.workspace = true

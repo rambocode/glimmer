@@ -49,17 +49,17 @@ pub struct Renderer {
 }
 
 /// 一次渲染期间的上下文：主题按倍数换算后的像素值。
-struct Metrics<'a> {
-    theme: &'a Theme,
-    scale: f32,
+pub(crate) struct Metrics<'a> {
+    pub(crate) theme: &'a Theme,
+    pub(crate) scale: f32,
 }
 
 impl Metrics<'_> {
-    fn px(&self, points: f32) -> f32 {
+    pub(crate) fn px(&self, points: f32) -> f32 {
         points * self.scale
     }
 
-    fn padding(&self) -> f32 {
+    pub(crate) fn padding(&self) -> f32 {
         self.px(self.theme.padding)
     }
 
@@ -71,11 +71,11 @@ impl Metrics<'_> {
         self.px(self.theme.column_gap)
     }
 
-    fn corner_radius(&self) -> f32 {
+    pub(crate) fn corner_radius(&self) -> f32 {
         self.px(self.theme.corner_radius)
     }
 
-    fn style(&self, font: FontSpec, color: Color) -> TextStyle {
+    pub(crate) fn style(&self, font: FontSpec, color: Color) -> TextStyle {
         TextStyle::new(
             font.scaled(self.scale),
             font.size,
@@ -84,7 +84,7 @@ impl Metrics<'_> {
         )
     }
 
-    fn text_style(&self) -> TextStyle {
+    pub(crate) fn text_style(&self) -> TextStyle {
         self.style(self.theme.text_font, self.theme.colors.text)
     }
 
@@ -199,12 +199,12 @@ impl Renderer {
         )
     }
 
-    fn measure(&mut self, text: &str, style: &TextStyle) -> TextSize {
+    pub(crate) fn measure(&mut self, text: &str, style: &TextStyle) -> TextSize {
         self.text.measure(text, style)
     }
 
     /// 画一段文字，返回它的宽度。参数顺序是 (顶边 y, 左边 x)，与画图时「先定行再定列」的习惯一致。
-    fn draw_text(
+    pub(crate) fn draw_text(
         &mut self,
         canvas: &mut Canvas,
         text: &str,

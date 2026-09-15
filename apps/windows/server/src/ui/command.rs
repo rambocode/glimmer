@@ -1,7 +1,7 @@
 //! 交给 UI 线程执行的命令。
 
 use glimmer_platform::protocol::{Frame, ScreenRect};
-use glimmer_server::dispatch::StatusView;
+use glimmer_server::dispatch::{RenderSettings, StatusView};
 
 /// 交给 UI 线程执行的命令。`Frame` 较大，装箱免得枚举过胖。
 pub(super) enum UiCommand {
@@ -16,4 +16,7 @@ pub(super) enum UiCommand {
 
     /// 收起悬浮状态条。
     StatusHide,
+
+    /// 换画法（渲染器 / 字体）。
+    Configure(RenderSettings),
 }

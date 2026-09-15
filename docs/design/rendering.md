@@ -74,7 +74,7 @@
 
 ## spike 结果（2026-09-13 晚，macOS）
 
-代码：`crates/glimmer-render`（渲染器）、`tools/render-preview`（离线出 PNG + 量宽度）、`apps/macos/src/candidates/bitmap/`（壳侧贴位图；`[general] renderer = "system"` 切回 AppKit 绘制，偏好设置「候选窗口」页可选，是过渡期退路，稳定一个版本后删）。
+代码：`crates/glimmer-render`（渲染器）、`examples/preview.rs`（离线出 PNG + 量宽度）、`apps/macos/src/candidates/bitmap/`（壳侧贴位图；`[general] renderer = "system"` 切回 AppKit 绘制，偏好设置「候选窗口」页可选，是过渡期退路，稳定一个版本后删）。
 对比方法：TextEdit 里敲 `nihao`，`screencapture -l` 抓真实候选窗；同一帧人工抄进样例，渲染成 PNG 并排；再把渲染器装进壳抓真机。
 
 | 验收 | 结果 |
@@ -110,6 +110,18 @@
 
 **结论**：四条都过，mac 上位图渲染器可以替换 AppKit 绘制。下一步 Windows：`server/src/ui/layered/` 换成贴渲染器输出，box 上看灰度抗锯齿与 Segoe UI Emoji（COLRv0）；过了就两端一起换、做主题 TOML。
 主题以后要放图片 / 动图 / 花边：渲染器输出就是一张位图，装饰只是多叠几层，不用换底子。
+
+## Windows 半边（2026-09-15，真机已验）
+
+- **壳**：`apps/windows/server/src/ui/painter/`，候选窗口与悬浮状态条共用一份渲染器（字体库与字形缓存一份）；`layered::present` 把渲染器出的预乘 RGBA 位图换成 BGRA 后 `UpdateLayeredWindow` 贴上，阴影由渲染器画（`Shadow::mac_panel()`，参数与 macOS 面板一致；分层窗口没有系统阴影）。倍数取 DPI / 96。
+  `[general] renderer = "system"` 时两个窗口走原来的 GDI 画法，与 macOS 一样是过渡期退路；渲染器建不起来（字体库加载失败）也自动退回。
+- **状态条**：渲染器新增 `render_status`（`StatusCell::{Text, Gear}`，返回位图与各格右边界供点击命中）。齿轮改成矢量画：Segoe UI Emoji 排在回退链前面会把 U+2699 画成彩色。
+- **配置**：`[general] renderer` / `[general] font` 经 `CandidateSink::configure` 送到 UI 线程，装上时与热加载变了时各送一次；字族名按 DirectWrite 的系统字体集合找文件（`glimmer_render::system_fonts`），设置程序的「字体」框也从它列字族。
+- **候选行类型**：Windows 壳直接用渲染器的 `Row` / `Tone`，不再有自己的一份；macOS 壳还留着 `convert.rs`，spike 定型后一起去掉。
+- **删候选的提示**：渲染器画在拼音行右侧（与 macOS 一致）；GDI 画法仍在拼音行下方。
+
+真机结果（Windows 11 26200，2026-09-15）：候选窗口深色 / 浅色、竖排 / 横排、Segoe UI Emoji（COLRv0）彩色、阴影，悬浮状态条与矢量齿轮，「渲染引擎 / 字体」设置项与热切换（换成 Maple Mono NF CN 立即生效），`renderer = "system"` 退回 GDI，均通过。灰度抗锯齿与微软雅黑回退看着与 GDI 版没有可感差异；Yu Gothic 回退与首帧耗时没有单独测。
+排查中顺带发现并修掉的与渲染器无关的问题：TSF DLL 动态链 `vcruntime140.dll`，AppContainer 进程（任务栏搜索等）读不到系统里那份时整个 DLL 加载失败、系统切回上一个输入法，已改成静态 CRT（仓库根 `.cargo/config.toml`）。
 
 ## 不做的事
 

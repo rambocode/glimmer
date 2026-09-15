@@ -27,6 +27,11 @@ pub(crate) enum Message {
     Theme(Option<usize>),
     Layout(Option<usize>),
     Preedit(Option<usize>),
+    Renderer(Option<usize>),
+    /// 字体框里的文字变了：空或正好是某个字族名就落盘。
+    FontQuery(String),
+    /// 从提示里选了一个字族。
+    Font(String),
     StatusBar(bool),
 
     // 云服务页

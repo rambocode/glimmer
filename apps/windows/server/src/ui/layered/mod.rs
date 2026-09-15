@@ -1,9 +1,11 @@
 //! 分层窗口合成：圆角背景 + 四周柔和阴影 + 一段 GDI 内容，合成进一张预乘 alpha 的 BGRA 位图，
 //! `UpdateLayeredWindow` 一次贴上。候选窗口与状态条共用。位图在 [`Canvas`]，内容圆角矩形在 [`RoundRect`]。
+//! 微明渲染器画好的整张位图（已含阴影）走 [`present`]，只做 RGBA → BGRA 再贴。
 
 mod canvas;
 mod round_rect;
 
+use glimmer_render::Pixmap;
 use windows::Win32::Foundation::{COLORREF, E_INVALIDARG, HWND, POINT, RECT, SIZE};
 use windows::Win32::Graphics::Gdi::{
     AC_SRC_ALPHA, AC_SRC_OVER, BLENDFUNCTION, HDC, SetViewportOrgEx,
@@ -86,10 +88,32 @@ pub(super) fn composite(hwnd: HWND, layered: &Layered) -> Result<()> {
     }
     // GDI 只写 RGB、把碰到的像素 alpha 留成 0（分层窗口里会全透明），画完把内容区补回 255。
     restore_content_alpha(canvas.pixels(), w, h, &round);
+    update(hwnd, canvas.dc(), layered.win_pos, (w, h))
+}
 
+/// 把渲染器出的预乘 RGBA 位图（已含阴影边）贴到分层窗口上，`win_pos` 是位图左上角的屏幕坐标。
+pub(super) fn present(hwnd: HWND, pixmap: &Pixmap, win_pos: (i32, i32)) -> Result<()> {
+    let (w, h) = (pixmap.width() as i32, pixmap.height() as i32);
+    if w <= 0 || h <= 0 {
+        return Err(Error::from(E_INVALIDARG));
+    }
+    let mut canvas = Canvas::new(w, h)?;
+    // tiny-skia 是 RGBA，DIB 是 BGRA；都是预乘，只换通道顺序。
+    for (dst, src) in canvas.pixels().chunks_exact_mut(4).zip(pixmap.pixels()) {
+        dst[0] = src.blue();
+        dst[1] = src.green();
+        dst[2] = src.red();
+        dst[3] = src.alpha();
+    }
+    update(hwnd, canvas.dc(), win_pos, (w, h))
+}
+
+/// `UpdateLayeredWindow`：整张位图按预乘 alpha 贴上并挪到 `win_pos`。
+fn update(hwnd: HWND, hdc: HDC, win_pos: (i32, i32), win_size: (i32, i32)) -> Result<()> {
+    let (w, h) = win_size;
     let dst = POINT {
-        x: layered.win_pos.0,
-        y: layered.win_pos.1,
+        x: win_pos.0,
+        y: win_pos.1,
     };
     let size = SIZE { cx: w, cy: h };
     let src = POINT { x: 0, y: 0 };
@@ -105,7 +129,7 @@ pub(super) fn composite(hwnd: HWND, layered: &Layered) -> Result<()> {
             None,
             Some(&dst),
             Some(&size),
-            Some(canvas.dc()),
+            Some(hdc),
             Some(&src),
             COLORREF(0),
             Some(&blend),

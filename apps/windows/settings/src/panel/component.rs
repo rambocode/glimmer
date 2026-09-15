@@ -1,8 +1,8 @@
 //! 根组件的 Reactor 生命周期：建状态、按消息落盘、画左侧导航 + 当前页。
 
 use glimmer_platform::{
-    Config, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS, LayoutMode, LogLevel, PreeditMode,
-    PunctuationMode, ThemeMode,
+    CandidateRenderer, Config, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS, LayoutMode, LogLevel,
+    PreeditMode, PunctuationMode, ThemeMode,
 };
 use windows_reactor::*;
 
@@ -23,6 +23,8 @@ impl Component for Settings {
             path,
             page: "general".to_string(),
             cloud_status: CloudStatus::Idle,
+            families: glimmer_render::system_fonts::families(),
+            font_query: None,
         }
     }
 
@@ -79,6 +81,32 @@ impl Component for Settings {
             }
             Message::Preedit(Some(i)) if i < PreeditMode::ALL.len() => {
                 self.save("general", "preedit", PreeditMode::ALL[i].key());
+            }
+            Message::Renderer(Some(i)) if i < CandidateRenderer::ALL.len() => {
+                self.save("general", "renderer", CandidateRenderer::ALL[i].key());
+            }
+            Message::FontQuery(text) => {
+                let text = text.trim().to_owned();
+                let exact = self
+                    .families
+                    .iter()
+                    .find(|family| family.eq_ignore_ascii_case(&text))
+                    .cloned();
+                match exact {
+                    Some(family) => {
+                        self.font_query = None;
+                        self.save("general", "font", family);
+                    }
+                    None if text.is_empty() => {
+                        self.font_query = None;
+                        self.save("general", "font", "");
+                    }
+                    None => self.font_query = Some(text),
+                }
+            }
+            Message::Font(family) => {
+                self.font_query = None;
+                self.save("general", "font", family);
             }
             Message::StatusBar(on) => self.save("status_bar", "enabled", on),
 

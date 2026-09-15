@@ -8,7 +8,7 @@ use std::time::Instant;
 use clap::Parser;
 use glimmer_render::{
     FontLibrary, Frame, Layout, Preedit, PreeditSegment, PreeditStyle, Renderer, Row, Shadow,
-    Theme, Tone,
+    StatusCell, Theme, Tone,
 };
 
 #[derive(Parser)]
@@ -111,6 +111,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 path.display()
             );
         }
+    }
+
+    // Windows 的悬浮状态条：三格
+    let cells = [
+        StatusCell::text("中 · 小鹤", true),
+        StatusCell::text("，。", true),
+        StatusCell::Gear,
+    ];
+    for (theme_name, theme) in [("light", Theme::light()), ("dark", Theme::dark())] {
+        let status = renderer.render_status(&cells, &theme, args.scale, shadow.as_ref())?;
+        let path = args.out.join(format!("status-{theme_name}.png"));
+        status.rendered.pixmap.save_png(&path)?;
+        let (w, h) = status.rendered.content_size_points();
+        println!(
+            "{:<28} {:>4.0}×{:<4.0}pt  格边界 {:?}  {}",
+            format!("status-{theme_name}"),
+            w,
+            h,
+            status.cell_edges,
+            path.display()
+        );
     }
 
     for probe in [

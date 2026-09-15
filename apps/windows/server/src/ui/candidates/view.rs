@@ -3,6 +3,7 @@
 
 use glimmer_platform::LayoutMode;
 use glimmer_platform::protocol::PreeditKind;
+use glimmer_render::{Row, Tone};
 use windows::Win32::Foundation::{COLORREF, RECT, SIZE};
 use windows::Win32::Graphics::Gdi::{
     CreateRoundRectRgn, CreateSolidBrush, DeleteObject, FillRect, FillRgn, GetTextExtentPoint32W,
@@ -10,7 +11,6 @@ use windows::Win32::Graphics::Gdi::{
 };
 
 use super::RenderData;
-use super::row::{Row, Tone};
 use super::theme::Theme;
 
 /// 云端候选词前的小云朵（macOS 用 SF Symbol `cloud`）。

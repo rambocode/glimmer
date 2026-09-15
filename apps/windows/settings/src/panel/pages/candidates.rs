@@ -1,6 +1,6 @@
-//! 「候选窗口」页：外观、排布、拼音显示位置、悬浮状态条。
+//! 「候选窗口」页：外观、排布、渲染引擎、字体、拼音显示位置、悬浮状态条。
 
-use glimmer_platform::{LayoutMode, PreeditMode, ThemeMode};
+use glimmer_platform::{CandidateRenderer, LayoutMode, PreeditMode, ThemeMode};
 use windows_reactor::*;
 
 use crate::panel::controls::{field, page};
@@ -21,6 +21,17 @@ fn mode_combo<T: PartialEq + Copy>(
 
 pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> View {
     let g = &settings.config.general;
+    let font_text = settings
+        .font_query
+        .clone()
+        .unwrap_or_else(|| g.font.clone());
+    let query = font_text.to_lowercase();
+    let suggestions: Vec<String> = settings
+        .families
+        .iter()
+        .filter(|family| query.is_empty() || family.to_lowercase().contains(&query))
+        .cloned()
+        .collect();
     let rows = [
         field(
             "外观",
@@ -41,6 +52,27 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
                 LayoutMode::label,
                 context.callback(Message::Layout),
             ),
+        ),
+        field(
+            "渲染引擎",
+            "微明渲染器让候选窗口在各平台一致。",
+            mode_combo(
+                &CandidateRenderer::ALL,
+                g.renderer,
+                CandidateRenderer::label,
+                context.callback(Message::Renderer),
+            ),
+        ),
+        field(
+            "字体",
+            "只对微明渲染器生效；留空用系统字体，没装的字体自动回到系统字体。",
+            AutoSuggestBox::new()
+                .width(260.0)
+                .text(font_text)
+                .placeholder_text("系统字体")
+                .items_source(suggestions)
+                .on_text_changed(context.callback(Message::FontQuery))
+                .on_suggestion_chosen(context.callback(Message::Font)),
         ),
         field(
             "拼音显示",

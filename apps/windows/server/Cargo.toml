@@ -18,6 +18,7 @@ embed-manifest.workspace = true
 glimmer-core.workspace = true
 glimmer-platform.workspace = true
 glimmer-server.workspace = true
+glimmer-render.workspace = true
 dotenvy.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
