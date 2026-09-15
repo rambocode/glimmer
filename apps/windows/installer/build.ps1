@@ -9,12 +9,15 @@
       4) iscc /DAppVersion=<版本> 编脚本，成品在 target\installer\Glimmer-<版本>-Setup.exe。
     随包数据（.qj / .tsv）直接由 .iss 从仓库 data\generated 与 assets 里取，不另建暂存目录；
     确保打包前 data\generated 里的 .qj 是最新的（bundle 流程见仓库 CLAUDE.md）。
-    没有代码签名证书时（CI 内测包）先设 $env:GLIMMER_UIACCESS = '0' 再跑：没签名的 exe 带 uiAccess 起不来。
+    uiAccess 由 -Sign 决定，不用手设 GLIMMER_UIACCESS：默认（不签）关掉 uiAccess，Server 是普通 exe，任何机器都能起；
+    只有 -Sign 时才开 uiAccess。因为 uiAccess=true 的 exe 必须有本机受信任的签名才允许启动，自签证书只有本机信任，
+    对外分发的包若带 uiAccess，用户机器上 Server 会以「从服务器返回了一个参照」拒绝启动、输入法哑火。
 .PARAMETER SkipBuild
     跳过 cargo build（数据或 .iss 改了、二进制没变时重编安装包用）。
 .PARAMETER Sign
-    打包前用自签证书给产物代码签名（sign-local.ps1）。uiAccess=true 的 Server 必须签名 + 装 Program Files
-    才拿到高 z-band 权限；不加此开关打出的包，Server 在商店 / 任务栏搜索里仍被盖住（桌面程序不受影响）。
+    打包前用自签证书给产物代码签名（sign-local.ps1）并开启 uiAccess（候选窗才能盖过商店 / 任务栏搜索等高 z-band 宿主）。
+    仅供本机真机测：自签证书只有装了它的机器（编译机）信任，别用 -Sign 打对外分发的包。
+    不加此开关：不签名、且关掉 uiAccess（对外分发用），Server 在商店 / 任务栏搜索里会被盖住（桌面程序不受影响），但任何机器都能正常启动。
 #>
 [CmdletBinding()]
 param([switch]$SkipBuild, [switch]$Sign)
@@ -24,6 +27,17 @@ $ErrorActionPreference = 'Stop'
 # 仓库根：本脚本在 apps\windows\installer 下，往上三层是 ime\。
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
 $Iss  = Join-Path $PSScriptRoot 'glimmer.iss'
+
+# uiAccess 跟着 -Sign 走（server\build.rs 读 GLIMMER_UIACCESS）：只有签名构建才开 uiAccess，
+# 因为 uiAccess=true 的 exe 要本机受信任的签名才准启动，自签证书只有编译机信任；对外分发的包（不签）
+# 一律关掉 uiAccess，否则用户机器上 Server 会被系统拒启动（「从服务器返回了一个参照」）、输入法连不上。
+# 改了这个变量 build.rs 会触发 Server 重编（rerun-if-env-changed），不用手动清。
+$env:GLIMMER_UIACCESS = if ($Sign) { '1' } else { '0' }
+if ($Sign) {
+    Write-Host 'uiAccess=1（-Sign：仅本机真机测，别用于对外分发）' -ForegroundColor Yellow
+} else {
+    Write-Host 'uiAccess=0（对外分发：Server 任何机器都能起；候选窗在商店 / 任务栏搜索里可能被盖）' -ForegroundColor Cyan
+}
 
 # 1) 构建三个产物。
 if (-not $SkipBuild) {
