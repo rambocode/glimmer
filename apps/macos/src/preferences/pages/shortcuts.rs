@@ -4,10 +4,11 @@ use glimmer_core::ModeKeys;
 use glimmer_platform::{Config, PAGE_KEY_OPTIONS};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
-use objc2_app_kit::NSPopUpButton;
+use objc2_app_kit::{NSButton, NSPopUpButton};
 
 use crate::preferences::controls::{
-    button, note, note_full, page_keys_label, row_popup, row_recorder, select,
+    button, checkbox, note, note_full, page_keys_label, row_checkbox, row_popup,
+    row_recorder, select, set_checked,
 };
 use crate::preferences::key_recorder::KeyRecorder;
 use crate::preferences::layout::{Layout, PAGE_PADDING, ROW_HEIGHT};
@@ -26,6 +27,9 @@ pub struct ShortcutsPage {
 
     /// 问字模式键。
     question: Retained<NSPopUpButton>,
+
+    /// 没在组句时敲 `?` 也进问字。
+    question_mark: Retained<NSButton>,
 
     /// 上屏第一个译词的修饰键。
     translation: Retained<KeyRecorder>,
@@ -93,7 +97,19 @@ impl ShortcutsPage {
         note(
             layout,
             mtm,
-            "这两个字母开头进模式：v1+2 出 3，usangemu 问「三个木」（需要云服务），u4e00 出对应的字符；? 开头永远是问字。两个键不能相同。",
+            "这两个字母开头进模式：v1+2 出 3，usangemu 问「三个木」（需要云服务），u4e00 出对应的字符。两个键不能相同。",
+        );
+        let question_mark = checkbox(
+            mtm,
+            "没在输入拼音时敲 ? 也进入问字",
+            Setting::QuestionMark,
+            target,
+        );
+        row_checkbox(layout, &question_mark);
+        note(
+            layout,
+            mtm,
+            "勾上后 ? 先进问字（中英文模式都行），后面跟字母才是问题，跟空格、回车等其他键时还原成问号；不勾问号就是问号。双拼下这是问字唯一的入口。",
         );
         layout.end_group();
         let translation = row_recorder(
@@ -167,6 +183,7 @@ impl ShortcutsPage {
             page_keys,
             expression,
             question,
+            question_mark,
             translation,
             translation_second,
             delete_candidate,
@@ -201,6 +218,7 @@ impl ShortcutsPage {
                 .iter()
                 .position(|k| *k == keys.question),
         );
+        set_checked(&self.question_mark, keys.question_mark);
         let (first, second) = config.shortcut.translation_keys();
         self.translation.show(&first.key(), &first.label());
         self.translation_second.show(&second.key(), &second.label());

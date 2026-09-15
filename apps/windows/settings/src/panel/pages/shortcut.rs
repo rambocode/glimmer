@@ -64,8 +64,15 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
         ),
         field(
             "问字模式键",
-            "这两个字母开头进模式：v1+2 出 3，usangemu 问「三个木」（需要云服务）；? 开头永远是问字。两个键不能相同。",
+            "这两个字母开头进模式：v1+2 出 3，usangemu 问「三个木」（需要云服务）。两个键不能相同。",
             mode_combo(s.mode.question, context.callback(Message::ModeQuestion)),
+        ),
+        field(
+            "没在输入拼音时敲 ? 也进入问字",
+            "开着时 ? 先进问字（中英文模式都行），后面跟字母才是问题，跟其他键时还原成问号；关着问号就是问号。双拼下这是问字唯一的入口。",
+            ToggleSwitch::new()
+                .is_on(s.mode.question_mark)
+                .on_toggled(context.callback(Message::QuestionMark)),
         ),
         field(
             "译词上屏（第一个）",

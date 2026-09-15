@@ -125,10 +125,15 @@ impl Engine {
     /// 有效的模式键：双拼下 v / u / i 都是音节键、五笔下都是编码键，字母模式键让位，只剩 `?` 开头的问字。
     pub(super) fn modes(&self) -> ModeKeys {
         if self.shuangpin.is_some() || self.wubi.is_some() {
-            ModeKeys::LETTERLESS
+            self.modes.letterless()
         } else {
             self.modes
         }
+    }
+
+    /// 缓冲区为空时敲 `?` 该不该进问字模式（配置 `[shortcut] question_mark`）：壳据此决定问号是入口还是标点。
+    pub fn takes_question_mark(&self) -> bool {
+        self.modes().question_mark
     }
 
     /// 双拼开着时把一段键解成全拼；全拼下为 `None`，调用方原样用键。五笔下双拼 / 注音都被忽略，也是 `None`。

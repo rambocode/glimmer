@@ -44,6 +44,7 @@ pub(crate) enum Message {
     PageKeys(Option<usize>),
     ModeExpression(Option<usize>),
     ModeQuestion(Option<usize>),
+    QuestionMark(bool),
     Translation(Option<usize>),
     TranslationSecond(Option<usize>),
     DeleteCandidate(Option<usize>),

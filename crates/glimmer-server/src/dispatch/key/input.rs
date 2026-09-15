@@ -29,8 +29,9 @@ impl Router {
         let english_candidates = event.modifiers.english_mode
             && !caps
             && self.config.english_candidates_in(self.focused_app());
-        // 缓冲区为空时敲 `?` 先进问字模式，中英文模式都行：后面跟字母就是在问字，跟别的键就还原成问号。
-        if !self.composing() && c == QUESTION_PREFIX {
+        // 缓冲区为空时敲 `?` 先进问字模式（配置 `[shortcut] question_mark`，缺省关），中英文模式都行：
+        // 后面跟字母就是在问字，跟别的键就还原成问号。
+        if !self.composing() && c == QUESTION_PREFIX && self.engine.takes_question_mark() {
             self.engine.set_english_mode(false);
             return self.push_key(c);
         }

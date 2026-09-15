@@ -25,6 +25,13 @@ fn question_mode_asks_the_cloud_and_shows_answers_unvalidated() {
         sentence: true,
     };
     let mut engine = self::engine().with_predictor(Box::new(predictor));
+    // 缺省 `?` 不是入口：开了开关才进问字
+    assert!(!engine.takes_question_mark());
+    engine.set_mode_keys(ModeKeys {
+        question_mark: true,
+        ..ModeKeys::default()
+    });
+    assert!(engine.takes_question_mark());
     engine.push('?');
     assert!(engine.bare_question());
     assert!(engine.question_mode());
@@ -315,8 +322,14 @@ fn question_key_answers_code_points_locally_and_keeps_question_mark_alias() {
     let body = query.tail.strip_prefix('u').unwrap().to_owned();
     assert!(!body.is_empty());
 
-    // `?` 别名：同一个问题、同样的切分，只是前缀不同
+    // `?` 缺省不是入口：`?sangemu` 是英文直输段而不是问题
     engine.set_input("?sangemu");
+    assert!(!engine.question_mode() && engine.raw_mode());
+    // 开了开关才是别名：同一个问题、同样的切分，只是前缀不同
+    engine.set_mode_keys(ModeKeys {
+        question_mark: true,
+        ..ModeKeys::default()
+    });
     assert!(engine.question_mode());
     assert_eq!(engine.query().unwrap().tail, format!("?{body}"));
 
@@ -324,6 +337,7 @@ fn question_key_answers_code_points_locally_and_keeps_question_mark_alias() {
     engine.set_mode_keys(ModeKeys {
         expression: 'v',
         question: 'i',
+        question_mark: false,
     });
     engine.set_input("u4e00");
     assert!(!engine.question_mode());
@@ -333,6 +347,7 @@ fn question_key_answers_code_points_locally_and_keeps_question_mark_alias() {
     engine.set_mode_keys(ModeKeys {
         expression: 'u',
         question: 'u',
+        question_mark: false,
     });
     assert_eq!(engine.mode_keys(), ModeKeys::default());
 }

@@ -120,6 +120,7 @@ impl Component for Settings {
             Message::ModeQuestion(Some(i)) if i < shortcut::MODE_KEYS.len() => {
                 self.save("shortcut", "question", shortcut::MODE_KEYS[i]);
             }
+            Message::QuestionMark(on) => self.save("shortcut", "question_mark", on),
             Message::Translation(Some(i)) if i < shortcut::MODIFIERS.len() => {
                 self.save("shortcut", "translation", shortcut::MODIFIERS[i].1);
             }
