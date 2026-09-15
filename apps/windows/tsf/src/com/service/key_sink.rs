@@ -146,6 +146,10 @@ impl TextService_Impl {
         if !self.ensure_connected() {
             return !event.modifiers.has_command_key();
         }
+        // 在 OnTestKeyDown 里已声明要吃这个键的可打印字符（数字 / 半角标点）。Server 放行时由输入法
+        // 自己插入，别退回应用——企业微信 / 微信 / notepad++ 这类自绘输入框会把放行的键丢掉（OnTestKeyDown
+        // 说吃、OnKeyDown 又说不吃，键就没了）。功能键（回车 / Tab / 方向键，无字符）仍交给应用。
+        let passthrough_char = event.character.filter(|c| !c.is_control());
         if let Ok(context) = pic.ok() {
             self.shared.set_last_context(Some(context.clone()));
         }
@@ -200,7 +204,19 @@ impl TextService_Impl {
             }
         };
         match next {
-            // 放行的键 Server 没动缓冲区，不碰文档（应用处理这个键时光标可能会移）。
+            // 放行 + 没在组句 + 是可打印字符：由输入法插入这个字符（见上），吃掉。
+            // Server 可能顺带交出要先上屏的字母（英文直输段 flush），拼在前面一起插。
+            Next::Document {
+                consumed: false,
+                commit,
+                preedit,
+            } if preedit.is_empty() && passthrough_char.is_some() => {
+                let mut text = commit.unwrap_or_default();
+                text.push(passthrough_char.expect("guard 保证是可打印字符"));
+                self.update_document(pic, Some(text), String::new());
+                true
+            }
+            // 放行的功能键：Server 没动缓冲区，交还应用（应用处理这个键时光标可能会移）。
             Next::Document {
                 consumed: false, ..
             } => false,
