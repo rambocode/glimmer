@@ -2,7 +2,7 @@
 
 ## 支持的版本
 
-青简还在测试阶段，只修最新版本：
+微明还在测试阶段，只修最新版本：
 
 | 版本 | 支持 |
 |---|---|
@@ -26,7 +26,7 @@
 
 ---
 
-**English.** Qingjian is in beta; only the latest 0.1.x release receives fixes. Please report vulnerabilities privately via
+**English.** Glimmer is in beta; only the latest 0.1.x release receives fixes. Please report vulnerabilities privately via
 GitHub's "Report a vulnerability" (Security tab), not in public issues. Expect a reply within 3 days; confirmed issues are fixed
 in the next release and credited in the changelog. An input method sees every keystroke, so we care most about keystroke leakage
 (logs, diagnostics, cloud requests, Secure Input), API key exposure, installer integrity (pkg vs. `SHA256SUMS`), and crashes from

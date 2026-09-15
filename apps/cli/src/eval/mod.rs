@@ -15,7 +15,7 @@ use std::collections::HashSet;
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 
-use qingjian_core::Engine;
+use glimmer_core::Engine;
 
 pub use report::Report;
 

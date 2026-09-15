@@ -66,7 +66,7 @@ pub struct EnglishArgs {
     pub model: String,
 
     /// 密钥；缺省读环境变量
-    #[arg(long, env = "QINGJIAN_API_KEY", hide_env_values = true)]
+    #[arg(long, env = "GLIMMER_API_KEY", hide_env_values = true)]
     pub api_key: String,
 
     /// 单个请求的超时秒数
@@ -116,7 +116,7 @@ pub struct PinyinArgs {
     pub model: String,
 
     /// 密钥；缺省读环境变量
-    #[arg(long, env = "QINGJIAN_API_KEY", hide_env_values = true)]
+    #[arg(long, env = "GLIMMER_API_KEY", hide_env_values = true)]
     pub api_key: String,
 
     /// 单个请求的超时秒数
@@ -163,7 +163,7 @@ pub struct GenerateArgs {
     pub model: String,
 
     /// 密钥；缺省读环境变量
-    #[arg(long, env = "QINGJIAN_API_KEY", hide_env_values = true)]
+    #[arg(long, env = "GLIMMER_API_KEY", hide_env_values = true)]
     pub api_key: String,
 
     /// 单个请求的超时秒数

@@ -2,8 +2,8 @@
 
 mod state;
 
-use qingjian_core::{Candidate, CandidateLayout, CandidateList, CloudWord};
-use qingjian_platform::protocol::{Frame, PreeditKind, PreeditSegment};
+use glimmer_core::{Candidate, CandidateLayout, CandidateList, CloudWord};
+use glimmer_platform::protocol::{Frame, PreeditKind, PreeditSegment};
 
 pub(super) use self::state::Composed;
 use super::Router;

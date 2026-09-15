@@ -1,4 +1,4 @@
-use qingjian_platform::protocol::CodecError;
+use glimmer_platform::protocol::CodecError;
 
 /// 与 Server 通信时的错误。
 #[derive(Debug, thiserror::Error)]

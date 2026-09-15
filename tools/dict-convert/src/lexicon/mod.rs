@@ -1,4 +1,4 @@
-//! 青简自己的词库：从「输入法字词库_分类整理版」数据包（规范字 + 现代汉语常用词 + THUOCL 领域词）建 `dict.tsv`。
+//! 微明自己的词库：从「输入法字词库_分类整理版」数据包（规范字 + 现代汉语常用词 + THUOCL 领域词）建 `dict.tsv`。
 //!
 //! 通用词自带拼音，直接规范化；规范字与领域词没有拼音，读音来自 Unihan（Unicode 许可）：
 //! 单字按 kHanyuPinlu / kXHC1983 / kMandarin 给全部读音与权重，多字词按字拼接，多音字先看 LLM 标注
@@ -21,9 +21,9 @@ use std::collections::{BTreeMap, HashMap, HashSet};
 use std::io::{BufWriter, Write};
 use std::path::Path;
 
-use qingjian_core::parser::is_syllable;
-use qingjian_dictionary::Dictionary;
-use qingjian_format::Metadata;
+use glimmer_core::parser::is_syllable;
+use glimmer_dictionary::Dictionary;
+use glimmer_format::Metadata;
 
 use crate::error::ConvertError;
 use entry::LexiconEntry;
@@ -355,9 +355,9 @@ pub fn convert(
     let mut file = BufWriter::new(std::fs::File::create(&output)?);
     writeln!(
         file,
-        "# 青简基础词库，由 qingjian-dict-convert lexicon 生成。词\t音节\t词频\n\
+        "# 微明基础词库，由 glimmer-dict-convert lexicon 生成。词\t音节\t词频\n\
 # 来源：通用规范汉字表（8105 字）；现代汉语常用词表（liuxilu 校对版）；THUOCL 领域词（MIT，清华大学自然语言处理实验室）；\n\
-# 读音：Unihan（Unicode License）+ LLM 标注多音字词；词频：青简自己的语料统计（中文维基 CC BY-SA 4.0、LCCC MIT）。"
+# 读音：Unihan（Unicode License）+ LLM 标注多音字词；词频：微明自己的语料统计（中文维基 CC BY-SA 4.0、LCCC MIT）。"
     )?;
     for entry in entries.values() {
         writeln!(
@@ -408,7 +408,7 @@ fn write_domains(
             .find(|(key, _)| key == stem)
             .map_or(stem.as_str(), |(_, name)| name);
         let mut tsv = format!(
-            "# 青简领域词库：{name}，由 qingjian-dict-convert lexicon 从 THUOCL 拆出，基础词库里没有的部分。词\t音节\t词频\n"
+            "# 微明领域词库：{name}，由 glimmer-dict-convert lexicon 从 THUOCL 拆出，基础词库里没有的部分。词\t音节\t词频\n"
         );
         for entry in entries.values() {
             tsv.push_str(&entry.text);
@@ -422,11 +422,11 @@ fn write_domains(
         std::fs::write(&tsv_path, &tsv)?;
         let dictionary = Dictionary::parse(&tsv)?;
         let metadata = Metadata {
-            name: format!("青简领域词库：{name}"),
+            name: format!("微明领域词库：{name}"),
             license: DOMAIN_LICENSE.to_owned(),
             attribution: DOMAIN_ATTRIBUTION.to_owned(),
             source: DOMAIN_SOURCE.to_owned(),
-            generator: format!("qingjian-dict-convert {}", env!("CARGO_PKG_VERSION")),
+            generator: format!("glimmer-dict-convert {}", env!("CARGO_PKG_VERSION")),
             ..Metadata::default()
         };
         let qj_path = dir.join(format!("{stem}.qj"));

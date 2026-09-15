@@ -5,7 +5,7 @@ use windows::Win32::UI::Input::KeyboardAndMouse::{
     VK_MENU, VK_RETURN, VK_RSHIFT, VK_RWIN, VK_SHIFT, VK_SPACE, VK_TAB,
 };
 
-use qingjian_platform::protocol::{KeyEvent, KeyModifiers};
+use glimmer_platform::protocol::{KeyEvent, KeyModifiers};
 
 /// 采当前修饰键并解析字符（US 布局）。`english_mode` 是 DLL 记的持久中英模式，随事件带给 Server。
 pub(crate) fn to_key_event(vk: u32, english_mode: bool) -> KeyEvent {

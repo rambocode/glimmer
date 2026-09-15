@@ -1137,6 +1137,258 @@ dependencies = [
 ]
 
 [[package]]
+name = "glimmer-cli"
+version = "0.1.1"
+dependencies = [
+ "clap",
+ "dotenvy",
+ "glimmer-core",
+ "glimmer-dictionary",
+ "glimmer-learning",
+ "glimmer-lm",
+ "glimmer-neural",
+ "glimmer-platform",
+ "glimmer-predict",
+ "glimmer-translate",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "glimmer-core"
+version = "0.1.1"
+dependencies = [
+ "foldhash",
+ "glimmer-dictionary",
+ "jiff",
+ "serde",
+ "thiserror 2.0.20",
+ "toml",
+ "tracing",
+]
+
+[[package]]
+name = "glimmer-dict-convert"
+version = "0.1.1"
+dependencies = [
+ "clap",
+ "glimmer-core",
+ "glimmer-dictionary",
+ "glimmer-format",
+ "glimmer-lm",
+ "glimmer-neural",
+ "glimmer-translate",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "glimmer-dictionary"
+version = "0.1.1"
+dependencies = [
+ "glimmer-format",
+ "thiserror 2.0.20",
+ "tracing",
+ "zerocopy",
+]
+
+[[package]]
+name = "glimmer-format"
+version = "0.1.1"
+dependencies = [
+ "memmap2",
+ "serde",
+ "thiserror 2.0.20",
+ "toml",
+ "tracing",
+ "zerocopy",
+]
+
+[[package]]
+name = "glimmer-gloss-gen"
+version = "0.1.1"
+dependencies = [
+ "async-openai",
+ "clap",
+ "dotenvy",
+ "glimmer-core",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "glimmer-learning"
+version = "0.1.1"
+dependencies = [
+ "foldhash",
+ "glimmer-core",
+ "glimmer-dictionary",
+ "glimmer-translate",
+ "jiff",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "tracing",
+]
+
+[[package]]
+name = "glimmer-lm"
+version = "0.1.1"
+dependencies = [
+ "glimmer-core",
+ "glimmer-format",
+ "thiserror 2.0.20",
+ "tracing",
+ "zerocopy",
+]
+
+[[package]]
+name = "glimmer-macos"
+version = "0.1.3-dev"
+dependencies = [
+ "dotenvy",
+ "glimmer-core",
+ "glimmer-dictionary",
+ "glimmer-learning",
+ "glimmer-lm",
+ "glimmer-neural",
+ "glimmer-platform",
+ "glimmer-predict",
+ "glimmer-translate",
+ "jiff",
+ "objc2",
+ "objc2-app-kit",
+ "objc2-core-foundation",
+ "objc2-foundation",
+ "objc2-input-method-kit",
+ "thiserror 2.0.20",
+ "toml_edit",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "glimmer-neural"
+version = "0.1.1"
+dependencies = [
+ "candle-core",
+ "candle-nn",
+ "glimmer-core",
+ "glimmer-format",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "tracing",
+]
+
+[[package]]
+name = "glimmer-platform"
+version = "0.1.1"
+dependencies = [
+ "glimmer-core",
+ "glimmer-dictionary",
+ "glimmer-predict",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "toml",
+ "toml_edit",
+ "tracing",
+]
+
+[[package]]
+name = "glimmer-predict"
+version = "0.1.1"
+dependencies = [
+ "async-openai",
+ "glimmer-core",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "glimmer-translate"
+version = "0.1.1"
+dependencies = [
+ "glimmer-core",
+ "glimmer-format",
+ "thiserror 2.0.20",
+ "tracing",
+ "zerocopy",
+]
+
+[[package]]
+name = "glimmer-windows-server"
+version = "0.1.0-alpha.3-dev"
+dependencies = [
+ "dotenvy",
+ "embed-manifest",
+ "glimmer-core",
+ "glimmer-dictionary",
+ "glimmer-learning",
+ "glimmer-lm",
+ "glimmer-neural",
+ "glimmer-platform",
+ "glimmer-predict",
+ "glimmer-translate",
+ "thiserror 2.0.20",
+ "toml_edit",
+ "tracing",
+ "tracing-appender",
+ "tracing-subscriber",
+ "windows",
+ "windows-registry",
+ "winresource",
+]
+
+[[package]]
+name = "glimmer-windows-settings"
+version = "0.1.0-alpha.3-dev"
+dependencies = [
+ "glimmer-core",
+ "glimmer-learning",
+ "glimmer-platform",
+ "glimmer-predict",
+ "glimmer-translate",
+ "jiff",
+ "rfd",
+ "toml_edit",
+ "windows-reactor",
+ "windows-reactor-setup",
+ "winresource",
+]
+
+[[package]]
+name = "glimmer-windows-tsf"
+version = "0.1.0-alpha.3-dev"
+dependencies = [
+ "glimmer-core",
+ "glimmer-platform",
+ "glimmer-windows-server",
+ "thiserror 2.0.20",
+ "windows",
+ "windows-core 0.62.2",
+ "windows-registry",
+]
+
+[[package]]
 name = "half"
 version = "2.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2168,258 +2420,6 @@ name = "pulp-wasm-simd-flag"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1d8f70e07b9c3962945a74e59ca1c511bba65b6419468acc217c457d93f3c740"
-
-[[package]]
-name = "qingjian-cli"
-version = "0.1.1"
-dependencies = [
- "clap",
- "dotenvy",
- "qingjian-core",
- "qingjian-dictionary",
- "qingjian-learning",
- "qingjian-lm",
- "qingjian-neural",
- "qingjian-platform",
- "qingjian-predict",
- "qingjian-translate",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "qingjian-core"
-version = "0.1.1"
-dependencies = [
- "foldhash",
- "jiff",
- "qingjian-dictionary",
- "serde",
- "thiserror 2.0.20",
- "toml",
- "tracing",
-]
-
-[[package]]
-name = "qingjian-dict-convert"
-version = "0.1.1"
-dependencies = [
- "clap",
- "qingjian-core",
- "qingjian-dictionary",
- "qingjian-format",
- "qingjian-lm",
- "qingjian-neural",
- "qingjian-translate",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "qingjian-dictionary"
-version = "0.1.1"
-dependencies = [
- "qingjian-format",
- "thiserror 2.0.20",
- "tracing",
- "zerocopy",
-]
-
-[[package]]
-name = "qingjian-format"
-version = "0.1.1"
-dependencies = [
- "memmap2",
- "serde",
- "thiserror 2.0.20",
- "toml",
- "tracing",
- "zerocopy",
-]
-
-[[package]]
-name = "qingjian-gloss-gen"
-version = "0.1.1"
-dependencies = [
- "async-openai",
- "clap",
- "dotenvy",
- "qingjian-core",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "qingjian-learning"
-version = "0.1.1"
-dependencies = [
- "foldhash",
- "jiff",
- "qingjian-core",
- "qingjian-dictionary",
- "qingjian-translate",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "tracing",
-]
-
-[[package]]
-name = "qingjian-lm"
-version = "0.1.1"
-dependencies = [
- "qingjian-core",
- "qingjian-format",
- "thiserror 2.0.20",
- "tracing",
- "zerocopy",
-]
-
-[[package]]
-name = "qingjian-macos"
-version = "0.1.3-dev"
-dependencies = [
- "dotenvy",
- "jiff",
- "objc2",
- "objc2-app-kit",
- "objc2-core-foundation",
- "objc2-foundation",
- "objc2-input-method-kit",
- "qingjian-core",
- "qingjian-dictionary",
- "qingjian-learning",
- "qingjian-lm",
- "qingjian-neural",
- "qingjian-platform",
- "qingjian-predict",
- "qingjian-translate",
- "thiserror 2.0.20",
- "toml_edit",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "qingjian-neural"
-version = "0.1.1"
-dependencies = [
- "candle-core",
- "candle-nn",
- "qingjian-core",
- "qingjian-format",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "tracing",
-]
-
-[[package]]
-name = "qingjian-platform"
-version = "0.1.1"
-dependencies = [
- "qingjian-core",
- "qingjian-dictionary",
- "qingjian-predict",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "toml",
- "toml_edit",
- "tracing",
-]
-
-[[package]]
-name = "qingjian-predict"
-version = "0.1.1"
-dependencies = [
- "async-openai",
- "qingjian-core",
- "reqwest",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "tokio",
- "tracing",
- "uuid",
-]
-
-[[package]]
-name = "qingjian-translate"
-version = "0.1.1"
-dependencies = [
- "qingjian-core",
- "qingjian-format",
- "thiserror 2.0.20",
- "tracing",
- "zerocopy",
-]
-
-[[package]]
-name = "qingjian-windows-server"
-version = "0.1.0-alpha.3-dev"
-dependencies = [
- "dotenvy",
- "embed-manifest",
- "qingjian-core",
- "qingjian-dictionary",
- "qingjian-learning",
- "qingjian-lm",
- "qingjian-neural",
- "qingjian-platform",
- "qingjian-predict",
- "qingjian-translate",
- "thiserror 2.0.20",
- "toml_edit",
- "tracing",
- "tracing-appender",
- "tracing-subscriber",
- "windows",
- "windows-registry",
- "winresource",
-]
-
-[[package]]
-name = "qingjian-windows-settings"
-version = "0.1.0-alpha.3-dev"
-dependencies = [
- "jiff",
- "qingjian-core",
- "qingjian-learning",
- "qingjian-platform",
- "qingjian-predict",
- "qingjian-translate",
- "rfd",
- "toml_edit",
- "windows-reactor",
- "windows-reactor-setup",
- "winresource",
-]
-
-[[package]]
-name = "qingjian-windows-tsf"
-version = "0.1.0-alpha.3-dev"
-dependencies = [
- "qingjian-core",
- "qingjian-platform",
- "qingjian-windows-server",
- "thiserror 2.0.20",
- "windows",
- "windows-core 0.62.2",
- "windows-registry",
-]
 
 [[package]]
 name = "quick-xml"

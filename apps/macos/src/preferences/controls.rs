@@ -1,6 +1,7 @@
 //! 偏好设置各页共用的控件搭建函数：标签、说明小字、成行的弹出菜单 / 文本框 / 录制按钮，
 //! 以及把控件接到 [`PreferencesTarget`] 的 `changed:` 上。页面文件只描述「放什么」，不重复这些细节。
 
+use glimmer_core::Language;
 use objc2::rc::Retained;
 use objc2::{MainThreadMarker, sel};
 use objc2_app_kit::{
@@ -8,7 +9,6 @@ use objc2_app_kit::{
     NSPopUpButton, NSSecureTextField, NSTextAlignment, NSTextField,
 };
 use objc2_foundation::{NSArray, NSRect, NSString};
-use qingjian_core::Language;
 
 use super::key_recorder::KeyRecorder;
 use super::layout::{CONTROL_X, LABEL_WIDTH, Layout, PAGE_PADDING, ROW_HEIGHT};

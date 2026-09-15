@@ -1,7 +1,7 @@
 //! 按键怎么作用到 Engine / 高亮上。分流规则与 macOS 壳的 `handle_text` / `handle_command` 对齐。
 
-use qingjian_core::{QUESTION_PREFIX, shortcut};
-use qingjian_platform::protocol::KeyEvent;
+use glimmer_core::{QUESTION_PREFIX, shortcut};
+use glimmer_platform::protocol::KeyEvent;
 
 use super::{Effect, codes, with_prefix};
 use crate::dispatch::Router;

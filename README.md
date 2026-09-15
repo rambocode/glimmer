@@ -1,16 +1,16 @@
-# 青简 Qingjian
+# 微明 Glimmer
 
 > 输入的不只是文字。
 
-青简（Qingjian）是一个使用 **Rust** 开发的跨平台输入法。
+微明（Glimmer）是一个使用 **Rust** 开发的跨平台输入法。
 
 https://github.com/user-attachments/assets/d145fde9-a641-4543-8b15-dd7a2685de3d
 
-上面这段话全部由青简在 macOS 上输入：整句拼音一口气敲完，停顿一下由本地小模型重排候选，候选旁附英文译文与词性。
+上面这段话全部由微明在 macOS 上输入：整句拼音一口气敲完，停顿一下由本地小模型重排候选，候选旁附英文译文与词性。
 
 它的目标不只是「把拼音转换成中文」，而是让输入本身成为一种轻量、持续、几乎没有额外负担的语言学习方式。
 
-当你输入文字时，青简会在候选词旁边显示一条简洁的目标语言译文。
+当你输入文字时，微明会在候选词旁边显示一条简洁的目标语言译文。
 
 例如，当你的主要语言是中文、正在学习英语时：
 
@@ -24,23 +24,27 @@ https://github.com/user-attachments/assets/d145fde9-a641-4543-8b15-dd7a2685de3d
 
 候选词仍然是输入的主体，翻译只作为较小、较浅的辅助信息存在。
 
-**一次只学习一种语言。** 青简不会在一个候选项旁边同时塞入英语、日语、韩语、德语。保持输入体验干净，比堆砌信息更重要。
+**一次只学习一种语言。** 微明不会在一个候选项旁边同时塞入英语、日语、韩语、德语。保持输入体验干净，比堆砌信息更重要。
 
-- 官网：[qingjian.app](https://qingjian.app)
-- 下载：[qingjian.app/download](https://qingjian.app/download)（macOS、Windows）
-- 文档：[qingjian.app/docs](https://qingjian.app/docs)（安装、按键、设置、数据与隐私）
-- 反馈：[GitHub Issues](https://github.com/qingjian-team/qingjian/issues/new/choose)
-- QQ 群：[902314603](https://qm.qq.com/q/jBvn2gGTxm)（青简输入法用户内测体验交流群）
+- 官网：[glimmer.app](https://glimmer.app)
+- 下载：[glimmer.app/download](https://glimmer.app/download)（macOS、Windows）
+- 文档：[glimmer.app/docs](https://glimmer.app/docs)（安装、按键、设置、数据与隐私）
+- 反馈：[GitHub Issues](https://github.com/rambocode/glimmer/issues/new/choose)
 
 ---
 
-## 为什么叫「青简」
+## 为什么叫「微明」
 
-「简」是古代记录文字的载体。竹木成简，文字成书。
+「微明」出自《道德经》第三十六章：「是谓微明。」一点很细的亮，微小但清楚。
 
-「青简」也常被用来指代书籍、典籍与文字记录。
+输入法就该是这样：它藏在文字后面，不抢眼、不打扰，只在你需要的地方给一点光。英文名 Glimmer 也是同一个意思。
 
-我们希望这个名字既保留中文书写文化的意味，又不过度限制输入法未来所支持的语言。青简首先面向中文使用者，但它并不准备永远只做中文输入法。
+---
+
+## 来源与致谢
+
+微明派生自 [青简 Qingjian](https://github.com/qingjian-team/qingjian)（GPL-3.0-or-later），引擎、平台壳与数据工具链均来自该项目，
+在此感谢原作者与贡献者。微明沿用同一许可证，原有版权声明全部保留；本仓库的改动同样以 GPL-3.0-or-later 发布。
 
 ---
 
@@ -88,7 +92,7 @@ Learning Language: English
 
 ## 平台
 
-青简从一开始就按跨平台架构设计：核心输入引擎平台无关，各平台只负责接入系统输入接口与候选窗口。
+微明从一开始就按跨平台架构设计：核心输入引擎平台无关，各平台只负责接入系统输入接口与候选窗口。
 
 ```text
 macOS    → Input Method Kit (IMK)
@@ -102,7 +106,7 @@ Linux    → IBus / Fcitx
 
 ## 不打算做什么
 
-青简暂时不准备成为一个「大而全」的语言学习软件。它不会：
+微明暂时不准备成为一个「大而全」的语言学习软件。它不会：
 
 - 在候选框塞入五六种语言
 - 每输入几个词就弹出测试
@@ -112,7 +116,7 @@ Linux    → IBus / Fcitx
 
 输入法首先必须是一个好用的输入法。语言学习建立在这个前提之上。
 
-如果用户需要思考「我现在到底是在打字还是在背单词」，那青简大概就设计错了。
+如果用户需要思考「我现在到底是在打字还是在背单词」，那微明大概就设计错了。
 
 ---
 
@@ -122,22 +126,22 @@ Linux    → IBus / Fcitx
 
 **学习自然发生。**
 
-**平台只是壳，Core 才是青简。**
+**平台只是壳，Core 才是微明。**
 
 ---
 
 ## 隐私
 
-**青简不上传任何数据。** 拼音转换、词库、学习、释义全部在本机完成，没有账号，没有统计上报。
+**微明不上传任何数据。** 拼音转换、词库、学习、释义全部在本机完成，没有账号，没有统计上报。
 云联想（缺省关闭）打开后，请求直接从你的电脑发到你自己填写的 AI 服务商，不经过作者；输入日志只写在本机，可以随时关闭和清空。
-细节见文档 [数据与日志](https://qingjian.app/docs/help/data-and-logs)。
+细节见文档 [数据与日志](https://glimmer.app/docs/help/data-and-logs)。
 
 ---
 
 ## 许可
 
 代码以 **GPL-3.0-or-later** 发布（见 [LICENSE](LICENSE)）：可以自由使用、修改与再分发，修改后分发须同样开源。
-「青简」名字与 logo 不在授权范围内。青简在官方渠道免费；若你为获得它向他人付费，你被骗了。
+「微明」名字与 logo 不在授权范围内。微明在官方渠道免费；若你为获得它向他人付费，你被骗了。
 
 随包数据（词库、语言模型、释义表、emoji、英文词表、词汇等级）各自遵循来源的许可证，清单见 [docs/design/landscape.md](docs/design/landscape.md)，偏好设置「关于」页也列了一份。
 
@@ -157,6 +161,6 @@ Linux    → IBus / Fcitx
 ---
 
 <p align="center">
-  <strong>青简 Qingjian</strong><br/>
+  <strong>微明 Glimmer</strong><br/>
   输入的不只是文字。
 </p>

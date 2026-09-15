@@ -20,7 +20,7 @@ use windows::Win32::UI::TextServices::{
 };
 use windows::core::{ComObject, implement};
 
-use qingjian_platform::KeyCombo;
+use glimmer_platform::KeyCombo;
 
 use super::composition::Shared;
 use super::key::ShiftTap;

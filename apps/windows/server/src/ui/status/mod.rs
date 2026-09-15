@@ -23,7 +23,7 @@ use windows::Win32::UI::WindowsAndMessaging::{
 };
 use windows::core::{PCWSTR, Result, w};
 
-use qingjian_platform::ThemeMode;
+use glimmer_platform::ThemeMode;
 
 use self::cell::CellSpec;
 use self::placement::{Placement, StatusAction};
@@ -36,7 +36,7 @@ use super::monitor;
 use super::window_class::WindowClass;
 use crate::dispatch::StatusView;
 
-const CLASS_NAME: PCWSTR = w!("QingjianStatusBar");
+const CLASS_NAME: PCWSTR = w!("GlimmerStatusBar");
 static CLASS: WindowClass = WindowClass::new();
 
 /// 状态条与屏幕边缘的间隙（逻辑像素）。
@@ -84,7 +84,7 @@ impl StatusBar {
             CreateWindowExW(
                 WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_TOPMOST | WS_EX_NOACTIVATE,
                 CLASS_NAME,
-                w!("青简状态条"),
+                w!("微明状态条"),
                 WS_POPUP,
                 0,
                 0,

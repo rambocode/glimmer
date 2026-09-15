@@ -4,7 +4,7 @@
 //! 反正 Engine 的缓冲区也是全进程一份，会话状态跟着它走。
 //! 候选的分页与云端词的位置由 Core 的 [`CandidateLayout`] 定，这里只管高亮与页码。
 
-use qingjian_core::{Candidate, CandidateLayout, Cell};
+use glimmer_core::{Candidate, CandidateLayout, Cell};
 
 use crate::candidates::Preedit;
 
@@ -119,7 +119,7 @@ impl Session {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use qingjian_core::CandidateKind;
+    use glimmer_core::CandidateKind;
 
     fn candidates(count: usize) -> Vec<Candidate> {
         (0..count)

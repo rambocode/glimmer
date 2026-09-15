@@ -154,7 +154,7 @@ mod tests {
 
     #[test]
     fn parses_the_three_fields_and_orders_by_evidence() {
-        let dir = std::env::temp_dir().join("qingjian-unihan-test");
+        let dir = std::env::temp_dir().join("glimmer-unihan-test");
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("readings.txt");
         std::fs::write(

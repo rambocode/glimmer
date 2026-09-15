@@ -1,6 +1,6 @@
 //! 按键分派用的虚拟键码与字符解析。
 
-use qingjian_platform::protocol::KeyEvent;
+use glimmer_platform::protocol::KeyEvent;
 
 pub(crate) const BACK: u32 = 0x08;
 pub(crate) const TAB: u32 = 0x09;

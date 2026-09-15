@@ -3,7 +3,7 @@
 use std::path::{Path, PathBuf};
 use std::sync::mpsc::{Receiver, TryRecvError, channel};
 
-use qingjian_neural::{CharScorer, NeuralError};
+use glimmer_neural::{CharScorer, NeuralError};
 
 /// 一次进行中的加载。
 pub(crate) struct ModelLoader {
@@ -28,7 +28,7 @@ impl ModelLoader {
         let path: PathBuf = path.to_path_buf();
         let (tx, result) = channel();
         let spawned = std::thread::Builder::new()
-            .name("qingjian-model-load".to_owned())
+            .name("glimmer-model-load".to_owned())
             .spawn(move || {
                 let started = std::time::Instant::now();
                 let loaded = CharScorer::load(&path).and_then(|scorer| {

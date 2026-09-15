@@ -1,4 +1,4 @@
-//! 日志初始化：终端走 stderr；设置了 QINGJIAN_LOG_DIR 时再按天滚动写文件。
+//! 日志初始化：终端走 stderr；设置了 GLIMMER_LOG_DIR 时再按天滚动写文件。
 
 use std::io;
 
@@ -14,7 +14,7 @@ pub fn init() -> Result<Option<WorkerGuard>, io::Error> {
         .with_writer(io::stderr)
         .with_target(false)
         .compact();
-    let (file_layer, guard) = match std::env::var("QINGJIAN_LOG_DIR")
+    let (file_layer, guard) = match std::env::var("GLIMMER_LOG_DIR")
         .ok()
         .filter(|d| !d.trim().is_empty())
     {
@@ -22,7 +22,7 @@ pub fn init() -> Result<Option<WorkerGuard>, io::Error> {
             std::fs::create_dir_all(&dir)?;
             let (writer, guard) = tracing_appender::non_blocking(tracing_appender::rolling::daily(
                 dir,
-                "qingjian.log",
+                "glimmer.log",
             ));
             (
                 Some(

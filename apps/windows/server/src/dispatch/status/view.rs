@@ -1,4 +1,4 @@
-use qingjian_platform::ThemeMode;
+use glimmer_platform::ThemeMode;
 
 /// 状态条一次要显示的内容。
 #[derive(Debug, Clone, PartialEq, Eq)]

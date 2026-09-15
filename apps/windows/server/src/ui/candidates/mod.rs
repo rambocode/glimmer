@@ -19,8 +19,8 @@ use windows::Win32::UI::WindowsAndMessaging::{
 };
 use windows::core::{PCWSTR, Result, w};
 
-use qingjian_platform::ThemeMode;
-use qingjian_platform::protocol::Frame;
+use glimmer_platform::ThemeMode;
+use glimmer_platform::protocol::Frame;
 
 pub(crate) use self::render_data::RenderData;
 use self::theme::Theme;
@@ -28,7 +28,7 @@ use super::layered::{self, Layered};
 use super::monitor;
 use super::window_class::WindowClass;
 
-const CLASS_NAME: PCWSTR = w!("QingjianCandidateWindow");
+const CLASS_NAME: PCWSTR = w!("GlimmerCandidateWindow");
 static CLASS: WindowClass = WindowClass::new();
 
 /// 光标行与候选窗之间的间隙（逻辑像素）。
@@ -83,7 +83,7 @@ impl CandidateWindow {
             CreateWindowExW(
                 WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_TOPMOST | WS_EX_NOACTIVATE,
                 CLASS_NAME,
-                w!("青简候选"),
+                w!("微明候选"),
                 WS_POPUP,
                 0,
                 0,

@@ -1,7 +1,7 @@
 ---
 title: 卸载
 order: 2
-description: 卸载青简、连同学习数据一起删除、只清除输入日志。
+description: 卸载微明、连同学习数据一起删除、只清除输入日志。
 ---
 
 ## macOS
@@ -9,23 +9,23 @@ description: 卸载青简、连同学习数据一起删除、只清除输入日�
 打开「终端」，执行：
 
 ```sh
-/Library/Input\ Methods/Qingjian.app/Contents/Resources/uninstall.sh
+/Library/Input\ Methods/Glimmer.app/Contents/Resources/uninstall.sh
 ```
 
 以上只删除输入法本身，学习数据与设置保留，重新安装后仍可用。连同数据一起删除：
 
 ```sh
-/Library/Input\ Methods/Qingjian.app/Contents/Resources/uninstall.sh --purge
+/Library/Input\ Methods/Glimmer.app/Contents/Resources/uninstall.sh --purge
 ```
 
-此命令删除「~/Library/Application Support/Qingjian/」中的全部内容，包括导入的词库、学习到的词、输入日志、配置与密钥。
+此命令删除「~/Library/Application Support/Glimmer/」中的全部内容，包括导入的词库、学习到的词、输入日志、配置与密钥。
 
 ## Windows
 
-在「设置 → 应用 → 安装的应用」中找到「青简」并卸载，或使用开始菜单的「卸载青简」。
+在「设置 → 应用 → 安装的应用」中找到「微明」并卸载，或使用开始菜单的「卸载微明」。
 正在运行的应用中的输入法组件需等这些应用关闭后才能完全清除，卸载程序会提示是否重启。
 
-学习数据与设置保留在「%APPDATA%\Qingjian」，重新安装后仍可用；连同数据一起删除时，卸载后手动删除该文件夹。
+学习数据与设置保留在「%APPDATA%\Glimmer」，重新安装后仍可用；连同数据一起删除时，卸载后手动删除该文件夹。
 
 所有数据均为本机文件，删除后不可恢复，没有云端副本。
 

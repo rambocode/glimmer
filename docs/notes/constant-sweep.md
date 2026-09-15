@@ -7,7 +7,7 @@
 ## 尺子
 
 - 冻结日志：2026-09-12 早上的 `input-log.jsonl` 副本，27516 行，可评上屏 12886 条（词 9241 / 整句 3376 / 英文 269）。
-- 回放：`qingjian-cli --replay`，内存学习从零起，云联想关（配置副本 `[predict] enabled = false`），不带神经重排（每组 7 秒，四路并行）。
+- 回放：`glimmer-cli --replay`，内存学习从零起，云联想关（配置副本 `[predict] enabled = false`），不带神经重排（每组 7 秒，四路并行）。
   最后两组带神经重排（`--neural data/model`，Metal，每组十分钟）复核。
 - 指标：各来源首选命中数（报告行末的「命中数」，比百分比细）。
 - 扫参前先确认重构零变化：改后二进制缺省参数的报告与改前逐行相同。
@@ -99,7 +99,7 @@
 
 常数不是瓶颈，那瓶颈在哪：
 
-- 整句不在候选 328 条：16 条 青简（专名，词库没有）；294 条与现在首选同长、只是同音换字（184 条差一字、112 条差两字），
+- 整句不在候选 328 条：16 条 微明（专名，词库没有）；294 条与现在首选同长、只是同音换字（184 条差一字、112 条差两字），
   这是上下文的活（神经重排、个人 n-gram），而且其中不少「选了」本身是当时接受的错句；18 条长度不同，是切分 / 简拼尾巴。
 - 词没命中 1208 条：742 条是 5 键以上、当时从词候选里选的短语（导航栏 / 候选框 / 对齐 / 我绷不住了），多半是词库缺词；
   最常重复的键 `ba`（45 条）看上下文、`wode`（34 条）是词库缺「我的」（todo 里已有）。
@@ -112,9 +112,9 @@
 ## 怎么复现
 
 ```bash
-cp ~/Library/Application\ Support/Qingjian/input-log.jsonl /tmp/frozen.jsonl
+cp ~/Library/Application\ Support/Glimmer/input-log.jsonl /tmp/frozen.jsonl
 # 配置副本里把 [predict] enabled 改成 false
-cargo build --release -p qingjian-cli
+cargo build --release -p glimmer-cli
 printf '\nlambda=0.75\nsubstitute=5.5\n' > /tmp/settings.txt
 tools/eval/sweep.sh /tmp/frozen.jsonl /tmp/config.replay.toml /tmp/settings.txt /tmp/sweep.tsv
 ```

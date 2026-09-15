@@ -3,14 +3,14 @@
 
 use std::path::{Path, PathBuf};
 
-use qingjian_core::dictionary::Dictionary;
-use qingjian_platform::extra_dictionaries;
+use glimmer_core::dictionary::Dictionary;
+use glimmer_platform::extra_dictionaries;
 use windows_reactor::*;
 
 use crate::panel::controls::{note, page, repo_resource};
 use crate::panel::{Message, Settings};
 
-/// 用户词库目录 `%APPDATA%\Qingjian\dicts`。
+/// 用户词库目录 `%APPDATA%\Glimmer\dicts`。
 fn user_dir(settings: &Settings) -> PathBuf {
     settings.data_dir().join("dicts")
 }
@@ -105,7 +105,7 @@ fn user_list(settings: &Settings, context: &mut ViewContext<Settings>) -> View {
     let dicts = extra_dictionaries::list(&user_dir(settings));
     if dicts.is_empty() {
         return note(
-            "还没有导入词库。点下面「导入词库」加一本，或把文件放进 %APPDATA%\\Qingjian\\dicts。",
+            "还没有导入词库。点下面「导入词库」加一本，或把文件放进 %APPDATA%\\Glimmer\\dicts。",
         );
     }
     let mut rows: Vec<KeyedView> = Vec::with_capacity(dicts.len());
@@ -148,7 +148,7 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
                 Button::new()
                     .on_click(context.message(Message::ImportDictionary))
                     .content("导入词库…"),
-                note("接受青简 TSV、Rime .dict.yaml、.qj；导入即复制进上面的目录。"),
+                note("接受微明 TSV、Rime .dict.yaml、.qj；导入即复制进上面的目录。"),
             )),
     ]);
     page("词库", body)

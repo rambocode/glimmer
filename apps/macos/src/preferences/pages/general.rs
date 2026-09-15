@@ -1,10 +1,10 @@
 //! 「通用」页：学习语言、每页候选数、双拼方案、英文模式候选。
 
+use glimmer_core::{Language, PunctuationMode, ShuangpinScheme};
+use glimmer_platform::{Config, MAX_PAGE_SIZE};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::{NSButton, NSPopUpButton};
-use qingjian_core::{Language, PunctuationMode, ShuangpinScheme};
-use qingjian_platform::{Config, MAX_PAGE_SIZE};
 
 use crate::preferences::controls::{
     checkbox, language_label, note, row_checkbox, row_popup, select, set_checked,

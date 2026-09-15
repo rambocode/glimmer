@@ -1,6 +1,6 @@
 //! 语言 profile 通知：本线程把输入法切成别的（微软拼音等）时告诉 Server 收状态条。
 //! 应用退出时只有 `Deactivate`、没有别的 profile 被激活，所以状态条不跟会话开关走。
-//! 通知在青简停用**之后**到来，那时会话连接已关，用一条临时连接发。
+//! 通知在微明停用**之后**到来，那时会话连接已关，用一条临时连接发。
 //! sink 挂在线程管理器上，激活一次、之后不撤（线程管理器销毁时自然释放），重复激活不再挂。
 
 use windows::Win32::UI::TextServices::{
@@ -9,7 +9,7 @@ use windows::Win32::UI::TextServices::{
 };
 use windows::core::{BOOL, GUID, Interface, Result, implement};
 
-use qingjian_platform::protocol::SessionId;
+use glimmer_platform::protocol::SessionId;
 
 use super::log::log;
 use crate::client::EngineClient;
@@ -41,7 +41,7 @@ impl ITfActiveLanguageProfileNotifySink_Impl for ProfileSink_Impl {
         _guidprofile: *const GUID,
         factivated: BOOL,
     ) -> Result<()> {
-        if factivated.as_bool() && unsafe { *clsid } != super::CLSID_QINGJIAN {
+        if factivated.as_bool() && unsafe { *clsid } != super::CLSID_GLIMMER {
             let sent = connect_default()
                 .map_err(|e| e.to_string())
                 .and_then(|stream| {

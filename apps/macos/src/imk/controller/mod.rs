@@ -7,12 +7,12 @@ use objc2::rc::{Allocated, Retained};
 use objc2::runtime::{AnyObject, Sel};
 use std::cell::RefCell;
 
+use glimmer_core::{Candidate, QUESTION_PREFIX};
+use glimmer_platform::{ModeSwitch, Modifiers};
 use objc2::{DefinedClass, define_class, msg_send, sel};
 use objc2_app_kit::{NSEvent, NSEventMask, NSEventModifierFlags, NSEventType, NSMenu};
 use objc2_foundation::NSObjectProtocol;
 use objc2_input_method_kit::{IMKInputController, IMKServer};
-use qingjian_core::{Candidate, QUESTION_PREFIX};
-use qingjian_platform::{ModeSwitch, Modifiers};
 
 use super::{ShiftTap, TextClient, catch_panic, modifiers, recover_from_panic, secure_input};
 use crate::candidates::Preedit;
@@ -27,11 +27,11 @@ define_class!(
     // - 没有实现 Drop。
     #[unsafe(super(IMKInputController))]
     // 名字要和 Info.plist 的 InputMethodServerControllerClass 一致
-    #[name = "QingjianInputController"]
+    #[name = "GlimmerInputController"]
     #[ivars = RefCell<ShiftTap>]
-    pub struct QingjianInputController;
+    pub struct GlimmerInputController;
 
-    impl QingjianInputController {
+    impl GlimmerInputController {
         /// Shift 通过 flagsChanged 送达。扩展事件掩码后需显式接管鼠标收尾，避免组句残留。
         #[unsafe(method(recognizedEvents:))]
         fn recognized_events(&self, _sender: Option<&AnyObject>) -> usize {
@@ -179,7 +179,7 @@ define_class!(
         }
     }
 
-    unsafe impl NSObjectProtocol for QingjianInputController {}
+    unsafe impl NSObjectProtocol for GlimmerInputController {}
 );
 
 /// 数字行与小键盘的键码对应的数字 1–9（ANSI 布局的物理键）。
@@ -187,7 +187,7 @@ define_class!(
 const MAX_TRANSLATE_CHARS: usize = 500;
 
 /// 给本地整句模型看的光标前文最多读多少字符（Engine 自己再按它的前文长度截）。
-const RESCORE_LOOKBACK: usize = qingjian_core::RESCORE_CONTEXT_CHARS;
+const RESCORE_LOOKBACK: usize = glimmer_core::RESCORE_CONTEXT_CHARS;
 
 fn digit_key(key_code: u16) -> Option<usize> {
     Some(match key_code {
@@ -204,7 +204,7 @@ fn digit_key(key_code: u16) -> Option<usize> {
     })
 }
 
-impl QingjianInputController {
+impl GlimmerInputController {
     /// 控制器对象地址，只用来在 Host 里比对「谁是当前激活的会话」，不解引用。
     fn address(&self) -> usize {
         self as *const Self as usize
@@ -420,7 +420,7 @@ impl QingjianInputController {
         let semicolon =
             composing && c == ';' && host::with(|h| h.engine.takes_semicolon()).unwrap_or(false);
         let (page_previous, page_next) =
-            host::with(|h| h.page_keys).unwrap_or(qingjian_platform::DEFAULT_PAGE_KEYS);
+            host::with(|h| h.page_keys).unwrap_or(glimmer_platform::DEFAULT_PAGE_KEYS);
         // 组句中敲半角标点（含 `-`）：进不进缓冲区由 Core 按 `[general] punctuation_mode` 定——进了整段成为
         // 英文直输段（`hello,` `no-way`），不进就先把高亮候选上屏再当普通标点处理。翻页键除外（`-` 永远不是翻页键）；
         // ⇧+数字（! @ # …）在前面已被删候选 / 译词键截走
@@ -433,7 +433,7 @@ impl QingjianInputController {
         if c.is_ascii_lowercase()
             || (composing && c == '\'')
             || semicolon
-            || (expression && qingjian_core::shortcut::is_expression_char(c))
+            || (expression && glimmer_core::shortcut::is_expression_char(c))
             || (raw && c.is_ascii_graphic())
             || (unicode && (c.is_ascii_digit() || c == '+'))
             || punctuation

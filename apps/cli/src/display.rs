@@ -2,7 +2,7 @@
 
 use std::time::{Duration, Instant};
 
-use qingjian_core::{Candidate, Engine, Query};
+use glimmer_core::{Candidate, Engine, Query};
 
 /// 等联想结果的轮询间隔与上限。CLI 是同步工具，等一等无妨；输入法里是定时器轮询、不等。
 const PREDICTION_POLL: Duration = Duration::from_millis(20);
@@ -202,13 +202,13 @@ fn format_candidate(candidate: &Candidate, width: usize) -> String {
         })
         .unwrap_or_default();
     let marker = match candidate.kind {
-        qingjian_core::CandidateKind::Chinese => "",
-        qingjian_core::CandidateKind::English => "[en] ",
-        qingjian_core::CandidateKind::Cloud => "☁ ",
-        qingjian_core::CandidateKind::Shortcut => "[v] ",
-        qingjian_core::CandidateKind::Custom(_) => "[custom] ",
-        qingjian_core::CandidateKind::Sentence => "[句] ",
-        qingjian_core::CandidateKind::Emoji => "",
+        glimmer_core::CandidateKind::Chinese => "",
+        glimmer_core::CandidateKind::English => "[en] ",
+        glimmer_core::CandidateKind::Cloud => "☁ ",
+        glimmer_core::CandidateKind::Shortcut => "[v] ",
+        glimmer_core::CandidateKind::Custom(_) => "[custom] ",
+        glimmer_core::CandidateKind::Sentence => "[句] ",
+        glimmer_core::CandidateKind::Emoji => "",
     };
     format!("{}{padding}{marker}{reading}{annotation}", candidate.text)
         .trim_end()

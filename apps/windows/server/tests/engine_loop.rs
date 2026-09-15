@@ -3,15 +3,15 @@
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
-use qingjian_core::sentence::SentenceScorer;
-use qingjian_core::{Language, ShuangpinScheme};
-use qingjian_platform::protocol::{
+use glimmer_core::sentence::SentenceScorer;
+use glimmer_core::{Language, ShuangpinScheme};
+use glimmer_platform::protocol::{
     ClientMessage, Frame, KeyEvent, KeyModifiers, KeyOutcome, PROTOCOL_VERSION, ServerMessage,
     SessionId,
 };
-use qingjian_platform::{AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS};
-use qingjian_windows_server::dispatch::{StatusEvent, StatusSink, StatusView};
-use qingjian_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
+use glimmer_platform::{AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS};
+use glimmer_windows_server::dispatch::{StatusEvent, StatusSink, StatusView};
+use glimmer_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
 
 const SESSION: SessionId = SessionId(1);
 
@@ -608,7 +608,7 @@ fn unconfigured_modifier_digit_is_not_a_selection() {
 fn learning_data_persists_to_user_dir() {
     let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../..");
     let user_dir =
-        std::env::temp_dir().join(format!("qingjian-windows-learning-{}", std::process::id()));
+        std::env::temp_dir().join(format!("glimmer-windows-learning-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&user_dir);
     std::fs::create_dir_all(&user_dir).unwrap();
     let engine = assembly::assemble(&AssemblySpec {

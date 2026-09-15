@@ -1,15 +1,15 @@
 # 推 macos-v<版本> / windows-v<版本> 标签触发（各平台壳版本号独立：macOS 读 apps/macos/Cargo.toml，Windows 读 apps/windows/server/Cargo.toml），
 # 流程见 docs/notes/release.md。macOS 的签名与公证可选，下面的 Secrets 配齐才签，否则出 ad-hoc 包；
-# Windows 现在没有代码签名（QINGJIAN_UIACCESS=0 关掉 uiAccess，否则没签名的 Server 起不来），证书办下来再加 signtool。
-#   QINGJIAN_CERT_P12            Developer ID Application + Installer 两张证书（含私钥）导出的 .p12，base64
-#   QINGJIAN_CERT_PASSWORD       .p12 的密码
-#   QINGJIAN_SIGN_IDENTITY       "Developer ID Application: 名字 (TEAMID)"
-#   QINGJIAN_INSTALLER_IDENTITY  "Developer ID Installer: 名字 (TEAMID)"
-#   QINGJIAN_NOTARY_KEY          App Store Connect API 密钥 .p8，base64
-#   QINGJIAN_NOTARY_KEY_ID       密钥的 Key ID
-#   QINGJIAN_NOTARY_ISSUER       密钥的 Issuer ID
+# Windows 现在没有代码签名（GLIMMER_UIACCESS=0 关掉 uiAccess，否则没签名的 Server 起不来），证书办下来再加 signtool。
+#   GLIMMER_CERT_P12            Developer ID Application + Installer 两张证书（含私钥）导出的 .p12，base64
+#   GLIMMER_CERT_PASSWORD       .p12 的密码
+#   GLIMMER_SIGN_IDENTITY       "Developer ID Application: 名字 (TEAMID)"
+#   GLIMMER_INSTALLER_IDENTITY  "Developer ID Installer: 名字 (TEAMID)"
+#   GLIMMER_NOTARY_KEY          App Store Connect API 密钥 .p8，base64
+#   GLIMMER_NOTARY_KEY_ID       密钥的 Key ID
+#   GLIMMER_NOTARY_ISSUER       密钥的 Issuer ID
 # 发版后让官网重新构建（也可选）：
-#   QINGJIAN_WEB_TOKEN           fine-grained PAT，对 qingjian-team/qingjian-web 有 Contents: read and write
+#   GLIMMER_WEB_TOKEN           fine-grained PAT，对 rambocode/glimmer-web 有 Contents: read and write
 #                                （官网由 Cloudflare 按仓库提交自动构建，tools/release/bump-website.sh 往那边推一个小提交）
 #
 # 门禁：版本号与标签一致且不带 -dev；标签指向的提交必须在 main 上（防止从没合并的分支或手滑的本地提交发版）。
@@ -47,9 +47,9 @@ jobs:
       - name: Detect optional secrets
         id: secrets
         run: |
-          echo "sign=${{ secrets.QINGJIAN_CERT_P12 != '' }}" >> "$GITHUB_OUTPUT"
-          echo "notarize=${{ secrets.QINGJIAN_NOTARY_KEY != '' }}" >> "$GITHUB_OUTPUT"
-          echo "website=${{ secrets.QINGJIAN_WEB_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+          echo "sign=${{ secrets.GLIMMER_CERT_P12 != '' }}" >> "$GITHUB_OUTPUT"
+          echo "notarize=${{ secrets.GLIMMER_NOTARY_KEY != '' }}" >> "$GITHUB_OUTPUT"
+          echo "website=${{ secrets.GLIMMER_WEB_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
 
       - name: Check version matches tag and tag is on main
         run: |
@@ -75,11 +75,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p data/generated data/model
-          gh release download data --pattern qingjian-data.tar.gz --pattern model.qjm --pattern SHA256SUMS --dir data
-          (cd data && grep -E 'qingjian-data.tar.gz|model.qjm' SHA256SUMS | shasum -a 256 -c -)
-          echo "DATA_SHA256=$(shasum -a 256 data/qingjian-data.tar.gz | cut -d' ' -f1)" >> "$GITHUB_ENV"
+          gh release download data --pattern glimmer-data.tar.gz --pattern model.qjm --pattern SHA256SUMS --dir data
+          (cd data && grep -E 'glimmer-data.tar.gz|model.qjm' SHA256SUMS | shasum -a 256 -c -)
+          echo "DATA_SHA256=$(shasum -a 256 data/glimmer-data.tar.gz | cut -d' ' -f1)" >> "$GITHUB_ENV"
           echo "MODEL_SHA256=$(shasum -a 256 data/model.qjm | cut -d' ' -f1)" >> "$GITHUB_ENV"
-          tar -xzf data/qingjian-data.tar.gz -C data/generated
+          tar -xzf data/glimmer-data.tar.gz -C data/generated
           # 本地整句模型单文件：bundle.sh 见到 data/model/model.qjm 就放进 Resources/model/
           mv data/model.qjm data/model/
           ls -la data/model
@@ -90,10 +90,10 @@ jobs:
       - name: Import signing certificates
         if: steps.secrets.outputs.sign == 'true'
         env:
-          CERT_P12: ${{ secrets.QINGJIAN_CERT_P12 }}
-          CERT_PASSWORD: ${{ secrets.QINGJIAN_CERT_PASSWORD }}
-          SIGN_IDENTITY: ${{ secrets.QINGJIAN_SIGN_IDENTITY }}
-          INSTALLER_IDENTITY: ${{ secrets.QINGJIAN_INSTALLER_IDENTITY }}
+          CERT_P12: ${{ secrets.GLIMMER_CERT_P12 }}
+          CERT_PASSWORD: ${{ secrets.GLIMMER_CERT_PASSWORD }}
+          SIGN_IDENTITY: ${{ secrets.GLIMMER_SIGN_IDENTITY }}
+          INSTALLER_IDENTITY: ${{ secrets.GLIMMER_INSTALLER_IDENTITY }}
         run: |
           KEYCHAIN="$RUNNER_TEMP/signing.keychain-db"
           security create-keychain -p "" "$KEYCHAIN"
@@ -105,28 +105,28 @@ jobs:
           security set-key-partition-list -S apple-tool:,apple:,codesign:,productbuild: -s -k "" "$KEYCHAIN" >/dev/null
           security list-keychains -d user -s "$KEYCHAIN" $(security list-keychains -d user | tr -d '"')
           {
-            echo "QINGJIAN_SIGN_IDENTITY=$SIGN_IDENTITY"
-            echo "QINGJIAN_INSTALLER_IDENTITY=$INSTALLER_IDENTITY"
+            echo "GLIMMER_SIGN_IDENTITY=$SIGN_IDENTITY"
+            echo "GLIMMER_INSTALLER_IDENTITY=$INSTALLER_IDENTITY"
           } >> "$GITHUB_ENV"
 
       - name: Store notarization credentials
         if: steps.secrets.outputs.notarize == 'true'
         env:
-          NOTARY_KEY: ${{ secrets.QINGJIAN_NOTARY_KEY }}
-          NOTARY_KEY_ID: ${{ secrets.QINGJIAN_NOTARY_KEY_ID }}
-          NOTARY_ISSUER: ${{ secrets.QINGJIAN_NOTARY_ISSUER }}
+          NOTARY_KEY: ${{ secrets.GLIMMER_NOTARY_KEY }}
+          NOTARY_KEY_ID: ${{ secrets.GLIMMER_NOTARY_KEY_ID }}
+          NOTARY_ISSUER: ${{ secrets.GLIMMER_NOTARY_ISSUER }}
         run: |
           echo "$NOTARY_KEY" | base64 --decode > "$RUNNER_TEMP/AuthKey.p8"
-          xcrun notarytool store-credentials qingjian --key "$RUNNER_TEMP/AuthKey.p8" \
+          xcrun notarytool store-credentials glimmer --key "$RUNNER_TEMP/AuthKey.p8" \
             --key-id "$NOTARY_KEY_ID" --issuer "$NOTARY_ISSUER"
           rm -f "$RUNNER_TEMP/AuthKey.p8"
-          echo "QINGJIAN_NOTARY_PROFILE=qingjian" >> "$GITHUB_ENV"
+          echo "GLIMMER_NOTARY_PROFILE=glimmer" >> "$GITHUB_ENV"
 
       - name: Build pkg (arm64)
-        run: QINGJIAN_TARGET=aarch64-apple-darwin apps/macos/scripts/bundle.sh --pkg
+        run: GLIMMER_TARGET=aarch64-apple-darwin apps/macos/scripts/bundle.sh --pkg
 
       - name: Build pkg (x86_64)
-        run: QINGJIAN_TARGET=x86_64-apple-darwin apps/macos/scripts/bundle.sh --pkg
+        run: GLIMMER_TARGET=x86_64-apple-darwin apps/macos/scripts/bundle.sh --pkg
 
       - name: Checksums and build info
         run: |
@@ -147,7 +147,7 @@ jobs:
           if [[ "$SIGNED" != "true" ]]; then
             printf '\n> 这一版没有 Apple 开发者签名，首次打开系统会拦一下：到「系统设置 → 隐私与安全性」底部点「仍要打开」再装一次。\n' >> "$RUNNER_TEMP/notes.md"
           fi
-          gh release create "$GITHUB_REF_NAME" --title "青简 $VERSION" --notes-file "$RUNNER_TEMP/notes.md" \
+          gh release create "$GITHUB_REF_NAME" --title "微明 $VERSION" --notes-file "$RUNNER_TEMP/notes.md" \
             target/pkg/*.pkg target/pkg/SHA256SUMS target/pkg/build-info.json
 
       - name: Generate releases.json
@@ -158,7 +158,7 @@ jobs:
       - name: Trigger website build
         if: steps.secrets.outputs.website == 'true'
         env:
-          QINGJIAN_WEB_TOKEN: ${{ secrets.QINGJIAN_WEB_TOKEN }}
+          GLIMMER_WEB_TOKEN: ${{ secrets.GLIMMER_WEB_TOKEN }}
         run: tools/release/bump-website.sh
 
   windows:
@@ -171,7 +171,7 @@ jobs:
         shell: bash
     env:
       # 没有代码签名证书：Server 不带 uiAccess（没签名的 exe 带 uiAccess=true 起不来）。证书办下来后去掉这一行并在 build.ps1 加 signtool。
-      QINGJIAN_UIACCESS: '0'
+      GLIMMER_UIACCESS: '0'
       PYTHON: python
       # Windows 上 Python 的标准输出缺省 cp1252，中文更新日志会编码失败。
       PYTHONUTF8: '1'
@@ -189,7 +189,7 @@ jobs:
 
       - name: Detect optional secrets
         id: secrets
-        run: echo "website=${{ secrets.QINGJIAN_WEB_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+        run: echo "website=${{ secrets.GLIMMER_WEB_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
 
       - name: Check version matches tag and tag is on main
         run: |
@@ -215,12 +215,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p data/generated data/model
-          gh release download data --pattern qingjian-data.tar.gz --pattern model.qjm --pattern SHA256SUMS --dir data
-          (cd data && grep -E 'qingjian-data.tar.gz|model.qjm' SHA256SUMS | sha256sum -c -)
-          echo "DATA_SHA256=$(sha256sum data/qingjian-data.tar.gz | cut -d' ' -f1)" >> "$GITHUB_ENV"
+          gh release download data --pattern glimmer-data.tar.gz --pattern model.qjm --pattern SHA256SUMS --dir data
+          (cd data && grep -E 'glimmer-data.tar.gz|model.qjm' SHA256SUMS | sha256sum -c -)
+          echo "DATA_SHA256=$(sha256sum data/glimmer-data.tar.gz | cut -d' ' -f1)" >> "$GITHUB_ENV"
           echo "MODEL_SHA256=$(sha256sum data/model.qjm | cut -d' ' -f1)" >> "$GITHUB_ENV"
-          tar -xzf data/qingjian-data.tar.gz -C data/generated
-          # 本地整句模型单文件：qingjian.iss 见到 data\model\model.qjm 就装进 {app}\data\model
+          tar -xzf data/glimmer-data.tar.gz -C data/generated
+          # 本地整句模型单文件：glimmer.iss 见到 data\model\model.qjm 就装进 {app}\data\model
           mv data/model.qjm data/model/
           ls -la data/generated data/generated/dicts data/model
 
@@ -259,7 +259,7 @@ jobs:
         run: |
           python tools/release/releases_json.py --notes-for "$VERSION" > "$RUNNER_TEMP/notes.md"
           printf '\n> 内测版没有代码签名：安装时 SmartScreen 拦截请点「更多信息 → 仍要运行」；任务栏搜索、「设置」等系统应用里候选窗口可能被遮挡。\n' >> "$RUNNER_TEMP/notes.md"
-          gh release create "$GITHUB_REF_NAME" --title "青简 Windows $VERSION" --notes-file "$RUNNER_TEMP/notes.md" \
+          gh release create "$GITHUB_REF_NAME" --title "微明 Windows $VERSION" --notes-file "$RUNNER_TEMP/notes.md" \
             target/installer/*.exe target/installer/SHA256SUMS target/installer/build-info.json
 
       - name: Generate releases.json
@@ -270,5 +270,5 @@ jobs:
       - name: Trigger website build
         if: steps.secrets.outputs.website == 'true'
         env:
-          QINGJIAN_WEB_TOKEN: ${{ secrets.QINGJIAN_WEB_TOKEN }}
+          GLIMMER_WEB_TOKEN: ${{ secrets.GLIMMER_WEB_TOKEN }}
         run: tools/release/bump-website.sh

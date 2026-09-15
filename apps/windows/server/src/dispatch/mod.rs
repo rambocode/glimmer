@@ -18,9 +18,9 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
-use qingjian_core::Engine;
-use qingjian_platform::LocalModelConfig;
-use qingjian_platform::protocol::{ClientMessage, Frame, ScreenRect, ServerMessage, SessionId};
+use glimmer_core::Engine;
+use glimmer_platform::LocalModelConfig;
+use glimmer_platform::protocol::{ClientMessage, Frame, ScreenRect, ServerMessage, SessionId};
 
 pub use self::candidates::{CandidateSink, NoopSink};
 use self::composed::Composed;
@@ -86,8 +86,8 @@ pub struct Router {
     /// 悬浮状态条输出端；Windows 上由 [`crate::ui`] 注入。
     status: Box<dyn StatusSink>,
 
-    /// 状态条要显示的中英模式；`None` 表示青简没在前台（还没有会话报过模式 / 切成了别的输入法），不显示。
-    /// 应用退出不影响它：状态条是桌面常驻的，只跟「当前输入法是不是青简」走。
+    /// 状态条要显示的中英模式；`None` 表示微明没在前台（还没有会话报过模式 / 切成了别的输入法），不显示。
+    /// 应用退出不影响它：状态条是桌面常驻的，只跟「当前输入法是不是微明」走。
     status_mode: Option<bool>,
 
     /// 状态条上点出来、还没被 DLL 用 `SyncMode` 取走的目标模式。

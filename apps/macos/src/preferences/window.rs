@@ -3,12 +3,12 @@
 
 use std::rc::Rc;
 
+use glimmer_core::{Language, UsageSummary, VocabularySummary};
+use glimmer_platform::Config;
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::{NSColor, NSScrollView, NSTextField, NSView};
 use objc2_foundation::{NSPoint, NSRect, NSSize, NSString};
-use qingjian_core::{Language, UsageSummary, VocabularySummary};
-use qingjian_platform::Config;
 
 use super::controls::{language_label, small_label};
 use super::layout::{CARD_MARGIN, Layout, PAGE_WIDTH};
@@ -173,7 +173,7 @@ impl PreferencesWindow {
 
         let content_size = NSSize::new(SIDEBAR_WIDTH + PAGE_WIDTH, MIN_CONTENT_HEIGHT);
         let panel = PreferencesPanel::new(mtm, NSRect::new(NSPoint::ZERO, content_size));
-        panel.setTitle(&NSString::from_str("青简偏好设置"));
+        panel.setTitle(&NSString::from_str("微明偏好设置"));
         let content = NSView::initWithFrame(mtm.alloc(), NSRect::new(NSPoint::ZERO, content_size));
         let fixed_height = HEADER_HEIGHT + STATUS_HEIGHT + 2.0 * STATUS_MARGIN;
         let pager = Rc::new(Pager::new(
@@ -245,7 +245,7 @@ impl PreferencesWindow {
     pub fn phrase_draft(
         &self,
         config: &Config,
-    ) -> Result<(Option<usize>, qingjian_core::CustomPhrase), String> {
+    ) -> Result<(Option<usize>, glimmer_core::CustomPhrase), String> {
         Ok((self.phrases.selected(config)?, self.phrases.draft()))
     }
 

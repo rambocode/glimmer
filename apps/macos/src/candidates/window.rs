@@ -1,5 +1,6 @@
 //! 候选窗口：非激活的浮动 NSPanel，跟随光标，内容由 [`CandidateView`] 绘制。
 
+use glimmer_platform::{LayoutMode, ThemeMode};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::{
@@ -8,7 +9,6 @@ use objc2_app_kit::{
     NSWindowLevel, NSWindowStyleMask,
 };
 use objc2_foundation::{NSPoint, NSRect, NSSize};
-use qingjian_platform::{LayoutMode, ThemeMode};
 
 use super::frame::Frame;
 use super::theme::Theme;

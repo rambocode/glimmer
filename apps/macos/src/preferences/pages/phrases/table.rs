@@ -1,6 +1,7 @@
 //! AppKit 表格数据源；读取页面快照并把操作转发给 Host。
 
 use super::state::TableState;
+use glimmer_core::CustomPhrase;
 use objc2::{
     DefinedClass, MainThreadMarker, MainThreadOnly, define_class, msg_send, rc::Retained, sel,
 };
@@ -12,7 +13,6 @@ use objc2_app_kit::{
 use objc2_foundation::{
     NSInteger, NSNotification, NSObject, NSObjectProtocol, NSPoint, NSRect, NSSize, NSString,
 };
-use qingjian_core::CustomPhrase;
 use std::cell::RefCell;
 
 define_class!(

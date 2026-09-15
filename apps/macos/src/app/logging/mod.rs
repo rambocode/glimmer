@@ -1,4 +1,4 @@
-//! 输入法进程没有终端，日志只写文件：`~/Library/Logs/Qingjian/qingjian.log.<日期>`。
+//! 输入法进程没有终端，日志只写文件：`~/Library/Logs/Glimmer/glimmer.log.<日期>`。
 //!
 //! 按天分文件，只留最近 [`KEEP_DAYS`] 天；文件被用户删掉后下一条日志会重新建（`tracing_appender::rolling`
 //! 一直握着旧文件描述符，删掉后日志会写进已经不在目录里的 inode，看起来就是「日志文件始终不出现」）。
@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 use std::sync::atomic::{AtomicBool, Ordering};
 
-use qingjian_platform::LogLevel;
+use glimmer_platform::LogLevel;
 use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
@@ -18,7 +18,7 @@ use tracing_subscriber::{EnvFilter, Registry, reload};
 pub use log_file::LogFile;
 
 /// 日志文件名前缀，后面跟 `.YYYY-MM-DD`。
-pub const FILE_PREFIX: &str = "qingjian.log";
+pub const FILE_PREFIX: &str = "glimmer.log";
 
 /// 保留最近几天的日志。
 pub const KEEP_DAYS: i32 = 7;
@@ -75,7 +75,7 @@ fn filter_for(level: LogLevel) -> EnvFilter {
 
 /// 日志目录，菜单「打开日志目录」也用。
 pub fn log_dir() -> Option<PathBuf> {
-    std::env::var_os("HOME").map(|home| PathBuf::from(home).join("Library/Logs/Qingjian"))
+    std::env::var_os("HOME").map(|home| PathBuf::from(home).join("Library/Logs/Glimmer"))
 }
 
 /// 删掉目录里日期早于 `today - KEEP_DAYS` 的日志文件；文件名解析不出日期的不动。
@@ -108,14 +108,14 @@ mod tests {
 
     #[test]
     fn prune_keeps_recent_files_and_unrelated_names() {
-        let dir = std::env::temp_dir().join("qingjian-log-prune-test");
+        let dir = std::env::temp_dir().join("glimmer-log-prune-test");
         let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).unwrap();
         for name in [
-            "qingjian.log.2026-09-04",
-            "qingjian.log.2026-08-29",
-            "qingjian.log.2026-08-28",
-            "qingjian.log.bogus",
+            "glimmer.log.2026-09-04",
+            "glimmer.log.2026-08-29",
+            "glimmer.log.2026-08-28",
+            "glimmer.log.bogus",
             "notes.txt",
         ] {
             std::fs::write(dir.join(name), "x").unwrap();
@@ -130,10 +130,10 @@ mod tests {
         assert_eq!(
             left,
             [
-                "notes.txt",
-                "qingjian.log.2026-08-29",
-                "qingjian.log.2026-09-04",
-                "qingjian.log.bogus"
+                "glimmer.log.2026-08-29",
+                "glimmer.log.2026-09-04",
+                "glimmer.log.bogus",
+                "notes.txt"
             ]
         );
         let _ = std::fs::remove_dir_all(&dir);

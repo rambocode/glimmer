@@ -5,7 +5,7 @@ use windows::Win32::UI::TextServices::{ITfContext, ITfRange};
 use windows::Win32::UI::WindowsAndMessaging::GetCursorPos;
 use windows::core::BOOL;
 
-use qingjian_platform::protocol::ScreenRect;
+use glimmer_platform::protocol::ScreenRect;
 
 /// `range` 的屏幕矩形，拿不到（有些应用给全零 / 空矩形）退到鼠标处。
 pub(crate) fn anchor_rect(context: &ITfContext, ec: u32, range: &ITfRange) -> ScreenRect {

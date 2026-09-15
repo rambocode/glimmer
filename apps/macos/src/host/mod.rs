@@ -25,26 +25,26 @@ mod translation_job;
 use std::cell::RefCell;
 use std::path::PathBuf;
 
-use objc2::MainThreadMarker;
-use objc2_app_kit::{NSPasteboard, NSPasteboardTypeString};
-use objc2_foundation::{NSProcessInfo, NSRect, NSString};
-use qingjian_core::{
+use glimmer_core::{
     Candidate, CandidateKind, Cell, CloudWord, EmojiTable, Engine, FuzzyRules, Language, ModeKeys,
     NoGlossFiller, NoInputLogger, NoPredictor, Prediction, ShuangpinScheme,
 };
-use qingjian_dictionary::{Dictionary, WordList};
-use qingjian_learning::{FrequencyLearner, InputLog, UsageStats, VocabularyBook};
-use qingjian_lm::BigramModel;
-use qingjian_platform::extra_dictionaries;
-use qingjian_platform::{
+use glimmer_dictionary::{Dictionary, WordList};
+use glimmer_learning::{FrequencyLearner, InputLog, UsageStats, VocabularyBook};
+use glimmer_lm::BigramModel;
+use glimmer_platform::extra_dictionaries;
+use glimmer_platform::{
     AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF, DictionariesConfig, KeyCombo, LayoutMode,
     LocalModelConfig, LogLevel, ModeSwitch, Modifiers, PAGE_KEY_OPTIONS, PreeditMode,
     ShortcutConfig, ThemeMode,
 };
-use qingjian_predict::{
+use glimmer_predict::{
     CloudGlossFiller, CloudPredictor, ConnectionTest, PredictConfig, PredictError,
 };
-use qingjian_translate::{Glossary, LayeredTranslator, LevelTable, PersonalGlossary};
+use glimmer_translate::{Glossary, LayeredTranslator, LevelTable, PersonalGlossary};
+use objc2::MainThreadMarker;
+use objc2_app_kit::{NSPasteboard, NSPasteboardTypeString};
+use objc2_foundation::{NSProcessInfo, NSRect, NSString};
 
 use crate::app::BundleInfo;
 use crate::app::{Settings, logging, paths};
@@ -164,9 +164,7 @@ pub struct Host {
 
     /// 正在后台加载的模型；加载完接到 Engine 上就清掉。
     model_loader: Option<
-        std::sync::mpsc::Receiver<
-            Result<qingjian_neural::CharScorer, qingjian_neural::NeuralError>,
-        >,
+        std::sync::mpsc::Receiver<Result<glimmer_neural::CharScorer, glimmer_neural::NeuralError>>,
     >,
 
     /// 上次套用的 `[model]`，变了才重载 / 卸载。
@@ -193,10 +191,10 @@ thread_local! {
 /// 激活期间学习数据最多隔这么久落一次盘。
 const LEARNING_FLUSH_INTERVAL: std::time::Duration = std::time::Duration::from_secs(60);
 
-/// 输入统计文件名，与学习数据同目录（按天一行，见 `qingjian-learning::UsageStats`）。
+/// 输入统计文件名，与学习数据同目录（按天一行，见 `glimmer-learning::UsageStats`）。
 const USAGE_FILE: &str = "usage.tsv";
 
-/// 词汇记录文件名，与学习数据同目录（一个译词一行，见 `qingjian-learning::VocabularyBook`）。
+/// 词汇记录文件名，与学习数据同目录（一个译词一行，见 `glimmer-learning::VocabularyBook`）。
 const VOCABULARY_FILE: &str = "user-vocab.tsv";
 
 /// 可能打进包里的释义表语言，按这个顺序在设置里列出；文件不存在的不列。

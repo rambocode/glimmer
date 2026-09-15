@@ -1,16 +1,16 @@
-//! Server 与 DLL 之间的传输。线上帧格式在 [`qingjian_platform::protocol`]（两端共用），
+//! Server 与 DLL 之间的传输。线上帧格式在 [`glimmer_platform::protocol`]（两端共用），
 //! 这层只提供双工字节流上的消息循环（[`serve`]）与具体传输（命名管道 [`pipe`]）。
 
 #[cfg(windows)]
 pub mod pipe;
 mod work;
 
-pub use qingjian_platform::protocol::{CodecError, read_message, write_message};
+pub use glimmer_platform::protocol::{CodecError, read_message, write_message};
 pub use work::Work;
 
 use std::io::{Read, Write};
 
-use qingjian_platform::protocol::ClientMessage;
+use glimmer_platform::protocol::ClientMessage;
 
 use crate::dispatch::Router;
 

@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 
-use qingjian_lm::{BigramModel, LmError};
+use glimmer_lm::{BigramModel, LmError};
 
 /// 语言模型的数据文件：`lm.qj` 优先，没有就用两张 TSV。
 pub enum LanguageModelFiles {

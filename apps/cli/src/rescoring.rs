@@ -2,7 +2,7 @@
 
 use std::time::{Duration, Instant};
 
-use qingjian_core::Engine;
+use glimmer_core::Engine;
 
 /// 最多等多久。
 const WAIT: Duration = Duration::from_secs(5);

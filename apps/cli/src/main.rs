@@ -1,4 +1,4 @@
-//! 青简 CLI：Phase 1 的测试工具。
+//! 微明 CLI：Phase 1 的测试工具。
 //!
 //! 输入拼音，打印候选（词性 + 译文）和各阶段耗时；输入序号上屏并记入用户词频。
 //! 不依赖任何平台 API，是 Core 的第一个「壳」。
@@ -16,13 +16,13 @@ mod tuning;
 use std::time::Instant;
 
 use clap::Parser;
-use qingjian_core::{EmojiTable, Engine, FuzzyRules, Language};
-use qingjian_dictionary::{Dictionary, WordList};
-use qingjian_learning::FrequencyLearner;
-use qingjian_lm::BigramModel;
-use qingjian_platform::Config;
-use qingjian_predict::CloudPredictor;
-use qingjian_translate::Glossary;
+use glimmer_core::{EmojiTable, Engine, FuzzyRules, Language};
+use glimmer_dictionary::{Dictionary, WordList};
+use glimmer_learning::FrequencyLearner;
+use glimmer_lm::BigramModel;
+use glimmer_platform::Config;
+use glimmer_predict::CloudPredictor;
+use glimmer_translate::Glossary;
 
 use crate::args::Args;
 use crate::error::CliError;
@@ -187,10 +187,10 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
     }
     if let Some(dir) = &args.neural {
         let started = Instant::now();
-        let scorer = qingjian_neural::CharScorer::load(dir)?;
+        let scorer = glimmer_neural::CharScorer::load(dir)?;
         tracing::info!(
             load_ms = started.elapsed().as_millis(),
-            weight = args.neural_weight.unwrap_or(qingjian_core::NEURAL_WEIGHT),
+            weight = args.neural_weight.unwrap_or(glimmer_core::NEURAL_WEIGHT),
             "神经重打分已启用"
         );
         engine = if args.neural_async {

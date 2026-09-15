@@ -14,7 +14,7 @@ use windows::Win32::UI::TextServices::{
 };
 use windows::core::{Interface, Result};
 
-use qingjian_platform::protocol::{Frame, PreeditKind};
+use glimmer_platform::protocol::{Frame, PreeditKind};
 
 pub(crate) use self::shared::Shared;
 use self::sink::CompositionSink;

@@ -74,7 +74,7 @@ impl Placement {
 
 /// 起与本 exe 同目录的设置程序。
 fn open_settings() {
-    let exe = std::env::current_exe().map(|exe| exe.with_file_name("qingjian-settings.exe"));
+    let exe = std::env::current_exe().map(|exe| exe.with_file_name("glimmer-settings.exe"));
     let spawned = exe.and_then(|exe| std::process::Command::new(exe).spawn());
     if let Err(error) = spawned {
         tracing::warn!(%error, "打开设置程序失败");

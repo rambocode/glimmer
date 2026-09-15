@@ -3,11 +3,11 @@
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 
-use qingjian_core::Language;
-use qingjian_dictionary::Dictionary;
-use qingjian_format::Metadata;
-use qingjian_lm::BigramModel;
-use qingjian_translate::Glossary;
+use glimmer_core::Language;
+use glimmer_dictionary::Dictionary;
+use glimmer_format::Metadata;
+use glimmer_lm::BigramModel;
+use glimmer_translate::Glossary;
 
 use crate::args::PackKind;
 use crate::error::ConvertError;
@@ -21,7 +21,7 @@ pub fn pack(
     out_dir: &Path,
 ) -> Result<(), ConvertError> {
     let metadata = Metadata {
-        generator: format!("qingjian-dict-convert {}", env!("CARGO_PKG_VERSION")),
+        generator: format!("glimmer-dict-convert {}", env!("CARGO_PKG_VERSION")),
         ..metadata
     };
     let started = Instant::now();
@@ -69,7 +69,7 @@ pub fn pack(
                 .cloned()
                 .unwrap_or_else(|| PathBuf::from("data/model"));
             let out = out_dir.join("model.qjm");
-            let parameters = qingjian_neural::qjm::pack(&input, &out, &metadata)?;
+            let parameters = glimmer_neural::qjm::pack(&input, &out, &metadata)?;
             report(
                 &out,
                 usize::try_from(parameters).unwrap_or(usize::MAX),

@@ -2,8 +2,8 @@
 
 use std::rc::Rc;
 
-use qingjian_platform::protocol::{Frame, PreeditKind};
-use qingjian_platform::{LayoutMode, ThemeMode};
+use glimmer_platform::protocol::{Frame, PreeditKind};
+use glimmer_platform::{LayoutMode, ThemeMode};
 
 use super::row::Row;
 use super::theme::Theme;

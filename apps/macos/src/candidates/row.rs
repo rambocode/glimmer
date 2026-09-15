@@ -1,6 +1,6 @@
 //! 候选窗口的一行：序号、候选词、annotation 片段。只是 Core 输出的展示形态，不含任何排序或查词。
 
-use qingjian_core::Candidate;
+use glimmer_core::Candidate;
 
 /// annotation 片段的深浅。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -61,8 +61,8 @@ impl Row {
         }
         Self {
             index: (position + 1).to_string(),
-            text: if matches!(candidate.kind, qingjian_core::CandidateKind::Custom(_)) {
-                qingjian_core::CustomPhrase::preview(&candidate.text, 60)
+            text: if matches!(candidate.kind, glimmer_core::CandidateKind::Custom(_)) {
+                glimmer_core::CustomPhrase::preview(&candidate.text, 60)
             } else {
                 candidate.text.clone()
             },

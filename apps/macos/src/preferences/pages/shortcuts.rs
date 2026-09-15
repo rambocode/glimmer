@@ -1,10 +1,10 @@
 //! 「快捷键」页：中英切换、翻页、前缀、译词上屏 / 删候选 / 翻译选中文字的组合键。
 
+use glimmer_core::ModeKeys;
+use glimmer_platform::{Config, PAGE_KEY_OPTIONS};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::NSPopUpButton;
-use qingjian_core::ModeKeys;
-use qingjian_platform::{Config, PAGE_KEY_OPTIONS};
 
 use crate::preferences::controls::{
     button, note, note_full, page_keys_label, row_popup, row_recorder, select,

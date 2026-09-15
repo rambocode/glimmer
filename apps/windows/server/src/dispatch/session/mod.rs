@@ -2,7 +2,7 @@
 
 mod info;
 
-use qingjian_platform::protocol::SessionId;
+use glimmer_platform::protocol::SessionId;
 
 pub(super) use self::info::SessionInfo;
 use super::Router;

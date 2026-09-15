@@ -1,6 +1,6 @@
-use qingjian_core::ShuangpinScheme;
-use qingjian_platform::protocol::KeyModifiers;
-use qingjian_platform::{AppsConfig, Config, KeyCombo, LayoutMode, ThemeMode};
+use glimmer_core::ShuangpinScheme;
+use glimmer_platform::protocol::KeyModifiers;
+use glimmer_platform::{AppsConfig, Config, KeyCombo, LayoutMode, ThemeMode};
 
 /// Router 要用的配置项，与 macOS 壳的 `Host` 字段对齐。
 #[derive(Debug, Clone, PartialEq, Eq)]

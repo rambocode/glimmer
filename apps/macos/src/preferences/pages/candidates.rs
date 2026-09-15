@@ -1,9 +1,9 @@
 //! 「候选窗口」页：外观、排布、拼音显示位置。
 
+use glimmer_platform::{Config, LayoutMode, PreeditMode, ThemeMode};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::NSPopUpButton;
-use qingjian_platform::{Config, LayoutMode, PreeditMode, ThemeMode};
 
 use crate::preferences::controls::{note, row_popup, select};
 use crate::preferences::layout::Layout;

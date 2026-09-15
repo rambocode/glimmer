@@ -1,6 +1,6 @@
-# 青简基础词库，由 qingjian-dict-convert lexicon 生成。词	音节	词频
+# 微明基础词库，由 glimmer-dict-convert lexicon 生成。词	音节	词频
 # 来源：通用规范汉字表（8105 字）；现代汉语常用词表（liuxilu 校对版）；THUOCL 领域词（MIT，清华大学自然语言处理实验室）；
-# 读音：Unihan（Unicode License）+ LLM 标注多音字词；词频：青简自己的语料统计（中文维基 CC BY-SA 4.0、LCCC MIT）。
+# 读音：Unihan（Unicode License）+ LLM 标注多音字词；词频：微明自己的语料统计（中文维基 CC BY-SA 4.0、LCCC MIT）。
 㑇	zhou	3
 㑊	yi	3
 㕮	fu	3
@@ -88640,7 +88640,7 @@
 青稞	qing ke	113
 青空	qing kong	204
 青筋	qing jin	87
-青简	qing jian	210
+微明	wei ming	210
 青紫	qing zi	16
 青红皂白	qing hong zao bai	11
 青纱帐	qing sha zhang	7

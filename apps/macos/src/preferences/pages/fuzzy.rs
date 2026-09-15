@@ -1,10 +1,10 @@
 //! 「模糊音」页：九条规则的勾选框，三列排。
 
+use glimmer_core::FuzzyRules;
+use glimmer_platform::Config;
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::NSButton;
-use qingjian_core::FuzzyRules;
-use qingjian_platform::Config;
 
 use crate::preferences::controls::{checkbox, note_full, set_checked};
 use crate::preferences::layout::{Layout, PAGE_PADDING, ROW_HEIGHT};

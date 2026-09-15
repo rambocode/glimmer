@@ -63,7 +63,7 @@ pub fn convert(input: &Path, output: &Path) -> Result<(), ConvertError> {
     let mut file = BufWriter::new(std::fs::File::create(output)?);
     writeln!(
         file,
-        "# 由 qingjian-dict-convert 从 CC-CEDICT 生成（CC BY-SA 4.0，https://cc-cedict.org）。词\\t译文\\t译文"
+        "# 由 glimmer-dict-convert 从 CC-CEDICT 生成（CC BY-SA 4.0，https://cc-cedict.org）。词\\t译文\\t译文"
     )?;
     let mut written = 0;
     for text in &order {

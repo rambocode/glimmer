@@ -2,8 +2,8 @@ mod value;
 
 pub use value::SettingValue;
 
+use glimmer_core::FuzzyRules;
 use objc2_foundation::NSInteger;
-use qingjian_core::FuzzyRules;
 
 /// 模糊音勾选框的 tag 起点，后面加规则在 [`FuzzyRules::NAMES`] 里的下标。
 const FUZZY_TAG_BASE: NSInteger = 100;

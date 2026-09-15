@@ -120,7 +120,7 @@ pub fn mine(options: &PhraseOptions, out_dir: &Path) -> Result<(), ConvertError>
     let mut writer = BufWriter::new(File::create(&path)?);
     writeln!(
         writer,
-        "# 由 qingjian-dict-convert phrases 从语料相邻词组合挖出（总次数与对话语料次数都 ≥ {}），读音由成分词拼出。词\\t次数\\t拼音",
+        "# 由 glimmer-dict-convert phrases 从语料相邻词组合挖出（总次数与对话语料次数都 ≥ {}），读音由成分词拼出。词\\t次数\\t拼音",
         options.min_count
     )?;
     for phrase in &phrases {

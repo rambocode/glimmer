@@ -25,7 +25,7 @@ pub const ATTRIBUTIONS: &[(&str, &str)] = &[
         "语言模型",
         "中文维基百科（CC BY-SA 4.0）与 LCCC（清华大学 CoAI，MIT）语料统计。",
     ),
-    ("释义表", "由大语言模型（DeepSeek）生成，青简自建。"),
+    ("释义表", "由大语言模型（DeepSeek）生成，微明自建。"),
     ("emoji", "Unicode CLDR annotations（Unicode License v3）。"),
     (
         "英文词表",
@@ -38,13 +38,13 @@ pub const ATTRIBUTIONS: &[(&str, &str)] = &[
 ];
 
 /// 官网。
-pub const WEBSITE_URL: &str = "https://qingjian.app";
+pub const WEBSITE_URL: &str = "https://glimmer.app";
 
 /// 源码与问题反馈。
-pub const REPOSITORY_URL: &str = "https://github.com/qingjian-team";
+pub const REPOSITORY_URL: &str = "https://github.com/rambocode";
 
 /// 隐私说明。
-pub const PRIVACY_NOTE: &str = "青简不上传任何数据。开着云联想或翻译时，光标附近的文字与拼音会发给你在「云服务」页填的 AI 服务商（缺省 DeepSeek）的服务器，不经过作者。「高级」页的输入日志只写在这台电脑的数据目录里，可以关掉或清空。";
+pub const PRIVACY_NOTE: &str = "微明不上传任何数据。开着云联想或翻译时，光标附近的文字与拼音会发给你在「云服务」页填的 AI 服务商（缺省 DeepSeek）的服务器，不经过作者。「高级」页的输入日志只写在这台电脑的数据目录里，可以关掉或清空。";
 
 /// 反馈方式。
 pub const FEEDBACK_NOTE: &str = "遇到问题请把当天的日志文件发给作者，再附上「复制诊断信息」的内容。缺省日志不含你敲的内容；排查排序问题时作者可能请你在「高级」页临时打开详细日志。";
@@ -57,7 +57,7 @@ pub fn build(
     version: &str,
     build: &str,
 ) {
-    let title = NSTextField::labelWithString(&NSString::from_str(&format!("青简 {version}")), mtm);
+    let title = NSTextField::labelWithString(&NSString::from_str(&format!("微明 {version}")), mtm);
     title.setFont(Some(&NSFont::boldSystemFontOfSize(15.0)));
     layout.place(&title, PAGE_PADDING, layout.inner_width(), ROW_HEIGHT);
     layout.next_row(ROW_HEIGHT);

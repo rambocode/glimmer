@@ -1,15 +1,15 @@
 [workspace]
 resolver = "3"
 members = [
-    "crates/qingjian-core",
-    "crates/qingjian-dictionary",
-    "crates/qingjian-translate",
-    "crates/qingjian-learning",
-    "crates/qingjian-platform",
-    "crates/qingjian-predict",
-    "crates/qingjian-lm",
-    "crates/qingjian-format",
-    "crates/qingjian-neural",
+    "crates/glimmer-core",
+    "crates/glimmer-dictionary",
+    "crates/glimmer-translate",
+    "crates/glimmer-learning",
+    "crates/glimmer-platform",
+    "crates/glimmer-predict",
+    "crates/glimmer-lm",
+    "crates/glimmer-format",
+    "crates/glimmer-neural",
     "apps/cli", "apps/macos", "apps/windows/server", "apps/windows/tsf", "apps/windows/settings", "tools/dict-convert", "tools/gloss-gen",
 ]
 
@@ -17,22 +17,22 @@ members = [
 version = "0.1.1"
 edition = "2024"
 license = "GPL-3.0-or-later"
-repository = "https://github.com/qingjian-team/qingjian"
+repository = "https://github.com/rambocode/glimmer"
 
 [workspace.lints.clippy]
 all = "warn"
 
 [workspace.dependencies]
 # 内部 crate
-qingjian-core = { path = "crates/qingjian-core" }
-qingjian-dictionary = { path = "crates/qingjian-dictionary" }
-qingjian-translate = { path = "crates/qingjian-translate" }
-qingjian-learning = { path = "crates/qingjian-learning" }
-qingjian-platform = { path = "crates/qingjian-platform" }
-qingjian-predict = { path = "crates/qingjian-predict" }
-qingjian-lm = { path = "crates/qingjian-lm" }
-qingjian-format = { path = "crates/qingjian-format" }
-qingjian-neural = { path = "crates/qingjian-neural" }
+glimmer-core = { path = "crates/glimmer-core" }
+glimmer-dictionary = { path = "crates/glimmer-dictionary" }
+glimmer-translate = { path = "crates/glimmer-translate" }
+glimmer-learning = { path = "crates/glimmer-learning" }
+glimmer-platform = { path = "crates/glimmer-platform" }
+glimmer-predict = { path = "crates/glimmer-predict" }
+glimmer-lm = { path = "crates/glimmer-lm" }
+glimmer-format = { path = "crates/glimmer-format" }
+glimmer-neural = { path = "crates/glimmer-neural" }
 
 # 外部依赖统一在这里定版本，子 crate 一律 `xxx.workspace = true`
 serde = { version = "1.0.229", features = ["derive"] }

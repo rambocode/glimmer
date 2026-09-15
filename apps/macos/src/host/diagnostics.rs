@@ -8,7 +8,7 @@ impl Host {
         use std::fmt::Write as _;
 
         let mut out = String::new();
-        let _ = writeln!(out, "青简 {} ({})", self.version, self.build);
+        let _ = writeln!(out, "微明 {} ({})", self.version, self.build);
         let os = NSProcessInfo::processInfo().operatingSystemVersionString();
         let _ = writeln!(out, "macOS {os} · {}", std::env::consts::ARCH);
         let _ = writeln!(out, "主词库：{} 条", self.engine.dictionary().len());
@@ -149,10 +149,10 @@ mod tests {
     #[test]
     fn redaction_hides_key_values_only() {
         let text =
-            "[predict]\napi_key = \"sk-secret\"\napi_key_env = \"QINGJIAN_API_KEY\"\nmodel = \"x\"";
+            "[predict]\napi_key = \"sk-secret\"\napi_key_env = \"GLIMMER_API_KEY\"\nmodel = \"x\"";
         let redacted = super::redact_secrets(text);
         assert!(!redacted.contains("sk-secret"));
-        assert!(redacted.contains("api_key_env = \"QINGJIAN_API_KEY\""));
+        assert!(redacted.contains("api_key_env = \"GLIMMER_API_KEY\""));
         assert!(redacted.contains("model = \"x\""));
     }
 }

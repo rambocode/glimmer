@@ -1,4 +1,4 @@
-# 由 qingjian-dict-convert phrases 从语料相邻词组合挖出（总次数与对话语料次数都 ≥ 2000），读音由成分词拼出。词\t次数\t拼音
+# 由 glimmer-dict-convert phrases 从语料相邻词组合挖出（总次数与对话语料次数都 ≥ 2000），读音由成分词拼出。词\t次数\t拼音
 真的	323109	zhen de
 你的	303448	ni de
 我的	291077	wo de

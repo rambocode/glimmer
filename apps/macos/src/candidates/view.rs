@@ -2,6 +2,7 @@
 
 use std::cell::{Cell, RefCell};
 
+use glimmer_platform::LayoutMode;
 use objc2::rc::Retained;
 use objc2::runtime::AnyObject;
 use objc2::{DefinedClass, MainThreadMarker, MainThreadOnly, define_class, msg_send};
@@ -12,7 +13,6 @@ use objc2_app_kit::{
 use objc2_foundation::{
     NSAttributedString, NSDictionary, NSNumber, NSPoint, NSRect, NSSize, NSString,
 };
-use qingjian_platform::LayoutMode;
 
 use super::cloud_icon::CloudIcon;
 use super::frame::Frame;

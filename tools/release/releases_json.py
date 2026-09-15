@@ -24,8 +24,8 @@ meta-dir 下每个 tag 一个目录，放那次发布的 SHA256SUMS（每个包�
         "version": "0.1.0", "date": "2026-09-07", "channel": "beta", "notes": ["…"],
         "commit": "869ad00…（40 位）", "built_at": "2026-09-07T08:38:12Z", "toolchain": "rustc 1.96.0 (…)",
         "assets": [
-          {"platform": "macos", "arch": "Apple Silicon", "file": "Qingjian-0.1.0-arm64.pkg",
-           "url": "https://github.com/…/releases/download/v0.1.0/Qingjian-0.1.0-arm64.pkg", "size": 123456, "sha256": "…"}
+          {"platform": "macos", "arch": "Apple Silicon", "file": "Glimmer-0.1.0-arm64.pkg",
+           "url": "https://github.com/…/releases/download/v0.1.0/Glimmer-0.1.0-arm64.pkg", "size": 123456, "sha256": "…"}
         ]
       }
     ]
@@ -47,9 +47,9 @@ CHANNELS = ("alpha", "beta", "rc", "stable")
 
 # 安装包文件名 → 平台与架构说明；不匹配的附件不进列表
 ASSET_KINDS = [
-    (re.compile(r"^Qingjian-.+-arm64\.pkg$"), "macos", "Apple Silicon"),
-    (re.compile(r"^Qingjian-.+-x86_64\.pkg$"), "macos", "Intel"),
-    (re.compile(r"^Qingjian-.+-Setup\.exe$"), "windows", "x64"),
+    (re.compile(r"^Glimmer-.+-arm64\.pkg$"), "macos", "Apple Silicon"),
+    (re.compile(r"^Glimmer-.+-x86_64\.pkg$"), "macos", "Intel"),
+    (re.compile(r"^Glimmer-.+-Setup\.exe$"), "windows", "x64"),
 ]
 
 

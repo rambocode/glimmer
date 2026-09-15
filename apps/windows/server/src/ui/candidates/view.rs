@@ -1,8 +1,8 @@
 //! 候选窗口的绘制与测量。布局镜像 macOS 端：竖排 `序号  候选词   读音·词性 译文`，
 //! 横排 `序号 候选词` 左右排、高亮项的译文另起一行；顶部一行拼音，右侧整句补全。
 
-use qingjian_platform::LayoutMode;
-use qingjian_platform::protocol::PreeditKind;
+use glimmer_platform::LayoutMode;
+use glimmer_platform::protocol::PreeditKind;
 use windows::Win32::Foundation::{COLORREF, RECT, SIZE};
 use windows::Win32::Graphics::Gdi::{
     CreateRoundRectRgn, CreateSolidBrush, DeleteObject, FillRect, FillRgn, GetTextExtentPoint32W,

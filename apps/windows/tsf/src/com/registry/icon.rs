@@ -4,12 +4,12 @@
 use std::path::PathBuf;
 
 /// 与 macOS 端同一张 logo 生成的多尺寸 `.ico`。
-const ICON: &[u8] = include_bytes!("../../../resources/qingjian.ico");
+const ICON: &[u8] = include_bytes!("../../../resources/glimmer.ico");
 
-/// `%ProgramData%\Qingjian\qingjian.ico`。注册是机器级的，别的用户也要能读到，所以不能放用户目录。
+/// `%ProgramData%\Glimmer\glimmer.ico`。注册是机器级的，别的用户也要能读到，所以不能放用户目录。
 fn path() -> Option<PathBuf> {
     std::env::var_os("ProgramData")
-        .map(|base| PathBuf::from(base).join("Qingjian").join("qingjian.ico"))
+        .map(|base| PathBuf::from(base).join("Glimmer").join("glimmer.ico"))
 }
 
 /// 写不了返回 `None`，调用方注册成无图标。

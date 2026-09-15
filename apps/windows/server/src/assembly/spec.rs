@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
-use qingjian_core::Language;
-use qingjian_platform::DictionariesConfig;
+use glimmer_core::Language;
+use glimmer_platform::DictionariesConfig;
 
 use super::LanguageModelFiles;
 
@@ -34,7 +34,7 @@ pub struct AssemblySpec {
     /// 词汇等级表目录（`levels-<语言>.tsv`）。
     pub levels_dir: Option<PathBuf>,
 
-    /// 用户数据目录（`%APPDATA%\Qingjian`）；没有就都只在内存。
+    /// 用户数据目录（`%APPDATA%\Glimmer`）；没有就都只在内存。
     pub user_dir: Option<PathBuf>,
 
     /// 是否写输入日志（`[general] input_log`）。

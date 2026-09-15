@@ -6,7 +6,7 @@
 
 ## 怎么量
 
-- `cargo run --release -p qingjian-cli -- <拼音>` 打每个阶段的耗时：parse（切分 + 纠错）、lookup（词库查询）、
+- `cargo run --release -p glimmer-cli -- <拼音>` 打每个阶段的耗时：parse（切分 + 纠错）、lookup（词库查询）、
   rank（排序 + 各类插入，整句转换算在这里）、translate（释义查表）。
 - `--typing` 逐键模式（2026-09-05 加）：把 `kaifa` 当 k、ka、kai、kaif、kaifa 五次按键，每个前缀查一次并标注译文，
   一行一键。这才是输入法的真实工作量，一次性查整段会漏掉「首键最贵」「简拼越敲越贵」这类问题。
@@ -122,7 +122,7 @@
 **起因**：启动 0.93 s，词库 TSV 解析 0.24 s、语言模型两张 TSV 解析 + 建哈希表 0.62 s。这是 89 万行 + 350 万行的逐行 parse、
 排序、`HashMap` 插入，算法上没得省，要改文件格式。
 
-**改法**：`crates/qingjian-format` 的 `.qj` 容器（设计见 [design/architecture.md](../design/architecture.md)）。要点是**内存布局就是文件布局**：
+**改法**：`crates/glimmer-format` 的 `.qj` 容器（设计见 [design/architecture.md](../design/architecture.md)）。要点是**内存布局就是文件布局**：
 第一轮的 arena + 偏移、第三轮的 CSR 本来就是几段连续数组，直接落盘；打开时 mmap，只校验头、分节边界、每条偏移是否越界。
 语言模型的 `HashMap<String, (id, count)>` 换成文件里的开放寻址哈希索引（槽里放编号、键留在 arena、FNV-1a + fmix64 稳定哈希），
 TSV 解析路径也改成产出同样的结构，查询代码只有一份。
@@ -148,7 +148,7 @@ TSV 解析路径也改成产出同样的结构，查询代码只有一份。
 **起因**：释义表全量生成后从 6 万词涨到 24 万词，TSV 解析从 20 ms 涨到 90 ms，启动 170 ms。
 
 **改法**：`Glossary` 改成双存法：TSV 解析出来还是哈希表；`.qj` 是字符串 arena + 词条表（词的偏移、释义段）+ 释义表
-（译文 / 读音 / 词性缩写各一段偏移）+ 文件里的哈希索引，与词库、语言模型同一套 `qingjian-format`。查表时按需拼出 `Translation`，
+（译文 / 读音 / 词性缩写各一段偏移）+ 文件里的哈希索引，与词库、语言模型同一套 `glimmer-format`。查表时按需拼出 `Translation`，
 每键几百次、每次几十纳秒的哈希加几次切片。**结果** 释义表加载 90 ms → 8 ms，启动 170 ms → 47 ms（冷启动 116 ms，缺页）。
 
 ## 第六轮：词图敲错边（2026-09-06）
@@ -175,7 +175,7 @@ M1 上 Metal 空前文单条 6 ms、64 字前文 × 8 条 133 ms，离每键预�
 **起因**：字级 Transformer 重打分在整句评测集上过了门槛（+4.3 个点，见 `neural-rescoring.md`），但同步打分一次查询 60 到 70 ms、20 字长句 800 ms，
 远超每键 10 ms 预算，不能放进按键回调。
 
-**定位**：`cargo test --release -p qingjian-neural --features metal -- --ignored --nocapture` 的延迟探针（M1，small 23M，8 条约 8 字的候选）：
+**定位**：`cargo test --release -p glimmer-neural --features metal -- --ignored --nocapture` 的延迟探针（M1，small 23M，8 条约 8 字的候选）：
 
 | 后端 | 空前文 1 条 | 空前文 8 条 | 64 字前文 1 条 | 64 字前文 8 条 |
 |---|---|---|---|---|
@@ -187,7 +187,7 @@ M1 上 Metal 空前文单条 6 ms、64 字前文 × 8 条 133 ms，离每键预�
 所以候选越多越慢，与候选长度关系不大，也是 CPU 反而更慢的原因（同样多次小算子）。Accelerate 后端在本机编不过，没量。
 
 **改法**：
-1. `qingjian-neural::PrefixCache`：前文（去掉最后一个 token）每层的 K / V 算一次存下来，候选只算「前文最后一个 token + 候选」；结果与 Python 打分对拍不变。
+1. `glimmer-neural::PrefixCache`：前文（去掉最后一个 token）每层的 K / V 算一次存下来，候选只算「前文最后一个 token + 候选」；结果与 Python 打分对拍不变。
 2. Core `engine/rescoring`：一次查询里整句转换跑好几遍（纠错变体、中英混输比分），所有路径文本进一张「前文 + 文本 → 神经分」缓存，
    同步打分器只补缺的分：评测每句 69 → 27 ms（`--eval-text` 300 句，λ 0.25 前文 64）。
 3. 异步：打分在后台线程，按键回调只跑词级模型；壳停键 80 ms 后把缺分的文本一批送去，20 ms 轮询，到了重查一次只重画当前页。

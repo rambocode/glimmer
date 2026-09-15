@@ -63,7 +63,7 @@ mod tests {
 
     #[test]
     fn reopens_after_the_file_is_deleted() {
-        let dir = std::env::temp_dir().join("qingjian-log-file-test");
+        let dir = std::env::temp_dir().join("glimmer-log-file-test");
         let _ = std::fs::remove_dir_all(&dir);
         let mut log = LogFile::new(dir.clone());
         log.write_all(b"one\n").unwrap();

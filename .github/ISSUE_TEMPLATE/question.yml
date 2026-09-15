@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        按键总表、双拼、云联想等用法在 [使用说明](https://qingjian.app/docs) 里，很多问题能直接查到。
+        按键总表、双拼、云联想等用法在 [使用说明](https://glimmer.app/docs) 里，很多问题能直接查到。
   - type: dropdown
     id: platform
     attributes:

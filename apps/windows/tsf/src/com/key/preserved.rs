@@ -10,21 +10,21 @@ use windows::Win32::UI::TextServices::{
 };
 use windows::core::{GUID, Result};
 
-use qingjian_platform::protocol::{KeyEvent, KeyModifiers};
-use qingjian_platform::{Config, KeyCombo};
+use glimmer_platform::protocol::{KeyEvent, KeyModifiers};
+use glimmer_platform::{Config, KeyCombo};
 
 use crate::com::log::log;
 
 /// 本保留键的标识，`OnPreservedKey` 按它认。
-pub(crate) const GUID_TRANSLATE: GUID = GUID::from_u128(0x5c0a7b12_3d4e_4f60_8a91_2b3c4d5e6f70);
+pub(crate) const GUID_TRANSLATE: GUID = GUID::from_u128(0x6ad46a6d_4275_4572_95cd_705d1248dc4c);
 
 /// msctf.h 的 `TF_MOD_LWIN`（windows crate 没导出）。
 const TF_MOD_LWIN: u32 = 0x08;
 
-/// 读 `%APPDATA%\Qingjian\config.toml` 里的组合；读不到 / 解析失败用缺省。
+/// 读 `%APPDATA%\Glimmer\config.toml` 里的组合；读不到 / 解析失败用缺省。
 pub(crate) fn load_combo() -> KeyCombo {
     let Some(path) = std::env::var_os("APPDATA")
-        .map(|base| PathBuf::from(base).join("Qingjian").join("config.toml"))
+        .map(|base| PathBuf::from(base).join("Glimmer").join("config.toml"))
     else {
         return KeyCombo::TRANSLATE_DEFAULT;
     };

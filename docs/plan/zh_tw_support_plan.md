@@ -28,7 +28,7 @@
 ### 軌道一：在 Core 實作 OpenCC 繁體轉換 (PR 3)
 **目標客群**：習慣打拼音（全拼 / 雙拼），但希望能直接輸出繁體字的用戶。
 **作法**：
-1. 將 `ferrous-opencc` 作為 `qingjian-core` 的一個可選依賴或內建功能。
+1. 將 `ferrous-opencc` 作為 `glimmer-core` 的一個可選依賴或內建功能。
 2. 在 `GeneralConfig` 增加 `traditional_output: bool` 的設定選項。
 3. 在 Core 的候選詞結果輸出前，若該選項為 `true`，則進行簡轉繁。
 **優點**：架構改動最小，跨平台（Windows / macOS / CLI）共享一致的轉換邏輯，完全滿足官方維護者的期望。
@@ -38,12 +38,12 @@
 **作法**：
 這部分**不需要修改輸入法核心 Rust 程式碼**，而是屬於「資料工程」：
 1. **編譯專屬詞庫 (Rust 原生實作)**：
-   - 擴充 `tools/dict-convert` 工具，新增一個 Rust 原生的抓取與轉換指令（例如 `cargo run --release -p qingjian-dict-convert -- fetch-mcbopomofo`）。
+   - 擴充 `tools/dict-convert` 工具，新增一個 Rust 原生的抓取與轉換指令（例如 `cargo run --release -p glimmer-dict-convert -- fetch-mcbopomofo`）。
    - 讓該 Rust 程式自動抓取開源的「小麥注音（McBopomofo）」或「萌典」資料集。
    - 將這些台灣在地詞彙與對應的注音符號，在 Rust 中轉換為青簡底層需要的拼音格式（如 `垃圾\tle se\t8000`），並直接打包為 `zh-TW.qj` 容器，捨棄原先 Python 腳本的過渡作法，保持專案純 Rust 的技術堆疊。
 2. **編譯專屬語言模型**：
    - 收集台灣繁體維基百科與 PTT 語料。
-   - 透過 `qingjian-dict-convert` 的 `bigram` 統計功能，打包出台灣專用的 `zh-TW-lm.qj` 語言模型。
+   - 透過 `glimmer-dict-convert` 的 `bigram` 統計功能，打包出台灣專用的 `zh-TW-lm.qj` 語言模型。
 3. **無縫切換**：
    - 教導台灣使用者，在設定檔中將詞庫路徑指向 `zh-TW.qj` 與 `zh-TW-lm.qj`，並關閉第一軌道的 OpenCC 轉換。
 **優點**：從根本解決讀音差異、兩岸用語不同、以及一對多繁簡轉換錯誤的終極解法！
@@ -54,5 +54,5 @@
 
 1. **[優先] 完成 PR 3 (Core Traditional Output)**：
    - 滿足上游開源專案需求，為拼音用戶提供穩定的繁簡轉換功能。
-2. **[後續] 實作 Rust 原生的台灣注音資料打包工具 (`qingjian-dict-convert`)**：
+2. **[後續] 實作 Rust 原生的台灣注音資料打包工具 (`glimmer-dict-convert`)**：
    - 將原有的 Python 腳本雛形，用 Rust 改寫並整合進 `tools/dict-convert` 中，釋出官方的「台灣注音資料包」與生成工具。

@@ -1,4 +1,4 @@
-//! 数据文件位置：只读数据在 `.app/Contents/Resources/`，用户数据在 `~/Library/Application Support/Qingjian/`。
+//! 数据文件位置：只读数据在 `.app/Contents/Resources/`，用户数据在 `~/Library/Application Support/Glimmer/`。
 
 use std::path::PathBuf;
 
@@ -30,19 +30,19 @@ pub fn bundled_dicts_dir() -> Option<PathBuf> {
     dir.is_dir().then_some(dir)
 }
 
-/// 配置文件：`~/Library/Application Support/Qingjian/config.toml`。
+/// 配置文件：`~/Library/Application Support/Glimmer/config.toml`。
 pub fn config_file() -> Option<PathBuf> {
     user_data_dir().map(|dir| dir.join("config.toml"))
 }
 
 /// 用户数据目录，不存在则创建。
 pub fn user_data_dir() -> Option<PathBuf> {
-    let dir = PathBuf::from(std::env::var_os("HOME")?).join("Library/Application Support/Qingjian");
+    let dir = PathBuf::from(std::env::var_os("HOME")?).join("Library/Application Support/Glimmer");
     std::fs::create_dir_all(&dir).ok()?;
     Some(dir)
 }
 
-/// 附加词库目录：`~/Library/Application Support/Qingjian/dicts/`，不存在则创建。
+/// 附加词库目录：`~/Library/Application Support/Glimmer/dicts/`，不存在则创建。
 pub fn dicts_dir() -> Option<PathBuf> {
     let dir = user_data_dir()?.join("dicts");
     std::fs::create_dir_all(&dir).ok()?;
@@ -53,8 +53,8 @@ pub fn dicts_dir() -> Option<PathBuf> {
 /// 用户目录 `model/` 里有就用它（自己训的），否则用包里的 `Resources/model/`；都没有是 `None`。
 pub fn model_path() -> Option<PathBuf> {
     let user = user_data_dir()?.join("model");
-    if let Some(found) = qingjian_neural::find_model(&user) {
+    if let Some(found) = glimmer_neural::find_model(&user) {
         return Some(found);
     }
-    qingjian_neural::find_model(&resources_dir().ok()?.join("model"))
+    glimmer_neural::find_model(&resources_dir().ok()?.join("model"))
 }

@@ -119,11 +119,11 @@ pub fn export(input: &Path, out_dir: &Path) -> Result<(), GlossError> {
     let mut japanese = BufWriter::new(File::create(out_dir.join("glossary-ja.tsv"))?);
     writeln!(
         english,
-        "# 由 qingjian-gloss-gen 生成（LLM）。词\t[词性. ]译词\t[词性. ]译词"
+        "# 由 glimmer-gloss-gen 生成（LLM）。词\t[词性. ]译词\t[词性. ]译词"
     )?;
     writeln!(
         japanese,
-        "# 由 qingjian-gloss-gen 生成（LLM）。词\t[词性. ]译词|假名\t[词性. ]译词|假名"
+        "# 由 glimmer-gloss-gen 生成（LLM）。词\t[词性. ]译词|假名\t[词性. ]译词|假名"
     )?;
     let (mut en_count, mut ja_count) = (0, 0);
     for entry in latest.values() {
@@ -176,7 +176,7 @@ pub fn export_english(input: &Path, out_dir: &Path) -> Result<(), GlossError> {
     let mut out = BufWriter::new(File::create(&path)?);
     writeln!(
         out,
-        "# 由 qingjian-gloss-gen english 生成（LLM）：英文词的中文释义。词（小写）\t[词性. ]释义\t[词性. ]释义"
+        "# 由 glimmer-gloss-gen english 生成（LLM）：英文词的中文释义。词（小写）\t[词性. ]释义\t[词性. ]释义"
     )?;
     let mut count = 0;
     for (key, entry) in &latest {

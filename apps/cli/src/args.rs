@@ -25,13 +25,13 @@ pub fn default_config_file() -> PathBuf {
     if cfg!(target_os = "macos")
         && let Some(home) = std::env::var_os("HOME")
     {
-        return PathBuf::from(home).join("Library/Application Support/Qingjian/config.toml");
+        return PathBuf::from(home).join("Library/Application Support/Glimmer/config.toml");
     }
     PathBuf::from("config.toml")
 }
 
 #[derive(Debug, Parser)]
-#[command(name = "qingjian", about = "青简输入法 Core 测试工具")]
+#[command(name = "glimmer", about = "微明输入法 Core 测试工具")]
 pub struct Args {
     /// 词库路径（TSV）。缺省：data/generated/dict.tsv 存在就用它，否则 assets/sample/dict.tsv
     #[arg(long)]
@@ -41,8 +41,8 @@ pub struct Args {
     #[arg(long)]
     pub glossary: Option<PathBuf>,
 
-    /// 学习语言：en / ja / es。也可用环境变量 QINGJIAN_LEARNING_LANGUAGE
-    #[arg(long, env = "QINGJIAN_LEARNING_LANGUAGE", default_value = "en")]
+    /// 学习语言：en / ja / es。也可用环境变量 GLIMMER_LEARNING_LANGUAGE
+    #[arg(long, env = "GLIMMER_LEARNING_LANGUAGE", default_value = "en")]
     pub language: String,
 
     /// 附加词库（.qj 或 TSV），可给多个，与主词库一起查
@@ -57,11 +57,11 @@ pub struct Args {
     #[arg(long)]
     pub user_dict: Option<PathBuf>,
 
-    /// 配置文件路径。缺省：~/Library/Application Support/Qingjian/config.toml（macOS）或 ./config.toml
+    /// 配置文件路径。缺省：~/Library/Application Support/Glimmer/config.toml（macOS）或 ./config.toml
     #[arg(long)]
     pub config: Option<PathBuf>,
 
-    /// 启用云联想（无视配置里的 enabled）；密钥来自配置或 QINGJIAN_API_KEY（`api_key_env`）
+    /// 启用云联想（无视配置里的 enabled）；密钥来自配置或 GLIMMER_API_KEY（`api_key_env`）
     #[arg(long)]
     pub predict: bool,
 

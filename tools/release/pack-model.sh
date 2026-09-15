@@ -9,7 +9,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
-MODEL_DIR="${QINGJIAN_MODEL_DIR:-data/model}"
+MODEL_DIR="${GLIMMER_MODEL_DIR:-data/model}"
 WEIGHTS="$MODEL_DIR/model.safetensors"
 OUT="$MODEL_DIR/model.qjm"
 
@@ -22,8 +22,8 @@ fi
 # 训练步数与预设写进数据版本，日志里认得出是哪一版模型
 step="$(python3 -c 'import json, sys; c = json.load(open(sys.argv[1])); print("%s-%s" % (c.get("preset", ""), c.get("step", "")))' "$MODEL_DIR/config.json")"
 # 权重与代码同一许可（2026-09-12 定），署名写清训练语料
-cargo run --release -q -p qingjian-dict-convert -- --out-dir "$MODEL_DIR" pack model --input "$MODEL_DIR" \
-  --name "青简整句模型" --license "GPL-3.0-or-later" \
-  --attribution "青简训练的字级语言模型；语料：中文维基百科（CC-BY-SA-4.0）、LCCC（MIT）" \
-  --source "https://github.com/qingjian-team/qingjian" --data-version "$step"
+cargo run --release -q -p glimmer-dict-convert -- --out-dir "$MODEL_DIR" pack model --input "$MODEL_DIR" \
+  --name "微明整句模型" --license "GPL-3.0-or-later" \
+  --attribution "微明训练的字级语言模型；语料：中文维基百科（CC-BY-SA-4.0）、LCCC（MIT）" \
+  --source "https://github.com/rambocode/glimmer" --data-version "$step"
 ls -la "$OUT"

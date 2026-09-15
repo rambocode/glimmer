@@ -4,8 +4,8 @@
 
 mod job;
 
-use qingjian_core::{Candidate, CandidateKind, CandidateList};
-use qingjian_platform::protocol::{
+use glimmer_core::{Candidate, CandidateKind, CandidateList};
+use glimmer_platform::protocol::{
     Frame, KeyEvent, KeyModifiers, KeyOutcome, ScreenRect, ServerMessage, SessionId,
 };
 

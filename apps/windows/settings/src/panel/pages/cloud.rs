@@ -1,6 +1,6 @@
 //! 「云服务」页：本地整句模型开关（`[model]`）、`[predict]` 各项与「测试连接」（后台线程跑）。
 
-use qingjian_predict::{ConnectionTest, PredictConfig};
+use glimmer_predict::{ConnectionTest, PredictConfig};
 use windows_reactor::*;
 
 use crate::panel::cloud_status::CloudStatus;
@@ -87,10 +87,10 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
         ),
         field(
             "API 密钥",
-            "只保存在这台电脑上，不会随配置文件导出，也不显示已填的值。留空则读环境变量 QINGJIAN_API_KEY。",
+            "只保存在这台电脑上，不会随配置文件导出，也不显示已填的值。留空则读环境变量 GLIMMER_API_KEY。",
             PasswordBox::new()
                 .password(p.api_key.clone().unwrap_or_default())
-                .placeholder_text("留空则读环境变量 QINGJIAN_API_KEY")
+                .placeholder_text("留空则读环境变量 GLIMMER_API_KEY")
                 .on_password_changed(context.callback(Message::CloudApiKey)),
         ),
         labeled(

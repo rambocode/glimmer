@@ -1,6 +1,6 @@
 use std::io::{Read, Write};
 
-use qingjian_platform::protocol::{
+use glimmer_platform::protocol::{
     ClientMessage, Frame, KeyEvent, PROTOCOL_VERSION, ScreenRect, ServerMessage, SessionId,
     read_message, write_message,
 };

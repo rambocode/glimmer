@@ -10,20 +10,20 @@
 - issue 里翻译功能相关的反馈占比不低（错译、想直接上屏译文、日语学习模式加罗马音、短语翻译不准），
   说明用户在实际使用这个功能。
 
-对青简的意义：
+对微明的意义：
 
 - 「打字时看到译文」这个交互形态已经被水杉验证，不需要再做原型验证。
-- 青简相对水杉的差异只剩三条：非 Windows 平台（水杉没有 macOS / Linux）、Rust 平台无关 Core、
+- 微明相对水杉的差异只剩三条：非 Windows 平台（水杉没有 macOS / Linux）、Rust 平台无关 Core、
   更克制的单条 annotation（水杉最多两条，可走云端）。
-- 青简的输入法本体需要先达到「不比水杉差」这条线，翻译功能才有意义。
-- 水杉的 TSF 代码可以作为 Phase 5 的参考，但它是 GPL-3.0，除非青简也选 GPL，否则不能搬。
+- 微明的输入法本体需要先达到「不比水杉差」这条线，翻译功能才有意义。
+- 水杉的 TSF 代码可以作为 Phase 5 的参考，但它是 GPL-3.0，除非微明也选 GPL，否则不能搬。
 - 水杉的进程结构（TSF DLL + 独立 Server 进程 + UI）是 Windows 平台层应采用的结构。
 
 ## Rime
 
 - https://rime.im/
 - librime（C++，约 5 万行）+ 各平台前端：Squirrel（macOS）、Weasel（Windows）、ibus-rime / fcitx-rime（Linux）。
-- 青简的「Core + 薄壳」架构与 Rime 相同，Rime 证明了这个结构能跑十几年。
+- 微明的「Core + 薄壳」架构与 Rime 相同，Rime 证明了这个结构能跑十几年。
 - Rime 候选自带 comment 字段，Squirrel 显示在候选旁，配合 librime-lua 也能做出类似的译文标注。
 
 ## 数据源
@@ -63,7 +63,7 @@
 |---|---|
 | 词库 | 通用规范汉字表；现代汉语常用词表（liuxilu 校对版）；THUOCL 领域词（清华大学自然语言处理实验室，MIT）；读音取自 Unihan（Unicode License v3） |
 | 语言模型 | 中文维基百科（CC BY-SA 4.0）与 LCCC（清华大学 CoAI，MIT）语料统计 |
-| 释义表 | 由大语言模型（DeepSeek）离线生成，青简自建 |
+| 释义表 | 由大语言模型（DeepSeek）离线生成，微明自建 |
 | emoji | Unicode CLDR annotations（Unicode License v3） |
 | 英文词表 | ESDB / SCOWL（© Kevin Atkinson，按其许可保留版权声明）；CSpell 词典（MIT） |
 | 词汇等级 | The CEFR-J Wordlist Version 1.5（Yukio Tono，Tokyo University of Foreign Studies，[cefr-j.org](http://www.cefr-j.org/download.html)）；Octanove Vocabulary Profile C1/C2（CC BY-SA 4.0）；JLPT 词表（[tanos.co.uk](http://www.tanos.co.uk/jlpt/)，CC BY；经 elzup/jlpt-word-list 整理，MIT） |

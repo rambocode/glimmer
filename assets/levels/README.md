@@ -1,7 +1,7 @@
 # 词汇等级表
 
 `levels-<语言>.tsv`：`词\t等级`，`# levels` 行给出等级从易到难的顺序。偏好设置「统计」页按级数用户见过 / 看熟 / 上屏过的译词
-（`qingjian-translate::LevelTable` 读，`qingjian-learning::VocabularyBook` 汇总），不进候选窗口。
+（`glimmer-translate::LevelTable` 读，`glimmer-learning::VocabularyBook` 汇总），不进候选窗口。
 
 | 文件 | 来源 | 许可 |
 | --- | --- | --- |

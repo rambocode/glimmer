@@ -27,9 +27,9 @@ body:
     validations:
       required: true
   - type: input
-    id: qingjian_version
+    id: glimmer_version
     attributes:
-      label: 青简版本
+      label: 微明版本
       description: 「设置 → 关于」页里的版本号，或下载的安装包文件名
       placeholder: windows-v0.1.0-alpha.2
     validations:
@@ -56,7 +56,7 @@ body:
       label: 复现步骤
       description: 一步一步写，包括敲了哪些键。能稳定复现请注明；偶发的也请写大致频率。
       placeholder: |
-        1. 切到青简，在记事本里输入 v1+2
+        1. 切到微明，在记事本里输入 v1+2
         2. 预期出现 3，实际……
     validations:
       required: true
@@ -80,5 +80,5 @@ body:
       description: |
         先贴「设置 → 关于 → 复制诊断信息」的内容（版本、系统、配置，密钥会被抹去）。
         日志文件：macOS 在「关于 → 打开日志目录」里取当天的；Windows 点「关于 → 打包日志到桌面」，把 zip 拖进来作为附件。
-        目录位置见 https://qingjian.app/docs/help/data-and-logs 。缺省级别不含输入内容。
+        目录位置见 https://glimmer.app/docs/help/data-and-logs 。缺省级别不含输入内容。
       render: text

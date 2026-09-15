@@ -1,7 +1,7 @@
 //! 组句中「修饰键 + 数字」的快捷键：上屏译词、删候选。与 macOS 壳对齐。
 
-use qingjian_core::{Candidate, CandidateList};
-use qingjian_platform::protocol::KeyModifiers;
+use glimmer_core::{Candidate, CandidateList};
+use glimmer_platform::protocol::KeyModifiers;
 
 use super::Effect;
 use crate::dispatch::Router;

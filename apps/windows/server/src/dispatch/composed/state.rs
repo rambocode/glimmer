@@ -1,7 +1,7 @@
 //! 组句展示状态的枚举。
 
-use qingjian_core::CandidateLayout;
-use qingjian_platform::protocol::PreeditSegment;
+use glimmer_core::CandidateLayout;
+use glimmer_platform::protocol::PreeditSegment;
 
 /// 当前组句缓冲对应的展示状态。缓冲变化时重建，导航只挪高亮，云端词异步并进 `layout`。
 pub(crate) enum Composed {

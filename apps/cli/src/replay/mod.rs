@@ -11,7 +11,7 @@ mod tally;
 
 use std::path::Path;
 
-use qingjian_core::{Engine, InputLogEntry, InputSource};
+use glimmer_core::{Engine, InputLogEntry, InputSource};
 
 pub use report::Report;
 
@@ -82,7 +82,7 @@ pub fn run(engine: &mut Engine, path: &Path, show_misses: usize) -> Result<Repor
 
 fn replay_commit(
     engine: &mut Engine,
-    commit: &qingjian_core::CommitEntry,
+    commit: &glimmer_core::CommitEntry,
     report: &mut Report,
     show_misses: usize,
 ) {

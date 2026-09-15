@@ -11,12 +11,12 @@
 .PARAMETER Path
     要签名的文件（.exe / .dll），可多个。
 .PARAMETER CertSubject
-    自签证书主题，缺省 "CN=Qingjian Dev CodeSign"。
+    自签证书主题，缺省 "CN=Glimmer Dev CodeSign"。
 #>
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][string[]]$Path,
-    [string]$CertSubject = 'CN=Qingjian Dev CodeSign'
+    [string]$CertSubject = 'CN=Glimmer Dev CodeSign'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -47,7 +47,7 @@ foreach ($store in @('Root', 'TrustedPublisher')) {
     if (-not $exists) {
         Write-Host "装证书进 LocalMachine\$store…" -ForegroundColor Cyan
         # 只导公钥（.cer），不带私钥。
-        $tmp = Join-Path $env:TEMP 'qingjian-dev-codesign.cer'
+        $tmp = Join-Path $env:TEMP 'glimmer-dev-codesign.cer'
         Export-Certificate -Cert $cert -FilePath $tmp -Type CERT | Out-Null
         Import-Certificate -FilePath $tmp -CertStoreLocation $storePath | Out-Null
         Remove-Item $tmp -Force -ErrorAction SilentlyContinue

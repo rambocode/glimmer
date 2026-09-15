@@ -1,6 +1,6 @@
-use qingjian_dictionary::DictionaryError;
-use qingjian_lm::LmError;
-use qingjian_translate::GlossaryError;
+use glimmer_dictionary::DictionaryError;
+use glimmer_lm::LmError;
+use glimmer_translate::GlossaryError;
 
 /// 装配 Engine 时的错误。
 #[derive(Debug, thiserror::Error)]

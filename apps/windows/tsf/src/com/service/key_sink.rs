@@ -6,7 +6,7 @@ use windows::Win32::Foundation::{FALSE, LPARAM, WPARAM};
 use windows::Win32::UI::TextServices::{ITfContext, ITfKeyEventSink_Impl};
 use windows::core::{BOOL, GUID, Ref, Result};
 
-use qingjian_platform::protocol::{KeyEvent, KeyOutcome};
+use glimmer_platform::protocol::{KeyEvent, KeyOutcome};
 
 use super::TextService_Impl;
 use super::next::Next;

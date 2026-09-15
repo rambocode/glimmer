@@ -3,12 +3,12 @@
 use std::io::{Cursor, Read, Write};
 use std::path::PathBuf;
 
-use qingjian_core::Language;
-use qingjian_platform::protocol::{
+use glimmer_core::Language;
+use glimmer_platform::protocol::{
     ClientMessage, KeyEvent, PROTOCOL_VERSION, ServerMessage, SessionId,
 };
-use qingjian_windows_server::ipc::{read_message, serve, write_message};
-use qingjian_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
+use glimmer_windows_server::ipc::{read_message, serve, write_message};
+use glimmer_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
 
 const SESSION: SessionId = SessionId(1);
 

@@ -1,6 +1,6 @@
 use std::sync::mpsc::Sender;
 
-use qingjian_platform::protocol::{ClientMessage, ServerMessage};
+use glimmer_platform::protocol::{ClientMessage, ServerMessage};
 
 use crate::dispatch::StatusEvent;
 

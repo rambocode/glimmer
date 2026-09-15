@@ -3,8 +3,8 @@
 
 use std::collections::HashMap;
 
-use qingjian_core::sentence::{LanguageModel, segment_text};
-use qingjian_dictionary::Dictionary;
+use glimmer_core::sentence::{LanguageModel, segment_text};
+use glimmer_dictionary::Dictionary;
 
 /// 汉字到读音的反查表。
 pub struct Transcriber {
@@ -60,7 +60,7 @@ impl Transcriber {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use qingjian_core::sentence::NoLanguageModel;
+    use glimmer_core::sentence::NoLanguageModel;
 
     const SAMPLE: &str =
         "长\tzhang\t900\n长\tchang\t800\n大\tda\t1000\n长度\tchang du\t500\n度\tdu\t700\n";

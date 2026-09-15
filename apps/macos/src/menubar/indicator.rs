@@ -47,7 +47,7 @@ pub struct ModeIndicator {
 impl ModeIndicator {
     pub fn new(mtm: MainThreadMarker) -> Self {
         let item = NSStatusBar::systemStatusBar().statusItemWithLength(0.0);
-        item.setAutosaveName(Some(ns_string!("QingjianModeIndicator")));
+        item.setAutosaveName(Some(ns_string!("GlimmerModeIndicator")));
         item.setVisible(true);
         Self {
             item,

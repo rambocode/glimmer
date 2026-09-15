@@ -4,7 +4,7 @@
 //! `export` 把 JSONL 转成输入法加载的 `glossary-en.tsv` / `glossary-ja.tsv`；
 //! `pinyin` 给词表里的词标拼音（建词库时含多音字的词靠它定读音），结果 `pinyin-llm.jsonl`；
 //! `english` / `export-english` 给英文词写中文释义，导出 `glossary-zh.tsv`（英文候选右侧显示）。
-//! 密钥来自 `--api-key` 或环境变量 `QINGJIAN_API_KEY`（也读当前目录的 `.env`）。
+//! 密钥来自 `--api-key` 或环境变量 `GLIMMER_API_KEY`（也读当前目录的 `.env`）。
 
 mod args;
 mod batch;

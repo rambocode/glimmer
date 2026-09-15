@@ -1,4 +1,4 @@
-use qingjian_core::MarkedKind;
+use glimmer_core::MarkedKind;
 
 /// preedit 片段的画法。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

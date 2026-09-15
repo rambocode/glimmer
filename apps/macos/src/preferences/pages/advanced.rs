@@ -1,9 +1,9 @@
 //! 「高级」页：打开配置文件、详细日志、输入日志。
 
+use glimmer_platform::{Config, LogLevel};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::NSButton;
-use qingjian_platform::{Config, LogLevel};
 
 use crate::preferences::controls::{button, checkbox, note_full, row_checkbox, set_checked};
 use crate::preferences::layout::{Layout, PAGE_PADDING, ROW_HEIGHT};

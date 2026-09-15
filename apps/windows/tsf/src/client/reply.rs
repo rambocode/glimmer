@@ -7,7 +7,7 @@ pub enum KeyReply {
 
     /// 收到「翻译选中文字」快捷键：Server 请 DLL 读当前选区。
     NeedSelection {
-        /// 请求标识，随 [`qingjian_platform::protocol::ClientMessage::Selection`] 带回。
+        /// 请求标识，随 [`glimmer_platform::protocol::ClientMessage::Selection`] 带回。
         request: u64,
     },
 }

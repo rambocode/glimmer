@@ -1,26 +1,26 @@
 [package]
-name = "qingjian-windows-settings"
-description = "Windows 输入法的设置界面：左侧导航栏 + 各分节表单，读写 %APPDATA%\\Qingjian\\config.toml，对齐 macOS 偏好设置"
+name = "glimmer-windows-settings"
+description = "Windows 输入法的设置界面：左侧导航栏 + 各分节表单，读写 %APPDATA%\\Glimmer\\config.toml，对齐 macOS 偏好设置"
 version = "0.1.0-alpha.3-dev"
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
 
 [[bin]]
-name = "qingjian-settings"
+name = "glimmer-settings"
 path = "src/main.rs"
 
 [dependencies]
-qingjian-platform.workspace = true
-qingjian-predict.workspace = true
+glimmer-platform.workspace = true
+glimmer-predict.workspace = true
 toml_edit.workspace = true
 
 # UI 本体只在 Windows 编
 [target."cfg(windows)".dependencies]
 windows-reactor = "0.100"
-qingjian-learning.workspace = true
-qingjian-core.workspace = true
-qingjian-translate.workspace = true
+glimmer-learning.workspace = true
+glimmer-core.workspace = true
+glimmer-translate.workspace = true
 jiff.workspace = true
 rfd = "0.17"
 

@@ -46,7 +46,7 @@ pub struct Tally {
 
 impl Tally {
     /// 从日志里的一条记下当时的情况（命中、翻页、耗时、重排），回放前调。
-    pub fn note_logged(&mut self, commit: &qingjian_core::CommitEntry) {
+    pub fn note_logged(&mut self, commit: &glimmer_core::CommitEntry) {
         let hit = commit.index == Some(0);
         if hit {
             self.then_top1 += 1;

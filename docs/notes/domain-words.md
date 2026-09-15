@@ -39,4 +39,4 @@
 
 ## 复现
 
-`assets/lexicon/QINGJIAN.md` 第 4d 步；评测命令同 `phrase-layer.md`。
+`assets/lexicon/GLIMMER.md` 第 4d 步；评测命令同 `phrase-layer.md`。

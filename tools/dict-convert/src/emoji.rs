@@ -91,7 +91,7 @@ pub fn convert(inputs: &[PathBuf], output: &Path, language: &str) -> Result<(), 
     let mut file = BufWriter::new(std::fs::File::create(output)?);
     writeln!(
         file,
-        "# 由 qingjian-dict-convert 从 Unicode CLDR {language} annotations 生成（Unicode License v3）。词\\temoji emoji …"
+        "# 由 glimmer-dict-convert 从 Unicode CLDR {language} annotations 生成（Unicode License v3）。词\\temoji emoji …"
     )?;
     let mut words = 0;
     for (word, (named, mut keyed)) in table {

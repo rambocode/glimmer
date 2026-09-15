@@ -1,10 +1,10 @@
 //! 「统计」页：输入量（今天 / 7 天 / 累计）、折成几本书、学习语言的词汇与等级分布。
-//! 直读 `%APPDATA%\Qingjian` 下的 `usage.tsv` / `user-vocab.tsv`，不经 Server；打开这页时读一次。
+//! 直读 `%APPDATA%\Glimmer` 下的 `usage.tsv` / `user-vocab.tsv`，不经 Server；打开这页时读一次。
 
+use glimmer_core::{Language, Usage, UsageSummary, VocabularySummary, book_scale};
+use glimmer_learning::{UsageStats, VocabularyBook};
+use glimmer_translate::LevelTable;
 use jiff::Zoned;
-use qingjian_core::{Language, Usage, UsageSummary, VocabularySummary, book_scale};
-use qingjian_learning::{UsageStats, VocabularyBook};
-use qingjian_translate::LevelTable;
 use windows_reactor::*;
 
 use crate::panel::Settings;

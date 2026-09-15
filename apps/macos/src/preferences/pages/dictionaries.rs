@@ -52,7 +52,7 @@ impl DictionariesPage {
         note_full(
             layout,
             mtm,
-            "接受青简 TSV（词、拼音、词频三列）、Rime 的 .dict.yaml 和 .qj 文件，导入后立即可用；勾选框控制开关，「移除」把文件挪到词库目录的 removed 里，不会真删。",
+            "接受微明 TSV（词、拼音、词频三列）、Rime 的 .dict.yaml 和 .qj 文件，导入后立即可用；勾选框控制开关，「移除」把文件挪到词库目录的 removed 里，不会真删。",
         );
         layout.end_group();
         let list = NSView::initWithFrame(mtm.alloc(), NSRect::ZERO);

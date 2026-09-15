@@ -2,11 +2,11 @@
 //!
 //! objc2-input-method-kit 没有为 IMKTextInput 生成绑定，这里用 `msg_send!` 直接发消息。
 
+use glimmer_core::SurroundingText;
 use objc2::msg_send;
 use objc2::rc::Retained;
 use objc2::runtime::AnyObject;
 use objc2_foundation::{NSAttributedString, NSDictionary, NSNotFound, NSRange, NSRect, NSString};
-use qingjian_core::SurroundingText;
 
 /// `{NSNotFound, 0}`：不替换任何已有文本，插到当前位置。
 const NO_REPLACEMENT: NSRange = NSRange::new(NSNotFound as usize, 0);

@@ -2,9 +2,9 @@
 
 ## 做了什么
 
-- 训练：训练仓库 `../train`（私有，与本仓库并列放在 `~/Github/Projects/qingjian/` 下）在中文维基完整 dump + LCCC（12.7 亿 token、字表 19147）上训了两档字级 decoder：
+- 训练：训练仓库 `../train`（私有，与本仓库并列放在 `~/Github/Projects/glimmer/` 下）在中文维基完整 dump + LCCC（12.7 亿 token、字表 19147）上训了两档字级 decoder：
   small 23M（ppl 21.7）、base 36M / 上下文 256（ppl 19.2），4090 上各约一小时。
-- 推理：`crates/qingjian-neural`（candle），与训练脚本的 Python 打分对拍一致。M1 上 Metal 后端最快：空前文单条 6 ms，
+- 推理：`crates/glimmer-neural`（candle），与训练脚本的 Python 打分对拍一致。M1 上 Metal 后端最快：空前文单条 6 ms，
   64 字前文 × 8 条 133 ms；CPU（Accelerate）约慢一倍，candle 自带 gemm 再慢一倍。按 token 算吞吐很低，是每层十几个小算子的调度开销在主导。
 - 接法：Core `sentence::convert_paths` 出 Viterbi 前 6 条路径，`Engine` 按 `路径分 + λ·(神经分 − 静态二元分)` 重排，
   神经分只替换静态二元的判断，个人 n-gram、用户加分、敲错代价原样保留（早先试过 `(1 − λ)·路径分 + λ·神经分` 的线性混分，
@@ -71,7 +71,7 @@
 
 ## 进壳（2026-09-08 晚）
 
-1. **前文 KV 缓存**（`qingjian-neural::PrefixCache`）：前文在一次组句里不变，每层的 K / V 算一次存下来；每条候选只算「前文最后一个 token + 候选」这一小段，
+1. **前文 KV 缓存**（`glimmer-neural::PrefixCache`）：前文在一次组句里不变，每层的 K / V 算一次存下来；每条候选只算「前文最后一个 token + 候选」这一小段，
    前文缓存部分不含最后一个 token，它的输出分布正好给候选第一个字用。Metal 上 64 字前文 × 8 条 133 → 28 ms，空前文 8 条 20 ms；
    剩下的是每层十几个小算子的调度开销，CPU（candle gemm）同样的活要 73 ms，还是 Metal。与 Python 对拍不变。
 2. **Core 异步重排**（`engine/rescoring/`）：一次查询里整句转换会跑好几遍（纠错变体、中英混输比分），所有路径文本进一张「前文 + 文本 → 神经分」缓存；

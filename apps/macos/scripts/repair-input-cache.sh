@@ -51,10 +51,10 @@ for bundle_id in "$@"; do
     echo "${bundle_id}：没有旧键盘缓存，无需处理。"
     continue
   fi
-  # 缓存中已登记青简就不动，反复执行不会产生多份备份。
+  # 缓存中已登记微明就不动，反复执行不会产生多份备份。
   # 使用二进制匹配，不输出缓存内容；键盘缓存里的输入源 ID 是 ASCII。
-  if LC_ALL=C grep -aFq 'app.qingjian.inputmethod' "$keyboard"; then
-    echo "${bundle_id}：键盘缓存已包含青简，无需处理。"
+  if LC_ALL=C grep -aFq 'app.glimmer.inputmethod' "$keyboard"; then
+    echo "${bundle_id}：键盘缓存已包含微明，无需处理。"
     continue
   else
     status=$?
@@ -67,7 +67,7 @@ for bundle_id in "$@"; do
     echo "${bundle_id}：缓存不完整，系统会自行重建，无需处理。"
     continue
   fi
-  backup="$(mktemp -d "$cache_dir/qingjian-input-cache-backup.XXXXXX")"
+  backup="$(mktemp -d "$cache_dir/glimmer-input-cache-backup.XXXXXX")"
   mv "$international" "$backup/com.apple.IntlDataCache.le"
   if ! mv "$keyboard" "$backup/com.apple.IntlDataCache.le.kbdx"; then
     # 第二份移动失败时还原第一份，不留下半套缓存。

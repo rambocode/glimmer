@@ -6,7 +6,7 @@ use windows::Win32::UI::TextServices::{
 };
 use windows::core::{IUnknownImpl, Interface, Ref, Result};
 
-use qingjian_platform::protocol::SessionId;
+use glimmer_platform::protocol::SessionId;
 
 use super::{ACTIVE, TextService_Impl};
 use crate::com::key::preserved;
@@ -50,7 +50,7 @@ impl ITfTextInputProcessor_Impl for TextService_Impl {
         // 放在初始写指示器之后，别被自己那次写触发。
         self.advise_conversion_sink();
         ACTIVE.with(|active| *active.borrow_mut() = Some(self.to_object()));
-        log(&format!("青简 TSF 已激活 tid={tid}"));
+        log(&format!("微明 TSF 已激活 tid={tid}"));
         Ok(())
     }
 
@@ -76,7 +76,7 @@ impl ITfTextInputProcessor_Impl for TextService_Impl {
         self.shared.reset();
         self.shared.take_server_stale();
         self.shared.set_foreground(false);
-        log("青简 TSF 已停用");
+        log("微明 TSF 已停用");
         Ok(())
     }
 }

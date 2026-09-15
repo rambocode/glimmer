@@ -1,5 +1,5 @@
-//! DLL 引擎层的端到端协议测试：把 [`EngineClient`] 接到真正的 Server（`qingjian-windows-server` 的
-//! [`Router`] + [`serve`](qingjian_windows_server::ipc::serve)），两端各在一条 socketpair 上，验证
+//! DLL 引擎层的端到端协议测试：把 [`EngineClient`] 接到真正的 Server（`glimmer-windows-server` 的
+//! [`Router`] + [`serve`](glimmer_windows_server::ipc::serve)），两端各在一条 socketpair 上，验证
 //! 「开会话 → 敲拼音收到候选 → 空格上屏」这条 IPC 闭环。
 //!
 //! 用 `UnixStream::pair` 起真双工流，所以只在 Unix 跑（mac 上开发时能验证 client 编排）；Windows 上
@@ -10,10 +10,10 @@ use std::os::unix::net::UnixStream;
 use std::path::PathBuf;
 use std::thread;
 
-use qingjian_core::Language;
-use qingjian_platform::protocol::{KeyEvent, KeyModifiers, KeyOutcome, SessionId};
-use qingjian_tsf::client::{EngineClient, KeyReply, KeyResponse};
-use qingjian_windows_server::{AssemblySpec, Router, RouterConfig, assembly, ipc};
+use glimmer_core::Language;
+use glimmer_platform::protocol::{KeyEvent, KeyModifiers, KeyOutcome, SessionId};
+use glimmer_tsf::client::{EngineClient, KeyReply, KeyResponse};
+use glimmer_windows_server::{AssemblySpec, Router, RouterConfig, assembly, ipc};
 
 const SESSION: SessionId = SessionId(1);
 

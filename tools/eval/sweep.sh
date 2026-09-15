@@ -1,17 +1,17 @@
 #!/bin/bash
-# 回放扫参：设置文件每行一组 `--tune` 设置（空行 = 缺省），并行跑 `qingjian-cli --replay`，汇成 TSV。
+# 回放扫参：设置文件每行一组 `--tune` 设置（空行 = 缺省），并行跑 `glimmer-cli --replay`，汇成 TSV。
 #
 #   tools/eval/sweep.sh <冻结日志> <配置文件> <设置文件> <输出 tsv>
 #
 # 配置文件用一份 `[predict] enabled = false` 的副本（云联想开着 CLI 会因没密钥退出，也别拿输入法的密钥跑批量）。
-# 二进制缺省 target/release/qingjian-cli，可用 QINGJIAN_CLI 指定；QINGJIAN_JOBS 是并行数（缺省 4）。
+# 二进制缺省 target/release/glimmer-cli，可用 GLIMMER_CLI 指定；GLIMMER_JOBS 是并行数（缺省 4）。
 set -euo pipefail
 log=$1
 config=$2
 settings=$3
 out=$4
-bin=${QINGJIAN_CLI:-target/release/qingjian-cli}
-jobs=${QINGJIAN_JOBS:-4}
+bin=${GLIMMER_CLI:-target/release/glimmer-cli}
+jobs=${GLIMMER_JOBS:-4}
 runs=$(mktemp -d)
 
 run_one() {

@@ -7,7 +7,7 @@ mod event;
 mod sink;
 mod view;
 
-use qingjian_platform::Config;
+use glimmer_platform::Config;
 
 pub use self::event::StatusEvent;
 pub use self::sink::{NoopStatusSink, StatusSink};
@@ -84,7 +84,7 @@ impl Router {
         }
     }
 
-    /// 开着且青简在前台就显示，否则收起。热加载后也调一次。
+    /// 开着且微明在前台就显示，否则收起。热加载后也调一次。
     pub(super) fn reconcile_status(&mut self) {
         match self.status_mode {
             Some(english) if self.config.status_enabled => {

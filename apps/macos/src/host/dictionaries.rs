@@ -28,7 +28,7 @@ impl Host {
         let Some(dir) = paths::dicts_dir() else {
             return;
         };
-        match qingjian_dictionary::import::import(source, &dir) {
+        match glimmer_dictionary::import::import(source, &dir) {
             Ok(imported) => {
                 tracing::info!(name = %imported.name, entries = imported.entries, path = %imported.path.display(), "词库已导入");
                 // 之前关掉过同名词库的，导入后自动打开

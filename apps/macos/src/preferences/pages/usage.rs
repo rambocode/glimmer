@@ -1,12 +1,12 @@
-//! 「统计」页：用青简打了多少字。今天 / 最近 7 天 / 累计 三行，汉字 / 中文词 / 英文词 / 上屏次数 四列，
+//! 「统计」页：用微明打了多少字。今天 / 最近 7 天 / 累计 三行，汉字 / 中文词 / 英文词 / 上屏次数 四列，
 //! 再把累计汉字数折成「几本《某书》」给个直观参照；下面一块是学习语言的词汇（见过 / 看熟 / 上屏过 / 打出过的译词数）。
 //! 数据来自 `Engine::usage_summary` / `Engine::vocabulary_summary`，打开窗口时更新。
 
+use glimmer_core::{FRESH_UNTIL, Usage, UsageSummary, VocabularySummary, book_scale};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::{NSFont, NSTextAlignment, NSTextField};
 use objc2_foundation::NSString;
-use qingjian_core::{FRESH_UNTIL, Usage, UsageSummary, VocabularySummary, book_scale};
 
 use crate::preferences::controls::{caption, note_full, small_label};
 use crate::preferences::layout::{LABEL_WIDTH, Layout, PAGE_PADDING, ROW_HEIGHT};

@@ -22,11 +22,11 @@
 - [ ] ★ 签名与公证：pkg 安装器、自动注册输入源、版本号 / 构建号已做（2026-09-06，`bundle.sh --pkg`）；
   CI 已搭（2026-09-07，`docs/notes/release.md`）：推标签在 macOS runner 打 arm64 + x86_64 两个 pkg、建 Release、生成 `releases.json`，产品数据从 `data` 预发布 Release 下载。
   还差：Apple Developer 账号的 Developer ID 证书（配齐 `release.yml` 头部的七个 Secrets 就自动签名公证）、仓库推上 GitHub 后第一次真跑验证（本机没跑过 workflow）、
-  官网改成读 `releases.json`（含 sha256 / 提交 / 构建时间的展示）并配 `QINGJIAN_WEB_TOKEN` 让发版与文档改动自动触发官网构建、更新检查
+  官网改成读 `releases.json`（含 sha256 / 提交 / 构建时间的展示）并配 `GLIMMER_WEB_TOKEN` 让发版与文档改动自动触发官网构建、更新检查
 - [ ] ★ 特殊应用逐个验证（2026-09-07 用户已验：Zed、Terminal 正常；JetBrains 系没装没验）：Secure Input（已有检测，验证密码框不组句、不发云端）、iTerm / Warp、VS Code / Electron、
   浏览器地址栏、沙盒应用（App Store 版备忘录 / 微信）、全屏游戏；每个记录 preedit 模式建议（按应用的开关已有 `[apps]` 分节，
   英文候选按应用关已做，preedit 模式按应用定可以接在同一分节）
-- [ ] 登录后不恢复成青简：2026-09-06 两次开机日志都显示登录后当前输入源是系统拼音 / ABC，要手动切回（进程没崩过，panic 与崩溃报告都是零；
+- [ ] 登录后不恢复成微明：2026-09-06 两次开机日志都显示登录后当前输入源是系统拼音 / ABC，要手动切回（进程没崩过，panic 与崩溃报告都是零；
   Caps Lock 切 ABC 的系统开关已排除）。怀疑装在 `~/Library/Input Methods` 的 ad-hoc 包每次重装签名变、登录早期枚举没认上；等签名后装 `/Library` 再看，
   或在 `--register` 之外登录时补一次 `TISSelectInputSource`
 - [ ] 卸载与重置：卸载脚本已随包（`uninstall.sh`，`--purge` 连数据删，README 有说明，2026-09-06）；还差偏好设置里的「重置学习数据」按钮、
@@ -55,13 +55,13 @@
 - [x] 个人 n-gram 插值常数（λ 0.8 / K 8 / 上限 0.5 / D 0.75）2026-09-12 回放扫过：K 全平，λ 0.7–0.75 与 0.8 差 0.3 个点、带神经重排后无差，封顶 0.7 起掉；保留现值（`docs/notes/constant-sweep.md`）。
   「挤掉了」要选四次才翻过「给掉了」是 K 与封顶合起来的设计（一次误选翻不过），不是常数没调
 - [x] 词库缺高频「代词 + 的」（我的 / 你的 / 他的）：2026-09-12 加了短语层 `assets/lexicon/phrases.tsv`（`dict-convert phrases`，语料相邻两三词、对话语料里 ≥ 2000 次、
-  边界规则，5400 条：我的 / 好的 / 不知道 / 有没有 / 那我），品牌词 `brand.tsv`（青简 210）；词典词头收不到的这一层以后按同一方法补
+  边界规则，5400 条：我的 / 好的 / 不知道 / 有没有 / 那我），品牌词 `brand.tsv`（微明 210）；词典词头收不到的这一层以后按同一方法补
 - [x] 语料里少的领域词（对齐 / 后端 / 词库 / 候选框）：2026-09-12 从日志人工挑 48 条进 `assets/lexicon/domain_words.tsv`，语言模型走合成计数（`docs/notes/domain-words.md`）；
   语料 0 次的（微软拼音 / 悬浮条）按规矩没进，要进得另立白名单
 - [ ] 按输入串记的选择只认字面：`wod` 下选的 我的 惠及不到 `wode`；考虑同时按候选全拼记一份、查询取两者最大
 - [ ] 已经学进用户词的错读音云端词（`我的 wo di`、`我的哦 wo di e` 这类）没有清理入口：偏好设置词库页给「按读音核对用户词」，或一次性脚本
 - [ ] 正式版前的发布可信性（2026-09-12 外部 CI 检查，测试版先不做）：产品数据改不可变 tag 并在仓库锁版本 + SHA（现在滚动 `data` Release，只校验 SHA256SUMS）；
-  安装包内容验证（pkg / Setup.exe 里词库、模型、许可齐不齐，`codesign --verify` / `signtool verify`）；`cargo deny`（许可证 + 来源）；`.qj` 读取器越界 fuzz、`qingjian-format` 跑 Miri
+  安装包内容验证（pkg / Setup.exe 里词库、模型、许可齐不齐，`codesign --verify` / `signtool verify`）；`cargo deny`（许可证 + 来源）；`.qj` 读取器越界 fuzz、`glimmer-format` 跑 Miri
 - [ ] 本地整句模型（已进壳并随包发出，见 `docs/notes/neural-rescoring.md`；加载 12 秒是早期首次 Metal 编译的记录，2026-09-12 装机实测 102 ms，划掉）：
   重排改了切分时应用里的行内拼音要到下一键才更新；日语
 - [ ] 个人微调（LoRA 挂在冻结基模上，基模更新后拿本地日志重训）：先在 train 仓库验证收益，再验 candle CPU 训练能不能跑通，都过了才进壳
@@ -104,6 +104,6 @@
   - [ ] **本地整句模型上 Windows**：Server 已接（`dispatch/rescore/`，CPU 推理，设置「云服务」页有开关，安装包带 `data\model`），待真机验：每次重排的耗时（前文 + 几条路径一次前向，CPU 上可能几十到一百多毫秒，超了就缩前文长度）、模型加载时间；
     应用光标前文已接（DLL 起组句时读、密码框跳过；2026-09-12 真机验过记事本 / Edge / 终端都读得到，Edge 密码框按 `IS_PRIVATE` 识别），真机看沉浸式应用读不读得到；
     模型单文件 `.qjm` 已做（2026-09-12，复用 `.qj` 容器 `Kind::Model`，`find_model` 先 `.qjm` 再三件套目录，`pack model` / `tools/release/pack-model.sh`，
-    data Release 传 `model.qjm`，bundle.sh / qingjian.iss 只带一个文件），待 mac 与 box 真机各装一次验加载与重排；
+    data Release 传 `model.qjm`，bundle.sh / glimmer.iss 只带一个文件），待 mac 与 box 真机各装一次验加载与重排；
     密码框已按 TSF 规范做（2026-09-12）：`KEYBOARD_DISABLED` compartment 整键放行不组句，`IS_PRIVATE` / 密码 / PIN 输入范围为私密（组句但不学不记不发云端，`ClientMessage::Privacy` → `Engine::set_private`），box 真机验过：Edge 密码框整键放行；InPrivate 网页文本框报 `IS_SEARCH` 不报 `IS_PRIVATE`，私密路径只靠单测覆盖；CI 两个 job 都从 `data` Release 取 `model.qjm`（已做）。
 - [ ] Linux IBus / Fcitx（Phase 5）；配置同步、跨平台词库

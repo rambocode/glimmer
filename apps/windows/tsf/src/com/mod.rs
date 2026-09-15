@@ -34,19 +34,19 @@ use windows::Win32::System::SystemServices::DLL_PROCESS_ATTACH;
 use windows::core::{BOOL, GUID, HRESULT, HSTRING, Interface};
 
 /// 文本服务的 CLSID。注册表 InprocServer32、TSF profile、[`DllGetClassObject`] 都认它。
-pub(crate) const CLSID_QINGJIAN: GUID = GUID::from_u128(0x4fdca82d_e923_49bf_9e75_bb906b93b8bb);
+pub(crate) const CLSID_GLIMMER: GUID = GUID::from_u128(0x65df893e_75f9_4bba_acb4_883c30876d09);
 
-/// [`CLSID_QINGJIAN`] 的注册表字符串形式，两者必须同步改。
-pub(crate) const CLSID_QINGJIAN_STR: &str = "{4FDCA82D-E923-49BF-9E75-BB906B93B8BB}";
+/// [`CLSID_GLIMMER`] 的注册表字符串形式，两者必须同步改。
+pub(crate) const CLSID_GLIMMER_STR: &str = "{65DF893E-75F9-4BBA-ACB4-883C30876D09}";
 
 /// 语言 profile 的 GUID。
-pub(crate) const GUID_PROFILE: GUID = GUID::from_u128(0x8119f8e0_cf81_423b_9189_c0d7374324b3);
+pub(crate) const GUID_PROFILE: GUID = GUID::from_u128(0x21b3be63_cc9f_4387_9a83_766b815d460e);
 
 /// zh-CN。
 pub(crate) const LANGID_ZH_CN: u16 = 0x0804;
 
 /// 输入法在系统里显示的名字。
-pub(crate) const SERVICE_DESCRIPTION: &str = "青简";
+pub(crate) const SERVICE_DESCRIPTION: &str = "微明";
 
 /// 存活的 COM 对象 + LockServer 计数，[`DllCanUnloadNow`] 据它判断能否卸载。
 static DLL_REFERENCES: AtomicIsize = AtomicIsize::new(0);
@@ -94,7 +94,7 @@ extern "system" fn DllGetClassObject(
     if rclsid.is_null() || riid.is_null() || ppv.is_null() {
         return E_FAIL;
     }
-    if unsafe { *rclsid } != CLSID_QINGJIAN {
+    if unsafe { *rclsid } != CLSID_GLIMMER {
         return CLASS_E_CLASSNOTAVAILABLE;
     }
     let factory: IClassFactory = factory::ClassFactory.into();

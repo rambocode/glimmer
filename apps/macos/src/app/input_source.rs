@@ -1,4 +1,4 @@
-//! 把 `.app` 注册成系统输入源、启用并切成当前输入源：`qingjian-macos --register`。
+//! 把 `.app` 注册成系统输入源、启用并切成当前输入源：`glimmer-macos --register`。
 //!
 //! 安装器（pkg 的 postinstall）以 root 跑，而输入源的注册与启用是每个用户自己的事，所以 postinstall 切到登录用户
 //! 来调这个子命令；用户装完不用再去「系统设置 → 键盘 → 输入法」里手动添加。走 Carbon 的 Text Input Source Services，
@@ -151,7 +151,7 @@ pub fn finish_register(source_id: &str) -> i32 {
     }
 }
 
-/// 子进程的命令行开关：`qingjian-macos --finish-register <输入源 ID>`。
+/// 子进程的命令行开关：`glimmer-macos --finish-register <输入源 ID>`。
 pub const FINISH_FLAG: &str = "--finish-register";
 
 /// 子进程退出码：已启用并切成当前。

@@ -4,7 +4,7 @@ order: 5
 description: 随包的小模型在本机给整句候选重新排序：怎么生效、什么时候不生效、怎么关。
 ---
 
-青简随包带一个几十 MB 的小语言模型，组句时在本机给整句候选重新排一次序。全程离线，不联网、不发送任何内容。
+微明随包带一个几十 MB 的小语言模型，组句时在本机给整句候选重新排一次序。全程离线，不联网、不发送任何内容。
 
 ## 怎么生效
 
@@ -27,5 +27,5 @@ description: 随包的小模型在本机给整句候选重新排序：怎么生�
 
 把 `.qjm` 模型文件放进用户数据目录的 `model/` 下，重启输入法后优先使用（训练仓库直接导出的 `model.safetensors`、`config.json`、`vocab.json` 三个文件放进去也认；两者都有时用 `.qjm`）：
 
-- **macOS**：`~/Library/Application Support/Qingjian/model/`
-- **Windows**：`%APPDATA%\Qingjian\model\`
+- **macOS**：`~/Library/Application Support/Glimmer/model/`
+- **Windows**：`%APPDATA%\Glimmer\model\`

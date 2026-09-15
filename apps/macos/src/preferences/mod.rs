@@ -56,12 +56,12 @@ pub fn setting_from_sender(sender: Option<&AnyObject>) -> Option<(Setting, Setti
     None
 }
 
-/// 开发用预览入口（`qingjian-macos --preferences-preview [页序号] [dark]`）：用缺省配置、空统计与两种释义表语言
+/// 开发用预览入口（`glimmer-macos --preferences-preview [页序号] [dark]`）：用缺省配置、空统计与两种释义表语言
 /// 把设置窗口直接打开在前台，不依赖 IMK 与 Host；控件改动因为没有 Host 会被静默忽略。截图与调布局用。
 pub fn preview_main() {
+    use glimmer_core::{Language, UsageSummary, VocabularySummary};
+    use glimmer_platform::Config;
     use objc2_app_kit::{NSAppearance, NSAppearanceNameDarkAqua, NSApplication};
-    use qingjian_core::{Language, UsageSummary, VocabularySummary};
-    use qingjian_platform::Config;
 
     let mtm = objc2::MainThreadMarker::new().expect("预览入口必须在主线程");
     let app = NSApplication::sharedApplication(mtm);

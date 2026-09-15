@@ -1,5 +1,5 @@
 [package]
-name = "qingjian-macos"
+name = "glimmer-macos"
 description = "macOS 输入法：Input Method Kit 外壳、候选窗口、菜单与偏好设置"
 version = "0.1.3-dev"
 edition.workspace = true
@@ -12,14 +12,14 @@ objc2-app-kit.workspace = true
 objc2-foundation.workspace = true
 objc2-input-method-kit.workspace = true
 objc2-core-foundation.workspace = true
-qingjian-core.workspace = true
-qingjian-dictionary.workspace = true
-qingjian-learning.workspace = true
-qingjian-platform.workspace = true
-qingjian-predict.workspace = true
-qingjian-lm.workspace = true
-qingjian-neural = { workspace = true, features = ["metal"] }
-qingjian-translate.workspace = true
+glimmer-core.workspace = true
+glimmer-dictionary.workspace = true
+glimmer-learning.workspace = true
+glimmer-platform.workspace = true
+glimmer-predict.workspace = true
+glimmer-lm.workspace = true
+glimmer-neural = { workspace = true, features = ["metal"] }
+glimmer-translate.workspace = true
 thiserror.workspace = true
 tracing.workspace = true
 tracing-appender.workspace = true

@@ -6,9 +6,9 @@ mod state;
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant, SystemTime};
 
-use qingjian_core::{Engine, NoGlossFiller, NoPredictor};
-use qingjian_platform::{Config, extra_dictionaries};
-use qingjian_predict::{CloudGlossFiller, CloudPredictor, PredictConfig};
+use glimmer_core::{Engine, NoGlossFiller, NoPredictor};
+use glimmer_platform::{Config, extra_dictionaries};
+use glimmer_predict::{CloudGlossFiller, CloudPredictor, PredictConfig};
 
 pub(super) use self::state::ConfigReload;
 

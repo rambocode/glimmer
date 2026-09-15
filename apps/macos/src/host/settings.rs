@@ -9,7 +9,7 @@ impl Host {
         let Some(path) = self.settings.path() else {
             return false;
         };
-        match qingjian_platform::Config::load(path) {
+        match glimmer_platform::Config::load(path) {
             Ok(latest) if latest.custom_phrases == self.settings.config().custom_phrases => true,
             Ok(_) => {
                 self.settings.reload();
@@ -40,7 +40,7 @@ impl Host {
         let Some(path) = self.settings.path() else {
             return;
         };
-        let result = qingjian_platform::Config::set_custom_phrases(path, &phrases);
+        let result = glimmer_platform::Config::set_custom_phrases(path, &phrases);
         self.settings.reload();
         self.apply_config(false);
         if let Err(error) = result {
@@ -144,7 +144,7 @@ impl Host {
                 let Some(path) = self.settings.path() else {
                     return;
                 };
-                if let Err(error) = qingjian_platform::Config::set_custom_phrases(path, &phrases) {
+                if let Err(error) = glimmer_platform::Config::set_custom_phrases(path, &phrases) {
                     self.preferences.set_phrase_error(&error);
                     self.preferences.set_status(&error);
                     return;
@@ -189,7 +189,7 @@ impl Host {
                 }
             }
             (Setting::PunctuationMode, SettingValue::Index(index)) => {
-                if let Some(mode) = qingjian_core::PunctuationMode::ALL.get(index) {
+                if let Some(mode) = glimmer_core::PunctuationMode::ALL.get(index) {
                     self.settings
                         .set_value("general", "punctuation_mode", mode.key());
                 }

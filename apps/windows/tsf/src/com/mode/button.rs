@@ -19,7 +19,7 @@ use windows::Win32::UI::WindowsAndMessaging::{CreateIconIndirect, HICON, ICONINF
 use windows::core::{BOOL, BSTR, GUID, IUnknown, Interface, Ref, Result, implement, w};
 
 use super::ModeState;
-use crate::com::CLSID_QINGJIAN;
+use crate::com::CLSID_GLIMMER;
 
 /// `GUID_LBI_INPUTMODE` 语言栏按钮：图标随 [`ModeState`] 显示中 / 英，点它切模式。
 #[implement(ITfLangBarItemButton, ITfSource)]
@@ -36,11 +36,11 @@ impl ModeButton {
 impl ITfLangBarItem_Impl for ModeButton_Impl {
     fn GetInfo(&self, pinfo: *mut TF_LANGBARITEMINFO) -> Result<()> {
         let info = unsafe { &mut *pinfo };
-        info.clsidService = CLSID_QINGJIAN;
+        info.clsidService = CLSID_GLIMMER;
         info.guidItem = GUID_LBI_INPUTMODE;
         info.dwStyle = TF_LBI_STYLE_BTN_BUTTON;
         info.ulSort = 0;
-        let desc: Vec<u16> = "青简中英模式".encode_utf16().collect();
+        let desc: Vec<u16> = "微明中英模式".encode_utf16().collect();
         let n = desc.len().min(info.szDescription.len());
         info.szDescription[..n].copy_from_slice(&desc[..n]);
         Ok(())

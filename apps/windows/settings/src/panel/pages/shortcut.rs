@@ -1,7 +1,7 @@
 //! 「快捷键」页：翻页键、模式键，译词 / 删候选 / 翻译选中文字的修饰键。
 //! 翻译选中文字只改修饰键，字母键固定用配置里当前的；要换字母直接改 `config.toml`。
 
-use qingjian_platform::Modifiers;
+use glimmer_platform::Modifiers;
 use windows_reactor::*;
 
 use crate::panel::controls::{field, index_of, page};

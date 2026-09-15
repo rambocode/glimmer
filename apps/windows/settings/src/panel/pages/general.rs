@@ -1,6 +1,6 @@
 //! 「通用」页：学习语言、每页候选数、双拼、英文模式候选。
 
-use qingjian_platform::{MAX_PAGE_SIZE, PunctuationMode};
+use glimmer_platform::{MAX_PAGE_SIZE, PunctuationMode};
 use windows_reactor::*;
 
 use crate::panel::controls::{field, index_of, page};

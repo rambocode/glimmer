@@ -2,7 +2,7 @@
 
 use std::time::Instant;
 
-use qingjian_platform::protocol::SessionId;
+use glimmer_platform::protocol::SessionId;
 
 use super::{RECONNECT_INTERVAL, TextService_Impl};
 use crate::client::EngineClient;
@@ -25,9 +25,7 @@ impl TextService_Impl {
             }
             Err(error) => {
                 self.last_connect_failure.set(Some(Instant::now()));
-                log(&format!(
-                    "连 Server 失败（qingjian-server 没起？）: {error}"
-                ));
+                log(&format!("连 Server 失败（glimmer-server 没起？）: {error}"));
             }
         }
     }

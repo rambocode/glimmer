@@ -25,7 +25,7 @@ use windows::Win32::UI::WindowsAndMessaging::{
 };
 use windows::core::{Error, Result};
 
-use qingjian_platform::protocol::{Frame, ScreenRect};
+use glimmer_platform::protocol::{Frame, ScreenRect};
 
 use self::candidates::CandidateWindow;
 use self::command::UiCommand;
@@ -55,7 +55,7 @@ impl UiHandle {
         let (ready_tx, ready_rx) = mpsc::channel::<Option<u32>>();
         let (command_tx, command_rx) = mpsc::channel::<UiCommand>();
         thread::Builder::new()
-            .name("qingjian-candidates".to_owned())
+            .name("glimmer-candidates".to_owned())
             .spawn(move || run(command_rx, &ready_tx, on_status))
             .map_err(|_| Error::from(E_FAIL))?;
         match ready_rx.recv() {

@@ -8,7 +8,7 @@ use windows::Win32::Foundation::ERROR_PIPE_BUSY;
 use windows::Win32::System::Pipes::WaitNamedPipeW;
 use windows::core::HSTRING;
 
-use qingjian_platform::protocol::DEFAULT_PIPE_NAME;
+use glimmer_platform::protocol::DEFAULT_PIPE_NAME;
 
 /// 连好的命名管道。对端关闭时读到 EOF；`flush` 是空操作（管道上 `FlushFileBuffers` 会阻塞到对端读完）。
 pub type PipeStream = File;

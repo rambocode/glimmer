@@ -12,7 +12,7 @@ pub struct BundleInfo {
     /// `CFBundleShortVersionString`，菜单里显示。
     pub version: String,
 
-    /// 构建标识：打包脚本通过环境变量 `QINGJIAN_BUILD` 塞进来的 git 短哈希与日期；直接 `cargo build` 的是「本地构建」。
+    /// 构建标识：打包脚本通过环境变量 `GLIMMER_BUILD` 塞进来的 git 短哈希与日期；直接 `cargo build` 的是「本地构建」。
     pub build: String,
 }
 
@@ -38,7 +38,7 @@ impl BundleInfo {
             connection_name,
             identifier,
             version,
-            build: option_env!("QINGJIAN_BUILD")
+            build: option_env!("GLIMMER_BUILD")
                 .unwrap_or("本地构建")
                 .to_owned(),
         }
@@ -46,4 +46,4 @@ impl BundleInfo {
 }
 
 /// 与 `Info.plist` 里的 `CFBundleIdentifier` 保持一致。
-pub(crate) const DEFAULT_IDENTIFIER: &str = "app.qingjian.inputmethod";
+pub(crate) const DEFAULT_IDENTIFIER: &str = "app.glimmer.inputmethod";

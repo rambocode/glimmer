@@ -1,6 +1,6 @@
 //! 交给 UI 线程执行的命令。
 
-use qingjian_platform::protocol::{Frame, ScreenRect};
+use glimmer_platform::protocol::{Frame, ScreenRect};
 
 use crate::dispatch::StatusView;
 

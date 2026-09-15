@@ -1,15 +1,15 @@
 ﻿<#
 .SYNOPSIS
-    在 Windows 上打青简安装包：release 构建三个产物 + 用 Inno Setup 编 qingjian.iss。
+    在 Windows 上打微明安装包：release 构建三个产物 + 用 Inno Setup 编 glimmer.iss。
 .DESCRIPTION
     在编译机（MSVC 工具链 + Inno Setup）上跑。步骤：
       1) cargo build --release 出 DLL / Server / 设置程序；
       2) 从 apps\windows\server\Cargo.toml 读版本号；
       3) 找 ISCC.exe（PATH 或常见安装位置）；
-      4) iscc /DAppVersion=<版本> 编脚本，成品在 target\installer\Qingjian-<版本>-Setup.exe。
+      4) iscc /DAppVersion=<版本> 编脚本，成品在 target\installer\Glimmer-<版本>-Setup.exe。
     随包数据（.qj / .tsv）直接由 .iss 从仓库 data\generated 与 assets 里取，不另建暂存目录；
     确保打包前 data\generated 里的 .qj 是最新的（bundle 流程见仓库 CLAUDE.md）。
-    没有代码签名证书时（CI 内测包）先设 $env:QINGJIAN_UIACCESS = '0' 再跑：没签名的 exe 带 uiAccess 起不来。
+    没有代码签名证书时（CI 内测包）先设 $env:GLIMMER_UIACCESS = '0' 再跑：没签名的 exe 带 uiAccess 起不来。
 .PARAMETER SkipBuild
     跳过 cargo build（数据或 .iss 改了、二进制没变时重编安装包用）。
 .PARAMETER Sign
@@ -23,20 +23,20 @@ $ErrorActionPreference = 'Stop'
 
 # 仓库根：本脚本在 apps\windows\installer 下，往上三层是 ime\。
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
-$Iss  = Join-Path $PSScriptRoot 'qingjian.iss'
+$Iss  = Join-Path $PSScriptRoot 'glimmer.iss'
 
 # 1) 构建三个产物。
 if (-not $SkipBuild) {
     Write-Host '构建 release 产物…' -ForegroundColor Cyan
     Push-Location $Repo
     try {
-        cargo build --release --locked -p qingjian-windows-server -p qingjian-windows-tsf -p qingjian-windows-settings
+        cargo build --release --locked -p glimmer-windows-server -p glimmer-windows-tsf -p glimmer-windows-settings
         if ($LASTEXITCODE -ne 0) { throw "cargo build 失败（退出码 $LASTEXITCODE）" }
     } finally { Pop-Location }
 }
 
 # 缺一个产物就早报错。
-$targets = @('qingjian_tsf.dll', 'qingjian-server.exe', 'qingjian-settings.exe')
+$targets = @('glimmer_tsf.dll', 'glimmer-server.exe', 'glimmer-settings.exe')
 foreach ($t in $targets) {
     $p = Join-Path $Repo "target\release\$t"
     if (-not (Test-Path $p)) { throw "缺产物 $p，先跑一次不带 -SkipBuild 的构建" }
@@ -80,8 +80,8 @@ $VersionNumeric = $Version -replace '-.*$', ''
 Write-Host "版本 $Version" -ForegroundColor Cyan
 
 # 3) 找 ISCC.exe：先 Program Files 里的 7（与开发机同版本；CI 镜像 PATH 上自带 Chocolatey 的 6，不带简中翻译，不能让它抢先），
-#    再 PATH，最后 6。QINGJIAN_ISCC 环境变量可直接指定。
-$iscc = $env:QINGJIAN_ISCC
+#    再 PATH，最后 6。GLIMMER_ISCC 环境变量可直接指定。
+$iscc = $env:GLIMMER_ISCC
 if (-not $iscc) {
     $candidates = @(
         "${env:ProgramFiles}\Inno Setup 7\ISCC.exe",
@@ -97,12 +97,12 @@ if (-not $iscc) {
     )
     $iscc = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 }
-if (-not $iscc) { throw '找不到 ISCC.exe：装 Inno Setup 7 或用 QINGJIAN_ISCC 指定' }
+if (-not $iscc) { throw '找不到 ISCC.exe：装 Inno Setup 7 或用 GLIMMER_ISCC 指定' }
 Write-Host "用 $iscc" -ForegroundColor Cyan
 
 # 4) 编安装包。
 & $iscc "/DAppVersion=$Version" "/DAppVersionNumeric=$VersionNumeric" $Iss
 if ($LASTEXITCODE -ne 0) { throw "iscc 失败（退出码 $LASTEXITCODE）" }
 
-$out = Join-Path $Repo "target\installer\Qingjian-$Version-Setup.exe"
+$out = Join-Path $Repo "target\installer\Glimmer-$Version-Setup.exe"
 Write-Host "完成：$out" -ForegroundColor Green

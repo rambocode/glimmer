@@ -1,4 +1,4 @@
-//! DLL 自己的文件日志：按天一个文件 `%LOCALAPPDATA%\Qingjian\tsf.<YYYY-MM-DD>.log`，只留最近 [`KEEP_DAYS`] 天（与 Server 的滚动策略一致）。
+//! DLL 自己的文件日志：按天一个文件 `%LOCALAPPDATA%\Glimmer\tsf.<YYYY-MM-DD>.log`，只留最近 [`KEEP_DAYS`] 天（与 Server 的滚动策略一致）。
 //! 不走 tracing 全局订阅器（宿主进程可能已装了自己的）；任何失败都吞掉，日志不能拖垮宿主。
 //! 每次都开文件追加一行：DLL 被加载进每个应用进程，多进程同时追加同一天的文件，这样最省事也最稳。
 
@@ -51,7 +51,7 @@ fn now(t: &SYSTEMTIME) -> String {
 }
 
 fn dir() -> Option<PathBuf> {
-    std::env::var_os("LOCALAPPDATA").map(|base| PathBuf::from(base).join("Qingjian"))
+    std::env::var_os("LOCALAPPDATA").map(|base| PathBuf::from(base).join("Glimmer"))
 }
 
 /// 自 1970-01-01 起的天数，日期比较用。
@@ -123,7 +123,7 @@ mod tests {
             Some(days_from_civil(2026, 9, 11))
         );
         assert_eq!(log_day("tsf.log"), None);
-        assert_eq!(log_day("qingjian-server.2026-09-11.log"), None);
+        assert_eq!(log_day("glimmer-server.2026-09-11.log"), None);
         assert_eq!(log_day("tsf.2026-13-01.log"), None);
     }
 }

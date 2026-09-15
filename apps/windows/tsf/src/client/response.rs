@@ -1,4 +1,4 @@
-use qingjian_platform::protocol::{Frame, KeyOutcome};
+use glimmer_platform::protocol::{Frame, KeyOutcome};
 
 /// Server 对一次按键的处理结果。
 pub struct KeyResponse {

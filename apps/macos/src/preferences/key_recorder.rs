@@ -3,12 +3,12 @@
 use std::cell::{Cell, RefCell};
 
 use crate::imk::ShiftTap;
+use glimmer_platform::{KeyCombo, Modifiers};
 use objc2::rc::Retained;
 use objc2::runtime::AnyObject;
 use objc2::{DefinedClass, MainThreadMarker, MainThreadOnly, define_class, msg_send};
 use objc2_app_kit::{NSBezelStyle, NSButton, NSEvent, NSEventModifierFlags};
 use objc2_foundation::{NSObjectProtocol, NSRect, NSString};
-use qingjian_platform::{KeyCombo, Modifiers};
 
 /// 录制中的按钮标题。
 const RECORDING_TITLE: &str = "按下新的快捷键…";
@@ -114,7 +114,7 @@ define_class!(
                     event.keyCode(), event.modifierFlags(), event.timestamp(),
                 );
                 if tapped {
-                    let value = qingjian_platform::ModeSwitch::Shift;
+                    let value = glimmer_platform::ModeSwitch::Shift;
                     self.finish(value.key_string(), value.label());
                 }
             }

@@ -1,6 +1,6 @@
 //! 提示词与回复解析。
 
-use qingjian_core::PartOfSpeech;
+use glimmer_core::PartOfSpeech;
 use serde::Deserialize;
 
 use crate::entry::{GlossEntry, JapaneseSense};

@@ -1,4 +1,4 @@
-//! 命名管道传输：在 `\\.\pipe\qingjian` 上服务 DLL 客户端，字节模式，帧由协议 codec 切。
+//! 命名管道传输：在 `\\.\pipe\glimmer` 上服务 DLL 客户端，字节模式，帧由协议 codec 切。
 //!
 //! 每个应用进程各开一条连接且失焦后连接仍在，所以不能串行服务（新聚焦的应用连不上会阻塞 UI 线程、
 //! 触发 TSF 看门狗）：后台接受循环每来一个客户端就新建实例、起一条线程；[`Router`] 不跨线程，
@@ -23,12 +23,12 @@ use windows::Win32::System::Pipes::{
 };
 use windows::core::{HRESULT, HSTRING};
 
-use qingjian_platform::protocol::{ClientMessage, ServerMessage, read_message, write_message};
+use glimmer_platform::protocol::{ClientMessage, ServerMessage, read_message, write_message};
 
 use super::Work;
 use crate::dispatch::Router;
 
-pub use qingjian_platform::protocol::DEFAULT_PIPE_NAME;
+pub use glimmer_platform::protocol::DEFAULT_PIPE_NAME;
 
 const BUFFER_SIZE: u32 = 64 * 1024;
 
@@ -51,7 +51,7 @@ pub fn serve_pipe(
         Ok(first) => first,
         Err(error) if error.raw_os_error() == Some(ERROR_ACCESS_DENIED.0 as i32) => {
             return Err(io::Error::other(
-                "已有一个 qingjian-server 在运行（命名管道被占），本进程退出",
+                "已有一个 glimmer-server 在运行（命名管道被占），本进程退出",
             ));
         }
         Err(error) => return Err(error),

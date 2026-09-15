@@ -10,7 +10,7 @@ use windows::Win32::UI::TextServices::{
 };
 use windows::core::{Result, implement};
 
-use qingjian_platform::protocol::ScreenRect;
+use glimmer_platform::protocol::ScreenRect;
 
 use super::anchor::{anchor_rect, mouse_screen_rect};
 use crate::com::composition::Shared;

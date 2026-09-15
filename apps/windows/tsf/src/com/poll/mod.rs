@@ -23,7 +23,7 @@ use super::log::log;
 use super::service::SharedClient;
 use super::window_class::WindowClass;
 
-const CLASS_NAME: PCWSTR = w!("QingjianPollWindow");
+const CLASS_NAME: PCWSTR = w!("GlimmerPollWindow");
 static CLASS: WindowClass = WindowClass::new();
 
 const TIMER_ID: usize = 1;

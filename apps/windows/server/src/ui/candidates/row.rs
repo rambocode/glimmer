@@ -1,6 +1,6 @@
 //! 候选窗口的一行：[`Candidate`] 的展示形态，与 macOS 端 `candidates/row.rs` 一致。
 
-use qingjian_core::{Candidate, CandidateKind};
+use glimmer_core::{Candidate, CandidateKind};
 
 /// annotation 片段的深浅。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

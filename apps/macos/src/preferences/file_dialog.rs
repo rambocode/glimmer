@@ -12,7 +12,7 @@ pub fn choose_dictionary_file() -> Option<PathBuf> {
     panel.setCanChooseDirectories(false);
     panel.setAllowsMultipleSelection(false);
     panel.setMessage(Some(&NSString::from_str(
-        "选择要导入的词库：青简 TSV、Rime .dict.yaml 或 .qj",
+        "选择要导入的词库：微明 TSV、Rime .dict.yaml 或 .qj",
     )));
     panel.setPrompt(Some(&NSString::from_str("导入")));
     if panel.runModal() != NSModalResponseOK {

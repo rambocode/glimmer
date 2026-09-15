@@ -58,7 +58,7 @@ mod tests {
 
     #[test]
     fn filters_and_orders_words() {
-        let dir = std::env::temp_dir().join("qingjian-gloss-gen-words-test");
+        let dir = std::env::temp_dir().join("glimmer-gloss-gen-words-test");
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("unigram.tsv");
         std::fs::write(

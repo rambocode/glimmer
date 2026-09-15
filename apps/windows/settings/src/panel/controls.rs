@@ -8,7 +8,7 @@ use super::LABEL_WIDTH;
 
 /// 随包资源（相对随包根，如 `data/generated/dicts`），定位逻辑与 Server 共用。
 pub(super) fn repo_resource(rel: &str) -> Option<PathBuf> {
-    qingjian_platform::resources::bundled_resource(rel)
+    glimmer_platform::resources::bundled_resource(rel)
 }
 
 pub(super) fn open_in_editor(path: &Path) {

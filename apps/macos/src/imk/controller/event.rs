@@ -2,7 +2,7 @@
 
 use super::*;
 
-impl QingjianInputController {
+impl GlimmerInputController {
     /// Shift 在松开时识别；普通按键先匹配配置快捷键，再分发命令键与文本。
     pub(super) fn dispatch_event(&self, event: &NSEvent, client: TextClient<'_>) -> bool {
         if event.r#type() == NSEventType::FlagsChanged {

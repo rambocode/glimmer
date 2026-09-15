@@ -3,7 +3,7 @@
 set -euo pipefail
 
 script_dir="$(cd "$(dirname "$0")" && pwd)"
-fixture="$(mktemp -d "${TMPDIR:-/tmp}/qingjian-cache-test.XXXXXX")"
+fixture="$(mktemp -d "${TMPDIR:-/tmp}/glimmer-cache-test.XXXXXX")"
 trap 'rm -rf "$fixture"' EXIT
 app="$fixture/com.example.chat"
 mkdir -p "$app"
@@ -12,17 +12,17 @@ printf 'old input source list' > "$app/com.apple.IntlDataCache.le.kbdx"
 printf 'unrelated file' > "$app/messages.db"
 bash "$script_dir/repair-input-cache.sh" --cache-root "$fixture" com.example.chat
 [[ ! -e "$app/com.apple.IntlDataCache.le" && ! -e "$app/com.apple.IntlDataCache.le.kbdx" ]]
-backups=("$app"/qingjian-input-cache-backup.*)
+backups=("$app"/glimmer-input-cache-backup.*)
 [[ ${#backups[@]} -eq 1 ]]
 [[ "$(<"${backups[0]}/com.apple.IntlDataCache.le")" == 'international fixture' ]]
 [[ "$(<"${backups[0]}/com.apple.IntlDataCache.le.kbdx")" == 'old input source list' ]]
 [[ "$(<"$app/messages.db")" == 'unrelated file' ]]
 bash "$script_dir/repair-input-cache.sh" --cache-root "$fixture" com.example.chat
 printf 'international fixture' > "$app/com.apple.IntlDataCache.le"
-printf 'app.qingjian.inputmethod' > "$app/com.apple.IntlDataCache.le.kbdx"
+printf 'app.glimmer.inputmethod' > "$app/com.apple.IntlDataCache.le.kbdx"
 bash "$script_dir/repair-input-cache.sh" --cache-root "$fixture" com.example.chat
 [[ -f "$app/com.apple.IntlDataCache.le" && -f "$app/com.apple.IntlDataCache.le.kbdx" ]]
-backups=("$app"/qingjian-input-cache-backup.*)
+backups=("$app"/glimmer-input-cache-backup.*)
 [[ ${#backups[@]} -eq 1 ]]
 if bash "$script_dir/repair-input-cache.sh" --cache-root "$fixture" ../com.example.chat; then
   echo "错误：未拒绝越界路径" >&2

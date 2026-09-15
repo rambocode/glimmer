@@ -1,10 +1,10 @@
 use std::path::PathBuf;
 
-use qingjian_dictionary::DictionaryError;
-use qingjian_learning::LearningError;
-use qingjian_lm::LmError;
-use qingjian_platform::ConfigError;
-use qingjian_translate::GlossaryError;
+use glimmer_dictionary::DictionaryError;
+use glimmer_learning::LearningError;
+use glimmer_lm::LmError;
+use glimmer_platform::ConfigError;
+use glimmer_translate::GlossaryError;
 
 #[derive(Debug, thiserror::Error)]
 pub enum HostError {

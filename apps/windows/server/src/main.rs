@@ -4,22 +4,22 @@
 
 use std::path::{Path, PathBuf};
 
-use qingjian_core::{Engine, Language};
-use qingjian_platform::{Config, ConfigError, LogLevel, resources};
-use qingjian_windows_server::{
+use glimmer_core::{Engine, Language};
+use glimmer_platform::{Config, ConfigError, LogLevel, resources};
+use glimmer_windows_server::{
     AssemblySpec, LanguageModelFiles, Router, RouterConfig, ServerError, assembly, dispatch,
 };
 
-/// 用户数据目录 `%APPDATA%\Qingjian`。非 Windows 拿不到。
+/// 用户数据目录 `%APPDATA%\Glimmer`。非 Windows 拿不到。
 fn user_dir() -> Option<PathBuf> {
-    std::env::var_os("APPDATA").map(|dir| PathBuf::from(dir).join("Qingjian"))
+    std::env::var_os("APPDATA").map(|dir| PathBuf::from(dir).join("Glimmer"))
 }
 
 fn config_path() -> Option<PathBuf> {
     user_dir().map(|dir| dir.join("config.toml"))
 }
 
-/// 首次启动把带说明的配置模板写到 `%APPDATA%\Qingjian\config.toml`（与 macOS 一致）；
+/// 首次启动把带说明的配置模板写到 `%APPDATA%\Glimmer\config.toml`（与 macOS 一致）；
 /// 这时日志还没装好，结果交给 `main` 记。已有文件返回 `Ok(false)`。
 fn write_config_template() -> Option<Result<bool, ConfigError>> {
     let path = config_path()?;
@@ -42,7 +42,7 @@ fn load_config() -> Config {
     }
 }
 
-/// 读密钥：工作目录 `.env`，再叠加 `%APPDATA%\Qingjian\.env`；不覆盖已有环境变量。
+/// 读密钥：工作目录 `.env`，再叠加 `%APPDATA%\Glimmer\.env`；不覆盖已有环境变量。
 fn load_env() {
     let _ = dotenvy::dotenv();
     if let Some(env_file) = user_dir().map(|dir| dir.join(".env")) {
@@ -118,7 +118,7 @@ fn init_logging(config: &Config) -> Option<tracing_appender::non_blocking::Worke
         Some(dir) => {
             let appender = tracing_appender::rolling::RollingFileAppender::builder()
                 .rotation(tracing_appender::rolling::Rotation::DAILY)
-                .filename_prefix("qingjian-server")
+                .filename_prefix("glimmer-server")
                 .filename_suffix("log")
                 .max_log_files(7)
                 .build(&dir)
@@ -153,10 +153,10 @@ fn main() {
     let language = learning_language(&config);
     // 装机布局与 exe 同级，开发布局是仓库 `ime/`；都找不到回落工作目录。
     let root = resources::bundled_root().unwrap_or_else(|| PathBuf::from("."));
-    let dict = std::env::var_os("QINGJIAN_DICT")
+    let dict = std::env::var_os("GLIMMER_DICT")
         .map(PathBuf::from)
         .unwrap_or_else(|| default_dict(&root));
-    let glossary = std::env::var_os("QINGJIAN_GLOSSARY")
+    let glossary = std::env::var_os("GLIMMER_GLOSSARY")
         .map(PathBuf::from)
         .or_else(|| glossary_file(&root, language))
         .filter(|path| path.is_file());
@@ -211,20 +211,20 @@ fn main() {
         model = model_path.as_deref().map(|p| p.display().to_string()).unwrap_or_default(),
         model_enabled = config.model.enabled,
         sessions = router.session_count(),
-        "青简 Windows Server 就绪"
+        "微明 Windows Server 就绪"
     );
 
     serve(router);
 }
 
-/// DLL 日志目录 `%LOCALAPPDATA%\Qingjian` 给 AppContainer 应用（任务栏搜索 / 设置）写权限：
+/// DLL 日志目录 `%LOCALAPPDATA%\Glimmer` 给 AppContainer 应用（任务栏搜索 / 设置）写权限：
 /// 那些进程里的 DLL 默认写不了用户目录，出了问题连日志都没有。失败只记警告。
 #[cfg(windows)]
 fn grant_appcontainer_log_access() {
     use std::os::windows::process::CommandExt;
     const CREATE_NO_WINDOW: u32 = 0x0800_0000;
     let Some(dir) =
-        std::env::var_os("LOCALAPPDATA").map(|base| PathBuf::from(base).join("Qingjian"))
+        std::env::var_os("LOCALAPPDATA").map(|base| PathBuf::from(base).join("Glimmer"))
     else {
         return;
     };
@@ -249,8 +249,8 @@ fn grant_appcontainer_log_access() {
 /// 起 UI 线程作为候选窗口 / 状态条的输出端（失败退化为不画），再在命名管道上服务到进程结束。
 #[cfg(windows)]
 fn serve(mut router: Router) {
-    use qingjian_windows_server::ipc::{Work, pipe};
-    use qingjian_windows_server::ui::UiHandle;
+    use glimmer_windows_server::ipc::{Work, pipe};
+    use glimmer_windows_server::ui::UiHandle;
     grant_appcontainer_log_access();
     // 工人循环的活：各连接的消息 + 状态条上的操作（UI 线程投进来）。
     let (work_tx, work_rx) = std::sync::mpsc::channel::<Work>();

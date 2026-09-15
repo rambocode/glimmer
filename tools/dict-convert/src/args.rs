@@ -4,8 +4,8 @@ use clap::{Parser, Subcommand, ValueEnum};
 
 #[derive(Debug, Parser)]
 #[command(
-    name = "qingjian-dict-convert",
-    about = "把第三方词库 / 词典转换成青简的 TSV，或把 TSV 打包成 .qj"
+    name = "glimmer-dict-convert",
+    about = "把第三方词库 / 词典转换成微明的 TSV，或把 TSV 打包成 .qj"
 )]
 pub struct Args {
     /// 输出目录
@@ -18,7 +18,7 @@ pub struct Args {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
-    /// 青简基础词库：从「输入法字词库_分类整理版」数据包 + Unihan 读音建 dict.tsv（两遍跑，见模块文档）
+    /// 微明基础词库：从「输入法字词库_分类整理版」数据包 + Unihan 读音建 dict.tsv（两遍跑，见模块文档）
     Lexicon {
         /// 数据包目录（含 01_characters / 02_common / 03_domains），随仓库放在 assets/lexicon
         #[arg(long, default_value = "assets/lexicon")]
@@ -83,7 +83,7 @@ pub enum Command {
         #[arg(required = true)]
         corpus: Vec<PathBuf>,
 
-        /// 分词用的词库（青简 TSV）；同目录 dicts/ 下的领域词库会一并用于分词（词表与拆分前一致）
+        /// 分词用的词库（微明 TSV）；同目录 dicts/ 下的领域词库会一并用于分词（词表与拆分前一致）
         #[arg(long, default_value = "data/generated/dict.tsv")]
         dict: PathBuf,
 
@@ -122,7 +122,7 @@ pub enum Command {
         #[arg(long)]
         candidates: Option<PathBuf>,
 
-        /// 分词用的词库（青简 TSV）
+        /// 分词用的词库（微明 TSV）
         #[arg(long, default_value = "assets/lexicon/dict.tsv")]
         dict: PathBuf,
 
@@ -145,7 +145,7 @@ pub enum Command {
         #[arg(long, default_value = "data/corpus/lccc.txt")]
         dialogue: PathBuf,
 
-        /// 分词与成分读音用的词库（青简 TSV，同目录 dicts/ 一并读）
+        /// 分词与成分读音用的词库（微明 TSV，同目录 dicts/ 一并读）
         #[arg(long, default_value = "data/generated/dict.tsv")]
         dict: PathBuf,
 

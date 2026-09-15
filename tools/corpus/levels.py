@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = []
 # ///
-"""把词汇等级表转成青简的 `levels-<语言>.tsv`（`词\t等级`，`# levels` 行给出等级从易到难的顺序）。
+"""把词汇等级表转成微明的 `levels-<语言>.tsv`（`词\t等级`，`# levels` 行给出等级从易到难的顺序）。
 
 英文：CEFR-J Wordlist 1.5（A1–B2）+ Octanove Vocabulary Profile（C1/C2），`headword,pos,CEFR,…`，
       斜杠分隔的拼写变体各算一条，同一个词多个词性取最低等级。

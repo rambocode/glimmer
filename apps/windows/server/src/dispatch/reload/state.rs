@@ -3,8 +3,8 @@
 use std::path::PathBuf;
 use std::time::{Instant, SystemTime};
 
-use qingjian_platform::DictionariesConfig;
-use qingjian_predict::PredictConfig;
+use glimmer_platform::DictionariesConfig;
+use glimmer_predict::PredictConfig;
 
 /// 热加载状态。
 pub(crate) struct ConfigReload {

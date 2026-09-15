@@ -10,7 +10,7 @@ mod pages;
 
 use std::path::{Path, PathBuf};
 
-use qingjian_platform::Config;
+use glimmer_platform::Config;
 use windows_reactor::*;
 
 use self::cloud_status::CloudStatus;
@@ -38,14 +38,14 @@ pub(crate) struct Settings {
 }
 
 impl Settings {
-    /// `%APPDATA%\Qingjian\config.toml`；取不到 `APPDATA` 退回工作目录。
+    /// `%APPDATA%\Glimmer\config.toml`；取不到 `APPDATA` 退回工作目录。
     fn config_path() -> PathBuf {
         std::env::var_os("APPDATA")
-            .map(|dir| PathBuf::from(dir).join("Qingjian").join("config.toml"))
+            .map(|dir| PathBuf::from(dir).join("Glimmer").join("config.toml"))
             .unwrap_or_else(|| PathBuf::from("config.toml"))
     }
 
-    /// 数据目录 `%APPDATA%\Qingjian`。
+    /// 数据目录 `%APPDATA%\Glimmer`。
     fn data_dir(&self) -> &Path {
         self.path.parent().unwrap_or_else(|| Path::new("."))
     }

@@ -7,13 +7,13 @@ use std::path::PathBuf;
 use std::thread;
 use std::time::Duration;
 
-use qingjian_core::Language;
-use qingjian_platform::protocol::{
+use glimmer_core::Language;
+use glimmer_platform::protocol::{
     ClientMessage, KeyEvent, PROTOCOL_VERSION, ServerMessage, SessionId,
 };
-use qingjian_windows_server::ipc::pipe::serve_pipe;
-use qingjian_windows_server::ipc::{read_message, write_message};
-use qingjian_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
+use glimmer_windows_server::ipc::pipe::serve_pipe;
+use glimmer_windows_server::ipc::{read_message, write_message};
+use glimmer_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
 
 const SESSION: SessionId = SessionId(1);
 
@@ -34,7 +34,7 @@ fn connect(name: &str) -> std::fs::File {
 
 #[test]
 fn named_pipe_round_trips_the_open_type_loop() {
-    let name = format!(r"\\.\pipe\qingjian-test-{}", std::process::id());
+    let name = format!(r"\\.\pipe\glimmer-test-{}", std::process::id());
 
     // 监听线程服务完一个客户端后阻塞等下一个，随进程退出即可。
     let server_name = name.clone();

@@ -3,7 +3,7 @@
 ## 总体结构
 
 ```text
-                    Qingjian Core
+                    Glimmer Core
                          │
         ┌────────────────┼────────────────┐
         ▼                ▼                ▼
@@ -23,7 +23,7 @@
 
 这些是核心设计决定，不要违反。
 
-1. **Core 平台无关。** `qingjian-core` 及其兄弟 crate 不允许依赖任何平台 API。
+1. **Core 平台无关。** `glimmer-core` 及其兄弟 crate 不允许依赖任何平台 API。
    平台层里不允许出现排序逻辑、词库访问或翻译调用。
 2. **一个候选词只显示一种辅助语言。** 用户配置 Primary Language + 单个 Learning Language。
    不要设计成 `translations: Vec<Translation>` 或 `HashMap<Lang, String>` 这类多语言并列的数据结构，
@@ -35,17 +35,17 @@
 ## Workspace 结构
 
 ```text
-qingjian/
+glimmer/
 ├── crates/
-│   ├── qingjian-core/          # composition / parser / correction / candidate / ranking / sentence / engine …（下面单列）
-│   ├── qingjian-dictionary/    # 词库加载与查询
-│   ├── qingjian-translate/     # 候选翻译 annotation
-│   ├── qingjian-learning/      # 用户词频、用户词、个人英文词、个人 n-gram、个人敲错表（user.tsv / user-words.tsv / user-english.tsv / user-ngram.tsv / user-typos.tsv）、输入日志（input-log.jsonl）、输入统计（usage.tsv）、词汇记录（user-vocab.tsv）
-│   ├── qingjian-predict/       # 云联想：Predictor 的网络实现（OpenAI 兼容接口）
-│   ├── qingjian-lm/            # 整句转换的 bigram 语言模型：LanguageModel 的实现
-│   ├── qingjian-neural/        # 字级 Transformer 的本地推理（candle）：SentenceScorer 的实现，给整句前几条路径重打分
-│   ├── qingjian-format/        # .qj 数据容器：mmap 打开、零拷贝视图、写入器、可落盘的哈希索引（dictionary / lm 依赖它）
-│   └── qingjian-platform/      # 平台层共用的部分：配置文件、协议类型
+│   ├── glimmer-core/          # composition / parser / correction / candidate / ranking / sentence / engine …（下面单列）
+│   ├── glimmer-dictionary/    # 词库加载与查询
+│   ├── glimmer-translate/     # 候选翻译 annotation
+│   ├── glimmer-learning/      # 用户词频、用户词、个人英文词、个人 n-gram、个人敲错表（user.tsv / user-words.tsv / user-english.tsv / user-ngram.tsv / user-typos.tsv）、输入日志（input-log.jsonl）、输入统计（usage.tsv）、词汇记录（user-vocab.tsv）
+│   ├── glimmer-predict/       # 云联想：Predictor 的网络实现（OpenAI 兼容接口）
+│   ├── glimmer-lm/            # 整句转换的 bigram 语言模型：LanguageModel 的实现
+│   ├── glimmer-neural/        # 字级 Transformer 的本地推理（candle）：SentenceScorer 的实现，给整句前几条路径重打分
+│   ├── glimmer-format/        # .qj 数据容器：mmap 打开、零拷贝视图、写入器、可落盘的哈希索引（dictionary / lm 依赖它）
+│   └── glimmer-platform/      # 平台层共用的部分：配置文件、协议类型
 │
 ├── apps/
 │   ├── cli/                    # 测试工具：查询、逐键计时、输入日志回放评测、整句评测
@@ -65,18 +65,18 @@ qingjian/
 └── README.md
 ```
 
-`qingjian-core` 内部模块：
+`glimmer-core` 内部模块：
 
 ```text
-qingjian-core
+glimmer-core
 ├── composition     # 输入状态机：拼音缓冲、光标、上屏
 ├── parser          # 拼音切分（全拼 / 简拼 / 双拼 / 模糊音）
 ├── candidate       # 候选数据模型（Candidate / Translation / Sense / PartOfSpeech / Language）；layout 是分页排布（本地候选 + 云端固定槽位），各平台壳共用
 ├── ranking         # 候选排序
 ├── shortcut        # 快捷候选：日期 / 时间 / 星期、v 表达式模式（四则运算、中文数字），不查词库
 ├── english         # 英文模式候选：词表精确词 / 前缀补全 / 一处编辑纠正（edit.rs），大小写跟着敲的走
-├── sentence        # 离线整句转换：词图 + bigram Viterbi + 束搜索，LanguageModel trait（qingjian-lm 实现，缺省退化为一元），UserNgram 个人 n-gram（二元 + 三元），Context 上文（前两个词），
-│               #   SentenceScorer trait（qingjian-neural 实现）：convert_paths 出前 K 条路径，Engine（engine/rescoring）按 路径分 + λ·(神经分 − 静态分) 重排，异步时后台线程打分、壳停顿后取
+├── sentence        # 离线整句转换：词图 + bigram Viterbi + 束搜索，LanguageModel trait（glimmer-lm 实现，缺省退化为一元），UserNgram 个人 n-gram（二元 + 三元），Context 上文（前两个词），
+│               #   SentenceScorer trait（glimmer-neural 实现）：convert_paths 出前 K 条路径，Engine（engine/rescoring）按 路径分 + λ·(神经分 − 静态分) 重排，异步时后台线程打分、壳停顿后取
 ├── emoji           # emoji 候选：EmojiTable（词 → emoji，Unicode CLDR 中文 annotations）
 ├── fuzzy           # 模糊音：FuzzyRules（配置 [fuzzy]）把每个音节扩展成多种写法，Expanded 借出给词库多写法查询
 ├── shuangpin       # 双拼：Scheme 四套方案的键位表，decode 把敲的键解成全拼（音节间带 '），Decoded 把上屏消耗换算回键数；切分之后全部复用全拼
@@ -85,7 +85,7 @@ qingjian-core
 └── storage         # 小文件落盘原语：write_atomic（临时文件 + fsync + 改名）、read_text_lossy；学习 crate 与配置都用它
 ```
 
-词库内存布局（`qingjian-dictionary`）：词文本与拼音键各放一个连续 arena，词目只存 `u32` 偏移 + 词频，
+词库内存布局（`glimmer-dictionary`）：词文本与拼音键各放一个连续 arena，词目只存 `u32` 偏移 + 词频，
 键按字节序排好（当年 89 万条的测试词库约 150 MB RSS，比 `String` + `Vec<String>` 的朴素布局省三分之二；现在产品词库 8.7 万条，
 且 `.qj` 是 mmap 直接映射，见「数据文件」）。
 查询接口是 `lookup_pattern(&[SyllablePattern])`（命中音节数 ≥ 模式长度）与 `lookup_exact`（正好等长），每个位置可以是
@@ -116,7 +116,7 @@ qingjian-core
 
 输入法进程随时会被 launchd 杀掉或自己崩掉，用户攒的学习数据和正在打的字都不能因此没了：
 
-- **原子写**（`qingjian_core::storage::write_atomic`）：学习 crate 的六张 TSV、输入统计 `usage.tsv`、词汇记录 `user-vocab.tsv`、`config.toml`、`.env` 都先写同目录的临时文件，
+- **原子写**（`glimmer_core::storage::write_atomic`）：学习 crate 的六张 TSV、输入统计 `usage.tsv`、词汇记录 `user-vocab.tsv`、`config.toml`、`.env` 都先写同目录的临时文件，
   flush + fsync 后改名覆盖；任何时刻磁盘上要么是旧文件要么是新文件。输入日志 `input-log.jsonl` 是追加写不走这条路，
   崩溃最多留半行，回放工具按行跳过坏行并计数。
 - **损坏容忍**：学习数据各文件按行解析，格式不对的行记一条警告跳过（下次落盘就清掉了），编码坏掉的字节按替换字符读进来；
@@ -138,29 +138,29 @@ qingjian-core
 ## crate 依赖方向
 
 ```text
-qingjian-dictionary        （纯数据加载与查询，不依赖任何兄弟 crate）
+glimmer-dictionary        （纯数据加载与查询，不依赖任何兄弟 crate）
         ▲
-qingjian-core              （定义 Translator / Learner / Predictor trait，依赖 dictionary）
+glimmer-core              （定义 Translator / Learner / Predictor trait，依赖 dictionary）
         ▲           ▲            ▲
-qingjian-translate  qingjian-learning  qingjian-predict  qingjian-lm  qingjian-neural   （实现 core 的 trait，依赖 core；learning 另依赖 translate 的 LevelTable 做词汇按级汇总）
+glimmer-translate  glimmer-learning  glimmer-predict  glimmer-lm  glimmer-neural   （实现 core 的 trait，依赖 core；learning 另依赖 translate 的 LevelTable 做词汇按级汇总）
         ▲           ▲            ▲
-qingjian-platform          （配置文件 Config：general / shortcut / fuzzy / predict 分节，toml_edit 原地改键保留注释；协议类型，可序列化；依赖 core、predict）
+glimmer-platform          （配置文件 Config：general / shortcut / fuzzy / predict 分节，toml_edit 原地改键保留注释；协议类型，可序列化；依赖 core、predict）
         ▲
 apps/*                     （组装：Engine::new(dict).with_translator(..).with_learner(..).with_predictor(..)）
 ```
 
-`apps/cli` 是 Phase 1 的测试壳：`cargo run -p qingjian-cli -- kaifa` 直接查询，
+`apps/cli` 是 Phase 1 的测试壳：`cargo run -p glimmer-cli -- kaifa` 直接查询，
 不带参数进入交互模式（拼音查询、序号上屏、`:q` 退出），`--user-dict` 指定用户词频文件，
-`--language en|ja|es` 或环境变量 `QINGJIAN_LEARNING_LANGUAGE` 选学习语言。
+`--language en|ja|es` 或环境变量 `GLIMMER_LEARNING_LANGUAGE` 选学习语言。
 `--typing` 是性能测试模式：把输入当一键一键敲进去，每个前缀查一次并标注译文，一行一键打印各阶段耗时
 （这是输入法每键的真实工作量，联想在后台线程不算），启动日志里带各数据文件的加载耗时。
 性能改动要用 release 构建跑它看数字，目标每键 10 ms 以内。
 
 - Core 只依赖 dictionary，不依赖 translate 和 learning。翻译与学习通过 trait 注入（`Translator` / `Learner` / `InputLogger` / `UsageMeter` / `VocabularyTracker`，
   缺省实现都是空操作），这样 Core 的单元测试和 CLI 工具不需要真实词典也能跑。
-- `qingjian-platform` 里的类型必须可序列化（serde）：macOS 和 Linux 上 Core 与壳同进程，
+- `glimmer-platform` 里的类型必须可序列化（serde）：macOS 和 Linux 上 Core 与壳同进程，
   Windows 上 Core 在独立 Server 进程，同一套协议类型两边都用。
-- `storage` 只放 Core 自己的持久化原语，用户词频的数据模型归 `qingjian-learning`。
+- `storage` 只放 Core 自己的持久化原语，用户词频的数据模型归 `glimmer-learning`。
 
 ## 翻译的异步模型
 
@@ -181,38 +181,38 @@ Engine 查词的词库是一个列表：主词库（随包 `dict.qj`）、附加
 （它们其实是通用词：医疗器械、侵权行为）；基础词库从 22 万条降到 8.7 万条、`dict.qj` 10 MB → 3 MB，领域词库合计 13 万条 7 MB。
 分词统计语料时仍把 `dicts/*.tsv` 一起当词表，词表与拆分前一致，语言模型不用重跑。
 壳负责装配，附加词库有两处：随包的领域词库在 `.app` 的 `Resources/dicts/`，缺省关闭，配置 `[dictionaries] domains` 列出打开的
-（缺省只有 `idioms`，偏好设置「词库」页可勾选、不能移除）；用户自己导入的放用户目录 `dicts/`（macOS 是 `~/Library/Application Support/Qingjian/dicts/`），
-目录里的 `.qj` / TSV 文件全部加载，配置 `[dictionaries] disabled` 列出要关掉的文件名；导入 = `qingjian_dictionary::import`
-把青简 TSV / Rime `.dict.yaml` / `.qj` 转成 `.qj` 放进去（Rime 的 YAML 头只取 `name:`，权重非整数当 1），
+（缺省只有 `idioms`，偏好设置「词库」页可勾选、不能移除）；用户自己导入的放用户目录 `dicts/`（macOS 是 `~/Library/Application Support/Glimmer/dicts/`），
+目录里的 `.qj` / TSV 文件全部加载，配置 `[dictionaries] disabled` 列出要关掉的文件名；导入 = `glimmer_dictionary::import`
+把微明 TSV / Rime `.dict.yaml` / `.qj` 转成 `.qj` 放进去（Rime 的 YAML 头只取 `name:`，权重非整数当 1），
 移除 = 文件挪到 `dicts/removed/`，开关 = 改配置，三个动作之后 `Host::reload_dictionaries` 重新装配。这也是第三方词库带着自己许可证单独分发的落点：
 `.qj` 的 `META` 里有名称与许可证，偏好设置里直接显示。
 
 ### 数据文件：`.qj` 容器
 
-词库、语言模型这类常驻数据用自己的二进制容器 `.qj`（`crates/qingjian-format`），原则是**内存布局就是文件布局**：
+词库、语言模型这类常驻数据用自己的二进制容器 `.qj`（`crates/glimmer-format`），原则是**内存布局就是文件布局**：
 从 TSV 解析出来的几段连续数组（词库的词文本 arena、拼音键 arena、键索引、词目；语言模型的词 arena、词表、哈希索引、
 CSR 偏移与后继）原样落盘，打开时 mmap 整个文件、校验一遍头与分节边界，不反序列化。启动从 0.9 s 降到 50 ms。
 
-- 文件 = 32 字节头（魔数 `QINGJIAN`、格式版本、数据种类 `Kind`、分节数）+ 分节表（4 字节标签 + 偏移 + 长度，正文 8 字节对齐）
+- 文件 = 32 字节头（魔数 `GLIMMER`、格式版本、数据种类 `Kind`、分节数）+ 分节表（4 字节标签 + 偏移 + 长度，正文 8 字节对齐）
   + 各分节。第一节固定是 `META`：TOML 的 `Metadata`（名称、许可证 SPDX、署名、来源、版本、条数、生成者），
   偏好设置里的词库列表直接显示它，第三方词库各带各的许可证靠的就是这一节。
 - 数据种类：词库、语言模型、释义表、emoji 表、英文词表，以及本地整句模型 `Kind::Model`——扩展名换成 `.qjm`，
   三节 `CONF` / `VOCB` / `SAFT` 原样装训练仓库导出的 `config.json` / `vocab.json` / `model.safetensors`（safetensors 是不透明载荷，
-  mmap 后切片给 candle，张量搬上设备后容器即丢；`META.entries` 记参数量）。`qingjian-neural::find_model(dir)` 先找 `.qjm`、没有再认三件套目录，
+  mmap 后切片给 candle，张量搬上设备后容器即丢；`META.entries` 记参数量）。`glimmer-neural::find_model(dir)` 先找 `.qjm`、没有再认三件套目录，
   所以开发直接加载训练直出的目录，随包与用户目录只有一个文件；`dict-convert pack model`（`tools/release/pack-model.sh` 带元数据调它）打包。
 - 数值小端、原生对齐，crate 在大端机器上拒绝编译。字符串分节打开时校验一次 UTF-8，之后 `Text::deref` 走 unchecked
   （曾经每次 deref 都重新校验 30 MB，CLI 直接卡死）。定长结构体用 `zerocopy` 派生，`#[repr(C)]` 且手工排字段消灭填充
   （`KeyIndex` 16 字节、`Slot` 12 字节、`WordEntry` 12 字节、`Successor` 8 字节）。
 - 两种视图：`Table<T>`（`Owned(Vec<T>)` / `Mapped`，`Deref<Target = [T]>`）与 `Text`（`Owned(String)` / `Mapped`，
   `Deref<Target = str>`）。解析路径与映射路径产出同一种结构，查询代码不区分。
-- 文件里的哈希索引（`qingjian_format::hash`）：开放寻址、槽里放条目编号、键留在 arena；哈希函数必须跨进程、跨版本稳定
+- 文件里的哈希索引（`glimmer_format::hash`）：开放寻址、槽里放条目编号、键留在 arena；哈希函数必须跨进程、跨版本稳定
   （写文件的进程和读文件的进程算出来要一样），用 FNV-1a 64 加 fmix64 终混（FNV 低位对 UTF-8 中文这种字节模式相近的短串分布差，
   只用低位选槽会长链）。**为什么手写而不是用库**：标准库与 foldhash 的哈希器带随机种子，不能用；blake3 / SHA 这类密码学哈希
   一次几百纳秒、且是为抗碰撞设计的，这里每键要算几千次、只要分布均匀；xxh3 / wyhash 这类非密码学库能用，但任何依赖升级
   悄悄改了算法（或换了默认种子）就会让用户机器上所有 `.qj` 失效，而这个函数总共 12 行、有测试钉死输出值，
   自己写风险最小。若以后碰撞或分布出问题，换成 xxh3 并把 `FORMAT_VERSION` 加一。
 - 写文件先写同目录 `.qj.tmp` 再改名；数据文件只整体替换，从不就地修改（mmap 的安全前提）。
-- 生成：`cargo run --release -p qingjian-dict-convert -- pack dict --name … --license … --source …` → `dict.qj`，
+- 生成：`cargo run --release -p glimmer-dict-convert -- pack dict --name … --license … --source …` → `dict.qj`，
   `pack lm --name … --license …` → `lm.qj`（`bundle.sh` 在 TSV 比 `.qj` 新时自动重打）。`Dictionary::from_path` 按魔数自动选
   `.qj` / TSV 路径，`BigramModel::from_path`（`.qj`）与 `from_paths`（TSV）分开；输入法与 CLI 有 `.qj` 就用它。
   释义表、emoji 表、英文词表还是 TSV（加载各 20 ms 以内，等有需要再进容器）。
@@ -246,7 +246,7 @@ bigram 语言模型 + Viterbi，加上简拼、模糊音、双拼。没有整句
 CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但没有词性、释义偏长。
 运行时查不到的词走同一条 LLM 通道补进用户目录的个人释义表（**释义兜底**）：Core `GlossFiller` trait 与 `Predictor` 分开注入——联想是「最新请求优先」、
 防抖会丢旧请求，兜底恰恰要每个词都问到、慢点没关系。词库词 / 云端词**上屏后**发现随包表没有就入队（只在云联想开着时，发出去的只有那个词），
-`qingjian-predict::CloudGlossFiller` 在独立线程攒 1.5 秒或 8 个词发一次请求（提示词与 gloss-gen 同源，只要当前学习语言），问过的本进程内不再问；
+`glimmer-predict::CloudGlossFiller` 在独立线程攒 1.5 秒或 8 个词发一次请求（提示词与 gloss-gen 同源，只要当前学习语言），问过的本进程内不再问；
 壳每秒 `Engine::poll_glosses` 把结果经 `Translator::learn` 写进 `PersonalGlossary`（`user-glossary-<语言>.tsv`，格式同随包表，可手改），
 `LayeredTranslator` 个人表优先叠在随包表上，随 `flush_learning` 原子落盘。`Translator::translate` 本身仍不联网。
 
@@ -257,10 +257,10 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   候选与词库、用户词、选择次数、个人出现次数有关，Engine 在 commit / `learner_mut` / 换 Learner 时整个清掉。
   拼写纠错的上千个变体先过无分配的 `parser::is_fully_segmentable`，剩下几个才做真正的切分。
 - 整句转换的语言模型通过 `LanguageModel` trait 注入（`sentence/language_model.rs`）：`log_prob(previous, word)`，
-  模型不认识的词返回 `None`，Core 用词库词频兜底并扣分。`qingjian-lm::BigramModel` 从 `lm.qj`（或 `lm-unigram.tsv` / `lm-bigram.tsv`）
+  模型不认识的词返回 `None`，Core 用词库词频兜底并扣分。`glimmer-lm::BigramModel` 从 `lm.qj`（或 `lm-unigram.tsv` / `lm-bigram.tsv`）
   加载：词表是 arena + 定长条目 + 文件里的开放寻址哈希索引；二元按前词分组成 CSR（`offsets[v]..offsets[v+1]` 是 v 的后继段，
   段内按后词编号二分，一次查找落在一两个缓存行里），P(w|v) = 0.8·c(v,w)/c(v) + 0.2·c(w)/N。
-  数据由 `dict-convert bigram` 统计：用青简词库做一元最大概率分词（与词图同一套词表），连续汉字段为句，`<s>` 句首标记。
+  数据由 `dict-convert bigram` 统计：用微明词库做一元最大概率分词（与词图同一套词表），连续汉字段为句，`<s>` 句首标记。
   词图每格只留词频前 6 个词（有简拼位置的格子留 20 个：`h` 下几十个常用字，留少了句子里要的那个进不来），每个位置束宽 8。
   简拼位置就是前缀模式（`SyllablePattern.complete = false`），词库层不区分；每条路径覆盖的简拼位置相同，不需要额外罚分。
 - **个人 n-gram**（`sentence/user_ngram.rs` 的 `UserNgram`，由 Learner 持有、`Learner::user_ngram()` 暴露）：
@@ -273,7 +273,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   三元不训练、不平滑参数，就是在线计数；它分辨的是二元混在一起的接续（「我想 → 去」与「不想 → 要」）。
   封顶保证没见过的接续最多打折、不会被压死；K = 8 让一次误选翻不过强 bigram，选两次才翻。
   个人出现次数也参与词图每格的前 6 选择，保证用户常用的同音词进得了格子。二元 + 三元超过 20 万条时所有计数减半。
-  持久化在 `qingjian-learning` 的 `user-ngram.tsv`：三列 `前词\t后词\t次数` 是二元，四列 `前二词\t前词\t后词\t次数` 是三元，旧的三列文件照读。
+  持久化在 `glimmer-learning` 的 `user-ngram.tsv`：三列 `前词\t后词\t次数` 是二元，四列 `前二词\t前词\t后词\t次数` 是三元，旧的三列文件照读。
   撤销（退格删光重选）、删词（`forget_word`）、减半都同时覆盖二元与三元。
 - **自动造词**：用户自己连着选出的两个词（不是整句路径里的），合起来不超过 4 个字、词库与用户词里都没有，
   且这条转移已记够次数（同一段拼音里连着选的两次，分两段打的三次），就记成用户词并记一次选择。
@@ -302,9 +302,9 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   用户点选的转移记双份（`EXPLICIT_TRANSITION_WEIGHT`），整句路径里顺带的记一份：整句是模型自己算的，按空格接受会把它喂回模型形成回声，
   用户明确改选一次就要能压过去。选择次数在整句路径上的加分取对数并封顶（`viterbi::WEIGHT_CAP`），只管同音词偏好，不许它抬起拆分路径。
 - 联想通过 `Predictor` trait 注入，与翻译一样是异步补充：**不阻塞候选、不重排已有候选**，超时即丢。
-  网络实现放 `qingjian-predict`，Core 不依赖它，也永远不联网。
+  网络实现放 `glimmer-predict`，Core 不依赖它，也永远不联网。
   请求带 `reasoning_effort`（配置 `[predict] reasoning_effort`，缺省 `none`）：DeepSeek V4 这类默认思考的模型不关会把 token 预算花光、正文为空；
-  密钥环境变量缺省 `QINGJIAN_API_KEY`（`api_key_env` 可改），名字跟产品不跟供应商，因为 `base_url` 本来就可以指到别家。
+  密钥环境变量缺省 `GLIMMER_API_KEY`（`api_key_env` 可改），名字跟产品不跟供应商，因为 `base_url` 本来就可以指到别家。
   接口是非阻塞的 `submit` / `poll`：网络 crate 自己开后台线程做防抖、缓存、超时；壳用定时器轮询结果；
   Engine 给请求编号，只认最新序号的结果。观察窗口在 Core 里裁剪，壳给再多也只发这么多。
 - 只在组句中联想（拼音 ≥ 2 个字母、停键 300 ms 后），一次请求两种产物：
@@ -320,7 +320,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   上屏之后不联想：没有拼音约束的下文联想每次上屏多发一次请求，纯靠猜，已删除。
 - 联想不限语言：模型按光标附近文本的语言续写。
 - **问字模式**（`?` 开头）复用同一条通道：`PredictionRequest.kind = Question`，只带问题拼音（不带应用上下文、不要整句），
-  `qingjian-predict` 按 kind 换系统提示，回复是 `answers`（字 / 短答案 + 带声调读音，放 `CloudWord.reading`）；
+  `glimmer-predict` 按 kind 换系统提示，回复是 `answers`（字 / 短答案 + 带声调读音，放 `CloudWord.reading`）；
   Core 在问字模式下不做拼音校验、本地不出候选。
 - 发往云端的上下文默认关闭；开启后 Secure Input 绝不发送，前后观察长度可配置。
   上下文优先从应用读（IMK `attributedSubstringFromRange:`），读不到退回 Core 的本地输入历史（内存环形，可清除）。
@@ -339,7 +339,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   `host/` 是进程级单例（一个 Engine + 一个候选窗口，`thread_local`，IMK 回调全在主线程；`mod.rs` 放结构体与 `with`，`init.rs` 启动加载、`config.rs` 热加载、`settings.rs` 菜单 / 偏好设置动作、`dictionaries.rs` 词库管理、`cloud.rs` 云端、`diagnostics.rs` 诊断与日志、`presenting.rs` 呈现），
   `host/` 下是会话状态 `session.rs`、联想轮询定时器 `predict_monitor.rs`、配置文件监视与定时落盘 `config_watch.rs`、
   短提示 `notice.rs`、翻译选中文字的任务 `translation_job.rs`、附加词库装配 `extra_dictionaries.rs` / `dictionary_info.rs`；
-  `imk/`：`controller/mod.rs` 用 `define_class!` 继承 `IMKInputController`（类名 `QingjianInputController`，
+  `imk/`：`controller/mod.rs` 用 `define_class!` 继承 `IMKInputController`（类名 `GlimmerInputController`，
   与 Info.plist 的 `InputMethodServerControllerClass` 一致），只做按键 → Engine、Engine → 窗口；
   `client.rs` 用 `msg_send!` 封装 IMKTextInput（`setMarkedText:` / `insertText:` /
   `attributesForCharacterIndex:lineHeightRectangle:` 取光标矩形）；`modifiers.rs` / `secure_input.rs` 查系统状态；
@@ -350,16 +350,16 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   `menu.rs` / `action.rs` / `target.rs` 是输入法菜单；
   `preferences/`：偏好设置窗口（`window.rs` 装配、`sidebar/` 左侧导航列表、`pager.rs` 右侧翻页与窗口伸缩、`layout.rs` 逐页排版与卡片分组、`panel.rs` 透明标题栏与关窗切回激活策略、`setting/`（`Setting` 与 `SettingValue`）控件 ↔ 配置项、
   `target.rs` 一个 `changed:` 选择器、`key_recorder.rs` 快捷键录制按钮、`usage_page.rs` 「统计」页（数字格子与「几本《某书》」文案）、`about.rs` 「关于」页文案、`edit_menu.rs` 只有编辑项的主菜单、`file_dialog.rs` 导入词库的打开面板）；
-  `app/`：`paths.rs` 定位 `.app/Contents/Resources/`（词库、随包领域词库 `dicts/`）与 `~/Library/Application Support/Qingjian/`（用户数据），
-  `settings.rs` 是配置文件的运行时状态，`logging/` 只写 `~/Library/Logs/Qingjian/`（自己的 `LogFile` 按天分文件、留 7 天、被删重建），`bundle.rs` 读 Info.plist，
-  `input_source.rs` 是 `qingjian-macos --register`：走 Carbon TIS（`TISRegisterInputSource` + `TISEnableInputSource`，再起子进程 `--finish-register` 回读 `IsEnabled` 并 `TISSelectInputSource`，隔 3 秒二次确认）把 `.app` 注册成输入源并切成当前。两个坑：TIS 状态按进程缓存，本进程回读永远是旧值，只有新进程看得到；刚换过包的 3–5 秒内系统重扫会把刚启用的记录顶掉，所以要二次确认并启用。
+  `app/`：`paths.rs` 定位 `.app/Contents/Resources/`（词库、随包领域词库 `dicts/`）与 `~/Library/Application Support/Glimmer/`（用户数据），
+  `settings.rs` 是配置文件的运行时状态，`logging/` 只写 `~/Library/Logs/Glimmer/`（自己的 `LogFile` 按天分文件、留 7 天、被删重建），`bundle.rs` 读 Info.plist，
+  `input_source.rs` 是 `glimmer-macos --register`：走 Carbon TIS（`TISRegisterInputSource` + `TISEnableInputSource`，再起子进程 `--finish-register` 回读 `IsEnabled` 并 `TISSelectInputSource`，隔 3 秒二次确认）把 `.app` 注册成输入源并切成当前。两个坑：TIS 状态按进程缓存，本进程回读永远是旧值，只有新进程看得到；刚换过包的 3–5 秒内系统重扫会把刚启用的记录顶掉，所以要二次确认并启用。
 - **打包与分发**（`apps/macos/scripts/bundle.sh`）：版本号来自 workspace `Cargo.toml`，构建号是提交数，打包时用 PlistBuddy 写进 Info.plist。
-  `--install` 装到 `~/Library/Input Methods/`（开发用）；`--pkg` 做 `target/pkg/Qingjian-<版本>.pkg`：`pkgbuild` 组件包装到
+  `--install` 装到 `~/Library/Input Methods/`（开发用）；`--pkg` 做 `target/pkg/Glimmer-<版本>.pkg`：`pkgbuild` 组件包装到
   `/Library/Input Methods/`（macOS 输入法的惯例位置，需要管理员密码；组件描述里关掉 bundle 重定位，否则会装到机器上同 id 的旧副本那里），
-  postinstall 杀旧进程并 `launchctl asuser <uid> sudo -u <登录用户> qingjian-macos --register`（安装器是 root，输入源是每用户的），
+  postinstall 杀旧进程并 `launchctl asuser <uid> sudo -u <登录用户> glimmer-macos --register`（安装器是 root，输入源是每用户的），
   `productbuild` 套上欢迎页 / 许可证（`LICENSE`）/ 结束页（`apps/macos/pkg/`）。签名与公证全由环境变量决定：
-  `QINGJIAN_SIGN_IDENTITY`（Developer ID Application，开 hardened runtime）、`QINGJIAN_INSTALLER_IDENTITY`（Developer ID Installer）、
-  `QINGJIAN_NOTARY_PROFILE`（notarytool keychain profile，设了就公证并 staple）；没设就 ad-hoc 签 `.app`、pkg 不签，
+  `GLIMMER_SIGN_IDENTITY`（Developer ID Application，开 hardened runtime）、`GLIMMER_INSTALLER_IDENTITY`（Developer ID Installer）、
+  `GLIMMER_NOTARY_PROFILE`（notarytool keychain profile，设了就公证并 staple）；没设就 ad-hoc 签 `.app`、pkg 不签，
   测试者要在「隐私与安全性」里点「仍要打开」。卸载脚本 `uninstall.sh` 随包放在 Resources。二进制只有本机架构，Intel 要另打。
 - 配置只有一条通路：`Host::apply_config` 把当前 `Config` 推给 Engine（模糊音、模式键、Predictor 重建、释义表切换）与界面
   （每页候选数、翻页键、外观、☁︎ 标识、菜单勾选、设置窗口控件）。启动、菜单开关、设置窗口、`host/config_watch.rs`
@@ -369,10 +369,10 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   而我们的缓冲区和候选框还在（2026-09-03 踩过）。
 - `define_class!` 的类在首次调用 `class()` 时才注册到 ObjC 运行时，而 IMKServer 初始化时就按
   Info.plist 的类名查找，找不到会**静默退回基类**，症状是按键全部透传、像在打英文。
-  必须先 `QingjianInputController::class()` 再建 IMKServer（2026-09-03 踩过）。
+  必须先 `GlimmerInputController::class()` 再建 IMKServer（2026-09-03 踩过）。
 - `define_class!` 里返回 `bool` 的方法体内不能 `return`（宏会把返回类型换成 ObjC `BOOL`），
   逻辑放到 inherent impl 里，宏内只做转发。
-- Info.plist 约定：bundle id 是 `app.qingjian.inputmethod`（域名 qingjian.app 的反写 + 产品，其他平台外壳共用 `app.qingjian.` 前缀），`TISInputSourceID` 与它相同，`InputMethodConnectionName` 必须是 `<bundle id>_Connection`；
+- Info.plist 约定：bundle id 是 `app.glimmer.inputmethod`（域名 glimmer.app 的反写 + 产品，其他平台外壳共用 `app.glimmer.` 前缀），`TISInputSourceID` 与它相同，`InputMethodConnectionName` 必须是 `<bundle id>_Connection`；
   `LSBackgroundOnly = true`；ad-hoc `codesign` 之后 Apple Silicon 才会加载。
 - IMK 无法通过 `cargo run` 验证：需要打包成 `.app`、装到 `~/Library/Input Methods/`、
   注销或重启输入法进程才会生效。Core 的验证靠 CLI 测试工具和单元测试，不依赖跑起真实输入法。
@@ -387,7 +387,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
 
 **已落地（骨架）：**
 
-- **IPC 协议**：`qingjian-platform::protocol`，Server ↔ DLL 两端共用、全部 serde。`ClientMessage`（DLL → Server：
+- **IPC 协议**：`glimmer-platform::protocol`，Server ↔ DLL 两端共用、全部 serde。`ClientMessage`（DLL → Server：
   开 / 关会话、按键、上屏、回上下文、回选区、报中英模式）与 `ServerMessage`（Server → DLL：按键结果、上屏结果、异步重绘、请求上下文、请求选区）；
   失焦 / 停用时 DLL 发 `Commit`，Server 回 `Committed { text }`（缓冲区原样交出，对应 macOS 的 `commitComposition`），
   DLL 用最近收键记下的 `ITfContext` 经编辑会话落进文档；应用强行终止组句（`OnCompositionTerminated`）时拼音已被框架定成普通文本，
@@ -421,21 +421,21 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   在**自绘候选窗**里以选区矩形为锚显示单条译文（先「翻译中…」，云端回来再换），评审态吃走所有键：回车 / 空格接受、Esc 保留原文、其余键放弃并交回应用。
   替换选区不另加协议——接受时 Server 把译文当 `commit` 回给 DLL，DLL 无活动组句时 `InsertTextAtSelection` 正好替换当前选区。DLL 用 `Shared::translating` 标志让评审期吃键、轮询定时器照常拉云端译文、失焦收窗。
   一次要绘制的状态是 `Frame`（preedit 分段 + 候选页 + 可选的整句补全 `sentence` 与删候选提示 `notice`，后两者不参与 `Frame::is_empty`），preedit 用 `PreeditSegment`（Core `MarkedSegment` 的可序列化镜像，
-  协议不耦合 Core 内部枚举），候选直接嵌 `qingjian_core::CandidateList`。同词干类型收进子目录：`key/{event,outcome}`、`frame/preedit/{kind,segment}`。
-- **Server 进程**：`apps/windows/server`（package `qingjian-windows-server`，bin `qingjian-server`）。`dispatch::Router` 按 `SessionId` 分派多会话（Windows 一个 Server 服务多个应用进程，
-  每会话各持组句状态，不同于 macOS 的进程级单例）。会话开 / 关、按键与上屏、Engine 装配、命名管道传输（`\\.\pipe\qingjian`）都已跑通，Windows 上端到端测过。
+  协议不耦合 Core 内部枚举），候选直接嵌 `glimmer_core::CandidateList`。同词干类型收进子目录：`key/{event,outcome}`、`frame/preedit/{kind,segment}`。
+- **Server 进程**：`apps/windows/server`（package `glimmer-windows-server`，bin `glimmer-server`）。`dispatch::Router` 按 `SessionId` 分派多会话（Windows 一个 Server 服务多个应用进程，
+  每会话各持组句状态，不同于 macOS 的进程级单例）。会话开 / 关、按键与上屏、Engine 装配、命名管道传输（`\\.\pipe\glimmer`）都已跑通，Windows 上端到端测过。
 - **候选窗口（Server 进程自绘 + uiAccess）**：候选窗从前在**应用进程内的 DLL** 自绘，普通置顶窗被微软商店 / 任务栏搜索这些**更高 z-band** 的宿主盖住。现改由 **Server 进程**自绘（`server/src/ui/`：一条专用 UI 线程注册窗口类 + 建 GDI 分层窗 + 跑消息循环，HWND 只在该线程碰；工人线程经 `Sender<UiCommand>` + `PostThreadMessageW(WM_APP)` 把「显示(`Frame`+屏幕矩形) / 隐藏」marshal 过去；进程级 `SetProcessDpiAwarenessContext(PER_MONITOR_AWARE_V2)` 按物理像素对齐应用报来的矩形）。DLL 只量光标屏幕矩形（`GetTextExt`，退鼠标）发 `PositionCandidates{rect}`，并在组句于 DLL 侧结束（应用终止组句 / 断线，`OnCompositionTerminated` 这条 Server 无从知晓）时发 `HideCandidates`；Server 握着 `Frame` 直接自绘，云端异步更新也直接刷自己的窗、不回传 DLL（渲染代码——词性 + 译文 + 分页 + 柔和阴影，对齐 macOS——整块从 DLL 搬到 Server）。**盖过高 z-band 宿主**靠 Server exe 的 `uiAccess="true"` manifest（`server/build.rs` 用 embed-manifest 嵌）+ 代码签名 + 装 Program Files 三者齐备（`SetWindowPos(HWND_TOPMOST)` 才自动升进 UIAccess 高带）：开发自签 + 本机受信任根（`installer/sign-local.ps1`），发版换 Certum 开源代码签名证书；uiAccess exe 不能 CreateProcess 拉起（报 740），装完 / 登录都走 ShellExecute（安装器完成页 `ShellExecAsOriginalUser` + `{commonstartup}` 启动快捷方式由 Explorer 拉起才授 uiAccess，故不用计划任务）。候选窗每显示一页，Server 调 `Engine::note_displayed`（收窗传空）告知当前页——生词「看到轮次」据此推进、橙色标记满 `FRESH_UNTIL` 轮才毕业，对齐 macOS 壳的 `render`。
-- **悬浮状态条（Server 进程自绘，可拖动 / 记位置）**：桌面上常驻的小浮窗，显示当前中 / 英（开着双拼时附方案名），与任务栏的中 / 英指示器（语言栏按钮）并存。跟候选窗**同一条 UI 线程**、复用同一套分层窗口合成器（`server/src/ui/layered/`：圆角背景 + 四周柔和阴影，从候选窗的 `surface.rs` 抽出来两边共用）与主题（字体 / 配色 / DPI / 深浅）；自己一个窗口类与窗口过程（`server/src/ui/status/`）：三格 `[中 / 英][，。/ ,.][⚙]`：按下鼠标先 `DragDetect`，挪出阈值就交给系统移动循环（`WM_NCLBUTTONDOWN` + `HTCAPTION`，结束时 `WM_EXITSIZEMOVE` 报新位置），没挪就是点击、按 x 落进哪格；`WM_MOUSEACTIVATE` 回 `MA_NOACTIVATE` 点它不抢应用焦点；窗口过程按 HWND 从 thread_local 表查到对象。点格 / 拖动结束经 `StatusEvent`（`dispatch/status/`）投回工人线程（工人循环收的是 `ipc::Work`：DLL 消息或状态条事件），Router 写回配置（`[status_bar] x/y`、`[general] full_width_punctuation`，热加载再读回）；齿轮由 UI 线程直接起设置程序。中英模式只在 DLL 侧（单击 Shift 翻转），DLL 在切换 / 激活 / 获焦时用 `ClientMessage::ModeChanged { english }` 把当前会话的模式推来（`com/service/mode.rs::refresh_mode_indicator` 的单一咽喉点）；状态条上点「中 / 英」时 Server 只能记下目标模式（`pending_mode`）等 DLL 来取：DLL 的轮询定时器在没组句、本线程前台时每几拍发 `SyncMode`，`ModeSync { english: Some(_) }` 就切并回报 `ModeChanged`。状态条**常驻桌面**，只跟「当前输入法是不是青简」走：第一次 `ModeChanged` 显示，DLL 挂 `ITfActiveLanguageProfileNotifySink`（`com/profile.rs`）在别的 TIP 被激活时用一条临时连接发 `ImeSwitched` 收起（此时自己已被停用、会话连接已关），应用退出（`CloseSession`）不收。双拼方案 Server 从自己的 `[general] shuangpin` 配置知道，不必带。开关与记住的位置在 `[status_bar]`（`enabled` / `x` / `y`），热加载即时生效；uiAccess 高 z-band 与候选窗同进程天然继承。参考微软水杉的 FTB 形态（`~/Desktop/MSIME-Windows`，它用 D2D + DirectComposition 且不记位置），落地时选沿用本项目已有的 GDI 分层窗那套以保持视觉语言一致、并加了位置持久化。
-- **帧编解码**：长度前缀 JSON 帧的 `read_message` / `write_message` 与缺省管道名放在 `qingjian-platform::protocol`，Server 与 DLL 共用（DLL 不必依赖整个 Server 库）。
-- **TSF DLL**：`apps/windows/tsf`（package `qingjian-windows-tsf`，`cdylib`，产物 `qingjian_tsf.dll`，依赖官方 `windows` crate 的 COM `implement` 宏）。「引擎层」不是 Engine 而是连 Server 的**管道客户端** `EngineClient`（平台无关、可端到端测）；
+- **悬浮状态条（Server 进程自绘，可拖动 / 记位置）**：桌面上常驻的小浮窗，显示当前中 / 英（开着双拼时附方案名），与任务栏的中 / 英指示器（语言栏按钮）并存。跟候选窗**同一条 UI 线程**、复用同一套分层窗口合成器（`server/src/ui/layered/`：圆角背景 + 四周柔和阴影，从候选窗的 `surface.rs` 抽出来两边共用）与主题（字体 / 配色 / DPI / 深浅）；自己一个窗口类与窗口过程（`server/src/ui/status/`）：三格 `[中 / 英][，。/ ,.][⚙]`：按下鼠标先 `DragDetect`，挪出阈值就交给系统移动循环（`WM_NCLBUTTONDOWN` + `HTCAPTION`，结束时 `WM_EXITSIZEMOVE` 报新位置），没挪就是点击、按 x 落进哪格；`WM_MOUSEACTIVATE` 回 `MA_NOACTIVATE` 点它不抢应用焦点；窗口过程按 HWND 从 thread_local 表查到对象。点格 / 拖动结束经 `StatusEvent`（`dispatch/status/`）投回工人线程（工人循环收的是 `ipc::Work`：DLL 消息或状态条事件），Router 写回配置（`[status_bar] x/y`、`[general] full_width_punctuation`，热加载再读回）；齿轮由 UI 线程直接起设置程序。中英模式只在 DLL 侧（单击 Shift 翻转），DLL 在切换 / 激活 / 获焦时用 `ClientMessage::ModeChanged { english }` 把当前会话的模式推来（`com/service/mode.rs::refresh_mode_indicator` 的单一咽喉点）；状态条上点「中 / 英」时 Server 只能记下目标模式（`pending_mode`）等 DLL 来取：DLL 的轮询定时器在没组句、本线程前台时每几拍发 `SyncMode`，`ModeSync { english: Some(_) }` 就切并回报 `ModeChanged`。状态条**常驻桌面**，只跟「当前输入法是不是微明」走：第一次 `ModeChanged` 显示，DLL 挂 `ITfActiveLanguageProfileNotifySink`（`com/profile.rs`）在别的 TIP 被激活时用一条临时连接发 `ImeSwitched` 收起（此时自己已被停用、会话连接已关），应用退出（`CloseSession`）不收。双拼方案 Server 从自己的 `[general] shuangpin` 配置知道，不必带。开关与记住的位置在 `[status_bar]`（`enabled` / `x` / `y`），热加载即时生效；uiAccess 高 z-band 与候选窗同进程天然继承。参考微软水杉的 FTB 形态（`~/Desktop/MSIME-Windows`，它用 D2D + DirectComposition 且不记位置），落地时选沿用本项目已有的 GDI 分层窗那套以保持视觉语言一致、并加了位置持久化。
+- **帧编解码**：长度前缀 JSON 帧的 `read_message` / `write_message` 与缺省管道名放在 `glimmer-platform::protocol`，Server 与 DLL 共用（DLL 不必依赖整个 Server 库）。
+- **TSF DLL**：`apps/windows/tsf`（package `glimmer-windows-tsf`，`cdylib`，产物 `glimmer_tsf.dll`，依赖官方 `windows` crate 的 COM `implement` 宏）。「引擎层」不是 Engine 而是连 Server 的**管道客户端** `EngineClient`（平台无关、可端到端测）；
   COM 层：`DllGetClassObject` → `IClassFactory` → `#[implement(ITfTextInputProcessor, ITfKeyEventSink, ITfDisplayAttributeProvider)]` → `Activate` 挂击键 sink + 登记翻译保留键 + 语言栏中英按钮 + 连管道 → `OnKeyDown` 转发按键、经异步编辑会话（`TF_ES_READWRITE`，不带 SYNC）写组句 / 上屏；`DllRegisterServer` 写 InprocServer32 并经 `ITfInputProcessorProfiles` / `ITfCategoryMgr` 注册文本服务与各能力类别。
   组句拼音的**内联下划线**（对应 macOS marked text 下划线）走 TSF 显示属性协议（`com/display_attribute/`）：注册 `GUID_TFCAT_DISPLAYATTRIBUTEPROVIDER` 类别 + 一个自定义显示属性 GUID（细实线、`TF_ATTR_INPUT`），
   `ITfDisplayAttributeProvider`（实现在 TextService 上）把 GUID 对应的 `TF_DISPLAYATTRIBUTE` 交给系统；收键写组句时用 `ITfCategoryMgr::RegisterGUID` 把 GUID 换成 atom，`SetValue` 进组句范围的 `GUID_PROP_ATTRIBUTE` 属性，宿主据此在拼音底下画线。
-  收键与运行细节记进 `%LOCALAPPDATA%\Qingjian\tsf.<日期>.log`（按天一个文件、留 7 天，与 Server 一致；多进程追加同一文件）；候选窗口不再由 DLL 自绘（已搬到 Server 进程，见上「候选窗口」），DLL 侧只做 preedit 内联 + 上报光标矩形；云联想已接。
-- **交叉编译验证**：`qingjian-core` / `-dictionary` / `-format` / `-lm` / `-platform` / `apps/windows/{server,tsf}` 已能
-  `cargo check --target x86_64-pc-windows-gnu` 通过（借此修掉 `qingjian-format` 里 unix 专有的 `Mmap::advise` 未 `cfg` 的移植 bug）；
-  本机只 `check`，真正编译在 Windows 机器上做（`qingjian-neural` 的 candle 后端在 Windows 走 CPU，已接进 Server，见下「本地整句模型」）。
-- **本地整句模型（Server 进程，与 macOS 的 `host/model.rs` 对齐）**：`server/src/dispatch/rescore/`。启动时 `find_model`（用户目录 `%APPDATA%\Qingjian\model\` 优先，否则随包 `data\model\`；`.qjm` 单文件或三件套目录）；`[model] enabled` 开着就起线程加载并预热（`ModelLoader`），下一次按键 / tick 接上 `set_async_sentence_scorer`。
+  收键与运行细节记进 `%LOCALAPPDATA%\Glimmer\tsf.<日期>.log`（按天一个文件、留 7 天，与 Server 一致；多进程追加同一文件）；候选窗口不再由 DLL 自绘（已搬到 Server 进程，见上「候选窗口」），DLL 侧只做 preedit 内联 + 上报光标矩形；云联想已接。
+- **交叉编译验证**：`glimmer-core` / `-dictionary` / `-format` / `-lm` / `-platform` / `apps/windows/{server,tsf}` 已能
+  `cargo check --target x86_64-pc-windows-gnu` 通过（借此修掉 `glimmer-format` 里 unix 专有的 `Mmap::advise` 未 `cfg` 的移植 bug）；
+  本机只 `check`，真正编译在 Windows 机器上做（`glimmer-neural` 的 candle 后端在 Windows 走 CPU，已接进 Server，见下「本地整句模型」）。
+- **本地整句模型（Server 进程，与 macOS 的 `host/model.rs` 对齐）**：`server/src/dispatch/rescore/`。启动时 `find_model`（用户目录 `%APPDATA%\Glimmer\model\` 优先，否则随包 `data\model\`；`.qjm` 单文件或三件套目录）；`[model] enabled` 开着就起线程加载并预热（`ModelLoader`），下一次按键 / tick 接上 `set_async_sentence_scorer`。
   Server 没有定时器：缓冲变化后 `schedule_rescoring` 起防抖，工人循环 `recv_timeout(router.next_tick())` 按 `RescoreState` 的节拍醒来（防抖 80 ms → `request_rescoring`；然后 20 ms 一次 `poll_rescoring`，最多等 2 s），DLL 组句期间每 80 ms 的 `Poll` 也顺带 `tick`。分到了重查一次、重建候选布局（云端词与整句补全留着）、由 Server 自绘的候选窗直接重画，DLL 下一次 `Poll` 拿到新帧更新内联 preedit；翻过页 / 动过高亮不动。热加载 `[model]` 变了才重载 / 卸载。
   前文：DLL 在**起组句的那次读写编辑会话**里顺手读选区起点前 64 个 UTF-16 单元（`com/edit/surrounding.rs::text_before_caret`，拼音还没插进去、不用再开一次会话），随 `ClientMessage::Surrounding` 单向送来。**密码框与私密输入**（2026-09-12 查了微软文档 / SampleIME / Chromium 源码后定）：
   TSF 规定键盘类 TIP 必须看上下文的 `GUID_COMPARTMENT_KEYBOARD_DISABLED`（微软文档明说密码框应禁用文本服务、`IS_PASSWORD` 只是标注不提供保护；Chromium 给密码框的上下文设的就是它），
@@ -443,7 +443,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   输入范围（`GUID_PROP_INPUTSCOPE`）只在起组句那次编辑会话里读一次（`com/edit/surrounding.rs::input_context`）：含 `IS_PRIVATE` / 密码 / PIN 之一算**私密**——Chromium 源码里密码框与不学习的输入框映射成 `IS_PRIVATE`（含义「别学」；2026-09-12 box 实测 Edge InPrivate 的网页文本框报的仍是 `IS_SEARCH`，`IS_PRIVATE` 只在密码框见过，这条是兜底）——私密时不读前文，并随 `ClientMessage::Privacy` 告诉 Server（客户端只在变了时发；记事本等不支持该属性的应用 `GetValue` 失败按不私密）。
   Server 按会话记 `private`、焦点切换时重设，Core `Engine::set_private`：学习器与输入日志外面各套一层 `Muted*`（写吞掉、读照常，排序不变），联想 / 翻译 / 释义兜底不发。协议版本 4。
 - **版本与发布**：各平台壳版本号独立（见 `docs/notes/release.md`）；`apps/windows/server/Cargo.toml` 写死自己的 `version`，
-  将来的发布标签用 `windows-v<版本>`，与 macOS 的 `macos-v<版本>` 互不影响（`qingjian-windows-tsf` 是同一 Windows 产品的另一半，各自 `Cargo.toml` 记版本；两个 package 同放 `apps/windows/` 下，是一个产品的两个产物——不合成一个 crate，因为 DLL 不能带 Engine 的依赖树）。
+  将来的发布标签用 `windows-v<版本>`，与 macOS 的 `macos-v<版本>` 互不影响（`glimmer-windows-tsf` 是同一 Windows 产品的另一半，各自 `Cargo.toml` 记版本；两个 package 同放 `apps/windows/` 下，是一个产品的两个产物——不合成一个 crate，因为 DLL 不能带 Engine 的依赖树）。
 
 ### Linux：IBus / Fcitx
 

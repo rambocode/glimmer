@@ -9,16 +9,16 @@ pub enum ConvertError {
     Json(#[from] serde_json::Error),
 
     #[error(transparent)]
-    Dictionary(#[from] qingjian_dictionary::DictionaryError),
+    Dictionary(#[from] glimmer_dictionary::DictionaryError),
 
     #[error(transparent)]
-    LanguageModel(#[from] qingjian_lm::LmError),
+    LanguageModel(#[from] glimmer_lm::LmError),
 
     #[error(transparent)]
-    Glossary(#[from] qingjian_translate::GlossaryError),
+    Glossary(#[from] glimmer_translate::GlossaryError),
 
     #[error(transparent)]
-    Neural(#[from] qingjian_neural::NeuralError),
+    Neural(#[from] glimmer_neural::NeuralError),
 
     /// 文件不是预期格式。
     #[error("{path}:{line}: {reason}")]

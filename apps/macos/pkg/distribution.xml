@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- productbuild 的安装流程描述；@VERSION@ / @PKG_VERSION@（去掉 -dev 这类后缀的数字版本，pkg-ref 只认数字点号）/ @ARCH@ 由 scripts/bundle.sh 的 pkg 模式替换 -->
 <installer-gui-script minSpecVersion="2">
-    <title>青简输入法 @VERSION@</title>
-    <organization>app.qingjian</organization>
+    <title>微明输入法 @VERSION@</title>
+    <organization>app.glimmer</organization>
     <!-- 装到 /Library/Input Methods（系统级，需要管理员密码）：macOS 输入法的惯例位置，所有用户都能看到 -->
     <domains enable_localSystem="true"/>
     <options customize="never" require-scripts="true" rootVolumeOnly="true" hostArchitectures="@ARCH@"/>
@@ -14,12 +14,12 @@
     <conclusion file="conclusion.html" mime-type="text/html"/>
     <choices-outline>
         <line choice="default">
-            <line choice="app.qingjian.inputmethod"/>
+            <line choice="app.glimmer.inputmethod"/>
         </line>
     </choices-outline>
     <choice id="default"/>
-    <choice id="app.qingjian.inputmethod" visible="false">
-        <pkg-ref id="app.qingjian.inputmethod"/>
+    <choice id="app.glimmer.inputmethod" visible="false">
+        <pkg-ref id="app.glimmer.inputmethod"/>
     </choice>
-    <pkg-ref id="app.qingjian.inputmethod" version="@PKG_VERSION@" onConclusion="none">Qingjian-component.pkg</pkg-ref>
+    <pkg-ref id="app.glimmer.inputmethod" version="@PKG_VERSION@" onConclusion="none">Glimmer-component.pkg</pkg-ref>
 </installer-gui-script>

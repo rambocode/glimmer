@@ -1,10 +1,10 @@
 //! 「云服务」页：本地整句模型开关，云联想开关、云端词格数、接口地址 / 模型 / 密钥、测试连接。
 
+use glimmer_platform::Config;
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::{NSButton, NSPopUpButton, NSSecureTextField, NSTextField};
 use objc2_foundation::NSString;
-use qingjian_platform::Config;
 
 use crate::preferences::controls::{
     button, checkbox, note, row_checkbox, row_control, row_popup, secure_field, select,

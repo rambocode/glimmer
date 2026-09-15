@@ -1,12 +1,12 @@
-//! 编译时抓 git 构建标识（分支@短哈希 (日期)，工作区有改动短哈希后加 +，与 macOS 的 bundle.sh 一致）塞进 `QINGJIAN_BUILD`，「关于」页显示；拿不到就不设。
-//! 在 Windows 上编时把青简图标嵌进 exe（开始菜单 / 任务栏 / 搜索里显示的就是它）。
+//! 编译时抓 git 构建标识（分支@短哈希 (日期)，工作区有改动短哈希后加 +，与 macOS 的 bundle.sh 一致）塞进 `GLIMMER_BUILD`，「关于」页显示；拿不到就不设。
+//! 在 Windows 上编时把微明图标嵌进 exe（开始菜单 / 任务栏 / 搜索里显示的就是它）。
 
 use std::process::Command;
 
 fn main() {
     println!("cargo:rerun-if-changed=../../../.git/HEAD");
     if let Some(build) = git_build() {
-        println!("cargo:rustc-env=QINGJIAN_BUILD={build}");
+        println!("cargo:rustc-env=GLIMMER_BUILD={build}");
     }
     embed_icon();
     stage_windows_runtime();
@@ -15,7 +15,7 @@ fn main() {
 /// 图标资源要 `rc.exe`（MSVC）编，只在 Windows 宿主上做；失败只警告，别让编译挂掉。
 #[cfg(windows)]
 fn embed_icon() {
-    const ICON: &str = "../tsf/resources/qingjian.ico";
+    const ICON: &str = "../tsf/resources/glimmer.ico";
     println!("cargo:rerun-if-changed={ICON}");
     if let Err(error) = winresource::WindowsResource::new().set_icon(ICON).compile() {
         println!("cargo:warning=嵌入设置程序图标失败: {error}");

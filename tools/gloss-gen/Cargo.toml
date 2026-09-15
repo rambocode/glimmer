@@ -1,5 +1,5 @@
 [package]
-name = "qingjian-gloss-gen"
+name = "glimmer-gloss-gen"
 description = "用 LLM 批量生成释义表与多音字读音标注"
 version.workspace = true
 edition.workspace = true
@@ -10,7 +10,7 @@ repository.workspace = true
 async-openai.workspace = true
 clap.workspace = true
 dotenvy.workspace = true
-qingjian-core.workspace = true
+glimmer-core.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true

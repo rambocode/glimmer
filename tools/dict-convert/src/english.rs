@@ -51,7 +51,7 @@ pub fn convert(
     let mut file = BufWriter::new(std::fs::File::create(output)?);
     writeln!(
         file,
-        "# 由 qingjian-dict-convert english 生成。词\\t编码\\t词频（wordfreq 的 Zipf 频率 ×1000）"
+        "# 由 glimmer-dict-convert english 生成。词\\t编码\\t词频（wordfreq 的 Zipf 频率 ×1000）"
     )?;
     for (word, code) in &rows {
         let count = frequencies.get(code).copied().unwrap_or(0);
