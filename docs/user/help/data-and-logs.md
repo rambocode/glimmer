@@ -57,8 +57,8 @@ description: 微明在本机保存的文件及其内容、云联想发送的内�
 
 ## 运行日志
 
-- **macOS**：「~/Library/Logs/Glimmer/」。
-- **Windows**：「%APPDATA%\Glimmer\logs」；此外每个应用内的输入法部分另写一份到「%LOCALAPPDATA%\Glimmer」下的「tsf.日期.log」，同样按天分文件、保留 7 天。
+- **macOS**：「~/Library/Logs/Glimmer/」，文件名「glimmer.log.日期」。
+- **Windows**：「%APPDATA%\Glimmer\logs」，文件名「glimmer-server.日期.log」；此外每个应用内的输入法部分另写一份到「%LOCALAPPDATA%\Glimmer」下的「tsf.日期.log」，同样按天分文件、保留 7 天。
 - **Linux**：「~/.local/share/glimmer/」下，IBus 与 Fcitx5 下都写在这里。
 
 按天分文件，保留 7 天。缺省级别不记录输入内容；仅在「高级」页打开「详细日志」后才逐键记录，用于排查问题，排查完成后请关闭。
