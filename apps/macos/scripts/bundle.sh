@@ -120,7 +120,8 @@ if [[ -f data/generated/dict.tsv || -f data/generated/dict.qj ]]; then
 fi
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
-# 图标：从 assets/icon/logo.png 生成 .icns（应用图标）与多分辨率 tiff（输入法菜单图标）
+# 图标：从 assets/icon/logo.png 生成 .icns（应用图标）；输入法菜单图标用 assets/icon/menu-icon.pdf
+# （纯黑矢量、斜线镂空，系统当模板图渲染：菜单高亮时反白、深色模式自动变色；改 logo 后用 gen-menu-icon.py 重生成）
 ICONSET="$ROOT/target/Glimmer.iconset"
 rm -rf "$ICONSET" && mkdir -p "$ICONSET"
 for size in 16 32 128 256 512; do
@@ -129,8 +130,7 @@ for size in 16 32 128 256 512; do
   sips -z $double $double assets/icon/logo.png --out "$ICONSET/icon_${size}x${size}@2x.png" >/dev/null
 done
 iconutil -c icns "$ICONSET" -o "$APP/Contents/Resources/Glimmer.icns"
-tiffutil -cathidpicheck "$ICONSET/icon_16x16.png" "$ICONSET/icon_16x16@2x.png" \
-  -out "$APP/Contents/Resources/glimmer-menu.tiff" >/dev/null
+cp assets/icon/menu-icon.pdf "$APP/Contents/Resources/glimmer-menu.pdf"
 # Apple Silicon 上未签名的二进制不会被系统加载。有 Developer ID 证书就正式签（开 hardened runtime，公证要求），
 # 没有就 ad-hoc 签名，本机自用够了
 if [[ -n "${GLIMMER_SIGN_IDENTITY:-}" ]]; then
@@ -152,7 +152,9 @@ if [[ "${1:-}" == "--pkg" ]]; then
   # 组件描述里关掉 bundle 重定位：否则机器上别处已有同 bundle id 的 .app（比如 ~/Library 下的开发副本）时，
   # 安装器会把新版装到那里而不是 /Library/Input Methods
   pkgbuild --analyze --root "$PKG_DIR/root" "$PKG_DIR/component.plist" >/dev/null
-  /usr/libexec/PlistBuddy -c "Set :0:BundleIsRelocatable false" "$PKG_DIR/component.plist"
+  # 新系统（macOS 26+）的 --analyze 不再输出这一项，Set 会报 Does Not Exist，此时改用 Add
+  /usr/libexec/PlistBuddy -c "Set :0:BundleIsRelocatable false" "$PKG_DIR/component.plist" 2>/dev/null \
+    || /usr/libexec/PlistBuddy -c "Add :0:BundleIsRelocatable bool false" "$PKG_DIR/component.plist"
   pkgbuild --root "$PKG_DIR/root" --component-plist "$PKG_DIR/component.plist" \
     --install-location "/Library/Input Methods" --scripts apps/macos/pkg/scripts \
     --identifier app.glimmer.inputmethod --version "$PKG_VERSION" "$PKG_DIR/$APP_NAME-component.pkg" >/dev/null
@@ -191,3 +193,11 @@ if [[ "${1:-}" == "--install" ]]; then
   echo "已安装到: $INSTALL_DIR/$APP_NAME.app"
   echo "日志: ~/Library/Logs/Glimmer/"
 fi
+
+# 构建目录里的 .app（target/ 与 pkg 载荷）会被 Launch Services 顺手登记成输入法，
+# 「添加输入法」对话框里就会出现多条同名甚至空白的条目，同一个输入源 ID 对应多个包时启用也会失灵。
+# 打完包就把它们从登记里注销，只留真正装到 Input Methods 下的那份。
+LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
+for stray in "$APP" "$ROOT/target/pkg/$ARCH/root/$APP_NAME.app"; do
+  [[ -d "$stray" ]] && "$LSREGISTER" -u "$stray" >/dev/null 2>&1 || true
+done
