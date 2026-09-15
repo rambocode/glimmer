@@ -16,6 +16,7 @@ pub(super) use self::state::ConfigReload;
 /// 看配置文件 mtime 的最短间隔；工人循环空闲时按它等，重排的短节拍来得更勤时按这个节流。
 pub(super) const CONFIG_POLL_INTERVAL: Duration = Duration::from_secs(1);
 use super::{Router, RouterConfig};
+use crate::assembly::user_dicts_dir;
 
 fn mtime(path: &Path) -> Option<SystemTime> {
     std::fs::metadata(path)
@@ -126,9 +127,10 @@ impl Router {
             reload.applied_predict = config.predict.clone();
         }
         if config.dictionaries != reload.applied_dictionaries {
+            // 用户词库在用户目录的 dicts\ 下，不是用户目录本身（那里是学习数据的 .tsv，装进去会当词库用）
             let dicts = extra_dictionaries::load(
                 reload.bundled_dicts_dir.as_deref(),
-                reload.user_dir.as_deref(),
+                user_dicts_dir(reload.user_dir.as_deref()).as_deref(),
                 &config.dictionaries,
             );
             tracing::info!(count = dicts.len(), "附加词库已热重装");
