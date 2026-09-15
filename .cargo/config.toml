@@ -3,3 +3,6 @@
 # 读不到时 TSF DLL 整个加载失败、系统切回上一个输入法。静态链接后只依赖系统自带的 DLL。
 [target.x86_64-pc-windows-msvc]
 rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.i686-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

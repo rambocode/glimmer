@@ -3,7 +3,7 @@
     在 Windows 上打微明安装包：release 构建三个产物 + 用 Inno Setup 编 glimmer.iss。
 .DESCRIPTION
     在编译机（MSVC 工具链 + Inno Setup）上跑。步骤：
-      1) cargo build --release 出 DLL / Server / 设置程序；
+      1) cargo build --release 出 DLL / Server / 设置程序，再单独编一份 32 位 DLL（企业微信 / WPS 这类 32 位应用只能加载 32 位 DLL）；
       2) 从 apps\windows\server\Cargo.toml 读版本号（-dev 版接 git 短哈希，工作区有改动再加 +，与 macOS 的 bundle.sh 一致）；
       3) 找 ISCC.exe（PATH 或常见安装位置）；
       4) iscc /DAppVersion=<版本> 编脚本，成品在 target\installer\Glimmer-<版本>-Setup.exe。
@@ -46,13 +46,21 @@ if (-not $SkipBuild) {
     try {
         cargo build --release --locked -p glimmer-windows-server -p glimmer-windows-tsf -p glimmer-windows-settings
         if ($LASTEXITCODE -ne 0) { throw "cargo build 失败（退出码 $LASTEXITCODE）" }
+        # 32 位 DLL 供企业微信 / WPS / 32 位 QQ 这类 32 位应用加载。
+        cargo build --release --locked -p glimmer-windows-tsf --target i686-pc-windows-msvc
+        if ($LASTEXITCODE -ne 0) { throw "32 位 DLL cargo build 失败（退出码 $LASTEXITCODE）" }
     } finally { Pop-Location }
 }
 
 # 缺一个产物就早报错。
-$targets = @('glimmer_tsf.dll', 'glimmer-server.exe', 'glimmer-settings.exe')
+$targets = @(
+    'release\glimmer_tsf.dll',
+    'i686-pc-windows-msvc\release\glimmer_tsf.dll',
+    'release\glimmer-server.exe',
+    'release\glimmer-settings.exe'
+)
 foreach ($t in $targets) {
-    $p = Join-Path $Repo "target\release\$t"
+    $p = Join-Path $Repo "target\$t"
     if (-not (Test-Path $p)) { throw "缺产物 $p，先跑一次不带 -SkipBuild 的构建" }
 }
 
@@ -81,7 +89,7 @@ Write-Host "自包含运行时 $($wanted.Count) 项 → target\installer\setting
 # 1.5) 签名（必须在 iscc 打包前：Inno 把已签的文件原样拷进安装包）。
 if ($Sign) {
     Write-Host '自签产物（uiAccess 要求 Server 代码签名）…' -ForegroundColor Cyan
-    $binaries = $targets | ForEach-Object { Join-Path $Repo "target\release\$_" }
+    $binaries = $targets | ForEach-Object { Join-Path $Repo "target\$_" }
     & (Join-Path $PSScriptRoot 'sign-local.ps1') -Path $binaries
 }
 
