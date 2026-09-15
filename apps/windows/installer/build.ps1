@@ -47,7 +47,8 @@ foreach ($t in $targets) {
 #      target\release\，这里挑进暂存目录；target\release 里还有 deps\ 之类的中间产物，不能整个目录装。
 $runtimeStage = Join-Path $Repo 'target\installer\settings-runtime'
 $runtimeList  = Join-Path $PSScriptRoot 'settings-runtime.txt'
-$wanted = Get-Content $runtimeList | Where-Object { $_ -and -not $_.StartsWith('#') } | ForEach-Object { $_.Trim() }
+# 清单是 UTF-8 且带中文注释：不指定编码时 PowerShell 5.1 按 GBK 读，注释末尾的字节会吞掉换行，紧跟其后的一项被当成注释漏掉。
+$wanted = Get-Content $runtimeList -Encoding UTF8 | Where-Object { $_ -and -not $_.StartsWith('#') } | ForEach-Object { $_.Trim() }
 if (Test-Path $runtimeStage) { Remove-Item $runtimeStage -Recurse -Force }
 New-Item -ItemType Directory -Path $runtimeStage -Force | Out-Null
 $missing = @()
