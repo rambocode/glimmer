@@ -441,6 +441,14 @@ impl Engine {
             }
             let rest = &input[pos..];
             let rest = &rest[..rest.find('\'').unwrap_or(rest.len())];
+            let canonical_match = rest.get(..syllable.len()).is_some_and(|typed| {
+                glimmer_dictionary::canonical_syllable(typed)
+                    == glimmer_dictionary::canonical_syllable(syllable)
+            });
+            if canonical_match {
+                pos += syllable.len();
+                continue;
+            }
             if rest.starts_with(syllable.as_str()) {
                 pos += syllable.len();
                 continue;

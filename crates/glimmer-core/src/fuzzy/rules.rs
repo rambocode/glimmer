@@ -1,4 +1,4 @@
-use glimmer_dictionary::SyllablePattern;
+use glimmer_dictionary::{SyllablePattern, canonical_syllable};
 use serde::{Deserialize, Serialize};
 
 use super::Expanded;
@@ -117,11 +117,11 @@ impl FuzzyRules {
 
     /// `syllable` 是不是 `typed` 按当前规则的一种模糊写法（不含它自己）。
     pub fn is_variant(&self, typed: &str, syllable: &str) -> bool {
-        typed != syllable
+        canonical_syllable(typed) != canonical_syllable(syllable)
             && self
                 .alternatives(SyllablePattern::complete(typed))
                 .iter()
-                .any(|form| form == syllable)
+                .any(|form| canonical_syllable(form) == canonical_syllable(syllable))
     }
 
     /// 一个音节的全部写法，第一个是敲的原文；没开模糊音就只有它自己。

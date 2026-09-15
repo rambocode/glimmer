@@ -178,8 +178,8 @@ impl Engine {
             let hits = self.lookup_all(&positions);
             scored.reserve(hits.len());
             for hit in hits {
-                let full_last =
-                    last.complete && hit.syllables().nth(count - 1) == Some(last.text.as_str());
+                let full_last = last.complete
+                    && hit.syllables().nth(count - 1) == Some(patterns[count - 1].text);
                 scored.push(Scored {
                     hit,
                     full_last,

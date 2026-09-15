@@ -6,7 +6,7 @@ use zerocopy::{FromBytes, Immutable, IntoBytes, KnownLayout};
 
 use crate::error::DictionaryError;
 use crate::matching::Match;
-use crate::pattern::SyllablePattern;
+use crate::pattern::{SyllablePattern, canonical_syllable};
 
 /// 收窄到多小的区间就改成逐键比对。
 const LINEAR_SCAN_LIMIT: usize = 48;
@@ -144,7 +144,7 @@ impl Dictionary {
                 if !first {
                     keys.push(' ');
                 }
-                keys.push_str(syllable);
+                keys.push_str(canonical_syllable(syllable));
                 first = false;
             }
             let actual = keys.len() as u32 - rows.last().unwrap().key_start;
@@ -240,6 +240,45 @@ impl Dictionary {
                     "key points outside the slot table",
                 ));
             }
+        }
+        let has_legacy_keys = index.iter().any(|entry| {
+            let start = entry.key_start as usize;
+            keys[start..start + usize::from(entry.key_len)]
+                .split(' ')
+                .any(|syllable| canonical_syllable(syllable) != syllable)
+        });
+        if has_legacy_keys {
+            let metadata = container.metadata().clone();
+            let mut owned_keys = String::with_capacity(keys.len());
+            let mut rows = Vec::with_capacity(slots.len());
+            for entry in index.iter() {
+                let start = entry.key_start as usize;
+                let key = &keys[start..start + usize::from(entry.key_len)];
+                let key_start = owned_keys.len() as u32;
+                for (position, syllable) in key.split(' ').enumerate() {
+                    if position > 0 {
+                        owned_keys.push(' ');
+                    }
+                    owned_keys.push_str(canonical_syllable(syllable));
+                }
+                let key_len = (owned_keys.len() as u32 - key_start) as u16;
+                let first = entry.first_slot as usize;
+                for slot in &slots[first..first + entry.slot_count as usize] {
+                    rows.push(Row {
+                        key_start,
+                        key_len,
+                        slot: *slot,
+                    });
+                }
+            }
+            let mut dictionary = Self::assemble(texts.to_string(), owned_keys, rows);
+            dictionary.metadata = Some(metadata);
+            tracing::debug!(
+                entries = dictionary.slots.len(),
+                keys = dictionary.index.len(),
+                "旧词库键已规范化"
+            );
+            return Ok(dictionary);
         }
         tracing::debug!(
             entries = slots.len(),
@@ -397,7 +436,7 @@ impl Dictionary {
         let base_len = prefix.len();
         for current in positions[depth].as_ref() {
             prefix.truncate(base_len);
-            prefix.push_str(current.text);
+            prefix.push_str(canonical_syllable(current.text));
             let sub = self.prefix_range(prefix, range.clone());
             if sub.is_empty() {
                 continue;
@@ -642,6 +681,16 @@ mod tests {
     }
 
     #[test]
+    fn normalizes_u_umlaut_keys_and_queries() {
+        let dictionary = Dictionary::parse("略\tlue\t100\n虐\tnve\t90\n").unwrap();
+        assert_eq!(dictionary.entries().next().unwrap().pinyin, "lve");
+        assert_eq!(texts(&dictionary.lookup(&["lue"], false)), ["略"]);
+        assert_eq!(texts(&dictionary.lookup(&["lve"], false)), ["略"]);
+        assert_eq!(texts(&dictionary.lookup(&["nue"], false)), ["虐"]);
+        assert_eq!(texts(&dictionary.lookup(&["nve"], false)), ["虐"]);
+    }
+
+    #[test]
     fn rejects_malformed_line() {
         let error = Dictionary::parse("开发\tkai fa\tabc\n").unwrap_err();
         assert!(matches!(error, DictionaryError::Line { line: 1, .. }));
@@ -740,6 +789,10 @@ mod tests {
         dictionary.write_qj(&path, &metadata).unwrap();
         let mapped = Dictionary::from_path(&path).unwrap();
         std::fs::remove_file(&path).unwrap();
+        assert!(matches!(&mapped.texts, Text::Mapped { .. }));
+        assert!(matches!(&mapped.keys, Text::Mapped { .. }));
+        assert!(matches!(&mapped.index, Table::Mapped { .. }));
+        assert!(matches!(&mapped.slots, Table::Mapped { .. }));
         assert_eq!(mapped.len(), dictionary.len());
         assert_eq!(mapped.total_frequency(), dictionary.total_frequency());
         assert_eq!(mapped.metadata().unwrap().name, "测试词库");
@@ -754,5 +807,66 @@ mod tests {
             let reopened = mapped.lookup(&syllables, partial);
             assert_eq!(texts(&reopened), texts(&original), "{syllables:?}");
         }
+    }
+
+    #[test]
+    fn legacy_qj_umlaut_keys_remain_queryable() {
+        let legacy = Dictionary {
+            texts: Text::Owned("略虐".to_owned()),
+            keys: Text::Owned("luenue".to_owned()),
+            index: Table::Owned(vec![
+                KeyIndex {
+                    key_start: 0,
+                    first_slot: 0,
+                    slot_count: 1,
+                    key_len: 3,
+                    reserved: 0,
+                },
+                KeyIndex {
+                    key_start: 3,
+                    first_slot: 1,
+                    slot_count: 1,
+                    key_len: 3,
+                    reserved: 0,
+                },
+            ]),
+            slots: Table::Owned(vec![
+                Slot {
+                    text_start: 0,
+                    frequency: 100,
+                    text_len: 3,
+                    reserved: 0,
+                },
+                Slot {
+                    text_start: 3,
+                    frequency: 90,
+                    text_len: 3,
+                    reserved: 0,
+                },
+            ]),
+            total_frequency: 190,
+            metadata: None,
+        };
+        let dir = std::env::temp_dir().join("glimmer-dictionary-tests");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join(format!("legacy-dict-{}.qj", std::process::id()));
+        let metadata = Metadata {
+            name: "旧词库".to_owned(),
+            ..Metadata::default()
+        };
+        legacy.write_qj(&path, &metadata).unwrap();
+
+        let dictionary = Dictionary::open_qj(&path).unwrap();
+        std::fs::remove_file(&path).unwrap();
+
+        assert!(matches!(&dictionary.texts, Text::Owned(_)));
+        assert!(matches!(&dictionary.keys, Text::Owned(_)));
+        assert!(matches!(&dictionary.index, Table::Owned(_)));
+        assert!(matches!(&dictionary.slots, Table::Owned(_)));
+        assert_eq!(dictionary.metadata().unwrap().name, "旧词库");
+        assert_eq!(texts(&dictionary.lookup(&["lue"], false)), ["略"]);
+        assert_eq!(texts(&dictionary.lookup(&["lve"], false)), ["略"]);
+        assert_eq!(texts(&dictionary.lookup(&["nue"], false)), ["虐"]);
+        assert_eq!(texts(&dictionary.lookup(&["nve"], false)), ["虐"]);
     }
 }

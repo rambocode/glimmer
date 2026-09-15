@@ -123,6 +123,30 @@ fn complete_syllable_that_is_also_prefix_expands_after_exact() {
 }
 
 #[test]
+fn keyboard_u_umlaut_spelling_matches_canonical_dictionary_keys() {
+    let dictionary =
+        Dictionary::parse("策略\tce lve\t9000\n虐待\tnve dai\t8000\n学习\txue xi\t7000\n").unwrap();
+    let mut engine = Engine::new(dictionary);
+
+    engine.set_input("celue");
+    let query = engine.query().unwrap();
+    assert_eq!(query.marked_text(), "ce'lue");
+    assert_eq!(query.candidates.items[0].text, "策略");
+    assert_eq!(query.candidates.items[0].syllables, ["ce", "lve"]);
+    let strategy = query.candidates.items[0].clone();
+    assert_eq!(engine.commit(&strategy), "策略");
+    assert!(engine.composition().is_empty());
+
+    engine.set_input("nuedai");
+    assert_eq!(engine.query().unwrap().candidates.items[0].text, "虐待");
+
+    engine.set_input("xuexicelue");
+    let sentence = &engine.query().unwrap().candidates.items[0];
+    assert_eq!(sentence.text, "学习策略");
+    assert_eq!(sentence.kind, CandidateKind::Sentence);
+}
+
+#[test]
 fn empty_input_is_an_error() {
     assert_eq!(engine().query().unwrap_err(), ParseError::Empty);
 }

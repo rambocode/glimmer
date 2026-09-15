@@ -65,11 +65,11 @@ impl Expanded {
         forms
             .iter()
             .find(|(text, _)| {
-                if *complete {
-                    text == syllable
-                } else {
-                    syllable.starts_with(text.as_str())
+                SyllablePattern {
+                    text,
+                    complete: *complete,
                 }
+                .accepts(syllable)
             })
             .map_or(0.0, |(_, cost)| *cost)
     }

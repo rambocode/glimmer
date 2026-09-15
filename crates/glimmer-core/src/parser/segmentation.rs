@@ -1,6 +1,6 @@
 use std::fmt;
 
-use glimmer_dictionary::SyllablePattern;
+use glimmer_dictionary::{SyllablePattern, canonical_syllable};
 
 /// 切分出的一个音节。
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -29,7 +29,7 @@ impl Syllable {
 
     pub fn pattern(&self) -> SyllablePattern<'_> {
         SyllablePattern {
-            text: &self.text,
+            text: canonical_syllable(&self.text),
             complete: self.complete,
         }
     }

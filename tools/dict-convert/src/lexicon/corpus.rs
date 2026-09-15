@@ -3,6 +3,8 @@
 use std::collections::HashMap;
 use std::path::Path;
 
+use glimmer_dictionary::canonical_syllable;
+
 use crate::error::ConvertError;
 
 pub fn load(path: &Path) -> Result<HashMap<String, u64>, ConvertError> {
@@ -46,7 +48,11 @@ pub fn extra_words(path: &Path) -> Result<Vec<ExtraWord>, ConvertError> {
             let count = fields.next()?.trim().parse().ok()?;
             let syllables = fields
                 .next()
-                .map(|p| p.split_whitespace().map(str::to_owned).collect::<Vec<_>>())
+                .map(|p| {
+                    p.split_whitespace()
+                        .map(|s| canonical_syllable(s).to_owned())
+                        .collect::<Vec<_>>()
+                })
                 .filter(|s| !s.is_empty());
             Some(ExtraWord {
                 text,
@@ -55,4 +61,22 @@ pub fn extra_words(path: &Path) -> Result<Vec<ExtraWord>, ConvertError> {
             })
         })
         .collect())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn normalizes_given_pinyin() {
+        let path = std::env::temp_dir().join(format!(
+            "glimmer-extra-words-normalize-{}.tsv",
+            std::process::id()
+        ));
+        std::fs::write(&path, "策略\t20\tce lue\n虐待\t10\tnue dai\n").unwrap();
+        let words = extra_words(&path).unwrap();
+        std::fs::remove_file(path).unwrap();
+        assert_eq!(words[0].syllables.as_deref().unwrap(), ["ce", "lve"]);
+        assert_eq!(words[1].syllables.as_deref().unwrap(), ["nve", "dai"]);
+    }
 }

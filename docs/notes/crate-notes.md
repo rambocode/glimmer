@@ -6,7 +6,9 @@ CLAUDE.md 只保留目录地图与规则，每个 crate / app / tool 的实现�
 ## crates/glimmer-dictionary
 
 词库（TSV 解析或 `.qj` mmap），键按字节序排好，查询逐音节位置二分收窄（简拼位置按音节块跳扫），
-`lookup_pattern`（≥ 模式长度）与 `lookup_exact`（正好等长）同一套实现。
+`lookup_pattern`（≥ 模式长度）与 `lookup_exact`（正好等长）同一套实现。词库键以 `v` 表示 ü，
+TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
+旧 `.qj` 含这些键时，加载器建立规范化的内存词库。新 `.qj` 继续使用 mmap。
 
 ## crates/glimmer-core
 

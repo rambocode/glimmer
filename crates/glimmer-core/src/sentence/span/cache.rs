@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
-use glimmer_dictionary::SyllablePattern;
+use glimmer_dictionary::{SyllablePattern, canonical_syllable};
 
 use super::word::SpanWord;
 
@@ -31,7 +31,7 @@ impl SpanCache {
                 if alt > 0 {
                     key.push('|');
                 }
-                key.push_str(pattern.text);
+                key.push_str(canonical_syllable(pattern.text));
                 if !pattern.complete {
                     key.push('…');
                 }
