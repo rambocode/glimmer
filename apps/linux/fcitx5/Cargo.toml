@@ -11,6 +11,9 @@ name = "glimmer_fcitx5"
 crate-type = ["staticlib", "rlib"]
 
 [dependencies]
+glimmer-linux.workspace = true
+tracing.workspace = true
+tracing-appender.workspace = true
 
 [lints]
 workspace = true

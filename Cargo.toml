@@ -35,6 +35,7 @@ glimmer-lm = { path = "crates/glimmer-lm" }
 glimmer-format = { path = "crates/glimmer-format" }
 glimmer-neural = { path = "crates/glimmer-neural" }
 glimmer-server = { path = "crates/glimmer-server" }
+glimmer-linux = { path = "apps/linux" }
 
 # 外部依赖统一在这里定版本，子 crate 一律 `xxx.workspace = true`
 serde = { version = "1.0.229", features = ["derive"] }

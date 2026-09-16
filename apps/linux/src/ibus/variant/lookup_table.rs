@@ -83,6 +83,8 @@ mod tests {
             ],
             highlight: 1,
             vertical: true,
+            page: 0,
+            page_count: 1,
         };
         let value = lookup_table(&view);
         assert_eq!(value.value_signature().to_string(), "(sa{sv}uubbiavav)");

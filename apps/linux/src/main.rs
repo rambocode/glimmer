@@ -6,7 +6,7 @@ use std::process::ExitCode;
 use glimmer_linux::{EchoBackend, build_backend, init_logging};
 
 fn main() -> ExitCode {
-    let _log_guard = init_logging();
+    let _log_guard = init_logging("glimmer-ibus");
     let args: Vec<String> = std::env::args().skip(1).collect();
     if !args.iter().any(|arg| arg == "--ibus") {
         eprintln!("用法：glimmer-ibus --ibus [--echo]（由 ibus-daemon 拉起）");
@@ -15,7 +15,7 @@ fn main() -> ExitCode {
     let result = if args.iter().any(|arg| arg == "--echo") {
         glimmer_linux::run(EchoBackend::new())
     } else {
-        match build_backend() {
+        match build_backend(None) {
             Ok(backend) => glimmer_linux::run(backend),
             Err(error) => {
                 tracing::error!(%error, "样例词库也装配失败");

@@ -84,8 +84,14 @@ impl Session {
 
     /// 应用报来输入框的用途与提示（`ContentType` 属性）：密码 / PIN / 私密提示算私密。
     pub fn set_content_type(&mut self, purpose: u32, hints: u32) {
-        self.private =
-            matches!(purpose, PURPOSE_PASSWORD | PURPOSE_PIN) || hints & HINT_PRIVATE != 0;
+        self.set_private(
+            matches!(purpose, PURPOSE_PASSWORD | PURPOSE_PIN) || hints & HINT_PRIVATE != 0,
+        );
+    }
+
+    /// 直接设私密与否（Fcitx5 从能力位算好了送来）；有会话且变了才报给 Router。
+    pub fn set_private(&mut self, private: bool) {
+        self.private = private;
         self.report_privacy();
     }
 

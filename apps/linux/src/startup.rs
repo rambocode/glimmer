@@ -52,9 +52,10 @@ fn load_config() -> Config {
     })
 }
 
-/// 日志写 stderr（ibus-daemon 的输出）与 `<数据目录>/logs/` 下按天滚动的文件（留 7 天）。
+/// 日志写 stderr（ibus-daemon / fcitx5 的输出）与 `<数据目录>/logs/<file_prefix>.<日期>.log`（按天滚动，留 7 天）。
 /// 级别按 `[general] log_level`，`RUST_LOG` 可覆盖。返回的 guard 要活到进程结束，否则缓冲的日志不落盘。
-pub fn init_logging() -> Option<tracing_appender::non_blocking::WorkerGuard> {
+/// 全局 subscriber 只能装一次，重复调用返回 `None`、不 panic。
+pub fn init_logging(file_prefix: &str) -> Option<tracing_appender::non_blocking::WorkerGuard> {
     use tracing_subscriber::fmt::writer::MakeWriterExt;
     // 级别取自配置，而日志还没装：这里静默读一次，读配置的告警由 build_backend 再读时记下
     let level = match config_dir()
@@ -73,7 +74,7 @@ pub fn init_logging() -> Option<tracing_appender::non_blocking::WorkerGuard> {
         .and_then(|dir| {
             tracing_appender::rolling::RollingFileAppender::builder()
                 .rotation(tracing_appender::rolling::Rotation::DAILY)
-                .filename_prefix("glimmer-ibus")
+                .filename_prefix(file_prefix)
                 .filename_suffix("log")
                 .max_log_files(7)
                 .build(dir)
@@ -86,28 +87,32 @@ pub fn init_logging() -> Option<tracing_appender::non_blocking::WorkerGuard> {
                 .with_env_filter(filter)
                 .with_ansi(false)
                 .with_writer(writer.and(std::io::stderr))
-                .init();
-            Some(guard)
+                .try_init()
+                .ok()
+                .map(|()| guard)
         }
         None => {
-            tracing_subscriber::fmt()
+            let _ = tracing_subscriber::fmt()
                 .with_env_filter(filter)
                 .with_writer(std::io::stderr)
-                .init();
+                .try_init();
             None
         }
     }
 }
 
-/// 读配置、按随包资源装好 Router 后端。
-pub fn build_backend() -> Result<RouterBackend, ServerError> {
+/// 读配置、按随包资源装好 Router 后端。`root` 是随包资源根；`None` 时按可执行文件位置找（`resources::bundled_root`），
+/// 跑在别人进程里的前端（Fcitx5 插件在 `/usr/bin/fcitx5` 里）要显式传。
+pub fn build_backend(root: Option<PathBuf>) -> Result<RouterBackend, ServerError> {
     load_env();
     let config = load_config();
     let paths = StartupPaths {
         user_dir: data_dir().filter(|dir| std::fs::create_dir_all(dir).is_ok()),
         config_path: config_dir().map(|dir| dir.join("config.toml")),
         // 装机布局是 exe 同级（/usr/lib/glimmer），开发布局是仓库根；都找不到回落工作目录
-        root: resources::bundled_root().unwrap_or_else(|| PathBuf::from(".")),
+        root: root
+            .or_else(resources::bundled_root)
+            .unwrap_or_else(|| PathBuf::from(".")),
         version: env!("CARGO_PKG_VERSION"),
         platform: "linux",
     };

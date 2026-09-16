@@ -1318,6 +1318,11 @@ dependencies = [
 [[package]]
 name = "glimmer-fcitx5"
 version = "0.1.0-linux.2-dev"
+dependencies = [
+ "glimmer-linux",
+ "tracing",
+ "tracing-appender",
+]
 
 [[package]]
 name = "glimmer-format"

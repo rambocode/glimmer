@@ -449,7 +449,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
 
 ### Linux：IBus / Fcitx
 
-**已落地：IBus（2026-09-16）。** Fcitx5 加载不了 IBus 引擎，要单独做（C++ 插件或 Fcitx5 的 D-Bus 前端），还没开始。
+**已落地：IBus（2026-09-16）、Fcitx5 插件（2026-09-16）。** Fcitx5 加载不了 IBus 引擎，单独做了一个 Fcitx5 插件（见本节末「Fcitx5」）。
 
 - **进程结构**：`apps/linux`（package `glimmer-linux`，bin `glimmer-ibus`）是一个 IBus 引擎进程，ibus-daemon 按组件 XML（`/usr/share/ibus/component/glimmer.xml`）以 `--ibus` 拉起。
   IBus 的引擎本来就在应用进程外，所以不需要 Windows 那样的 Server / DLL 两半：Engine 与 `Router` 就在这个进程里，前端直接调 `Router::handle`，协议消息不过管道。
@@ -471,3 +471,26 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
 - **测试**：`apps/linux/tests/docker/run.sh` 在 Ubuntu 容器里起真的 ibus-daemon，用 PyGObject 的 IBus 客户端驱动回显后端（`--echo`）验 D-Bus 链路；
   `install.sh <deb>` 在干净容器里 apt 装包，用真 Router 与随包词库敲 `nihao` 上屏「你好」。arm64 上 debug 构建编不过 `gemm-f16`（要 fullfp16），两个脚本都用 release。
 - **打包与发版**：deb（amd64 / arm64），`linux-v<版本>` 标签触发 CI，见 `docs/notes/release.md`。
+
+#### Fcitx5
+
+- **结构**：`apps/linux/fcitx5/`。Fcitx5 的输入法是跑在 `fcitx5` 进程里的共享库插件，所以是「C++ 薄壳 + Rust 静态库」：
+  `src/`（package `glimmer-fcitx5`，staticlib）把 `glimmer-linux` 的 `frontend::Session` 与后端包成 C 接口（`include/glimmer_fcitx5.h`），
+  `addon/`（CMake）是 `glimmer.so`：`InputMethodEngineV2` + 每个 `InputContext` 一个 `GlimmerState`（`FactoryFor` 属性），静态链进 Rust 库。
+- **为什么不是纯 Rust 或 D-Bus 前端**：Fcitx5 的插件 API 是 C++ 类（虚函数、`std::unique_ptr`、信号），没有 C ABI，Rust 直接实现不了；
+  走 Fcitx5 的 D-Bus 前端是「应用」那一侧的接口，不能当输入法。C++ 只做事件分派与画面板，排序、词库、按键判定全在 Rust，与「平台层只做壳」一致。
+- **复用 IBus 前端**：会话状态机（按键过滤、单击 Shift、组句 / 上屏 / 失焦、私密、前文）、keysym → VK、`RouterBackend` 一行不复制。
+  Fcitx5 的 `KeySym` 就是 X keysym，`KeyStates` 的 Shift / CapsLock / Ctrl / Alt / Super(1<<6) / Super2(1<<26) 与 IBus 掩码同位，C 接口按位掩掉其余位再补释放位。
+  给 `glimmer-linux` 开的口子：`build_backend(root)` 可传资源根（插件在 `/usr/bin/fcitx5` 里，按 current_exe 找会找错）、`init_logging(文件前缀)`（日志 `glimmer-fcitx5.<日期>.log`）、
+  `Session::set_private`、`CandidateView` 带页码（面板翻页按钮要 `hasPrev` / `hasNext`）。
+- **C 接口形状**：事件函数返回不透明的指令串 `GlimmerOutputs`（Commit / Preedit / Candidates / Auxiliary / Mode），C++ 按序应用后释放；字符串 UTF-8，preedit 光标换成字节偏移（Fcitx5 `Text` 的单位）。
+  全部 `catch_unwind`、指针判空；后端建失败时会话为空指针，所有调用是空操作、按键全放行。
+- **画面板**：preedit 有 `CapabilityFlag::Preedit` 放 `setClientPreedit`（下划线，光标后不参与候选的拼音用斜体——Fcitx5 文字格式没有颜色），否则放面板；
+  候选是自己的 `CandidateList`（实现 `PageableCandidateList` / `CursorMovableCandidateList`），只放当前页，翻页 / 移动 / 点选都转回会话当按键发给 Router；
+  译词 5.1.9 起放 `setComment`，更老的（Ubuntu 24.04 是 5.1.7）拼在候选文字后面；中 / 英是状态区的一个 `Action` 子类（文字按输入上下文各自的模式，不用全局一份的 `SimpleAction`）加子模式标签。
+- **定时器**：组句中每个会话一个 60 ms 一次性定时器调 `poll`（应用后还在组句就重排）；引擎一个空闲节拍定时器按 `glimmer_tick()` 返回的毫秒重排。都在 fcitx5 事件循环线程里，不起线程。
+- **坑**：Fcitx5 缺省 `AltTriggerKeys = Shift_L`：组里有两个以上输入法时，左 Shift 的按下与释放被 Fcitx5 截走（临时切到第一个输入法），插件收不到；
+  只有微明一个输入法或用右 Shift 时单击 Shift 才走微明的中英切换。失焦时 Fcitx5 自己把 client preedit 落进应用（无 `ClientUnfocusCommit` 时），与 IBus 同理，会话只清缓冲。
+  点选 / 翻页回调里会话重画候选页会销毁当前候选对象，回调里调完会话就不再碰成员（fcitx5-rime 同样做法）。Rust 符号用 `--exclude-libs,ALL` 藏起来，免得与进程里别的库撞名。
+- **构建与测试**：`cargo build --release -p glimmer-fcitx5` 出 `libglimmer_fcitx5.a`，CMake 以 `GLIMMER_RUST_LIB` 链接、`GLIMMER_DATA_ROOT`（缺省 `/usr/lib/glimmer`）编进插件，运行时环境变量 `GLIMMER_DATA_ROOT` / `GLIMMER_ECHO=1` 可覆盖；
+  `apps/linux/fcitx5/tests/docker/run.sh` 在 Ubuntu 容器里编好装到暂存目录，起 `fcitx5 --disable=all --enable=keyboard,dbus,dbusfrontend,glimmer`，用 Gio 经 `org.fcitx.Fcitx.InputContext1` 敲 `nihao` 上屏「你好」。

@@ -157,6 +157,11 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
 - 常数：组句中 `Poll` 间隔 60 ms；空闲时学习数据 60 s 落盘一次。
 - 打包：`scripts/package.sh`（Linux 上）/ `scripts/package-docker.sh`（macOS 上，`GLIMMER_DATA_DIR` 指向有产品数据的 `data/`）出 `target/deb/Glimmer-<版本>-<arch>.deb`；装机布局与版本号规则见 `docs/notes/release.md`。
 - 测试：`cargo test -p glimmer-linux`（keysym、变体签名、会话状态机）；`tests/docker/run.sh`（回显后端 + 真 ibus-daemon）；`tests/docker/install.sh <deb>`（干净 Ubuntu 装包、真 Router 打字）。
+- `fcitx5/`：Fcitx5 插件。`src/`（package `glimmer-fcitx5`，staticlib + rlib）是 C 接口：`global.rs`（进程级后端 / 日志 / `glimmer_tick`）、`session/`（会话与事件函数，转给 `frontend::Session`）、`outputs/`（指令串与访问器，preedit 光标换字节偏移、候选补数字标签）；
+  接口声明 `include/glimmer_fcitx5.h`，改一边要改另一边。`addon/`（CMake，`src/{engine,state,candidate,action}.cpp`）出 `glimmer.so` 与两份 conf。常数：轮询 60 ms。
+  构建：`cargo build --release --locked -p glimmer-fcitx5` → `cmake -S apps/linux/fcitx5/addon -B <build> -DCMAKE_INSTALL_PREFIX=/usr -DGLIMMER_RUST_LIB=<target>/release/libglimmer_fcitx5.a -DGLIMMER_DATA_ROOT=/usr/lib/glimmer` → `cmake --build` → `DESTDIR=<暂存> cmake --install`；
+  Ubuntu 24.04 装到 `/usr/lib/<multiarch>/fcitx5/glimmer.so`、`/usr/share/fcitx5/addon/glimmer.conf`、`/usr/share/fcitx5/inputmethod/glimmer.conf`。运行时 `GLIMMER_DATA_ROOT` 覆盖资源根、`GLIMMER_ECHO=1` 用回显后端；日志 `~/.local/share/glimmer/logs/glimmer-fcitx5.<日期>.log`。
+  测试：`cargo test -p glimmer-fcitx5`（回显后端驱动 C 接口、空指针）；`fcitx5/tests/docker/run.sh`（真 fcitx5 + 样例词库）；`e2e.py` 不设 `GLIMMER_FCITX5_STAGE` 时是装机模式（系统插件 + `/usr/lib/glimmer`），装 deb 后 `dbus-run-session -- python3 e2e.py`。
 
 ## assets
 

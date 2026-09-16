@@ -1,0 +1,7 @@
+[Addon]
+Name=glimmer
+Category=InputMethod
+Library=glimmer
+Type=SharedLibrary
+OnDemand=True
+Configurable=False

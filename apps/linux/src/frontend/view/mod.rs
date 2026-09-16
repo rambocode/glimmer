@@ -56,6 +56,8 @@ pub fn candidate_view(frame: &Frame) -> Option<CandidateView> {
         rows,
         highlight: frame.highlight,
         vertical: frame.layout == LayoutMode::Vertical,
+        page: frame.page,
+        page_count: frame.page_count,
     })
 }
 

@@ -13,4 +13,10 @@ pub struct CandidateView {
 
     /// 竖排（`true`）还是横排。
     pub vertical: bool,
+
+    /// 当前页码（从 0 起）；IBus 不用，Fcitx5 据此决定翻页按钮可不可用。
+    pub page: usize,
+
+    /// 总页数。
+    pub page_count: usize,
 }
