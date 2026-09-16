@@ -70,7 +70,7 @@ cp apps/macos/scripts/repair-input-cache.sh "$APP/Contents/Resources/repair-inpu
 # 输入源名字按系统语言本地化（中文系统显示「微明」，其他显示 Glimmer）
 cp -R apps/macos/resources/*.lproj "$APP/Contents/Resources/"
 # 词库与释义表打进 Resources。data/generated/ 里有生成好的产品数据（自建词库 + 语言模型 + LLM 释义表）就用它，
-# 否则用 assets/sample/ 的样例。
+# 否则用 assets/sample/ 的样例。没有数据管道的机器跑 tools/release/data-fetch.sh 按 tools/release/data.lock 下载。
 cp assets/sample/*.tsv "$APP/Contents/Resources/"
 # emoji 表（Unicode CLDR，可发布）
 cp assets/emoji/*.tsv "$APP/Contents/Resources/"
