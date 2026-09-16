@@ -1317,7 +1317,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-fcitx5"
-version = "0.1.0-linux.2-dev"
+version = "0.1.0-linux.2"
 dependencies = [
  "glimmer-linux",
  "tracing",
@@ -1369,7 +1369,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-linux"
-version = "0.1.0-linux.2-dev"
+version = "0.1.0-linux.2"
 dependencies = [
  "dotenvy",
  "glimmer-core",

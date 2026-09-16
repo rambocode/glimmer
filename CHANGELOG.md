@@ -3,6 +3,13 @@
 一个版本一节，标题写「版本 · 日期 · 渠道」（渠道是 alpha / beta / rc / stable），正文一行一条、面向用户的措辞。
 发版时 CI 从这里取该版本的说明写进 GitHub Release，并汇总成官网下载页用的 `releases.json`（`tools/release/releases_json.py`）。
 
+## 0.1.0-linux.2 · 2026-09-17 · alpha
+
+- 支持 Fcitx5（KDE Plasma 等默认用 Fcitx5 的桌面）：同一个安装包，装好后运行 `fcitx5 -r`，在「Fcitx5 配置」里把「微明」加进输入法列表；需要 Fcitx5 5.1 或更新（Ubuntu 24.04、Debian 13 或更新）
+- 修复上一版只能装在 Ubuntu 24.04 上：现在 Ubuntu 22.04、Debian 12 及更新的系统都能安装（IBus）
+- Fcitx5 下中 / 英状态显示在托盘的输入法图标上，也可以点击切换
+- **已知问题：「翻译选中文字」暂不可用；候选框由系统输入法面板显示，没有词性与生词标记**
+
 ## 0.1.0-linux.1 · 2026-09-16 · alpha
 
 - Linux 版首个内测版：deb 安装包（x86_64 与 ARM64），适用于使用 IBus 的桌面（Ubuntu、Debian、Fedora 的 GNOME 等）；装好后在「设置 → 键盘 → 输入源」里添加「微明」
