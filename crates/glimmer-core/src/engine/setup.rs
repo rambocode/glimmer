@@ -22,17 +22,65 @@ impl Engine {
     }
 
     /// 设双拼方案，`None` 回到全拼。纠错缓存按作用域记而作用域的含义变了，一并清掉。
+    /// 五笔开着时这个值只存不用（查询以五笔为准）。
     pub fn set_shuangpin(&mut self, scheme: Option<Scheme>) {
+        if scheme.is_some() && self.wubi.is_some() {
+            tracing::warn!("五笔开着，双拼设置被忽略");
+        }
         self.shuangpin = scheme;
         *self.correction_cache.borrow_mut() = None;
+    }
+
+    /// 设五笔方案，`None` 回到拼音。缓冲区里的键换了含义：纠错缓存、格子缓存、待自动上屏的候选一并清掉。
+    /// 双拼 / 注音同时设着时以五笔为准并记一条警告。
+    pub fn set_wubi(&mut self, scheme: Option<crate::wubi::Scheme>) {
+        if scheme.is_some() && (self.shuangpin.is_some() || self.zhuyin) {
+            tracing::warn!("五笔开着，双拼 / 注音设置被忽略");
+        }
+        self.wubi = scheme;
+        self.pending_auto_commit = None;
+        self.deferred_key = None;
+        *self.correction_cache.borrow_mut() = None;
+        self.forget_span_cache();
+    }
+
+    /// 当前的五笔方案；拼音下为 `None`。
+    pub fn wubi(&self) -> Option<&crate::wubi::Scheme> {
+        self.wubi.as_ref()
+    }
+
+    /// 卸下五笔方案交还给调用方（回放里在拼音与五笔条目之间来回切、又不想重新装码表）。
+    pub fn take_wubi(&mut self) -> Option<crate::wubi::Scheme> {
+        let scheme = self.wubi.take();
+        if scheme.is_some() {
+            self.set_wubi(None);
+        }
+        scheme
+    }
+
+    /// 五笔是否开着。
+    pub fn wubi_mode(&self) -> bool {
+        self.wubi.is_some()
+    }
+
+    /// 取走五笔按键后该自动上屏的候选（四码全码命中、顶字）。壳每次 [`Self::push`] 之后先调它：
+    /// 拿到就用 [`Self::commit`] 上屏，再 [`Self::query`] 刷新剩余缓冲区。取一次就没了。
+    pub fn take_auto_commit(&mut self) -> Option<Candidate> {
+        let pending = self.pending_auto_commit.take()?;
+        // 壳拿到就直接上屏、不会先 query，输入日志的快照还停在上一键；这里刷一次，日志里的作用域与候选才是上屏那一刻的
+        let _ = self.query();
+        Some(pending)
     }
 
     pub fn shuangpin(&self) -> Option<Scheme> {
         self.shuangpin
     }
 
-    /// 設置是否啟用注音模式。開啟後鍵盤輸入按大千佈局解析。
+    /// 設置是否啟用注音模式。開啟後鍵盤輸入按大千佈局解析。五筆開著時這個值只存不用。
     pub fn set_zhuyin_mode(&mut self, on: bool) {
+        if on && self.wubi.is_some() {
+            tracing::warn!("五笔开着，注音设置被忽略");
+        }
         self.zhuyin = on;
         self.forget_span_cache();
     }
@@ -45,7 +93,7 @@ impl Engine {
     /// 判斷注音模式下目前是否還需要輸入聲調。
     /// 供殼（平台層）用來判斷空白鍵是應該進緩衝區作為聲調，還是直接用來選詞。
     pub fn zhuyin_needs_tone(&self) -> bool {
-        if !self.zhuyin {
+        if !self.zhuyin || self.wubi.is_some() {
             return false;
         }
         let raw = self.composition.text();
@@ -63,6 +111,9 @@ impl Engine {
     /// 组句中敲 `;` 是否该进缓冲区：微软 / 搜狗双拼里它是 ing 的韵母键，只在末尾有落单的声母时收，
     /// 其他时候仍是标点。问字模式（`?x`）看的是前缀之后的部分。
     pub fn takes_semicolon(&self) -> bool {
+        if self.wubi.is_some() {
+            return false;
+        }
         let body = self
             .modes()
             .question_body(self.composition.scope(), self.zhuyin);
@@ -71,17 +122,20 @@ impl Engine {
             .is_some_and(|scheme| scheme.decode(body).pending_initial())
     }
 
-    /// 有效的模式键：双拼下 v / u / i 都是音节键，字母模式键让位，只剩 `?` 开头的问字。
+    /// 有效的模式键：双拼下 v / u / i 都是音节键、五笔下都是编码键，字母模式键让位，只剩 `?` 开头的问字。
     pub(super) fn modes(&self) -> ModeKeys {
-        if self.shuangpin.is_some() {
+        if self.shuangpin.is_some() || self.wubi.is_some() {
             ModeKeys::LETTERLESS
         } else {
             self.modes
         }
     }
 
-    /// 双拼开着时把一段键解成全拼；全拼下为 `None`，调用方原样用键。
+    /// 双拼开着时把一段键解成全拼；全拼下为 `None`，调用方原样用键。五笔下双拼 / 注音都被忽略，也是 `None`。
     pub(super) fn decode(&self, keys: &str) -> Option<EngineDecoded> {
+        if self.wubi.is_some() {
+            return None;
+        }
         if self.zhuyin {
             Some(EngineDecoded::Zhuyin(crate::zhuyin::decode(keys)))
         } else {
@@ -285,6 +339,13 @@ impl Engine {
         self
     }
 
+    /// 运行时换学习器（五笔开关 / 变体热加载时换按方案分目录的那份）。旧的先 flush，整句缓存随之作废。
+    pub fn set_learner(&mut self, learner: Box<dyn Learner>) {
+        self.learner.flush();
+        self.learner.replace(learner);
+        self.forget_span_cache();
+    }
+
     pub fn with_input_logger(mut self, logger: Box<dyn InputLogger>) -> Self {
         self.logger.replace(logger);
         self
@@ -348,6 +409,11 @@ impl Engine {
             all.push(user);
         }
         all
+    }
+
+    /// 双拼 / 注音是否真的在解码键（五笔开着时它们被忽略）：`Query::decoded_keys` 用。
+    pub(super) fn decodes_keys(&self) -> bool {
+        self.wubi.is_none() && (self.shuangpin.is_some() || self.zhuyin)
     }
 
     /// 全部词库的词频之和，词频归一化成概率时用。

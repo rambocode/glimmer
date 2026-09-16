@@ -64,9 +64,17 @@ impl FrequencyLearner {
         Ok(())
     }
 
-    /// 按输入串记的选择文件与词频文件同目录。
-    pub(super) fn choices_path(frequency_path: &Path) -> PathBuf {
-        frequency_path.with_file_name(USER_CHOICES_FILE)
+    /// 按输入串记的表的路径：有方案子目录就放那里，否则与词频文件同目录。
+    fn scheme_scoped_path(&self, frequency_path: &Path, file: &str) -> PathBuf {
+        match &self.scheme_dir {
+            Some(dir) => dir.join(file),
+            None => frequency_path.with_file_name(file),
+        }
+    }
+
+    /// 按输入串记的选择文件：与词频文件同目录，或方案子目录里。
+    pub(super) fn choices_path(&self, frequency_path: &Path) -> PathBuf {
+        self.scheme_scoped_path(frequency_path, USER_CHOICES_FILE)
     }
 
     /// 从 `输入串\t词\t次数` 读按输入串记的选择，返回跳过的坏行数。
@@ -109,9 +117,9 @@ impl FrequencyLearner {
         Ok(())
     }
 
-    /// 个人敲错表与词频文件同目录。
-    pub(super) fn typos_path(frequency_path: &Path) -> PathBuf {
-        frequency_path.with_file_name(USER_TYPOS_FILE)
+    /// 个人敲错表：与词频文件同目录，或方案子目录里。
+    pub(super) fn typos_path(&self, frequency_path: &Path) -> PathBuf {
+        self.scheme_scoped_path(frequency_path, USER_TYPOS_FILE)
     }
 
     /// 从 `敲的\t要的\t次数` 读个人敲错表，返回跳过的坏行数。
@@ -179,9 +187,9 @@ impl FrequencyLearner {
         self.choices.retain(|_, texts| !texts.is_empty());
     }
 
-    /// 用户词文件与词频文件同目录。
-    pub(super) fn words_path(frequency_path: &Path) -> PathBuf {
-        frequency_path.with_file_name(USER_WORDS_FILE)
+    /// 用户词文件：与词频文件同目录，或方案子目录里（五笔的用户词记的是编码）。
+    pub(super) fn words_path(&self, frequency_path: &Path) -> PathBuf {
+        self.scheme_scoped_path(frequency_path, USER_WORDS_FILE)
     }
 
     /// 个人 n-gram 文件与词频文件同目录。

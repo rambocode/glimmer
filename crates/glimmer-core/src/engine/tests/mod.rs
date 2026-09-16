@@ -9,6 +9,7 @@ mod learning;
 mod lookup;
 mod privacy;
 mod shuangpin;
+mod wubi;
 mod zhuyin;
 
 use std::collections::HashMap;

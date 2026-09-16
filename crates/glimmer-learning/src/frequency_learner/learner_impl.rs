@@ -210,6 +210,13 @@ impl Learner for FrequencyLearner {
         let Some(path) = self.path.clone() else {
             return;
         };
+        // 方案子目录首次落盘时还不存在；建不出来就让各表的保存各自报警
+        if let Some(dir) = &self.scheme_dir
+            && (self.words_dirty || self.choices_dirty || self.typos_dirty)
+            && let Err(error) = std::fs::create_dir_all(dir)
+        {
+            tracing::warn!(path = %dir.display(), %error, "方案子目录创建失败");
+        }
         if self.dirty {
             match self.save_to(&path) {
                 Ok(()) => {
@@ -219,7 +226,7 @@ impl Learner for FrequencyLearner {
             }
         }
         if self.words_dirty {
-            let words_path = Self::words_path(&path);
+            let words_path = self.words_path(&path);
             match self.save_words_to(&words_path) {
                 Ok(()) => {
                     tracing::info!(path = %words_path.display(), entries = self.words.len(), "用户词已保存")
@@ -252,7 +259,7 @@ impl Learner for FrequencyLearner {
             }
         }
         if self.choices_dirty {
-            let choices_path = Self::choices_path(&path);
+            let choices_path = self.choices_path(&path);
             match self.save_choices_to(&choices_path) {
                 Ok(()) => {
                     tracing::info!(path = %choices_path.display(), entries = self.choice_count(), "输入串选择已保存")
@@ -263,7 +270,7 @@ impl Learner for FrequencyLearner {
             }
         }
         if self.typos_dirty {
-            let typos_path = Self::typos_path(&path);
+            let typos_path = self.typos_path(&path);
             match self.save_typos_to(&typos_path) {
                 Ok(()) => {
                     tracing::info!(path = %typos_path.display(), entries = self.typo_count_total(), "个人敲错表已保存")

@@ -87,8 +87,11 @@ impl Engine {
         });
     }
 
-    /// 键盘方案的键（双拼方案如 `xiaohe`、注音为 `zhuyin`），全拼为空；输入日志用。
-    pub(super) fn scheme_key(&self) -> String {
+    /// 键盘方案的键（五笔 `wubi86` / `wubi98`、双拼方案如 `xiaohe`、注音为 `zhuyin`），全拼为空；输入日志与回放用。
+    pub fn scheme_key(&self) -> String {
+        if let Some(wubi) = &self.wubi {
+            return wubi.key().to_owned();
+        }
         if self.zhuyin {
             "zhuyin".to_owned()
         } else {
@@ -140,7 +143,11 @@ impl Engine {
         &self.composition
     }
 
+    /// 敲进一个键。五笔下按键后可能要自动上屏（四码全码命中、顶字），壳接着用 [`Self::take_auto_commit`] 取。
     pub fn push(&mut self, c: char) {
+        // 上一键的自动上屏壳没取走就又来了一键：那条已经过时
+        self.pending_auto_commit = None;
+        self.deferred_key = None;
         if self.composition.is_empty() {
             // 新一段组句：从这一键起算耗时、翻页与重打
             self.composition_started = Some(Instant::now());
@@ -148,14 +155,21 @@ impl Engine {
             self.retype_snapshot = None;
         }
         self.composition.push(c);
+        if self.wubi.is_some() {
+            self.check_wubi_auto_commit(c);
+        }
     }
 
     pub fn backspace(&mut self) -> bool {
+        self.pending_auto_commit = None;
+        self.deferred_key = None;
         self.note_edit();
         self.composition.backspace()
     }
 
     pub fn clear(&mut self) {
+        self.pending_auto_commit = None;
+        self.deferred_key = None;
         self.composition.clear();
         self.chain.leave_buffer();
         // 壳给的光标前文只对这段组句有效，下一段第一键再读
@@ -175,6 +189,10 @@ impl Engine {
     /// 光标在开头时返回 `false`。
     pub fn delete_syllable_backward(&mut self) -> bool {
         self.note_edit();
+        // 五笔一键一码，没有音节：删一个键
+        if self.wubi.is_some() {
+            return self.backspace();
+        }
         let cursor = self.composition.cursor();
         let before = &self.composition.text()[..cursor];
         let plain =
@@ -185,6 +203,9 @@ impl Engine {
 
     /// 光标向左跳过一个音节，遇 `'` 连它一起跳过。光标在开头时返回 `false`。
     pub fn move_cursor_syllable_left(&mut self) -> bool {
+        if self.wubi.is_some() {
+            return self.composition.move_left();
+        }
         let cursor = self.composition.cursor();
         let before = &self.composition.text()[..cursor];
         let plain =
@@ -195,6 +216,9 @@ impl Engine {
 
     /// 光标向右跳过一个音节，遇 `'` 连它一起跳过。光标在末尾时返回 `false`。
     pub fn move_cursor_syllable_right(&mut self) -> bool {
+        if self.wubi.is_some() {
+            return self.composition.move_right();
+        }
         let cursor = self.composition.cursor();
         let after = &self.composition.text()[cursor..];
         let plain =
@@ -242,6 +266,7 @@ impl Engine {
             self.modes(),
             self.shuangpin,
             self.zhuyin,
+            self.wubi.is_some(),
         )
     }
 
@@ -258,7 +283,7 @@ impl Engine {
                 if self.raw_mode() {
                     return true;
                 }
-                if self.shuangpin.is_some() || self.zhuyin {
+                if self.shuangpin.is_some() || self.zhuyin || self.wubi.is_some() {
                     return false;
                 }
                 let text = self.composition.text();
@@ -302,8 +327,10 @@ impl Engine {
         Some(QUESTION_PREFIX.to_string())
     }
 
-    /// 用一段完整拼音替换当前缓冲区，供 CLI 和测试一次性喂入。
+    /// 用一段完整拼音替换当前缓冲区，供 CLI 和测试一次性喂入。不经过 [`Self::push`]，五笔不会自动上屏。
     pub fn set_input(&mut self, input: &str) {
+        self.pending_auto_commit = None;
+        self.deferred_key = None;
         self.composition.clear();
         for c in input.chars() {
             self.composition.push(c);
@@ -312,12 +339,22 @@ impl Engine {
 
     /// 放弃当前拼音，原样返回给壳（通常是用户按回车要上屏字母本身）。
     pub fn take_raw(&mut self) -> String {
+        self.pending_auto_commit = None;
+        self.deferred_key = None;
         // 纠错生效时用户仍按了回车：这个串就是要原样打的，记下来以后不再纠它
         let scope = self.composition.scope().to_owned();
         if !self.english_mode && self.active_correction(&scope).is_some() {
             self.learner.record_raw(&scope);
             // 缓存里还是「要纠」，清掉让下次重算
             *self.correction_cache.borrow_mut() = None;
+        }
+        // 五笔的空码（`xxxx` 回车 / 空格）原样上屏：与拼音一样把原码记一笔
+        if !self.english_mode
+            && self.wubi.is_some()
+            && !scope.is_empty()
+            && scope.chars().all(crate::wubi::is_code_key)
+        {
+            self.learner.record_raw(&scope);
         }
         let raw = if self.is_zhuyin_mode() && !self.english_mode {
             self.decode(self.composition.text())
@@ -335,7 +372,9 @@ impl Engine {
         self.log_commit(&raw, &raw, InputSource::Raw);
         // 原样上屏的是个英文词（`gist`）：记进个人英文词表，下次直接出候选。
         // 双拼下全部键都能解成完整音节的（`nihc`）不是英文，是用户要原样打出双拼键
+        // 五笔下回车打出的是编码不是英文词，中文模式不记
         let english_word = looks_like_english_word(&raw, self.english_mode)
+            && (self.english_mode || self.wubi.is_none())
             && (self.english_mode || self.decode(&raw).is_none_or(|d| !d.is_complete()));
         if english_word {
             self.learner.learn_english(&raw);

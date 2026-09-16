@@ -46,6 +46,9 @@ pub struct Report {
     /// 解析不了的行数。
     pub unparsable: usize,
 
+    /// 五笔条目里引擎没装对应码表（CLI 没给 `--wubi`）而跳过的条数。
+    pub wubi_missing: usize,
+
     /// 没命中首选的例子。
     pub misses: Vec<String>,
 }
@@ -180,6 +183,13 @@ impl fmt::Display for Report {
         }
         if self.unparsable > 0 {
             writeln!(f, "解析不了 {} 行", self.unparsable)?;
+        }
+        if self.wubi_missing > 0 {
+            writeln!(
+                f,
+                "五笔条目 {} 条没装对应码表，跳过（回放时给 --wubi 86 / 98）",
+                self.wubi_missing
+            )?;
         }
         if !self.misses.is_empty() {
             writeln!(f, "\n没命中首选的例子：")?;

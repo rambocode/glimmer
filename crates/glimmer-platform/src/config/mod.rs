@@ -11,6 +11,7 @@ mod preedit_mode;
 mod shortcut;
 mod status_bar;
 mod theme_mode;
+mod wubi;
 
 use std::path::Path;
 
@@ -37,6 +38,7 @@ pub use preedit_mode::PreeditMode;
 pub use shortcut::ShortcutConfig;
 pub use status_bar::StatusBarConfig;
 pub use theme_mode::ThemeMode;
+pub use wubi::WubiConfig;
 
 /// 用户配置文件（TOML）。所有平台同一份格式，缺省值全部在各分节的 `Default` 里。
 ///
@@ -71,6 +73,9 @@ pub struct Config {
 
     /// 本地整句模型。
     pub model: LocalModelConfig,
+
+    /// 五笔的行为选项（方案在 `[general] wubi` 里选）。
+    pub wubi: WubiConfig,
 }
 
 fn deserialize_phrases<'de, D: serde::Deserializer<'de>>(
@@ -181,6 +186,9 @@ punctuation_mode = "raw"
 # 双拼方案：留空为全拼；xiaohe 小鹤 / ziranma 自然码 / microsoft 微软 / sogou 搜狗
 # 开着时 v / u / i 都是音节键，表达式与问字模式只能用 ? 开头进；微软、搜狗方案的 ; 键是 ing
 shuangpin = ""
+# 五笔：留空为拼音；86 或 98 选版本（要有对应的码表文件）。开着时双拼与注音的设置被忽略，v / u 都是编码键，
+# z 开头是拼音反查（z + 全拼，候选右侧注五笔码）；行为选项在下面的 [wubi] 里
+wubi = ""
 # 日志级别：info 缺省 / debug 详细（会记录敲的拼音与上屏的文字，配合作者排查问题时再开）。日志在 ~/Library/Logs/Glimmer/
 log_level = "info"
 # 输入日志：每次上屏记一行到数据目录的 input-log.jsonl（敲的键、看到的候选、选了什么），只写在这台电脑上，不上传；
@@ -230,6 +238,14 @@ disabled = []
 # 本地整句模型：随包的小模型在本机给整句候选重新排序，全程离线；停顿后几十毫秒生效。关掉只用词库统计
 enabled = true
 
+[wubi]
+# 五笔的行为（[general] wubi 开着才生效）。敲满四码且有全码命中时首选自动上屏
+auto_select = true
+# 逐键提示候选（编码比敲的长的）右侧显示完整编码
+hint = true
+# 不超过这么多码时候选只按码表顺序，不按你的用词习惯重排：一级 / 二级简码的位置固定
+fixed_order_length = 2
+
 [predict]
 # 云联想：把光标附近的文本发到下面的接口，让模型补全整句 / 联想下文。默认关闭。
 # 开启后菜单栏的「中 / 英」旁会带一个云朵标识；Secure Input（密码框）里绝不发送。
@@ -265,6 +281,13 @@ enabled = false
 );
 
 impl Config {
+    /// 随包五笔码表的文件名（`wubi86.qj` / `wubi98.qj`），壳与 CLI 按它找文件；五笔没开为 `None`。
+    pub fn wubi_table_file(&self) -> Option<&'static str> {
+        self.general
+            .wubi()
+            .map(glimmer_core::WubiVariant::data_file)
+    }
+
     /// 保存自定义短语列表，冲突时不修改文件。
     pub fn set_custom_phrases(
         path: &Path,
@@ -475,6 +498,19 @@ mod tests {
     }
 
     #[test]
+    fn wubi_section_and_table_file_parse() {
+        let config: Config =
+            toml::from_str("[general]\nwubi = \"86\"\n[wubi]\nauto_select = false\n").unwrap();
+        assert_eq!(
+            config.general.wubi(),
+            Some(glimmer_core::WubiVariant::Wubi86)
+        );
+        assert_eq!(config.wubi_table_file(), Some("wubi86.qj"));
+        assert!(!config.wubi.auto_select && config.wubi.hint);
+        assert_eq!(config.wubi.fixed_order_length, 2);
+    }
+
+    #[test]
     fn fuzzy_section_parses() {
         let config: Config = toml::from_str("[fuzzy]\nz_zh = true\nan_ang = true\n").unwrap();
         assert!(config.fuzzy.z_zh && config.fuzzy.an_ang && !config.fuzzy.n_l);
@@ -495,6 +531,8 @@ mod tests {
         assert_eq!(config.general.learning_language, "en");
         assert!(config.general.english_candidates);
         assert_eq!(config.general.shuangpin(), None);
+        assert_eq!(config.general.wubi(), None);
+        assert_eq!(config.wubi_table_file(), None);
         assert_eq!(config.general.log_level, LogLevel::Info);
         assert_eq!(config.shortcut.mode.expression, 'i');
         assert_eq!(config.shortcut.mode.question, 'u');

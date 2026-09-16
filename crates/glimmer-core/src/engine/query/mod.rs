@@ -5,6 +5,7 @@ use super::*;
 mod english_tail;
 mod result;
 mod snapshot;
+mod wubi;
 
 pub(crate) use english_tail::EnglishTail;
 pub use result::Query;
@@ -31,7 +32,7 @@ impl Engine {
                 Query::custom_only(
                     self.composition.text(),
                     self.composition.cursor(),
-                    self.shuangpin.is_some() || self.zhuyin,
+                    self.decodes_keys(),
                     self.composition.scope(),
                     self.marked_rest(self.composition.rest()),
                 )
@@ -72,9 +73,24 @@ impl Engine {
         if self.modes().is_question(keys, self.zhuyin) {
             return Ok(self.query_question(keys, rest, start));
         }
-        if is_raw(keys, self.modes(), self.shuangpin, self.zhuyin) {
+        // 五笔：表达式 / 问字的字母键已在 `modes()` 里让位（`v` `u` 都是编码），只剩 `?` 开头的问字在上面分走；
+        // 直输段的判断在里面做，拼音反查再回到下面的拼音路径
+        if self.wubi.is_some() {
+            return self.query_wubi(keys, rest, start);
+        }
+        if is_raw(keys, self.modes(), self.shuangpin, self.zhuyin, false) {
             return Ok(self.query_raw(keys, rest, start));
         }
+        self.query_pinyin(keys, rest, start)
+    }
+
+    /// 拼音路径：切分、纠错、查词、整句、附加候选。`keys` 是要按拼音读的那段（五笔反查时是去掉 `z` 的部分）。
+    pub(super) fn query_pinyin(
+        &self,
+        keys: &str,
+        rest: String,
+        start: Instant,
+    ) -> Result<Query, ParseError> {
         // 双拼先解成全拼（音节间已用 `'` 连好，切分没有歧义），之后与全拼同路；解不动的键当尾巴
         let decoded = self.decode(keys);
         let scope: &str = decoded.as_ref().map_or(keys, |d| d.pinyin());
@@ -116,7 +132,7 @@ impl Engine {
                     text: self.composition.text().to_owned(),
                     cursor: self.composition.cursor(),
                     rest,
-                    decoded_keys: self.shuangpin.is_some() || self.zhuyin,
+                    decoded_keys: self.decodes_keys(),
                     typed_display: decoded.as_ref().map(|d| d.marked()),
                     correction: None,
                     timings: Timings {
@@ -261,7 +277,7 @@ impl Engine {
             text: self.composition.text().to_owned(),
             cursor: self.composition.cursor(),
             rest,
-            decoded_keys: self.shuangpin.is_some() || self.zhuyin,
+            decoded_keys: self.decodes_keys(),
             typed_display,
             correction,
             timings: Timings {
@@ -292,7 +308,7 @@ impl Engine {
             text: self.composition.text().to_owned(),
             cursor: self.composition.cursor(),
             rest,
-            decoded_keys: self.shuangpin.is_some() || self.zhuyin,
+            decoded_keys: self.decodes_keys(),
             typed_display: None,
             correction: None,
             timings: Timings {
@@ -319,7 +335,7 @@ impl Engine {
             text: self.composition.text().to_owned(),
             cursor: self.composition.cursor(),
             rest,
-            decoded_keys: self.shuangpin.is_some() || self.zhuyin,
+            decoded_keys: self.decodes_keys(),
             typed_display: None,
             correction: None,
             timings: Timings {
@@ -357,7 +373,7 @@ impl Engine {
             text: self.composition.text().to_owned(),
             cursor: self.composition.cursor(),
             rest,
-            decoded_keys: self.shuangpin.is_some() || self.zhuyin,
+            decoded_keys: self.decodes_keys(),
             typed_display: None,
             correction: None,
             timings: Timings {
@@ -398,7 +414,7 @@ impl Engine {
             text: self.composition.text().to_owned(),
             cursor: self.composition.cursor(),
             rest,
-            decoded_keys: self.shuangpin.is_some() || self.zhuyin,
+            decoded_keys: self.decodes_keys(),
             typed_display: None,
             correction: None,
             timings: Timings {

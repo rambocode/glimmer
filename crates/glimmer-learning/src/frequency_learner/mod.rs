@@ -85,6 +85,10 @@ pub struct FrequencyLearner {
 
     /// 个人敲错表自上次保存后是否有变化。
     typos_dirty: bool,
+
+    /// 按输入串记的三张表（用户词、选择记录、敲错表）所在的方案子目录：五笔的编码与拼音的音节会撞键（`a` 是拼音音节也是 工 的简码），
+    /// 按方案分开放（`<数据目录>/wubi86/`）；`None` 与词频文件同目录（拼音）。按文本记的词频、n-gram、英文词表各方案共用。
+    scheme_dir: Option<PathBuf>,
 }
 
 impl FrequencyLearner {
@@ -119,13 +123,28 @@ impl FrequencyLearner {
     /// 编码坏掉的字节按替换字符读进来交给按行解析处理。只有真正的 io 错误（权限、坏盘）才返回 `Err`，
     /// 这时壳该退回只在内存里学习，别拿空表覆盖用户的文件。
     pub fn from_path(path: impl Into<PathBuf>) -> Result<Self, LearningError> {
+        Self::from_path_with_scheme(path, None)
+    }
+
+    /// 同 [`Self::from_path`]，`scheme` 是输入方案的键（`wubi86`）：按输入串记的用户词、选择记录、敲错表落在
+    /// 词频文件同目录下的 `<scheme>/` 子目录里，按文本记的表仍与拼音共用；`None` 是拼音，全部与词频文件同目录。
+    pub fn from_path_with_scheme(
+        path: impl Into<PathBuf>,
+        scheme: Option<&str>,
+    ) -> Result<Self, LearningError> {
         let path = path.into();
-        let mut learner = Self::default();
+        let mut learner = Self {
+            scheme_dir: scheme.map(|scheme| {
+                path.parent()
+                    .map_or_else(|| PathBuf::from(scheme), |dir| dir.join(scheme))
+            }),
+            ..Self::default()
+        };
         if let Some(source) = read_text_lossy(&path)? {
             let skipped = learner.load_counts(&source);
             note_skipped(&path, skipped);
         }
-        let words_path = Self::words_path(&path);
+        let words_path = learner.words_path(&path);
         if let Some(source) = read_text_lossy(&words_path)? {
             let skipped = learner.load_words(&source);
             note_skipped(&words_path, skipped);
@@ -136,7 +155,7 @@ impl FrequencyLearner {
             learner.ngram = ngram;
             note_skipped(&ngram_path, skipped.len());
         }
-        let choices_path = Self::choices_path(&path);
+        let choices_path = learner.choices_path(&path);
         if let Some(source) = read_text_lossy(&choices_path)? {
             let skipped = learner.load_choices(&source);
             note_skipped(&choices_path, skipped);
@@ -146,13 +165,18 @@ impl FrequencyLearner {
             let skipped = learner.load_english(&source);
             note_skipped(&english_path, skipped);
         }
-        let typos_path = Self::typos_path(&path);
+        let typos_path = learner.typos_path(&path);
         if let Some(source) = read_text_lossy(&typos_path)? {
             let skipped = learner.load_typos(&source);
             note_skipped(&typos_path, skipped);
         }
         learner.path = Some(path);
         Ok(learner)
+    }
+
+    /// 按输入串记的表所在的方案子目录；拼音为 `None`。
+    pub fn scheme_dir(&self) -> Option<&Path> {
+        self.scheme_dir.as_deref()
     }
 
     pub fn is_dirty(&self) -> bool {

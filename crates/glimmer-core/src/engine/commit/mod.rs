@@ -6,6 +6,7 @@ use super::*;
 mod chain;
 mod last;
 mod transition;
+mod wubi;
 
 pub(super) use chain::CommitChain;
 pub use last::LastCommit;
@@ -163,6 +164,13 @@ impl Engine {
         }
         self.composition.drain_prefix(consumed);
         let buffer_left = !self.composition.is_empty();
+        // 五笔顶字：旧段吃掉了，把暂时拿掉的新键补回缓冲区；它是新一段的第一键，不算同一段（`buffer_left` 已经算过）
+        if let Some(key) = self.deferred_key.take() {
+            self.composition.push(key);
+            self.composition_started = Some(Instant::now());
+            self.page_turns = 0;
+            self.retype_snapshot = None;
+        }
         match candidate.kind {
             CandidateKind::Chinese | CandidateKind::Cloud => {
                 self.record_word(
@@ -253,9 +261,10 @@ impl Engine {
         let syllables: Vec<String> = words.iter().flat_map(|(_, s)| s.iter().cloned()).collect();
         let chars = text.chars().count();
         let key = self.chain.buffer_key().to_owned();
-        if key.is_empty() || chars > AUTO_WORD_MAX_CHARS || chars != syllables.len() {
+        if key.is_empty() || chars > AUTO_WORD_MAX_CHARS {
             return None;
         }
+        let syllables = self.auto_word_syllables(&text, syllables)?;
         self.learner.record_choice(&key, &text);
         let candidate = Candidate {
             text,
@@ -332,7 +341,7 @@ impl Engine {
     /// 双拼不记（键与全拼对不上）。
     pub(super) fn accepted_typos(&self, candidate: &Candidate) -> Vec<(String, String)> {
         let keys = self.composition.scope();
-        if self.decode(keys).is_some() {
+        if self.wubi.is_some() || self.decode(keys).is_some() {
             return Vec::new();
         }
         match self.active_correction(keys) {
@@ -352,6 +361,10 @@ impl Engine {
         &self,
         candidate: &Candidate,
     ) -> Option<Vec<sentence::SentenceWord>> {
+        // 五笔反查里的整句（作用域带 `z`）不重算路径：不记转移，链就此断开
+        if self.wubi.is_some() {
+            return None;
+        }
         let scope = self.composition.scope();
         if self.decode(scope).is_none()
             && let Some(tail) = self.split_english_tail(scope)
@@ -396,6 +409,9 @@ impl Engine {
     /// 候选消耗多少作用域字节，以及按输入串记学习用的键（候选覆盖的那段全拼字母）。
     /// 纠错生效时按纠正后的拼音算，再按那处编辑换算回原串；双拼按解出的全拼算，再换算回键数。
     pub(super) fn consumed_by(&self, candidate: &Candidate) -> (usize, String) {
+        if self.wubi.is_some() {
+            return self.wubi_consumed_by(candidate);
+        }
         let keys = self.composition.scope();
         if let Some(decoded) = self.decode(keys) {
             let pinyin_len = self.align(decoded.pinyin(), &candidate.syllables).consumed;
@@ -486,7 +502,8 @@ impl Engine {
         self.recording
             .push(Transition::new(self.chain.context(), text, times));
         if auto_word {
-            let threshold = if self.chain.same_buffer() {
+            // 五笔一段编码就是一个词，连着上屏的两个词（中间没有标点 / 断开）就是「一起打的」，按同段的阈值
+            let threshold = if self.chain.same_buffer() || self.wubi.is_some() {
                 AUTO_WORD_THRESHOLD_SAME_BUFFER
             } else {
                 AUTO_WORD_THRESHOLD
@@ -502,12 +519,14 @@ impl Engine {
             return;
         };
         let joined = format!("{previous}{text}");
-        let chars = joined.chars().count();
-        let mut joined_syllables = self.chain.previous_syllables().to_vec();
-        joined_syllables.extend(syllables.iter().cloned());
-        if chars > AUTO_WORD_MAX_CHARS || chars != joined_syllables.len() {
+        if joined.chars().count() > AUTO_WORD_MAX_CHARS {
             return;
         }
+        let mut pinyin = self.chain.previous_syllables().to_vec();
+        pinyin.extend(syllables.iter().cloned());
+        let Some(joined_syllables) = self.auto_word_syllables(&joined, pinyin) else {
+            return;
+        };
         // 这条转移刚记过，计数已含本次；阈值按「选了几次」算，计数是按份记的
         let seen = self
             .learner
@@ -531,7 +550,7 @@ impl Engine {
             .learn_word(&candidate.text, &candidate.syllables);
     }
 
-    /// 主词库或用户词里是否已有这个词（同音节）。
+    /// 主词库或用户词里是否已有这个词（同音节）；五笔下查码表与用户词（同编码）。
     pub(super) fn knows_word(&self, candidate: &Candidate) -> bool {
         let syllables: Vec<&str> = candidate.syllables.iter().map(String::as_str).collect();
         if syllables.is_empty() {
@@ -543,7 +562,12 @@ impl Engine {
                 .iter()
                 .any(|hit| hit.exact && hit.text == candidate.text)
         };
-        self.all_dictionaries().into_iter().any(known)
+        let dictionaries = if self.wubi.is_some() {
+            self.wubi_dictionaries()
+        } else {
+            self.all_dictionaries()
+        };
+        dictionaries.into_iter().any(known)
     }
 }
 

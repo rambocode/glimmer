@@ -75,6 +75,44 @@ fn run() -> Result<(), CliError> {
     Ok(())
 }
 
+/// 读配置文件并套上命令行的覆盖项（云联想、模糊音、双拼、五笔）。
+fn load_config(args: &Args) -> Result<Config, CliError> {
+    let config_path = args
+        .config
+        .clone()
+        .unwrap_or_else(args::default_config_file);
+    let mut config = Config::load(&config_path)?;
+    if args.predict {
+        config.predict.enabled = true;
+    }
+    if !args.fuzzy.is_empty() {
+        let mut rules = FuzzyRules::default();
+        for name in &args.fuzzy {
+            if name == "all" {
+                rules = FuzzyRules::ALL;
+            } else if !rules.enable(name) {
+                tracing::warn!(name, "不认识的模糊音规则，忽略");
+            }
+        }
+        config.fuzzy = rules;
+    }
+    if let Some(scheme) = &args.shuangpin {
+        config.general.shuangpin = if scheme == "off" {
+            String::new()
+        } else {
+            scheme.clone()
+        };
+    }
+    if let Some(wubi) = &args.wubi {
+        config.general.wubi = if wubi == "off" {
+            String::new()
+        } else {
+            wubi.clone()
+        };
+    }
+    Ok(config)
+}
+
 /// 组装 Engine：这是 Core 之外唯一知道具体 Translator / Learner 类型的地方。
 fn build_engine(args: &Args) -> Result<Engine, CliError> {
     let language: Language = args
@@ -84,6 +122,7 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
     if language == Language::Chinese {
         return Err(CliError::Language(args.language.clone()));
     }
+    let config = load_config(args)?;
     let dict_path = args
         .dict
         .clone()
@@ -106,8 +145,10 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
     let started = Instant::now();
     let english = english_path.as_ref().map(WordList::from_path).transpose()?;
     let english_load = started.elapsed();
+    // 五笔下按输入串记的表落在方案子目录（编码与拼音音节撞键）
+    let scheme_key = config.general.wubi().map(|variant| variant.key());
     let learner = match &args.user_dict {
-        Some(path) => FrequencyLearner::from_path(path)?,
+        Some(path) => FrequencyLearner::from_path_with_scheme(path, scheme_key)?,
         None => FrequencyLearner::default(),
     };
     tracing::info!(
@@ -209,37 +250,11 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
             )
         };
     }
-    let config_path = args
-        .config
-        .clone()
-        .unwrap_or_else(args::default_config_file);
-    let mut config = Config::load(&config_path)?;
-    if args.predict {
-        config.predict.enabled = true;
-    }
-    if !args.fuzzy.is_empty() {
-        let mut rules = FuzzyRules::default();
-        for name in &args.fuzzy {
-            if name == "all" {
-                rules = FuzzyRules::ALL;
-            } else if !rules.enable(name) {
-                tracing::warn!(name, "不认识的模糊音规则，忽略");
-            }
-        }
-        config.fuzzy = rules;
-    }
     if config.fuzzy.any() {
         tracing::info!(rules = ?config.fuzzy, "模糊音已启用");
     }
     engine.set_fuzzy(config.fuzzy);
     engine.set_mode_keys(config.shortcut.mode);
-    if let Some(scheme) = &args.shuangpin {
-        config.general.shuangpin = if scheme == "off" {
-            String::new()
-        } else {
-            scheme.clone()
-        };
-    }
     if let Some(scheme) = config.general.shuangpin() {
         tracing::info!(%scheme, "双拼已启用");
     }
@@ -248,6 +263,24 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
     }
     engine.set_shuangpin(config.general.shuangpin());
     engine.set_zhuyin_mode(config.general.zhuyin);
+    // 五笔：码表只认 data/generated/ 下打包好的 .qj，没有就报错（用 dict-convert 生成）
+    if let Some(variant) = config.general.wubi() {
+        let path = std::path::PathBuf::from("data/generated").join(variant.data_file());
+        if !path.is_file() {
+            return Err(CliError::WubiTable(path));
+        }
+        let started = Instant::now();
+        let table = Dictionary::from_path(&path)?;
+        let scheme = glimmer_core::wubi::Scheme::new(variant, table, config.wubi.options());
+        tracing::info!(
+            scheme = variant.key(),
+            entries = scheme.dictionary().len(),
+            chars = scheme.reverse().len(),
+            load_ms = started.elapsed().as_millis(),
+            "五笔已启用"
+        );
+        engine.set_wubi(Some(scheme));
+    }
     if config.predict.enabled {
         let predictor = CloudPredictor::new(&config.predict)?;
         engine = engine.with_predictor(Box::new(predictor));

@@ -1,4 +1,4 @@
-use glimmer_core::{PunctuationMode, ShuangpinScheme};
+use glimmer_core::{PunctuationMode, ShuangpinScheme, WubiVariant};
 use serde::{Deserialize, Serialize};
 
 use super::{LayoutMode, LogLevel, PreeditMode, ThemeMode};
@@ -55,6 +55,9 @@ pub struct GeneralConfig {
     /// 注音模式开关，大千键盘。
     pub zhuyin: bool,
 
+    /// 五笔：空串关，`86` / `98` 选版本（见 [`WubiVariant`]）。开着时双拼与注音的设置被忽略。
+    pub wubi: String,
+
     /// 日志级别，缺省 info（不含用户敲的内容）。
     pub log_level: LogLevel,
 
@@ -78,6 +81,7 @@ impl Default for GeneralConfig {
             punctuation_mode: PunctuationMode::default(),
             shuangpin: String::new(),
             zhuyin: false,
+            wubi: String::new(),
             log_level: LogLevel::default(),
             input_log: true,
         }
@@ -95,6 +99,21 @@ impl GeneralConfig {
             Ok(scheme) => Some(scheme),
             Err(_) => {
                 tracing::warn!(key, "不认识的双拼方案，按全拼");
+                None
+            }
+        }
+    }
+
+    /// 五笔版本；没开或写得不认识时为 `None`（拼音）。
+    pub fn wubi(&self) -> Option<WubiVariant> {
+        let key = self.wubi.trim();
+        if key.is_empty() {
+            return None;
+        }
+        match key.parse() {
+            Ok(variant) => Some(variant),
+            Err(_) => {
+                tracing::warn!(key, "不认识的五笔版本，按拼音");
                 None
             }
         }
@@ -154,5 +173,17 @@ mod tests {
         assert_eq!(general.shuangpin(), Some(ShuangpinScheme::Sogou));
         general.shuangpin = "flypy".to_owned();
         assert_eq!(general.shuangpin(), None);
+    }
+
+    #[test]
+    fn wubi_is_off_by_default_and_accepts_86_or_98() {
+        let mut general = GeneralConfig::default();
+        assert_eq!(general.wubi(), None);
+        general.wubi = "86".to_owned();
+        assert_eq!(general.wubi(), Some(WubiVariant::Wubi86));
+        general.wubi = " wubi98 ".to_owned();
+        assert_eq!(general.wubi(), Some(WubiVariant::Wubi98));
+        general.wubi = "2000".to_owned();
+        assert_eq!(general.wubi(), None);
     }
 }

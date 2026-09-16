@@ -236,6 +236,15 @@ pub struct Engine {
 
     /// emoji 表，没有就不出 emoji 候选。
     emoji: Option<EmojiTable>,
+
+    /// 五笔方案，`None` 为拼音。开着时缓冲区里是编码键，双拼 / 注音的设置被忽略（见 [`crate::wubi`]）。
+    wubi: Option<crate::wubi::Scheme>,
+
+    /// 五笔按键后该自动上屏的候选（四码全码命中、顶字），壳每次 `push` 后用 [`Self::take_auto_commit`] 取走再 `commit`。
+    pending_auto_commit: Option<Candidate>,
+
+    /// 顶字上屏时被暂时从缓冲区拿掉的新键：旧段被 `commit` 吃掉后再补回缓冲区。
+    deferred_key: Option<char>,
 }
 
 /// 英文补全最多几条（`compa` → company / compare / …）。
@@ -364,13 +373,27 @@ impl Engine {
             shuangpin: None,
             zhuyin: false,
             emoji: None,
+            wubi: None,
+            pending_auto_commit: None,
+            deferred_key: None,
         }
     }
 }
 
 /// 缓冲区是否是英文直输段：含拼音键与 `'` 以外的字符（`no-way`、`a.b`），且不是表达式 / 问字模式。
-/// 微软 / 搜狗双拼下 `;` 也是拼音键。
-fn is_raw(text: &str, modes: ModeKeys, shuangpin: Option<Scheme>, zhuyin: bool) -> bool {
+/// 微软 / 搜狗双拼下 `;` 也是拼音键；五笔下编码键是 `a`–`z`，别的可见字符（`gg-`）仍算直输段。
+fn is_raw(
+    text: &str,
+    modes: ModeKeys,
+    shuangpin: Option<Scheme>,
+    zhuyin: bool,
+    wubi: bool,
+) -> bool {
+    if wubi {
+        return !text.is_empty()
+            && !modes.is_question(text, false)
+            && text.chars().any(|c| !crate::wubi::is_code_key(c));
+    }
     let is_key = |c: char| {
         if zhuyin {
             crate::zhuyin::layout::map_key(c).is_some() || c == ' '

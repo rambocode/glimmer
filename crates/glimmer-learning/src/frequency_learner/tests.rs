@@ -294,3 +294,40 @@ fn english_words_round_trip_through_tsv_and_form_a_word_list() {
     let saved = std::fs::read_to_string(FrequencyLearner::english_path(&path)).unwrap();
     assert!(saved.contains("gist\t2"));
 }
+
+#[test]
+fn scheme_scoped_tables_live_in_a_subdirectory_and_share_text_keyed_tables() {
+    let dir = std::env::temp_dir().join(format!("glimmer-learning-scheme-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+    let path = dir.join("user.tsv");
+
+    let mut wubi = FrequencyLearner::from_path_with_scheme(&path, Some("wubi86")).unwrap();
+    assert_eq!(wubi.scheme_dir(), Some(dir.join("wubi86").as_path()));
+    wubi.record(&candidate("中国"));
+    wubi.record_choice("a", "工");
+    wubi.record_raw("xxxx");
+    wubi.learn_word("中国", &["khlg".to_owned()]);
+    wubi.record_typo("gg", "gy");
+    wubi.flush();
+    assert!(dir.join("wubi86").join(USER_WORDS_FILE).is_file());
+    assert!(dir.join("wubi86").join(USER_CHOICES_FILE).is_file());
+    assert!(dir.join("wubi86").join(USER_TYPOS_FILE).is_file());
+    assert!(!dir.join(USER_WORDS_FILE).exists());
+    assert!(!dir.join(USER_CHOICES_FILE).exists());
+
+    // 拼音的学习器：词频共用，按输入串记的三张表看不到五笔的
+    let pinyin = FrequencyLearner::from_path(&path).unwrap();
+    assert_eq!(pinyin.weight("中国"), 1);
+    assert_eq!(pinyin.choice_weight("a", "工"), 0);
+    assert_eq!(pinyin.raw_count("xxxx"), 0);
+    assert!(pinyin.user_words().is_none());
+    assert_eq!(pinyin.typo_count("gg", "gy"), 0);
+
+    let reloaded = FrequencyLearner::from_path_with_scheme(&path, Some("wubi86")).unwrap();
+    assert_eq!(reloaded.choice_weight("a", "工"), 1);
+    assert_eq!(reloaded.raw_count("xxxx"), 1);
+    assert_eq!(reloaded.typo_count("gg", "gy"), 1);
+    assert_eq!(reloaded.word_count(), 1);
+    let _ = std::fs::remove_dir_all(&dir);
+}

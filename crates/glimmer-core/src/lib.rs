@@ -20,6 +20,7 @@ pub mod sentence;
 pub mod shortcut;
 pub mod shuangpin;
 pub mod storage;
+pub mod wubi;
 pub mod zhuyin;
 
 pub use custom_phrase::CustomPhrase;
@@ -47,3 +48,4 @@ pub use history::InputHistory;
 pub use parser::{ParseError, Segmentation};
 pub use punctuation::Punctuation;
 pub use shuangpin::Scheme as ShuangpinScheme;
+pub use wubi::Variant as WubiVariant;

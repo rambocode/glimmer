@@ -64,14 +64,16 @@ impl Engine {
             None => (String::new(), String::new()),
         };
         let scope = self.composition.scope();
+        // 问字模式：问题本身就是全部上下文，不带应用文本、不要整句、本地没有候选可提示
+        let question = self.modes().is_question(scope, self.zhuyin);
+        // 五笔下缓冲区里是编码不是拼音，组句联想的拼音校验对不上，不发；`?` 问字敲的仍是拼音，照发；上屏后的联想本来就不发
         if self.english_mode
+            || (self.wubi.is_some() && !question)
             || self.modes().is_expression(scope, self.zhuyin)
-            || is_raw(scope, self.modes(), self.shuangpin, self.zhuyin)
+            || is_raw(scope, self.modes(), self.shuangpin, self.zhuyin, false)
         {
             return None;
         }
-        // 问字模式：问题本身就是全部上下文，不带应用文本、不要整句、本地没有候选可提示
-        let question = self.modes().is_question(scope, self.zhuyin);
         if question
             && shortcut::unicode_form(self.modes().question_body(scope, self.zhuyin)).is_some()
         {

@@ -39,6 +39,10 @@ impl Engine {
 
     /// 日期 / 时间 / 星期这类快捷候选插在本地首选之后：`rq` 首选仍是词库里的词，快捷写法紧随其后。
     pub(super) fn insert_shortcuts(&self, items: &mut Vec<Candidate>, scope: &str) {
+        // 五笔下 `rq` 是编码，反查的拼音也不当快捷键
+        if self.wubi.is_some() {
+            return;
+        }
         let expression_char =
             if self.zhuyin && crate::zhuyin::layout::map_key(self.modes().expression).is_some() {
                 '\0'
@@ -56,6 +60,10 @@ impl Engine {
     /// 中英混输：整段输入是英文词就把它加进候选。
     /// 作为拼音「不像话」（切不动、或除末尾外还有声母缩写 / 残缺音节）时排第一，否则排第二。
     pub(super) fn insert_english(&self, items: &mut Vec<Candidate>, unlikely_pinyin: bool) {
+        // 五笔下没有中英混输候选：编码与英文词撞形太多
+        if self.wubi.is_some() {
+            return;
+        }
         let lists = self.english_lists();
         if lists.is_empty() {
             return;

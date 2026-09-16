@@ -26,6 +26,12 @@ pub enum CliError {
     #[error(transparent)]
     Config(#[from] ConfigError),
 
+    /// 五笔码表文件不存在。
+    #[error(
+        "wubi table not found: {0}; generate it with `dict-convert wubi` and `dict-convert pack dict` (see docs/notes/crate-notes.md)"
+    )]
+    WubiTable(std::path::PathBuf),
+
     #[error(transparent)]
     Predict(#[from] PredictError),
 

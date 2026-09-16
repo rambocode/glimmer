@@ -77,6 +77,10 @@ pub struct Args {
     #[arg(long)]
     pub shuangpin: Option<String>,
 
+    /// 五笔（86 / 98），覆盖配置里的 [general] wubi；off 强制拼音。码表读 data/generated/wubi<版本>.qj，没有就报错退出
+    #[arg(long)]
+    pub wubi: Option<String>,
+
     /// 神经重打分：字级 Transformer 的 .qjm 文件或导出目录（model.safetensors / config.json / vocab.json），整句前几条路径用它重排
     #[arg(long)]
     pub neural: Option<PathBuf>,
