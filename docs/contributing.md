@@ -13,7 +13,7 @@
 - **一个候选词只显示一种辅助语言。** 用户配置 Primary Language + 单个 Learning Language。不要设计成 `translations: Vec<Translation>` 或
   `HashMap<Lang, String>` 这类多语言并列的数据结构，那会在 API 层面把「一次只学一种语言」这条产品原则给破坏掉。翻译是候选词的 annotation（可选、单条）。
 - **输入优先于学习。** 任何为学习功能增加的延迟、弹窗、UI 干扰都是设计错误。翻译查询不能阻塞候选生成，Core 必须能在翻译尚未就绪时先返回候选。
-- **输入方案是配置项，不是模式。** 双拼、注音这类键盘方案放 `[general]` 里当设置，中 / 英切换始终是布尔；新方案不能改变别的方案的既定按键行为（[user/getting-started/keys.md](user/getting-started/keys.md)）。
+- **输入方案是配置项，不是模式。** 双拼、注音、五笔这类键盘 / 码表方案放 `[general]` 里当设置（五笔开着时双拼 / 注音被忽略），中 / 英切换始终是布尔；新方案不能改变别的方案的既定按键行为（[user/getting-started/keys.md](user/getting-started/keys.md)）。
 - **显示面自绘、控件面原生。** 候选窗、拼音行、状态条这类显示面由渲染器出位图各平台贴图（主题靠它）；偏好设置、菜单、安装器用各平台原生控件。
 
 ## 代码组织

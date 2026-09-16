@@ -11,7 +11,14 @@ CLAUDE.md 只保留目录地图与规则，每个 crate / app / tool 的实现�
 ## crates/glimmer-core
 
 模块：`composition` / `parser` / `correction`（拼写纠错：整段一处编辑的候选纠正 + `typo` 音节级敲错变体表，后者进整句词图当带代价的边）/
-`candidate` / `ranking` / `shortcut` / `sentence` / `fuzzy` / `shuangpin`（双拼：四套方案键位表、键 → 全拼解码与消耗换算）/ `zhuyin`（大千注音：键 → 注音符号 → 拼音，`[general] zhuyin` 开关，声调只判音节完整不进查询）/ `emoji` /
+`candidate` / `ranking` / `shortcut` / `sentence` / `fuzzy` / `shuangpin`（双拼：四套方案键位表、键 → 全拼解码与消耗换算）/ `zhuyin`（大千注音：键 → 注音符号 → 拼音，`[general] zhuyin` 开关，声调只判音节完整不进查询）/
+`wubi`（五笔码表方案，`Engine::set_wubi(Option<Scheme>)`，开着时双拼 / 注音 / 整句 / 纠错 / 模糊音 / 中英混输 / 快捷候选 / 组句联想全部让位，`v` `u` 是编码键，只剩 `?` 问字；
+  `Scheme` = 码表 `Dictionary`（`词\t编码\t词频`，编码整个是一个音节，`wubi86.qj`）+ `Reverse` 字 → 全码（单字取最长码、等长取高频）+ `Options`（`[wubi]`）+ `encode` 造词规则；
+  查询在 `engine/query/wubi.rs`：`lookup_pattern` 前缀一次查出，全码命中在前、前缀命中短码在前当逐键提示（`hint` 开着 `reading` 注完整编码），作用域 ≤ `fixed_order_length`（缺省 2）的全码命中只按码表静态词频、不叠用户权重与选择记录；
+  `check_wubi_auto_commit` 在 `push` 之后置 `pending_auto_commit`（四码全码命中且 `auto_select`；新键接上后无任何命中 → 旧段首选顶字、新键存 `deferred_key` 等 `commit` 后补回；满四码空码再敲字母整段丢掉），
+  壳每键 `take_auto_commit` 取到就走普通 `commit`；`z` 开头走 `query_pinyin` 反查，候选 `reading` 注 `code_of`、`syllables` 是整段作用域，`typed_display` 为 `z'zhong'guo`；
+  上屏消耗在 `engine/commit/wubi.rs`：吃候选编码那么长，自动造词按 `encode` 出编码进用户词（造不出就不造），五笔下连着上屏两次即造（同缓冲区阈值），空码回车 `record_raw` 不学成英文词；
+  `scheme_key()` 为 `wubi86` / `wubi98`，输入日志与回放据此切方案）/ `emoji` /
 `english`（英文模式候选）/ `engine`（`query::EnglishTail`：句末英文词并入整句，`woxiangxuehaorust` → 我想学好rust，尾段也像拼音时按分数与拼音读法比）。
 `Engine` 是对外唯一门面，`Translator` / `Learner` trait 在 `engine` 模块；词库是「主词库 + 附加词库（`set_extra_dictionaries`）+ 用户词」的列表。
 
@@ -27,6 +34,8 @@ CLAUDE.md 只保留目录地图与规则，每个 crate / app / tool 的实现�
   个人敲错表（`user-typos.tsv`，接受过的 (敲的, 要的) 音节对，词图敲错边与整段纠错的代价按它打折）与个人 n-gram（`user-ngram.tsv`，Core `sentence::UserNgram`，
   二元 + 三元在线计数，整句转换与词级排序里与静态模型插值；Tab 接受的云端整句按 `sentence::segment_text` 切词后也记；
   连着选出的两个词记够次数自动造词进用户词，一段拼音分几次选完的合成词记两次也造）。
+  按输入串记的三张表（`user-words.tsv` / `user-choices.tsv` / `user-typos.tsv`）按方案分目录：`from_path_with_scheme(path, Some("wubi86"))` 把它们放到词频文件同目录的 `wubi86/` 下
+  （五笔编码与拼音音节撞键，`a` 既是音节也是 工 的简码），按文本记的 `user.tsv` / `user-ngram.tsv` / `user-english.tsv` 各方案共用；子目录首次落盘时建。
 - `InputLog`：输入日志（`input-log.jsonl`，每次上屏一行：敲的键、切分、看到的前几个候选、选了第几个、来源、纠错、撤销，
   Core `InputLogger` trait 的落盘实现，`[general] input_log` 缺省开，只写本机，给离线回归评测与个人模型用）。
 - `UsageStats`：输入统计（`usage.tsv`，按天记汉字 / 中文词 / 英文词 / 上屏次数，Core `UsageMeter` trait 的实现，Engine 每次上屏 `Usage::of_text` + 按来源定词数，
@@ -93,7 +102,9 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 前 `RESCORE_P
 - `--predict` 强制开云联想并等结果打印，交互模式下上屏后也联想。
 - `--typing` 逐键计时（性能测试用 release 构建跑，目标每键 10 ms 以内）。
 - `--replay <input-log.jsonl>` 回放评测：把日志里每次上屏的键重新喂给引擎，按来源算首选 / 前五命中率、平均名次、不在候选的条数，打印没命中的例子（`--misses N`）；
-  只在内存里学习不写文件，加 `--user-dict` 可带上现有学习数据。
+  只在内存里学习不写文件，加 `--user-dict` 可带上现有学习数据。日志每条带 `scheme`，回放按它切双拼 / 注音 / 五笔：五笔条目要同时给 `--wubi`，没给就跳过并计数（`wubi_missing`）。
+- `--wubi 86|98|off` 覆盖 `[general] wubi`：码表只认 `data/generated/wubi<版本>.qj`（没有就报错，用 `dict-convert wubi` + `pack dict --output` 生成），`[wubi]` 选项照配置；
+  `--user-dict` 给了时按输入串记的表落 `wubi86/` 子目录。`--typing` 逐键计时不模拟四码自动上屏（`set_input` 不走 `push`）。
 - `--tune 名=值`（逗号分隔）覆盖个人 n-gram 插值与敲错代价的常数扫网格（名字见 `apps/cli/src/tuning.rs`，Core 侧是 `Engine::set_interpolation` / `set_typo_costs`，壳只用缺省值）。
 - `--eval-text <文本>...` 整句评测：把用户自己写的中文文本按标点切句、按词库读音转成全拼，冷启动喂给引擎看整句能不能还原原句
   （首选命中率 / 字准确率 / 查询耗时；不依赖日志里当时选了什么，给整句排序与语言模型的改动当尺子），`--eval-save` 冻结成 `句子\t拼音\t上文` 三列文件，
@@ -110,7 +121,8 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 - 日志在 `~/Library/Logs/Glimmer/`（按天分文件留 7 天，删了会重建），用户数据与配置在 `~/Library/Application Support/Glimmer/`。
 - 配置项：云联想 `[predict]`（偏好设置「云服务」页有「测试连接」按钮：`glimmer_predict::ConnectionTest` 起线程发一条最小请求，`Host` 用独立定时器 `CloudTestMonitor` 轮询结果显示到窗口底部；
   `reasoning_effort` 缺省 `none`，DeepSeek V4 默认思考，不关正文为空）；模糊音 `[fuzzy]` 默认都关；`[general]` 学习语言 / 每页候选数 / 翻页键 / 外观 / 竖排横排 / 拼音显示位置 /
-  英文模式候选开关 / 双拼方案 `shuangpin`（小鹤 / 自然码 / 微软 / 搜狗，空为全拼）/ 日志级别 `log_level`（缺省 info 不含敲的内容，debug 逐键记，热切换）/ 输入日志 `input_log`；
+  英文模式候选开关 / 双拼方案 `shuangpin`（小鹤 / 自然码 / 微软 / 搜狗，空为全拼）/ 五笔 `wubi`（空为拼音，`86` / `98`，开着时双拼与注音被忽略；行为在 `[wubi]`：`auto_select` / `hint` / `fixed_order_length`，
+  码表 `Resources/wubi86.qj`，壳每次 `push` 后先 `take_auto_commit`）/ 日志级别 `log_level`（缺省 info 不含敲的内容，debug 逐键记，热切换）/ 输入日志 `input_log`；
   `[shortcut]` 模式键 v / u、上屏第一 / 第二个译词的修饰键 `translation` / `translation_second`、删候选 `delete_candidate`（缺省 shift，用户词整删、词库词清学习）、翻译选中文字 `translate_selection`、macOS 中英文切换 `mode_switch`（缺省 `shift` 单击，也支持旧版修饰键加字母，不能与翻译键冲突）；
   `[apps] english_candidates_off` 按 bundle identifier 列出英文模式不给候选的应用（缺省终端 / 编辑器 / IDE，`*` 前缀匹配）；
   `[dictionaries] domains` 打开随包的领域词库（`Resources/dicts/` 11 本，缺省只开 `idioms`），`disabled` 关掉用户目录 `dicts/` 里的某本导入词库；
@@ -135,6 +147,7 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 - `assets/emoji/emoji-zh.tsv` / `emoji-en.tsv`：Unicode CLDR 中文 / 英文 annotations 转出的 emoji 表（Unicode License v3，可发布；中文词与英文词各配 emoji，两张表加载时合成一张），
   `cargo run --release -p glimmer-dict-convert -- --out-dir assets/emoji emoji --language zh data/cldr/annotations-zh.json data/cldr/annotationsDerived-zh.json`（en 同理）。
 - 英文词表词频：`uv run tools/corpus/english_frequency.py data/generated/english.tsv -o data/generated/english-frequency.tsv`，再 `... english <词表> --frequency <那个文件>`。
+- `assets/wubi/`：rime-wubi 的 `wubi86.dict.yaml` 原文（提交 `152a0d3`，2023-10-25，YAML 头 `version: "0.7"`）+ `LICENSE.LGPL-3.0` + `AUTHORS`，来源、SHA256 与规模见该目录 README；产品数据 `wubi86.qj` 由 `dict-convert wubi` 转出（见下）。
 
 ## tools/gloss-gen
 
@@ -153,4 +166,15 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 - `mine`：从语料挖词库没收的高频词并过滤（`oov_filter.rs`：虚词规则 + 相邻字对 PMI≥3，`--candidates` 只重过滤）。
 - `phrases`：挖短语层（两遍扫语料：相邻两词、两段二元都够频的相邻三词，总次数与对话语料次数都 ≥ 2000 + 边界规则，读音由成分词拼出；我的 / 不知道 / 有没有 这类常用词表不收的组合，
   `assets/lexicon/phrases.tsv`；词库已并入过短语时重跑加 `--refresh`）。
-- `pack dict|lm|glossary`：打 `.qj`（释义表也进容器）。
+- `wubi`：Rime 五笔码表 → 微明 TSV `词\t编码\t词频`（编码整个当一个音节）。解析 YAML 头的列序（`text` / `code` / `weight[` / `stem]`）与表体；跳过编码含 `z`（符号表，`z` 留给反查）、超四码或含非小写字母的行；
+  缺省按常用字集过滤（GB2312 一二级汉字 ∪ `--charset` 主词库里出现过的字，词的每个字都在集合里才留），`--extended` 全留；同（词，码）合并取最大词频，按（编码，词频降序，词）排序；
+  顺带建单字全码表（每字取最长码）与 `stem` 列核对，不一致只记 warn。原表 136,239 条 → 73,647 条，单字 8,236、有四码全码的 7,335。生成：
+  ```sh
+  cargo run --release -p glimmer-dict-convert -- wubi --from rime assets/wubi/wubi86.dict.yaml \
+    --out data/generated/wubi86.tsv --charset data/generated/dict.qj
+  cargo run --release -p glimmer-dict-convert -- pack dict --input data/generated/wubi86.tsv --output wubi86.qj \
+    --name "五笔 86 码表（极点）" --license LGPL-3.0 \
+    --attribution "rime-wubi（Gong Chen、Yu Yuwei）/ 极点五笔 Wozy、Chen Xing / 字根 王永民" \
+    --source "https://github.com/rime/rime-wubi" --data-version "0.7 (152a0d3, 2023-10-25)"
+  ```
+- `pack dict|lm|glossary`：打 `.qj`（释义表也进容器）；`--output` 改输出文件名（五笔码表打成 `wubi86.qj`，缺省按种类 `dict.qj` / `lm.qj` / `glossary-<语言>.qj` / `model.qjm`）。

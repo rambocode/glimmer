@@ -41,6 +41,7 @@
 | 词汇等级（统计） | 已用：CEFR-J Wordlist 1.5（A1–B2，免费须署名）+ Octanove C1/C2（CC BY-SA 4.0）；JLPT N5–N1（Tanos CC BY，经 elzup MIT 整理）。四六级 / 商务英语词表在 GitHub 上只有大纲词汇的转录、许可不明，没用 | 已核 | 「统计」页按级数见过 / 看熟 / 上屏过的译词（`assets/levels/`）；也可做英→中 / 日→中方向的种子；不进候选窗口 |
 | emoji | Unicode CLDR 中文与英文 annotations（`cldr-json` 的 `annotations/{zh,en}`、`annotationsDerived/{zh,en}`） | Unicode License v3（宽松，需保留版权声明） | `dict-convert emoji --language zh\|en` → `assets/emoji/emoji-{zh,en}.tsv`，随仓库与发布包提供；许可文本在 `assets/emoji/LICENSE-unicode.txt`。日文表要等有日语输入模式 |
 | 英文词频 | wordfreq（Python 包） | 代码 MIT，数据 CC-BY-SA 等 | 只取每个词的 Zipf 频率数字给英文补全排序，`tools/corpus/english_frequency.py` 生成 `english-frequency.tsv`（gitignore） |
+| 五笔 86 码表（产品） | [rime/rime-wubi](https://github.com/rime/rime-wubi) `wubi86.dict.yaml`（极点五笔 6.0 血统，带词频），原文与许可在 `assets/wubi/` | LGPL-3.0，随包附许可全文与 AUTHORS 署名；字根与编码规则（王永民）已进公有领域 | `dict-convert wubi` 按常用字集过滤后 `pack dict --output wubi86.qj`；13.7 万条 → 7.4 万条。98 版（yanhuacuo/98wubi-tables，Unlicense）放第二阶段，新世纪版无干净许可不做，选型见 `docs/plan/wubi.md` |
 
 ## 许可策略
 
@@ -66,6 +67,7 @@
 | 释义表 | 由大语言模型（DeepSeek）离线生成，微明自建 |
 | emoji | Unicode CLDR annotations（Unicode License v3） |
 | 英文词表 | ESDB / SCOWL（© Kevin Atkinson，按其许可保留版权声明）；CSpell 词典（MIT） |
+| 五笔码表 | rime-wubi（Gong Chen、Yu Yuwei，LGPL-3.0）/ 极点五笔（Wozy、Chen Xing）/ 字根 王永民（公有领域） |
 | 词汇等级 | The CEFR-J Wordlist Version 1.5（Yukio Tono，Tokyo University of Foreign Studies，[cefr-j.org](http://www.cefr-j.org/download.html)）；Octanove Vocabulary Profile C1/C2（CC BY-SA 4.0）；JLPT 词表（[tanos.co.uk](http://www.tanos.co.uk/jlpt/)，CC BY；经 elzup/jlpt-word-list 整理，MIT） |
 
 各许可证原文在 `assets/` 对应目录下。雾凇拼音（GPL）已彻底移除，不要再引入。
