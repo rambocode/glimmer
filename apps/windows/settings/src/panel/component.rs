@@ -7,7 +7,7 @@ use glimmer_platform::{
 use windows_reactor::*;
 
 use super::cloud_status::CloudStatus;
-use super::controls::{open_in_editor, open_with_explorer};
+use super::controls::{export_logs, log_dir, open_in_editor, open_with_explorer};
 use super::pages::{about, cloud, dictionaries, general, shortcut};
 use super::{Message, Settings};
 
@@ -209,16 +209,17 @@ impl Component for Settings {
                 open_with_explorer(&self.data_dir().to_string_lossy());
             }
             Message::OpenLogDir => {
-                let logs = self.data_dir().join("logs");
-                let _ = std::fs::create_dir_all(&logs);
-                open_with_explorer(&logs.to_string_lossy());
+                if let Some(logs) = log_dir() {
+                    open_with_explorer(&logs.to_string_lossy());
+                }
             }
+            Message::ExportLogs => export_logs(),
             Message::ClearInputLog => {
                 let log = self.data_dir().join("input-log.jsonl");
                 if let Err(error) = std::fs::remove_file(&log)
                     && error.kind() != std::io::ErrorKind::NotFound
                 {
-                    eprintln!("清空输入日志失败: {error}");
+                    crate::log::warn(format!("清空输入日志失败: {error}"));
                 }
             }
 

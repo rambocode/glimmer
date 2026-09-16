@@ -46,9 +46,7 @@ pub(crate) struct Settings {
 impl Settings {
     /// `%APPDATA%\Glimmer\config.toml`；取不到 `APPDATA` 退回工作目录。
     fn config_path() -> PathBuf {
-        std::env::var_os("APPDATA")
-            .map(|dir| PathBuf::from(dir).join("Glimmer").join("config.toml"))
-            .unwrap_or_else(|| PathBuf::from("config.toml"))
+        glimmer_platform::dirs::config_path().unwrap_or_else(|| PathBuf::from("config.toml"))
     }
 
     /// 数据目录 `%APPDATA%\Glimmer`。
@@ -59,7 +57,7 @@ impl Settings {
     /// 落盘一个配置值再重读。失败只打印。
     fn save(&mut self, section: &str, key: &str, value: impl Into<toml_edit::Value>) {
         if let Err(error) = Config::set_value(&self.path, section, key, value) {
-            eprintln!("保存 [{section}] {key} 失败: {error}");
+            crate::log::warn(format!("保存 [{section}] {key} 失败: {error}"));
             return;
         }
         self.reload();
@@ -68,7 +66,7 @@ impl Settings {
     /// 落盘一个字符串数组再重读。
     fn save_array(&mut self, section: &str, key: &str, values: &[String]) {
         if let Err(error) = Config::set_array(&self.path, section, key, values) {
-            eprintln!("保存 [{section}] {key} 失败: {error}");
+            crate::log::warn(format!("保存 [{section}] {key} 失败: {error}"));
             return;
         }
         self.reload();

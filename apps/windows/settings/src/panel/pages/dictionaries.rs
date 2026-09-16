@@ -165,13 +165,13 @@ pub(crate) fn remove_user_dict(settings: &Settings, stem: &str) {
     };
     let removed = dir.join("removed");
     if let Err(error) = std::fs::create_dir_all(&removed) {
-        eprintln!("建 removed 目录失败: {error}");
+        crate::log::warn(format!("建 removed 目录失败: {error}"));
         return;
     }
     if let Some(file_name) = path.file_name()
         && let Err(error) = std::fs::rename(&path, removed.join(file_name))
     {
-        eprintln!("移除词库 {stem} 失败: {error}");
+        crate::log::warn(format!("移除词库 {stem} 失败: {error}"));
     }
 }
 
@@ -187,13 +187,13 @@ pub(crate) fn import(settings: &Settings) {
     };
     let dir = user_dir(settings);
     if let Err(error) = std::fs::create_dir_all(&dir) {
-        eprintln!("建用户词库目录失败: {error}");
+        crate::log::warn(format!("建用户词库目录失败: {error}"));
         return;
     }
     let Some(file_name) = source.file_name() else {
         return;
     };
     if let Err(error) = std::fs::copy(&source, dir.join(file_name)) {
-        eprintln!("导入词库失败: {error}");
+        crate::log::warn(format!("导入词库失败: {error}"));
     }
 }

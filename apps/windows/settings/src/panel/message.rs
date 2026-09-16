@@ -73,6 +73,8 @@ pub(crate) enum Message {
     OpenConfigFile,
     OpenDataDir,
     OpenLogDir,
+    /// 日志目录 + config.toml 打成 zip 放桌面。
+    ExportLogs,
     ClearInputLog,
 
     // 关于页

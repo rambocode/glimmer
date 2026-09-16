@@ -3,8 +3,6 @@
 //! UWP 里也一样。组合来自 `[shortcut] translate_selection`，激活时读一次配置（AppContainer 读不到用户目录时用缺省
 //! Ctrl+Alt+T）；改了配置要切走再切回输入法才重新登记。
 
-use std::path::PathBuf;
-
 use windows::Win32::UI::TextServices::{
     ITfKeystrokeMgr, TF_MOD_ALT, TF_MOD_CONTROL, TF_MOD_SHIFT, TF_PRESERVEDKEY,
 };
@@ -23,9 +21,7 @@ const TF_MOD_LWIN: u32 = 0x08;
 
 /// 读 `%APPDATA%\Glimmer\config.toml` 里的组合；读不到 / 解析失败用缺省。
 pub(crate) fn load_combo() -> KeyCombo {
-    let Some(path) = std::env::var_os("APPDATA")
-        .map(|base| PathBuf::from(base).join("Glimmer").join("config.toml"))
-    else {
+    let Some(path) = glimmer_platform::dirs::config_path() else {
         return KeyCombo::TRANSLATE_DEFAULT;
     };
     match Config::load(&path) {

@@ -4,8 +4,10 @@
 //! Server 进程，同一套类型两边都用。
 
 mod config;
+pub mod dirs;
 mod error;
 pub mod extra_dictionaries;
+pub mod logs;
 pub mod protocol;
 pub mod resources;
 

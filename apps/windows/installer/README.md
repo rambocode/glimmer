@@ -20,7 +20,7 @@ C:\Program Files\Glimmer\
 Server 与设置程序按 **exe 相对**定位随包资源（`glimmer_platform::resources`）：装机时资源与 exe 同级，
 开发时是仓库 `ime\`（exe 在 `target\{debug,release}\` 下往上三层）。相对写法两套布局一致，只有根不同。
 
-用户数据仍在 `%APPDATA%\Glimmer`（config.toml、密钥 .env、学习数据、统计），日志在 `%APPDATA%\Glimmer\logs`；
+用户数据仍在 `%APPDATA%\Glimmer`（config.toml、密钥 .env、学习数据、统计），三个进程的日志在 `%LOCALAPPDATA%\Glimmer\logs`（`server.` / `tsf.` / `settings.` 前缀，按天，留 7 天）；
 卸载不动这些。图标由 `regsvr32` 写到 `%ProgramData%\Glimmer\glimmer.ico`（DLL 里 include_bytes 内嵌）。
 
 ## 安装程序做的几件事

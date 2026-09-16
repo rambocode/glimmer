@@ -26,10 +26,18 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
         ),
         field(
             "日志目录",
-            "",
-            Button::new()
-                .on_click(context.message(Message::OpenLogDir))
-                .content("打开日志目录"),
+            "输入法、引擎与设置程序的日志都在这一个目录，按天分文件，保留 7 天。",
+            StackPanel::new()
+                .orientation(Orientation::Horizontal)
+                .spacing(8.0)
+                .children((
+                    Button::new()
+                        .on_click(context.message(Message::OpenLogDir))
+                        .content("打开日志目录"),
+                    Button::new()
+                        .on_click(context.message(Message::ExportLogs))
+                        .content("打包日志到桌面"),
+                )),
         ),
         field(
             "详细日志",
