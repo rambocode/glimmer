@@ -3,6 +3,15 @@
 一个版本一节，标题写「版本 · 日期 · 渠道」（渠道是 alpha / beta / rc / stable），正文一行一条、面向用户的措辞。
 发版时 CI 从这里取该版本的说明写进 GitHub Release，并汇总成官网下载页用的 `releases.json`（`tools/release/releases_json.py`）。
 
+## 0.1.0-alpha.1 · 2026-09-16 · alpha
+
+- Linux 版首个内测版：deb 安装包（x86_64 与 ARM64），适用于使用 IBus 的桌面（Ubuntu、Debian、Fedora 的 GNOME 等）；装好后在「设置 → 键盘 → 输入源」里添加「微明」
+- 功能与 Windows 版一致：整句输入、简拼、拼写纠错、模糊音、双拼、五笔 86、大千注音、英文模式补全、emoji、本地整句模型、可选的云联想
+- 单击 Shift 切换中 / 英，系统顶栏的输入法指示器上也可以点击切换
+- 候选旁显示译词，数字键选词，`[` `]` 与 PageUp / PageDown 翻页
+- 设置暂时只能改配置文件 `~/.config/glimmer/config.toml`，保存后即时生效
+- **已知问题：暂不支持 Fcitx5；「翻译选中文字」暂不可用；候选框由系统输入法面板显示，没有词性与生词标记**
+
 ## 0.1.0-alpha.3 · 2026-09-16 · alpha
 
 - 改名为「微明 Glimmer」，换了新图标；装好后在输入法列表里选「微明」
