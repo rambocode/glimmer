@@ -13,7 +13,7 @@ impl Engine {
             return;
         }
         self.private = private;
-        self.learner.set_muted(private);
+        self.learner.set_private(private);
         self.logger.set_muted(private);
         if private {
             // 在飞的云结果不能再显示，前文也不能留

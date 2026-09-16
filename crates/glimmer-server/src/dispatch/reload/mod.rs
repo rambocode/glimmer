@@ -114,6 +114,7 @@ impl Router {
         self.engine.set_zhuyin_mode(config.general.zhuyin);
         self.engine
             .set_punctuation_mode(config.general.punctuation_mode);
+        self.engine.set_learning(config.general.learning);
         self.engine.set_mode_keys(config.shortcut.mode);
         let previous = self.config.render_settings();
         self.config = RouterConfig::from(config);

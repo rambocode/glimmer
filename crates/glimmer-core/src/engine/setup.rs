@@ -76,6 +76,12 @@ impl Engine {
         self.shuangpin
     }
 
+    /// 学习开关（`[general] learning`）：关掉后不再记词频、用户词、个人 n-gram 与敲错表，已学的照常参与排序；
+    /// 私密输入是另一个独立的开关（[`Self::set_private`]）。
+    pub fn set_learning(&mut self, enabled: bool) {
+        self.learner.set_disabled(!enabled);
+    }
+
     /// 設置是否啟用注音模式。開啟後鍵盤輸入按大千佈局解析。五筆開著時這個值只存不用。
     pub fn set_zhuyin_mode(&mut self, on: bool) {
         if on && self.wubi.is_some() {

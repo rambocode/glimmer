@@ -434,6 +434,9 @@ impl Host {
             (Setting::InputLog, SettingValue::Bool(on)) => {
                 self.settings.set_bool("general", "input_log", on);
             }
+            (Setting::Learning, SettingValue::Bool(on)) => {
+                self.settings.set_bool("general", "learning", on);
+            }
             (Setting::ClearInputLog, _) => {
                 self.clear_input_log();
                 return;

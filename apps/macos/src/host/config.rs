@@ -22,6 +22,7 @@ impl Host {
         self.engine.set_mode_keys(config.shortcut.mode);
         self.engine.set_shuangpin(config.general.shuangpin());
         self.apply_wubi(&config);
+        self.engine.set_learning(config.general.learning);
         logging::set_level(config.general.log_level);
         self.translation_keys = config.shortcut.translation_keys();
         self.delete_keys = config.shortcut.delete_keys();

@@ -1,4 +1,4 @@
-//! 「高级」页：打开配置文件 / 数据目录 / 日志目录、详细日志、输入日志。
+//! 「高级」页：打开配置文件 / 数据目录 / 日志目录、详细日志、学习开关、输入日志。
 
 use glimmer_platform::LogLevel;
 use windows_reactor::*;
@@ -45,6 +45,13 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
             ToggleSwitch::new()
                 .is_on(g.log_level == LogLevel::Debug)
                 .on_toggled(context.callback(Message::VerboseLog)),
+        ),
+        field(
+            "学习输入习惯",
+            "按你的选择调整候选顺序、记新词与敲错纠正。关掉后不再学，已学的仍参与排序；学习数据在数据目录里。",
+            ToggleSwitch::new()
+                .is_on(g.learning)
+                .on_toggled(context.callback(Message::Learning)),
         ),
         field(
             "记录输入日志",

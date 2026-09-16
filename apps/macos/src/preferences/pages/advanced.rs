@@ -1,4 +1,4 @@
-//! 「高级」页：打开配置文件、详细日志、输入日志。
+//! 「高级」页：打开配置文件、详细日志、学习开关、输入日志。
 
 use glimmer_platform::{Config, LogLevel};
 use objc2::MainThreadMarker;
@@ -13,6 +13,9 @@ use crate::preferences::target::PreferencesTarget;
 pub struct AdvancedPage {
     /// 详细日志（debug 级）。
     verbose: Retained<NSButton>,
+
+    /// 学习输入习惯。
+    learning: Retained<NSButton>,
 
     /// 记录输入日志。
     input_log: Retained<NSButton>,
@@ -42,6 +45,14 @@ impl AdvancedPage {
             "会把敲的拼音与上屏的文字记进日志，只在配合作者排查问题时打开，查完关掉。日志在「关于」页可以打开。",
         );
         layout.end_group();
+        let learning = checkbox(mtm, "学习输入习惯", Setting::Learning, target);
+        row_checkbox(layout, &learning);
+        note_full(
+            layout,
+            mtm,
+            "按你的选择调整候选顺序、记新词与敲错纠正。关掉后不再学，已学的仍参与排序；学习数据在数据目录里，删掉即清空。",
+        );
+        layout.end_group();
         let input_log = checkbox(mtm, "记录输入日志", Setting::InputLog, target);
         row_checkbox(layout, &input_log);
         note_full(
@@ -52,11 +63,16 @@ impl AdvancedPage {
         let clear = button(mtm, "清空输入日志", Setting::ClearInputLog, target);
         layout.place(&clear, PAGE_PADDING, 160.0, ROW_HEIGHT + 4.0);
         layout.next_row(ROW_HEIGHT + 4.0);
-        Self { verbose, input_log }
+        Self {
+            verbose,
+            learning,
+            input_log,
+        }
     }
 
     pub fn sync(&self, config: &Config) {
         set_checked(&self.verbose, config.general.log_level == LogLevel::Debug);
+        set_checked(&self.learning, config.general.learning);
         set_checked(&self.input_log, config.general.input_log);
     }
 }

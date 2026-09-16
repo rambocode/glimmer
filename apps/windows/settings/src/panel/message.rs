@@ -70,6 +70,8 @@ pub(crate) enum Message {
     // 高级页
     VerboseLog(bool),
     InputLog(bool),
+    /// 学习输入习惯开关。
+    Learning(bool),
     OpenConfigFile,
     OpenDataDir,
     OpenLogDir,

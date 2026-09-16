@@ -204,6 +204,7 @@ impl Component for Settings {
                 self.save("general", "log_level", level.key());
             }
             Message::InputLog(on) => self.save("general", "input_log", on),
+            Message::Learning(on) => self.save("general", "learning", on),
             Message::OpenConfigFile => open_in_editor(&self.path),
             Message::OpenDataDir => {
                 open_with_explorer(&self.data_dir().to_string_lossy());
