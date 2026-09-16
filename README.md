@@ -26,9 +26,9 @@ https://github.com/user-attachments/assets/d145fde9-a641-4543-8b15-dd7a2685de3d
 
 **一次只学习一种语言。** 微明不会在一个候选项旁边同时塞入英语、日语、韩语、德语。保持输入体验干净，比堆砌信息更重要。
 
-- 官网：[glimmer.app](https://glimmer.app)
-- 下载：[glimmer.app/download](https://glimmer.app/download)（macOS、Windows）
-- 文档：[glimmer.app/docs](https://glimmer.app/docs)（安装、按键、设置、数据与隐私）
+- 官网：[glimmerinput.app](https://glimmerinput.app)
+- 下载：[glimmerinput.app/download](https://glimmerinput.app/download)（macOS、Windows）
+- 文档：[glimmerinput.app/docs](https://glimmerinput.app/docs)（安装、按键、设置、数据与隐私）
 - 反馈：[GitHub Issues](https://github.com/rambocode/glimmer/issues/new/choose)
 
 ---
@@ -134,7 +134,7 @@ Linux    → IBus / Fcitx
 
 **微明不上传任何数据。** 拼音转换、词库、学习、释义全部在本机完成，没有账号，没有统计上报。
 云联想（缺省关闭）打开后，请求直接从你的电脑发到你自己填写的 AI 服务商，不经过作者；输入日志只写在本机，可以随时关闭和清空。
-细节见文档 [数据与日志](https://glimmer.app/docs/help/data-and-logs)。
+细节见文档 [数据与日志](https://glimmerinput.app/docs/help/data-and-logs)。
 
 ---
 

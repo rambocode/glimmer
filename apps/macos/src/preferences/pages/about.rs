@@ -42,7 +42,7 @@ pub const ATTRIBUTIONS: &[(&str, &str)] = &[
 ];
 
 /// 官网。
-pub const WEBSITE_URL: &str = "https://glimmer.app";
+pub const WEBSITE_URL: &str = "https://glimmerinput.app";
 
 /// 源码与问题反馈。
 pub const REPOSITORY_URL: &str = "https://github.com/rambocode";

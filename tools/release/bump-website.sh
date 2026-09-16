@@ -36,6 +36,6 @@ if git diff --cached --quiet; then
   echo "官网仓库无需更新"
   exit 0
 fi
-git -c user.name="glimmer-ci" -c user.email="ci@glimmer.app" commit -q -m "$message" -m "主仓库提交 ${sha}"
+git -c user.name="glimmer-ci" -c user.email="ci@glimmerinput.app" commit -q -m "$message" -m "主仓库提交 ${sha}"
 git push -q origin HEAD
 echo "已推送到 ${repo}：${message}"

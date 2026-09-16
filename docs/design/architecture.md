@@ -374,7 +374,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   必须先 `GlimmerInputController::class()` 再建 IMKServer（2026-09-03 踩过）。
 - `define_class!` 里返回 `bool` 的方法体内不能 `return`（宏会把返回类型换成 ObjC `BOOL`），
   逻辑放到 inherent impl 里，宏内只做转发。
-- Info.plist 约定：bundle id 是 `app.glimmer.inputmethod`（域名 glimmer.app 的反写 + 产品，其他平台外壳共用 `app.glimmer.` 前缀），`TISInputSourceID` 与它相同，`InputMethodConnectionName` 必须是 `<bundle id>_Connection`；
+- Info.plist 约定：bundle id 是 `app.glimmer.inputmethod`（其他平台外壳共用 `app.glimmer.` 前缀；官网域名后来改成 glimmerinput.app，bundle id 不跟着改，改了已安装的输入源要删掉重加），`TISInputSourceID` 与它相同，`InputMethodConnectionName` 必须是 `<bundle id>_Connection`；
   `LSBackgroundOnly = true`；ad-hoc `codesign` 之后 Apple Silicon 才会加载。
 - IMK 无法通过 `cargo run` 验证：需要打包成 `.app`、装到 `~/Library/Input Methods/`、
   注销或重启输入法进程才会生效。Core 的验证靠 CLI 测试工具和单元测试，不依赖跑起真实输入法。

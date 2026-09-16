@@ -5,7 +5,7 @@ use windows_reactor::*;
 use crate::panel::controls::{note, page};
 use crate::panel::{Message, Settings};
 
-pub(crate) const WEBSITE_URL: &str = "https://glimmer.app";
+pub(crate) const WEBSITE_URL: &str = "https://glimmerinput.app";
 
 pub(crate) const REPOSITORY_URL: &str = "https://github.com/rambocode";
 
