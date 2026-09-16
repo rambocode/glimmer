@@ -1360,7 +1360,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-linux"
-version = "0.1.0-linux.1"
+version = "0.1.0-linux.2-dev"
 dependencies = [
  "dotenvy",
  "glimmer-core",
