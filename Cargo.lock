@@ -1316,6 +1316,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "glimmer-fcitx5"
+version = "0.1.0-linux.2-dev"
+
+[[package]]
 name = "glimmer-format"
 version = "0.1.1"
 dependencies = [

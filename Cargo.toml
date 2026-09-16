@@ -11,7 +11,7 @@ members = [
     "crates/glimmer-format",
     "crates/glimmer-neural",
     "crates/glimmer-server",
-    "apps/cli", "apps/macos", "apps/windows/server", "apps/windows/tsf", "apps/windows/settings", "apps/linux", "tools/dict-convert", "tools/gloss-gen",
+    "apps/cli", "apps/macos", "apps/windows/server", "apps/windows/tsf", "apps/windows/settings", "apps/linux", "apps/linux/fcitx5", "tools/dict-convert", "tools/gloss-gen",
 ]
 
 [workspace.package]
