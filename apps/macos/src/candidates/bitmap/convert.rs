@@ -1,8 +1,8 @@
 //! 壳的帧类型 → 渲染器的帧类型。两边字段一一对应，spike 定型后壳直接用渲染器的类型，这层就没了。
 
-use super::super::frame::Frame;
-use super::super::preedit::{Preedit, PreeditStyle};
-use super::super::row::{Row, Tone};
+use crate::candidates::frame::Frame;
+use crate::candidates::preedit::{Preedit, PreeditStyle};
+use crate::candidates::row::{Row, Tone};
 
 pub(super) fn frame(frame: &Frame) -> glimmer_render::Frame {
     glimmer_render::Frame {

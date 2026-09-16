@@ -74,7 +74,6 @@ impl Renderer {
                     columns.row_height,
                 );
             }
-            // 各列底部对齐到候选词基线附近：小字往下挪一点
             let top = y + m.row_padding();
             let small_offset = m.small_offset(text_height);
             self.draw_text(

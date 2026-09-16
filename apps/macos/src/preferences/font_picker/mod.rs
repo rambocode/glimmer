@@ -109,7 +109,7 @@ impl FontPicker {
         Self { source }
     }
 
-    /// 按配置显示当前字体；配置里的字体没装就显示「系统默认」由渲染器那边兜底，这里照配置显示。
+    /// 照配置显示，不查有没有装；没装由渲染器回退系统字体。
     pub(super) fn sync(&self, font: &str) {
         self.source.set_current(font);
     }

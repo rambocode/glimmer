@@ -1,7 +1,6 @@
 ﻿; 微明 Windows 输入法安装脚本（Inno Setup）。
 ;
-; 装到 Program Files\Glimmer（64 位），把 TSF DLL（64 位与 32 位各一份：企业微信 / WPS / 32 位 QQ 这类 32 位应用
-; 只能加载 32 位 DLL，没有它就静默切回别的输入法）、Server、设置程序与随包数据装在一起，
+; 装到 Program Files\Glimmer（64 位），把 TSF DLL（64 位与 32 位各一份，见 README「安装布局」）、Server、设置程序与随包数据装在一起，
 ; 然后：① 给安装目录加 ALL APPLICATION PACKAGES 读+执行权限（UWP/AppContainer 应用——任务栏搜索、
 ; 设置——才能加载 DLL）；② regsvr32 注册文本服务，64 位与 32 位各注册一次（图标落到 %ProgramData%\Glimmer）；
 ; ③ 在「启动」文件夹放 Server 快捷方式（登录时由 Explorer 走 ShellExecute 拉起，uiAccess 才生效——
@@ -29,7 +28,6 @@
 #define Repo "..\..\.."
 ; 按版本起名的 TSF DLL（见文件头「升级」）。
 #define TsfDll "glimmer_tsf-" + AppVersion + ".dll"
-; 32 位那份并排装（企业微信 / WPS 等 32 位应用只能加载它）。
 #define TsfDll32 "glimmer_tsf-" + AppVersion + "-x86.dll"
 
 [Setup]

@@ -114,7 +114,7 @@ fn run(commands: Receiver<UiCommand>, ready: &Sender<Option<u32>>, on_status: St
     // 按物理像素定位，与应用报来的组句屏幕矩形对齐；已设过会失败，忽略。
     let _ = unsafe { SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) };
     let thread_id = unsafe { GetCurrentThreadId() };
-    // 渲染器候选窗口与状态条共用（字体库与字形缓存一份）；装上时按配置建。
+    // 装上时随 Configure 命令建。
     let painter: SharedPainter = Rc::new(RefCell::new(None));
     // 先建窗口再报 id：建窗口顺带建起本线程的消息队列，之后 PostThreadMessageW 才有处可投。
     let window = match CandidateWindow::new(painter.clone()) {

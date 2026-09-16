@@ -108,7 +108,7 @@
 
 字体可选：`[general] font` 指定字族名，mac 壳用 CoreText 按字族名查出文件（`CTFontDescriptorCreateMatchingFontDescriptors` → `kCTFontURLAttribute`）交给渲染器只加载那几个文件，系统字体仍在后面当回退；没装就退回系统字体并记日志。真机验过 Kaiti SC 与不存在的字体名。
 
-**结论**：四条都过，mac 上位图渲染器可以替换 AppKit 绘制。下一步 Windows：`server/src/ui/layered/` 换成贴渲染器输出，box 上看灰度抗锯齿与 Segoe UI Emoji（COLRv0）；过了就两端一起换、做主题 TOML。
+**结论**：四条都过，mac 上位图渲染器可以替换 AppKit 绘制；Windows 半边见下节。下一步做主题 TOML，稳定一版后删 AppKit / GDI 旧路径。
 主题以后要放图片 / 动图 / 花边：渲染器输出就是一张位图，装饰只是多叠几层，不用换底子。
 
 ## Windows 半边（2026-09-15，真机已验）
@@ -131,5 +131,5 @@
 
 ## 与既有计划的关系
 
-- 「Windows 候选窗 + 状态条改 Direct2D + DirectWrite」暂停，等 spike 结果。
+- 「Windows 候选窗 + 状态条改 Direct2D + DirectWrite」已被本方向取代，作废。
 - `candidate-ui.md` 里「每个平台用原生绘制」与「Windows 用 Direct2D」两句已按本文修正。

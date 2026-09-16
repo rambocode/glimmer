@@ -3,21 +3,19 @@
     在 Windows 上打微明安装包：release 构建三个产物 + 用 Inno Setup 编 glimmer.iss。
 .DESCRIPTION
     在编译机（MSVC 工具链 + Inno Setup）上跑。步骤：
-      1) cargo build --release 出 DLL / Server / 设置程序，再单独编一份 32 位 DLL（企业微信 / WPS 这类 32 位应用只能加载 32 位 DLL）；
-      2) 从 apps\windows\server\Cargo.toml 读版本号（-dev 版接 git 短哈希，工作区有改动再加 +，与 macOS 的 bundle.sh 一致）；
+      1) cargo build --release 出 DLL / Server / 设置程序，再单独编一份 32 位 DLL；
+      2) 从 apps\windows\server\Cargo.toml 读版本号（-dev 版接 git 短哈希）；
       3) 找 ISCC.exe（PATH 或常见安装位置）；
       4) iscc /DAppVersion=<版本> 编脚本，成品在 target\installer\Glimmer-<版本>-Setup.exe。
     随包数据（.qj / .tsv）直接由 .iss 从仓库 data\generated 与 assets 里取，不另建暂存目录；
     确保打包前 data\generated 里的 .qj 是最新的（bundle 流程见仓库 CLAUDE.md）。
-    uiAccess 由 -Sign 决定，不用手设 GLIMMER_UIACCESS：默认（不签）关掉 uiAccess，Server 是普通 exe，任何机器都能起；
-    只有 -Sign 时才开 uiAccess。因为 uiAccess=true 的 exe 必须有本机受信任的签名才允许启动，自签证书只有本机信任，
-    对外分发的包若带 uiAccess，用户机器上 Server 会以「从服务器返回了一个参照」拒绝启动、输入法哑火。
+    uiAccess 跟着 -Sign 走，不用手设 GLIMMER_UIACCESS（见 -Sign）。
 .PARAMETER SkipBuild
     跳过 cargo build（数据或 .iss 改了、二进制没变时重编安装包用）。
 .PARAMETER Sign
-    打包前用自签证书给产物代码签名（sign-local.ps1）并开启 uiAccess（候选窗才能盖过商店 / 任务栏搜索等高 z-band 宿主）。
-    仅供本机真机测：自签证书只有装了它的机器（编译机）信任，别用 -Sign 打对外分发的包。
-    不加此开关：不签名、且关掉 uiAccess（对外分发用），Server 在商店 / 任务栏搜索里会被盖住（桌面程序不受影响），但任何机器都能正常启动。
+    自签产物（sign-local.ps1）并开 uiAccess（候选窗才能盖过商店 / 任务栏搜索）。uiAccess=true 的 exe 要本机受信任的签名
+    才准启动，自签证书只有编译机信任——所以 -Sign 只用于本机真机测，对外分发的包不加此开关：不签名、关 uiAccess，
+    候选窗在那几个系统界面里会被盖住，但任何机器都能起。
 #>
 [CmdletBinding()]
 param([switch]$SkipBuild, [switch]$Sign)
@@ -28,10 +26,7 @@ $ErrorActionPreference = 'Stop'
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
 $Iss  = Join-Path $PSScriptRoot 'glimmer.iss'
 
-# uiAccess 跟着 -Sign 走（server\build.rs 读 GLIMMER_UIACCESS）：只有签名构建才开 uiAccess，
-# 因为 uiAccess=true 的 exe 要本机受信任的签名才准启动，自签证书只有编译机信任；对外分发的包（不签）
-# 一律关掉 uiAccess，否则用户机器上 Server 会被系统拒启动（「从服务器返回了一个参照」）、输入法连不上。
-# 改了这个变量 build.rs 会触发 Server 重编（rerun-if-env-changed），不用手动清。
+# uiAccess 跟着 -Sign 走（server\build.rs 读这个变量，改了会自动重编 Server）；理由见 -Sign 的说明。
 $env:GLIMMER_UIACCESS = if ($Sign) { '1' } else { '0' }
 if ($Sign) {
     Write-Host 'uiAccess=1（-Sign：仅本机真机测，别用于对外分发）' -ForegroundColor Yellow
@@ -46,7 +41,6 @@ if (-not $SkipBuild) {
     try {
         cargo build --release --locked -p glimmer-windows-server -p glimmer-windows-tsf -p glimmer-windows-settings
         if ($LASTEXITCODE -ne 0) { throw "cargo build 失败（退出码 $LASTEXITCODE）" }
-        # 32 位 DLL 供企业微信 / WPS / 32 位 QQ 这类 32 位应用加载。
         cargo build --release --locked -p glimmer-windows-tsf --target i686-pc-windows-msvc
         if ($LASTEXITCODE -ne 0) { throw "32 位 DLL cargo build 失败（退出码 $LASTEXITCODE）" }
     } finally { Pop-Location }

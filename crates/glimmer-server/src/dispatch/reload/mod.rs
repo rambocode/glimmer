@@ -132,7 +132,7 @@ impl Router {
             reload.applied_predict = config.predict.clone();
         }
         if config.dictionaries != reload.applied_dictionaries {
-            // 用户词库在用户目录的 dicts\ 下，不是用户目录本身（那里是学习数据的 .tsv，装进去会当词库用）
+            // 别传用户目录本身：那里的学习数据 .tsv 会被当词库装。
             let dicts = extra_dictionaries::load(
                 reload.bundled_dicts_dir.as_deref(),
                 user_dicts_dir(reload.user_dir.as_deref()).as_deref(),

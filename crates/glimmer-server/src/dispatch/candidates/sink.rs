@@ -3,11 +3,13 @@
 use glimmer_platform::CandidateRenderer;
 use glimmer_platform::protocol::{Frame, ScreenRect};
 
-/// 候选窗口 / 状态条的画法：由谁画（`[general] renderer`）、用什么字体（`[general] font`，空为系统字体）。
+/// 候选窗口 / 状态条的画法。
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RenderSettings {
+    /// 由谁画（`[general] renderer`）。
     pub renderer: CandidateRenderer,
 
+    /// 字族名（`[general] font`），空为系统字体。
     pub font: String,
 }
 

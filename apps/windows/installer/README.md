@@ -28,7 +28,7 @@ Server 与设置程序按 **exe 相对**定位随包资源（`glimmer_platform::
 1. **结束旧进程**：`PrepareToInstall` 里 `taskkill` Server 与设置程序（只有这两个 exe 要覆盖）。
 2. **应用容器权限**：`icacls` 给安装目录加 `ALL APPLICATION PACKAGES`（SID `*S-1-15-2-1`）读+执行。
    不加的话 UWP/AppContainer 应用（任务栏搜索、设置）读不到 DLL，切不到微明。
-3. **注册文本服务**：64 位 DLL 用 `regsvr32`、32 位 DLL 用 `SysWOW64\regsvr32`，各注册一次（各自写进自己视图的 HKCR，`CTF\TIP` 两边共用；要管理员——安装程序本就提权）。缺 32 位那份时，企业微信 / WPS 等 32 位应用加载不了 DLL，会静默切回别的输入法。
+3. **注册文本服务**：64 位 DLL 用 `regsvr32`、32 位 DLL 用 `SysWOW64\regsvr32`，各注册一次（各自写进自己视图的 HKCR，`CTF\TIP` 两边共用；要管理员——安装程序本就提权）。
 4. **清旧 DLL**：装完删历次版本留下的 `glimmer_tsf*.dll`，仍被应用占用的登记成重启后删（`RestartReplace`）。
 5. **登录自启**：「启动」文件夹放 Server 快捷方式（Explorer 走 ShellExecute 拉起才拿到 uiAccess；计划任务拿不到）。
 6. **立即启动**：完成页以当前非提升用户 ShellExecute 起一次 Server，装完就能用，不必先注销。

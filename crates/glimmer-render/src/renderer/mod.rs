@@ -118,7 +118,6 @@ impl Metrics<'_> {
 impl Renderer {
     pub fn new(library: FontLibrary) -> Self {
         let mut text = TextPainter::new(library);
-        // 候选窗的字号都在文本视觉尺寸这一档
         text.set_optical_size(Some(OPTICAL_SIZE));
         Self { text }
     }

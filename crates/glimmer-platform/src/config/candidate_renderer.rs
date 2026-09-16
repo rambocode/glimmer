@@ -1,3 +1,5 @@
+//! 候选窗口的绘制方式（微明渲染器 / 系统原生），对应配置项 `candidate_renderer`。
+
 use serde::{Deserialize, Serialize};
 
 /// 候选窗口由谁绘制：微明自己的渲染器（各平台一致，主题走它）还是系统的原生绘制。

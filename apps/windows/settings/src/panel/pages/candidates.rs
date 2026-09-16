@@ -29,7 +29,7 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
     let suggestions: Vec<String> = settings
         .families
         .iter()
-        .filter(|family| query.is_empty() || family.to_lowercase().contains(&query))
+        .filter(|family| family.to_lowercase().contains(&query))
         .cloned()
         .collect();
     let rows = [
