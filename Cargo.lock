@@ -1265,6 +1265,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "glimmer-linux"
+version = "0.1.0-alpha.1-dev"
+
+[[package]]
 name = "glimmer-lm"
 version = "0.1.1"
 dependencies = [
@@ -1344,6 +1348,10 @@ dependencies = [
  "tracing",
  "uuid",
 ]
+
+[[package]]
+name = "glimmer-server"
+version = "0.1.1"
 
 [[package]]
 name = "glimmer-translate"

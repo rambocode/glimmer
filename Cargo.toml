@@ -10,7 +10,8 @@ members = [
     "crates/glimmer-lm",
     "crates/glimmer-format",
     "crates/glimmer-neural",
-    "apps/cli", "apps/macos", "apps/windows/server", "apps/windows/tsf", "apps/windows/settings", "tools/dict-convert", "tools/gloss-gen",
+    "crates/glimmer-server",
+    "apps/cli", "apps/macos", "apps/windows/server", "apps/windows/tsf", "apps/windows/settings", "apps/linux", "tools/dict-convert", "tools/gloss-gen",
 ]
 
 [workspace.package]
@@ -33,6 +34,7 @@ glimmer-predict = { path = "crates/glimmer-predict" }
 glimmer-lm = { path = "crates/glimmer-lm" }
 glimmer-format = { path = "crates/glimmer-format" }
 glimmer-neural = { path = "crates/glimmer-neural" }
+glimmer-server = { path = "crates/glimmer-server" }
 
 # 外部依赖统一在这里定版本，子 crate 一律 `xxx.workspace = true`
 serde = { version = "1.0.229", features = ["derive"] }

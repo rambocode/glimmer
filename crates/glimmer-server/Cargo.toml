@@ -1,0 +1,12 @@
+[package]
+name = "glimmer-server"
+description = "输入法 Server 的平台无关部分：Engine 装配与协议分派（Router），Windows Server 与 Linux IBus 引擎共用"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+
+[lints]
+workspace = true
