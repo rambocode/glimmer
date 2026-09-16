@@ -186,7 +186,7 @@ punctuation_mode = "raw"
 # 双拼方案：留空为全拼；xiaohe 小鹤 / ziranma 自然码 / microsoft 微软 / sogou 搜狗
 # 开着时 v / u / i 都是音节键，表达式与问字模式只能用 ? 开头进；微软、搜狗方案的 ; 键是 ing
 shuangpin = ""
-# 五笔：留空为拼音；86 或 98 选版本（要有对应的码表文件）。开着时双拼与注音的设置被忽略，v / u 都是编码键，
+# 五笔：留空为拼音；86 / 98 / xsj（新世纪）选版本（要有对应的码表文件）。开着时双拼与注音的设置被忽略，v / u 都是编码键，
 # z 开头是拼音反查（z + 全拼，候选右侧注五笔码）；行为选项在下面的 [wubi] 里
 wubi = ""
 # 日志级别：info 缺省 / debug 详细（会记录敲的拼音与上屏的文字，配合作者排查问题时再开）。日志在 ~/Library/Logs/Glimmer/
@@ -281,7 +281,7 @@ enabled = false
 );
 
 impl Config {
-    /// 随包五笔码表的文件名（`wubi86.qj` / `wubi98.qj`），壳与 CLI 按它找文件；五笔没开为 `None`。
+    /// 随包五笔码表的文件名（`wubi86.qj` / `wubi98.qj` / `wubixsj.qj`），壳与 CLI 按它找文件；五笔没开为 `None`。
     pub fn wubi_table_file(&self) -> Option<&'static str> {
         self.general
             .wubi()

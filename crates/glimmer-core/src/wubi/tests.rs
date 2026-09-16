@@ -4,7 +4,7 @@ use super::*;
 use glimmer_dictionary::Dictionary;
 
 /// 与 `engine/tests/wubi/` 共用的小码表。
-pub(crate) const TABLE: &str = "工\ta\t9000\n工\taaaa\t100\n式\taa\t8000\n王\tgggg\t9000\n一\tggll\t9000\n五\tgg\t7000\n玉\tgy\t6000\n主\tygd\t5000\n天\tgd\t7000\n是\tjghu\t9000\n中\tkhk\t9000\n中国\tkhlg\t8000\n国\tlgyi\t8000\n";
+pub(crate) const TABLE: &str = "工\ta\t9000\n工\taaaa\t100\n式\taa\t8000\n王\tgggg\t9000\n一\tggll\t9000\n五\tgg\t7000\n玉\tgy\t6000\n主\tygd\t5000\n天\tgd\t6800\n是\tjghu\t9000\n中\tkhk\t9000\n中国\tkhlg\t8000\n国\tlgyi\t8000\n";
 
 fn scheme() -> Scheme {
     Scheme::new(
@@ -83,9 +83,18 @@ fn code_of_handles_single_and_multi_char_text() {
 fn variant_parses_config_keys_and_scheme_keys() {
     assert_eq!("86".parse::<Variant>(), Ok(Variant::Wubi86));
     assert_eq!(" wubi98 ".parse::<Variant>(), Ok(Variant::Wubi98));
+    assert_eq!("xsj".parse::<Variant>(), Ok(Variant::Xinshiji));
+    assert_eq!("06".parse::<Variant>(), Ok(Variant::Xinshiji));
+    assert_eq!(" XinShiJi ".parse::<Variant>(), Ok(Variant::Xinshiji));
+    assert_eq!("wubixsj".parse::<Variant>(), Ok(Variant::Xinshiji));
     assert!("2000".parse::<Variant>().is_err());
     assert_eq!(Variant::Wubi86.data_file(), "wubi86.qj");
     assert_eq!(Variant::Wubi98.config_key(), "98");
+    assert_eq!(Variant::Xinshiji.config_key(), "xsj");
+    assert_eq!(Variant::Xinshiji.key(), "wubixsj");
+    assert_eq!(Variant::Xinshiji.data_file(), "wubixsj.qj");
+    assert_eq!(Variant::Xinshiji.label(), "新世纪五笔");
+    assert_eq!(Variant::ALL.len(), 3);
 }
 
 #[test]

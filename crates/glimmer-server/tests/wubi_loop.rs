@@ -328,3 +328,69 @@ fn hot_reload_with_a_missing_table_leaves_pinyin_and_the_buffer_alone() {
     assert_eq!(router.wubi_key(), None);
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+#[test]
+fn hot_reload_turns_on_xinshiji_with_its_own_learning_dir() {
+    // 新世纪版：码表文件名是 wubixsj.qj、配置写 xsj，状态条与学习目录都该跟着换，不碰 86 那份
+    let dir = std::env::temp_dir().join(format!("glimmer-windows-wubi-xsj-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&dir);
+    let data_dir = dir.join("data");
+    let user_dir = dir.join("user");
+    std::fs::create_dir_all(&data_dir).unwrap();
+    std::fs::create_dir_all(&user_dir).unwrap();
+    std::fs::write(data_dir.join("wubixsj.qj"), TABLE).unwrap();
+    let config_path = dir.join("config.toml");
+    std::fs::write(&config_path, "").unwrap();
+
+    let root = repo_root();
+    let engine = assembly::assemble(&AssemblySpec {
+        user_dir: Some(user_dir.clone()),
+        ..AssemblySpec::new(root.join("assets/sample/dict.tsv"))
+    })
+    .unwrap();
+    let mut router = Router::new(engine, RouterConfig::default());
+    let recorder = RecordingStatus::default();
+    router.set_status_sink(Box::new(recorder.clone()));
+    router.watch_config(
+        &Config::default(),
+        config_path,
+        None,
+        Some(user_dir.clone()),
+        Some(data_dir),
+    );
+    open_session(&mut router);
+    assert_eq!(router.wubi_key(), None);
+
+    let mut config = Config::default();
+    config.general.wubi = "xsj".to_owned();
+    config.status_bar.enabled = true;
+    router.apply_config(&config);
+    assert_eq!(router.wubi_key(), Some("wubixsj"));
+
+    // 状态条的方案名走 Variant::label()；模式格要显示「新世纪五笔」而不是 86
+    router.handle(ClientMessage::ModeChanged {
+        session: SESSION,
+        english: false,
+    });
+    assert_eq!(
+        recorder.0.lock().unwrap().last().cloned(),
+        Some(Some("中 · 新世纪五笔".to_owned()))
+    );
+
+    let (commits, _) = type_keys(&mut router, "gggg");
+    assert_eq!(commits[3].as_deref(), Some("王"));
+    router.flush_learning();
+    assert!(
+        user_dir.join("wubixsj").join("user-choices.tsv").is_file(),
+        "新世纪的选择记录应落在自己的方案子目录"
+    );
+    assert!(
+        !user_dir.join("wubi86").exists(),
+        "86 的方案子目录不该被建出来"
+    );
+    assert!(
+        !user_dir.join("user-choices.tsv").exists(),
+        "拼音那份不该被五笔写到"
+    );
+    let _ = std::fs::remove_dir_all(&dir);
+}

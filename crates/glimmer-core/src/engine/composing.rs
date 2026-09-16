@@ -87,7 +87,7 @@ impl Engine {
         });
     }
 
-    /// 键盘方案的键（五笔 `wubi86` / `wubi98`、双拼方案如 `xiaohe`、注音为 `zhuyin`），全拼为空；输入日志与回放用。
+    /// 键盘方案的键（五笔 `wubi86` / `wubi98` / `wubixsj`、双拼方案如 `xiaohe`、注音为 `zhuyin`），全拼为空；输入日志与回放用。
     pub fn scheme_key(&self) -> String {
         if let Some(wubi) = &self.wubi {
             return wubi.key().to_owned();

@@ -187,7 +187,7 @@ impl fmt::Display for Report {
         if self.wubi_missing > 0 {
             writeln!(
                 f,
-                "五笔条目 {} 条没装对应码表，跳过（回放时给 --wubi 86 / 98）",
+                "五笔条目 {} 条没装对应码表，跳过（回放时给 --wubi 86 / 98 / xsj）",
                 self.wubi_missing
             )?;
         }

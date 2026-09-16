@@ -42,7 +42,7 @@ impl Scheme {
         self.variant
     }
 
-    /// 方案键（`wubi86` / `wubi98`）。
+    /// 方案键（`wubi86` / `wubi98` / `wubixsj`）。
     pub fn key(&self) -> &'static str {
         self.variant.key()
     }

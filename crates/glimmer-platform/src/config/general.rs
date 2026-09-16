@@ -55,7 +55,7 @@ pub struct GeneralConfig {
     /// 注音模式开关，大千键盘。
     pub zhuyin: bool,
 
-    /// 五笔：空串关，`86` / `98` 选版本（见 [`WubiVariant`]）。开着时双拼与注音的设置被忽略。
+    /// 五笔：空串关，`86` / `98` / `xsj`（新世纪，也可写 `06`）选版本（见 [`WubiVariant`]）。开着时双拼与注音的设置被忽略。
     pub wubi: String,
 
     /// 日志级别，缺省 info（不含用户敲的内容）。
@@ -176,13 +176,17 @@ mod tests {
     }
 
     #[test]
-    fn wubi_is_off_by_default_and_accepts_86_or_98() {
+    fn wubi_is_off_by_default_and_accepts_known_variants() {
         let mut general = GeneralConfig::default();
         assert_eq!(general.wubi(), None);
         general.wubi = "86".to_owned();
         assert_eq!(general.wubi(), Some(WubiVariant::Wubi86));
         general.wubi = " wubi98 ".to_owned();
         assert_eq!(general.wubi(), Some(WubiVariant::Wubi98));
+        general.wubi = "xsj".to_owned();
+        assert_eq!(general.wubi(), Some(WubiVariant::Xinshiji));
+        general.wubi = "06".to_owned();
+        assert_eq!(general.wubi(), Some(WubiVariant::Xinshiji));
         general.wubi = "2000".to_owned();
         assert_eq!(general.wubi(), None);
     }

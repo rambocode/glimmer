@@ -33,7 +33,7 @@ pub struct CommitEntry {
     /// 查询时排在前面的几个候选文本，用来离线算首选命中率。
     pub top: Vec<String>,
 
-    /// 双拼方案的键（`xiaohe`），全拼为空。
+    /// 键盘方案的键：五笔 `wubi86` / `wubi98` / `wubixsj`、双拼方案如 `xiaohe`、注音 `zhuyin`，全拼为空。
     pub scheme: String,
 
     /// 是否在英文模式。

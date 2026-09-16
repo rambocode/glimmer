@@ -20,7 +20,7 @@ fn full_code_hits_come_before_prefix_hints_with_their_codes() {
     // 显示原样是敲的码，没有切分
     assert_eq!(query.marked_text(), "gg");
     assert!(query.segmentations.is_empty() && !query.decoded_keys);
-    // 前缀命中短码在前：`g` 下 五 / 玉 / 天（两码）排在 王（四码）前
+    // 前缀命中短码在前：`g` 下 五 / 天 / 玉（两码）排在 王（四码）前；两码之间按词频，五（7000）压过天（6800）
     let g = wubi_texts(&mut engine, "g");
     assert!(g.iter().position(|t| t == "王").unwrap() > g.iter().position(|t| t == "天").unwrap());
     assert_eq!(g[0], "五");
@@ -204,4 +204,19 @@ fn compose_prediction_is_off_but_question_still_asks_the_cloud() {
     let request = submitted.borrow()[0].clone();
     assert_eq!(request.kind, PredictionKind::Question);
     assert_eq!(request.pinyin, "mu'mu'mu");
+}
+
+#[test]
+fn rank_style_frequencies_sort_by_table_order_not_text_order() {
+    // 98 / 新世纪码表的词频是逐行减 1 的名次，两条只差 1：归一化后的 log 概率差在千分位以下，
+    // 排序键里取整后完全打平。此时得按码表顺序（= 词频降序）定序，按文本序排「五一」会顶掉「王」。
+    const RANKED: &str = "王\tgggg\t1098435\n五一\tgggg\t1098434\n";
+    let mut engine = engine();
+    let table = Dictionary::parse(RANKED).unwrap();
+    engine.set_wubi(Some(WubiScheme::new(
+        Variant::Xinshiji,
+        table,
+        Options::default(),
+    )));
+    assert_eq!(wubi_texts(&mut engine, "gggg"), ["王", "五一"]);
 }

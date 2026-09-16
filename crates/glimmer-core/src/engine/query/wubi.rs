@@ -26,17 +26,25 @@ struct WubiHit<'a> {
 
     /// 词频归一化的 log 概率加用户选择次数的加分。
     score: f64,
+
+    /// 在码表返回顺序里的序号（查询时 `enumerate` 记下），平手时按它定序。
+    index: usize,
 }
 
-impl<'a> WubiHit<'a> {
-    /// 排序键，越小越靠前：全码在前；前缀命中短码在前（fcitx `SortByCodeLength`）；再按同编码下的选择次数、得分、文本。
-    fn key(&self) -> (Reverse<bool>, usize, Reverse<u32>, Reverse<i64>, &'a str) {
+impl WubiHit<'_> {
+    /// 排序键，越小越靠前：全码在前；前缀命中短码在前（fcitx `SortByCodeLength`）；再按同编码下的选择次数、得分、码表顺序。
+    ///
+    /// 最后一项用码表顺序而不是文本序：98 码表的词频是上游逐行减 1 的名次（`王 1098435`、`五一 1098434`），
+    /// 归一化后的 log 概率差在千分位以下，`(score * 1000).round()` 取整后完全打平，
+    /// 按文本序排会把「五一」顶到「王」前面。词库 `assemble` 已经把同键条目按词频降序、平手保 TSV 原序排好，
+    /// 所以码表顺序就是想要的词频顺序。
+    fn key(&self) -> (Reverse<bool>, usize, Reverse<u32>, Reverse<i64>, usize) {
         (
             Reverse(self.full),
             self.hit.pinyin.len(),
             Reverse(self.choice),
             Reverse((self.score * 1000.0).round() as i64),
-            self.hit.text,
+            self.index,
         )
     }
 }
@@ -144,7 +152,8 @@ impl Engine {
         let mut hits: Vec<WubiHit<'_>> = dictionaries
             .iter()
             .flat_map(|d| d.lookup_pattern(&pattern))
-            .map(|hit| {
+            .enumerate()
+            .map(|(index, hit)| {
                 let full = hit.pinyin == keys;
                 let choice = if full && !fixed {
                     self.learner.choice_weight(keys, hit.text)
@@ -162,6 +171,7 @@ impl Engine {
                     choice,
                     score: sentence::fallback_log_prob(hit.frequency, log_total)
                         + ranking::weight_bonus(weight),
+                    index,
                 }
             })
             .collect();
@@ -171,7 +181,7 @@ impl Engine {
             hits.select_nth_unstable_by(preselect, |a, b| a.key().cmp(&b.key()));
             hits.truncate(preselect);
         }
-        hits.sort_unstable_by(|a, b| a.key().cmp(&b.key()));
+        hits.sort_unstable_by_key(|h| h.key());
         let mut seen: std::collections::HashSet<&str> = std::collections::HashSet::new();
         hits.into_iter()
             .filter(|h| seen.insert(h.hit.text))
