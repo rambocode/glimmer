@@ -9,9 +9,11 @@ pub mod ibus;
 pub mod key;
 
 mod error;
+mod startup;
 
-pub use backend::{Backend, EchoBackend, SharedBackend};
+pub use backend::{Backend, EchoBackend, RouterBackend, SharedBackend};
 pub use error::LinuxError;
+pub use startup::{build_backend, init_logging};
 
 /// 以 IBus 组件身份运行：找总线地址、导出工厂、服务到 daemon 断开。阻塞当前线程。
 pub fn run(backend: impl Backend + Send + 'static) -> Result<(), LinuxError> {
@@ -21,8 +23,29 @@ pub fn run(backend: impl Backend + Send + 'static) -> Result<(), LinuxError> {
         .build()
         .map_err(LinuxError::Runtime)?;
     let backend = backend::shared(backend);
-    runtime.block_on(async move {
-        let address = ibus::address::resolve()?;
-        ibus::serve(backend, &address).await
-    })
+    let ticker = runtime.spawn(tick_forever(backend.clone()));
+    let result = runtime.block_on({
+        let backend = backend.clone();
+        async move {
+            let address = ibus::address::resolve()?;
+            ibus::serve(backend, &address).await
+        }
+    });
+    ticker.abort();
+    if let Ok(mut backend) = backend.lock() {
+        backend.shutdown();
+    }
+    result
+}
+
+/// 按后端要的节拍一直调 [`Backend::tick`]。锁只在 tick 期间拿，按键处理不会被睡眠挡住。
+async fn tick_forever(backend: SharedBackend) {
+    loop {
+        let wait = match backend.lock() {
+            Ok(mut backend) => backend.tick(),
+            // 别的线程处理按键时 panic 了：后端状态不可信，停掉节拍，按键那边会各自报错
+            Err(_) => return,
+        };
+        tokio::time::sleep(wait).await;
+    }
 }

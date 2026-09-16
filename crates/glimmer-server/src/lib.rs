@@ -5,7 +5,9 @@
 pub mod assembly;
 pub mod dispatch;
 pub mod error;
+pub mod startup;
 
 pub use assembly::{AssemblySpec, LanguageModelFiles, WubiSpec};
 pub use dispatch::{Router, RouterConfig};
 pub use error::ServerError;
+pub use startup::{StartupPaths, build_router};

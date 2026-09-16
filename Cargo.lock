@@ -1362,11 +1362,14 @@ dependencies = [
 name = "glimmer-linux"
 version = "0.1.0-alpha.1-dev"
 dependencies = [
+ "dotenvy",
  "glimmer-core",
  "glimmer-platform",
+ "glimmer-server",
  "thiserror 2.0.20",
  "tokio",
  "tracing",
+ "tracing-appender",
  "tracing-subscriber",
  "zbus",
 ]

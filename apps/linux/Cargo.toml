@@ -13,10 +13,13 @@ path = "src/main.rs"
 [dependencies]
 glimmer-core.workspace = true
 glimmer-platform.workspace = true
+glimmer-server.workspace = true
+dotenvy.workspace = true
 thiserror.workspace = true
 tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time", "sync"] }
 tracing.workspace = true
 tracing-subscriber.workspace = true
+tracing-appender.workspace = true
 zbus = { version = "5.19.0", default-features = false, features = ["tokio"] }
 
 [lints]

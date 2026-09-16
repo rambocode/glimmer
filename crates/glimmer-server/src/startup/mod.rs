@@ -1,0 +1,141 @@
+//! 启动装配：按配置与随包资源找数据文件、装 Engine、建好 [`Router`]（本地整句模型、配置热加载都接上）。
+//! Windows Server 与 Linux IBus 引擎共用，平台差异只在 [`StartupPaths`] 里。
+
+mod paths;
+
+use std::path::{Path, PathBuf};
+
+use glimmer_core::{Engine, Language};
+use glimmer_platform::Config;
+
+use crate::assembly::{self, AssemblySpec, LanguageModelFiles, WubiSpec};
+use crate::dispatch::{self, Router, RouterConfig};
+use crate::error::ServerError;
+
+pub use self::paths::StartupPaths;
+
+/// 装配 Engine 并建好 Router。正式词库装不起来回落样例词库，连样例都不行才报错。
+/// 环境变量 `GLIMMER_DICT` / `GLIMMER_GLOSSARY` 可覆盖词库与释义表（开发用）。
+pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, ServerError> {
+    let root = paths.root.as_path();
+    let language = learning_language(config);
+    let dict = std::env::var_os("GLIMMER_DICT")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| default_dict(root));
+    let glossary = std::env::var_os("GLIMMER_GLOSSARY")
+        .map(PathBuf::from)
+        .or_else(|| glossary_file(root, language))
+        .filter(|path| path.is_file());
+    let bundled_dicts_dir = Some(root.join("data/generated/dicts")).filter(|dir| dir.is_dir());
+    let spec = AssemblySpec {
+        glossary: glossary.clone().map(|path| (language, path)),
+        english_glossary: glossary_file(root, Language::Chinese),
+        english: generated(root, "english.tsv"),
+        emoji: ["emoji-zh.tsv", "emoji-en.tsv"]
+            .into_iter()
+            .filter_map(|name| asset(root, &format!("emoji/{name}")))
+            .collect(),
+        language_model: LanguageModelFiles::find(&root.join("data/generated")),
+        bundled_dicts_dir: bundled_dicts_dir.clone(),
+        dictionaries: config.dictionaries.clone(),
+        levels_dir: Some(root.join("assets/levels")),
+        user_dir: paths.user_dir.clone(),
+        input_log: config.general.input_log,
+        // 码表与 dict.qj 同目录；文件不在就记 warn 当没开
+        wubi: config.general.wubi().map(|variant| WubiSpec {
+            variant,
+            options: config.wubi.options(),
+        }),
+        ..AssemblySpec::new(&dict)
+    };
+    let mut engine = assemble_with_fallback(spec, root)?;
+    engine.set_fuzzy(config.fuzzy);
+    engine.set_shuangpin(config.general.shuangpin());
+    engine.set_zhuyin_mode(config.general.zhuyin);
+    engine.set_mode_keys(config.shortcut.mode);
+    engine.log_session(paths.version, paths.platform);
+    dispatch::attach_cloud(&mut engine, &config.predict);
+    let router_config = RouterConfig::from(config);
+    let mut router = Router::new(engine, router_config.clone());
+    router.set_log_identity(paths.version, paths.platform);
+    let model_path = dispatch::find_model(paths.user_dir.as_deref(), root);
+    router.configure_local_model(model_path.clone(), &config.model);
+    if let Some(path) = &paths.config_path {
+        router.watch_config(
+            config,
+            path.clone(),
+            bundled_dicts_dir,
+            paths.user_dir.clone(),
+            Some(assembly::wubi_dir(&dict).to_path_buf()),
+        );
+    }
+    tracing::info!(
+        platform = paths.platform,
+        version = paths.version,
+        dict = %dict.display(),
+        glossary = glossary.as_deref().map(|p| p.display().to_string()).unwrap_or_default(),
+        language = language.code(),
+        page_size = router_config.page_size,
+        page_keys = %format!("{}{}", router_config.page_keys.0, router_config.page_keys.1),
+        layout = router_config.layout.key(),
+        theme = router_config.theme.key(),
+        shuangpin = config.general.shuangpin().map(|s| s.key()).unwrap_or("全拼"),
+        wubi = router.wubi_key().unwrap_or("关"),
+        fuzzy = config.fuzzy.any(),
+        cloud = config.predict.enabled,
+        model = model_path.as_deref().map(|p| p.display().to_string()).unwrap_or_default(),
+        model_enabled = config.model.enabled,
+        "微明 Router 就绪"
+    );
+    Ok(router)
+}
+
+/// 学习语言；不认识的代码按英文。
+fn learning_language(config: &Config) -> Language {
+    let code = &config.general.learning_language;
+    code.parse().unwrap_or_else(|_| {
+        tracing::warn!(code, "不认识的学习语言，按英文");
+        Language::English
+    })
+}
+
+/// `<root>/data/generated/<name>`，不存在为 `None`。
+fn generated(root: &Path, name: &str) -> Option<PathBuf> {
+    existing(root.join("data/generated").join(name))
+}
+
+/// `<root>/assets/<rel>`，不存在为 `None`。
+fn asset(root: &Path, rel: &str) -> Option<PathBuf> {
+    existing(root.join("assets").join(rel))
+}
+
+/// 是文件就原样返回。
+fn existing(path: PathBuf) -> Option<PathBuf> {
+    path.is_file().then_some(path)
+}
+
+/// 正式词库，没有就回落手写样例。
+fn default_dict(root: &Path) -> PathBuf {
+    generated(root, "dict.qj").unwrap_or_else(|| sample_dict(root))
+}
+
+/// 随 git 的样例词库。
+fn sample_dict(root: &Path) -> PathBuf {
+    root.join("assets/sample/dict.tsv")
+}
+
+/// 某语言的释义表：打包过的优先，否则随 git 的 TSV。
+fn glossary_file(root: &Path, language: Language) -> Option<PathBuf> {
+    let code = language.code();
+    generated(root, &format!("glossary-{code}.qj"))
+        .or_else(|| asset(root, &format!("glossary/glossary-{code}.tsv")))
+}
+
+/// 正式词库装配失败回落样例词库，连样例都装不起来才报错。
+fn assemble_with_fallback(mut spec: AssemblySpec, root: &Path) -> Result<Engine, ServerError> {
+    assembly::assemble(&spec).or_else(|error| {
+        tracing::error!(%error, dict = %spec.dict.display(), "正式词库装配失败，回落样例词库");
+        spec.dict = sample_dict(root);
+        assembly::assemble(&spec)
+    })
+}

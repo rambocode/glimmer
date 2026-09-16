@@ -23,7 +23,7 @@ EXEC="$CARGO_TARGET_DIR/debug/glimmer-ibus"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 mkdir -p "$TMP/component" "$TMP/config" "$TMP/cache"
-sed "s|@EXEC@|$EXEC|" "$HERE/glimmer.xml.in" > "$TMP/component/glimmer.xml"
+sed "s|@EXEC@|$EXEC --echo|" "$HERE/glimmer.xml.in" > "$TMP/component/glimmer.xml"
 
 export IBUS_COMPONENT_PATH="$TMP/component"
 export XDG_CONFIG_HOME="$TMP/config"

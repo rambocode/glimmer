@@ -2,14 +2,10 @@
 //! release 编成 GUI 子系统（登录自启静默跑，日志走文件）；debug 保留控制台看 stderr。
 #![cfg_attr(all(windows, not(debug_assertions)), windows_subsystem = "windows")]
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
-use glimmer_core::{Engine, Language};
 use glimmer_platform::{Config, ConfigError, LogLevel, resources};
-use glimmer_windows_server::{
-    AssemblySpec, LanguageModelFiles, Router, RouterConfig, ServerError, WubiSpec, assembly,
-    dispatch,
-};
+use glimmer_server::{Router, StartupPaths, build_router};
 
 /// 用户数据目录 `%APPDATA%\Glimmer`。非 Windows 拿不到。
 fn user_dir() -> Option<PathBuf> {
@@ -49,53 +45,6 @@ fn load_env() {
     if let Some(env_file) = user_dir().map(|dir| dir.join(".env")) {
         let _ = dotenvy::from_path(&env_file);
     }
-}
-
-fn learning_language(config: &Config) -> Language {
-    let code = &config.general.learning_language;
-    code.parse().unwrap_or_else(|_| {
-        tracing::warn!(code, "不认识的学习语言，按英文");
-        Language::English
-    })
-}
-
-/// `<root>/data/generated/<name>`，不存在为 `None`。
-fn generated(root: &Path, name: &str) -> Option<PathBuf> {
-    existing(root.join("data/generated").join(name))
-}
-
-/// `<root>/assets/<rel>`，不存在为 `None`。
-fn asset(root: &Path, rel: &str) -> Option<PathBuf> {
-    existing(root.join("assets").join(rel))
-}
-
-fn existing(path: PathBuf) -> Option<PathBuf> {
-    path.is_file().then_some(path)
-}
-
-/// 正式词库，没有就回落手写样例。
-fn default_dict(root: &Path) -> PathBuf {
-    generated(root, "dict.qj").unwrap_or_else(|| sample_dict(root))
-}
-
-fn sample_dict(root: &Path) -> PathBuf {
-    root.join("assets/sample/dict.tsv")
-}
-
-/// 某语言的释义表：打包过的优先，否则随 git 的 TSV。
-fn glossary_file(root: &Path, language: Language) -> Option<PathBuf> {
-    let code = language.code();
-    generated(root, &format!("glossary-{code}.qj"))
-        .or_else(|| asset(root, &format!("glossary/glossary-{code}.tsv")))
-}
-
-/// 正式词库装配失败回落样例词库，连样例都装不起来才报错。
-fn assemble_with_fallback(mut spec: AssemblySpec, root: &Path) -> Result<Engine, ServerError> {
-    assembly::assemble(&spec).or_else(|error| {
-        tracing::error!(%error, dict = %spec.dict.display(), "正式词库装配失败，回落样例词库");
-        spec.dict = sample_dict(root);
-        assembly::assemble(&spec)
-    })
 }
 
 fn log_dir() -> Option<PathBuf> {
@@ -151,82 +100,21 @@ fn main() {
         Some(Err(error)) => tracing::warn!(%error, "写配置模板失败"),
         _ => {}
     }
-    let language = learning_language(&config);
-    // 装机布局与 exe 同级，开发布局是仓库 `ime/`；都找不到回落工作目录。
-    let root = resources::bundled_root().unwrap_or_else(|| PathBuf::from("."));
-    let dict = std::env::var_os("GLIMMER_DICT")
-        .map(PathBuf::from)
-        .unwrap_or_else(|| default_dict(&root));
-    let glossary = std::env::var_os("GLIMMER_GLOSSARY")
-        .map(PathBuf::from)
-        .or_else(|| glossary_file(&root, language))
-        .filter(|path| path.is_file());
-    let bundled_dicts_dir = Some(root.join("data/generated/dicts")).filter(|dir| dir.is_dir());
-    let spec = AssemblySpec {
-        glossary: glossary.clone().map(|path| (language, path)),
-        english_glossary: glossary_file(&root, Language::Chinese),
-        english: generated(&root, "english.tsv"),
-        emoji: ["emoji-zh.tsv", "emoji-en.tsv"]
-            .into_iter()
-            .filter_map(|name| asset(&root, &format!("emoji/{name}")))
-            .collect(),
-        language_model: LanguageModelFiles::find(&root.join("data/generated")),
-        bundled_dicts_dir: bundled_dicts_dir.clone(),
-        dictionaries: config.dictionaries.clone(),
-        levels_dir: Some(root.join("assets/levels")),
+    // 装机布局与 exe 同级，开发布局是仓库根；都找不到回落工作目录。
+    let paths = StartupPaths {
         user_dir: user_dir(),
-        input_log: config.general.input_log,
-        // 码表与 dict.qj 同目录；文件不在就记 warn 当没开
-        wubi: config.general.wubi().map(|variant| WubiSpec {
-            variant,
-            options: config.wubi.options(),
-        }),
-        ..AssemblySpec::new(&dict)
+        config_path: config_path(),
+        root: resources::bundled_root().unwrap_or_else(|| PathBuf::from(".")),
+        version: env!("CARGO_PKG_VERSION"),
+        platform: "windows",
     };
-    let mut engine = match assemble_with_fallback(spec, &root) {
-        Ok(engine) => engine,
+    let router = match build_router(&paths, &config) {
+        Ok(router) => router,
         Err(error) => {
             tracing::error!(%error, "样例词库也装配失败");
             std::process::exit(1);
         }
     };
-    engine.set_fuzzy(config.fuzzy);
-    engine.set_shuangpin(config.general.shuangpin());
-    engine.set_zhuyin_mode(config.general.zhuyin);
-    engine.set_mode_keys(config.shortcut.mode);
-    engine.log_session(env!("CARGO_PKG_VERSION"), "windows");
-    dispatch::attach_cloud(&mut engine, &config.predict);
-    let router_config = RouterConfig::from(&config);
-    let mut router = Router::new(engine, router_config.clone());
-    router.set_log_identity(env!("CARGO_PKG_VERSION"), "windows");
-    let model_path = dispatch::find_model(user_dir().as_deref(), &root);
-    router.configure_local_model(model_path.clone(), &config.model);
-    if let Some(path) = config_path() {
-        router.watch_config(
-            &config,
-            path,
-            bundled_dicts_dir,
-            user_dir(),
-            Some(assembly::wubi_dir(&dict).to_path_buf()),
-        );
-    }
-    tracing::info!(
-        dict = %dict.display(),
-        glossary = glossary.as_deref().map(|p| p.display().to_string()).unwrap_or_default(),
-        language = language.code(),
-        page_size = router_config.page_size,
-        page_keys = %format!("{}{}", router_config.page_keys.0, router_config.page_keys.1),
-        layout = router_config.layout.key(),
-        theme = router_config.theme.key(),
-        shuangpin = config.general.shuangpin().map(|s| s.key()).unwrap_or("全拼"),
-        wubi = router.wubi_key().unwrap_or("关"),
-        fuzzy = config.fuzzy.any(),
-        cloud = config.predict.enabled,
-        model = model_path.as_deref().map(|p| p.display().to_string()).unwrap_or_default(),
-        model_enabled = config.model.enabled,
-        sessions = router.session_count(),
-        "微明 Windows Server 就绪"
-    );
 
     serve(router);
 }
