@@ -103,17 +103,19 @@ mod tests {
 
     #[test]
     fn old_files_without_modifier_keys_still_parse_and_get_defaults() {
+        // 缺省分平台（Windows 是 Ctrl 系，其余 Option 系），断言跟着平台的 Default 走
+        let default = ShortcutConfig::default();
         let parsed: ShortcutConfig = toml::from_str("expression = \"i\"\n").unwrap();
         assert_eq!(parsed.mode.expression, 'i');
         assert_eq!(
             parsed.translation_keys(),
-            (Modifiers::OPTION, Modifiers::SHIFT_OPTION)
+            (default.translation, default.translation_second)
         );
         let same: ShortcutConfig =
             toml::from_str("translation = \"option\"\ntranslation_second = \"option\"\n").unwrap();
         assert_eq!(
             same.translation_keys(),
-            (Modifiers::OPTION, Modifiers::SHIFT_OPTION)
+            (default.translation, default.translation_second)
         );
         let swapped: ShortcutConfig =
             toml::from_str("translation = \"control+option\"\ntranslation_second = \"option\"\n")
@@ -123,13 +125,23 @@ mod tests {
 
     #[test]
     fn delete_keys_fall_back_when_clashing_with_translation_keys() {
+        let default = ShortcutConfig::default();
         let parsed: ShortcutConfig = toml::from_str("").unwrap();
         assert_eq!(parsed.delete_keys(), Modifiers::SHIFT);
-        let clash: ShortcutConfig = toml::from_str("delete_candidate = \"option\"\n").unwrap();
+        // 与本平台缺省的译词键撞上才算冲突
+        let clash: ShortcutConfig = toml::from_str(&format!(
+            "delete_candidate = \"{}\"\n",
+            default.translation.key()
+        ))
+        .unwrap();
         assert_eq!(clash.delete_keys(), Modifiers::SHIFT);
+        let free = [Modifiers::OPTION, Modifiers::CONTROL]
+            .into_iter()
+            .find(|m| *m != default.translation && *m != default.translation_second)
+            .unwrap();
         let custom: ShortcutConfig =
-            toml::from_str("delete_candidate = \"control+shift\"\n").unwrap();
-        assert!(custom.delete_keys().control);
+            toml::from_str(&format!("delete_candidate = \"{}\"\n", free.key())).unwrap();
+        assert_eq!(custom.delete_keys(), free);
     }
 
     #[test]
