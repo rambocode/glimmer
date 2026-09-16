@@ -16,7 +16,7 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 OUT="$ROOT/target/release-data"
 cd "$ROOT"
 
-PRODUCT_FILES=(dict.qj lm.qj glossary-en.qj glossary-ja.qj glossary-zh.qj english.tsv english-frequency.tsv wubi86.qj wubi98.qj wubixsj.qj)
+PRODUCT_FILES=(dict.qj lm.qj glossary-en.qj glossary-ja.qj glossary-zh.qj glossary-es.qj english.tsv english-frequency.tsv wubi86.qj wubi98.qj wubixsj.qj)
 MODEL_FILE=data/model/model.qjm
 LLM_FILES=(gloss-llm.jsonl gloss-en-llm.jsonl pinyin-llm.jsonl)
 
