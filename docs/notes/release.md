@@ -35,10 +35,10 @@ Rust 工具链由 `rust-toolchain.toml` 钉版本（现在 1.96.0），两个 wo
 
 1. 改 `apps/windows/{server,tsf,settings}/Cargo.toml` 的 `version`（三个一起改；打包脚本与 workflow 读 `server` 那份）。
    同样带 `-dev`：发版之间是 `0.1.0-alpha.2-dev`，发版提交改成 `0.1.0-alpha.2`；Inno 的 `VersionInfoVersion` 只认数字，`build.ps1` 把整个预发布后缀去掉再传，安装包与 DLL 文件名保留完整版本。
-   内测版用 semver 预发布号 `0.1.0-alpha.1`、`0.1.0-alpha.2`…：CHANGELOG 按版本号索引、官网按版本号列条目，
+   内测版用 semver 预发布号 `0.1.0-linux.1`、`0.1.0-alpha.2`…：CHANGELOG 按版本号索引、官网按版本号列条目，
    与 macOS 的 `0.1.0` / `0.1.1` 不能同号；Inno 的 `VersionInfoVersion` 只认数字，`build.ps1` 会把后缀去掉再传。
-2. `CHANGELOG.md` 加一节 `## 0.1.0-alpha.1 · 日期 · alpha`。
-3. 打标签 `windows-v0.1.0-alpha.1` 推送。`release.yml` 的 `windows` job 在 `windows-latest` 上：核对版本 → 下载 `data` Release
+2. `CHANGELOG.md` 加一节 `## 0.1.0-linux.1 · 日期 · alpha`。
+3. 打标签 `windows-v0.1.0-linux.1` 推送。`release.yml` 的 `windows` job 在 `windows-latest` 上：核对版本 → 下载 `data` Release
    → 装 Inno Setup 7.1.0（与开发机同版本，钉死 GitHub Release 的安装程序）→ `build.ps1`→ 建 Release（`Glimmer-<版本>-Setup.exe` + `SHA256SUMS` + `build-info.json`）
    → `publish-releases-json.sh` 生成 `releases.json`，挂到本次发布并覆盖到 GitHub latest 那版上（官网只读 latest 的）。
 4. **没有代码签名证书时** workflow 设 `GLIMMER_UIACCESS=0`：没签名的 exe 带 uiAccess=true 起不来。
@@ -50,16 +50,17 @@ Rust 工具链由 `rust-toolchain.toml` 钉版本（现在 1.96.0），两个 wo
 
 ## Linux 发版
 
-1. 改 `apps/linux/Cargo.toml` 的 `version`（打包脚本与 workflow 都读它）：发版之间是 `0.1.0-alpha.1-dev`，发版提交改成 `0.1.0-alpha.1`，标签推出去后改成下一个 `-dev`。
-2. `CHANGELOG.md` 加一节 `## 0.1.0-alpha.1 · 日期 · alpha`。
-3. 打标签 `linux-v0.1.0-alpha.1` 推送。`release.yml` 的 `linux` job 用 matrix 在 `ubuntu-24.04`（amd64）与 `ubuntu-24.04-arm`（arm64）原生 runner 上各跑一遍：
+1. 改 `apps/linux/Cargo.toml` 的 `version`（打包脚本与 workflow 都读它）：发版之间是 `0.1.0-linux.1-dev`，发版提交改成 `0.1.0-linux.1`，标签推出去后改成下一个 `-dev`。
+   **版本号不能与其他平台撞号**：更新日志与官网都按版本号索引，Windows 已占用 `0.1.0-alpha.N`，所以 Linux 用 `0.1.0-linux.N` 这一串预发布号。
+2. `CHANGELOG.md` 加一节 `## 0.1.0-linux.1 · 日期 · alpha`。
+3. 打标签 `linux-v0.1.0-linux.1` 推送。`release.yml` 的 `linux` job 用 matrix 在 `ubuntu-24.04`（amd64）与 `ubuntu-24.04-arm`（arm64）原生 runner 上各跑一遍：
    核对版本与 main → 下载 `data` Release 并按 `SHA256SUMS` 校验 → `apps/linux/scripts/package.sh` 出 deb → 传 artifact；
    `linux-release` job 收齐两个 deb，生成 `SHA256SUMS` 与 `build-info.json`（数据摘要取 `data` Release 的 `SHA256SUMS`），建 Release，跑 `publish-releases-json.sh`，配了令牌就 `bump-website.sh`。
 4. 产物：`Glimmer-<版本>-amd64.deb`、`Glimmer-<版本>-arm64.deb`。只出 deb，不出 tar.gz / rpm / AppImage；目前只有 IBus 引擎，Fcitx5 未做。
 
-**版本号规则**：文件名用 Cargo 原样的版本；带 `-dev` 时接 git 短哈希，工作区有改动再加 `+`（`Glimmer-0.1.0-alpha.1-dev-1a2b3c4-arm64.deb`）。
-deb 的 `Version` 字段把 `-` 换成 `~`（`~` 在 dpkg 比较里排在一切之前，预发布版低于正式版）：`0.1.0-alpha.1` → `0.1.0~alpha.1`；
-dev 版再接 `+g<短哈希>`，有改动加 `.dirty`：`0.1.0~alpha.1~dev+g1a2b3c4`，比 `0.1.0~alpha.1` 低，正式版装上去会覆盖 dev 版。
+**版本号规则**：文件名用 Cargo 原样的版本；带 `-dev` 时接 git 短哈希，工作区有改动再加 `+`（`Glimmer-0.1.0-linux.1-dev-1a2b3c4-arm64.deb`）。
+deb 的 `Version` 字段把 `-` 换成 `~`（`~` 在 dpkg 比较里排在一切之前，预发布版低于正式版）：`0.1.0-linux.1` → `0.1.0~linux.1`；
+dev 版再接 `+g<短哈希>`，有改动加 `.dirty`：`0.1.0~linux.1~dev+g1a2b3c4`，比 `0.1.0~linux.1` 低，正式版装上去会覆盖 dev 版。
 
 **deb 布局**（与 `glimmer.iss` 的文件清单一致，`glimmer_platform::resources::bundled_root()` 认 exe 同级的 `data/` 与 `assets/`）：
 

@@ -11,9 +11,9 @@
 # 本地整句模型 data/model/model.qjm、五笔码表 data/generated/wubi86.qj 有就带，没有就跳过。
 #
 # 版本号（apps/linux/Cargo.toml 的 version，各平台壳独立）：
-#   - 文件名用 Cargo 原样的版本；带 -dev 时接 git 短哈希（工作区有改动再加 +）：Glimmer-0.1.0-alpha.1-dev-1a2b3c4-arm64.deb
-#   - deb 的 Version 字段把 - 换成 ~（~ 排在一切之前，预发布版低于正式版）：0.1.0-alpha.1 → 0.1.0~alpha.1；
-#     dev 版再接 +g<短哈希>（有改动加 .dirty）：0.1.0~alpha.1~dev+g1a2b3c4，排在 0.1.0~alpha.1 之前。
+#   - 文件名用 Cargo 原样的版本；带 -dev 时接 git 短哈希（工作区有改动再加 +）：Glimmer-0.1.0-linux.1-dev-1a2b3c4-arm64.deb
+#   - deb 的 Version 字段把 - 换成 ~（~ 排在一切之前，预发布版低于正式版）：0.1.0-linux.1 → 0.1.0~linux.1；
+#     dev 版再接 +g<短哈希>（有改动加 .dirty）：0.1.0~linux.1~dev+g1a2b3c4，排在 0.1.0~linux.1 之前。
 #
 # 调试用环境变量：
 #   GLIMMER_BIN      直接用这个二进制，跳过 cargo build（验证打包流程用）
