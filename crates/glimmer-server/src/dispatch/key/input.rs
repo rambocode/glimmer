@@ -187,8 +187,10 @@ impl Router {
         Effect::Passthrough
     }
 
-    /// 英文模式。开着候选：字母进缓冲区，空格 / 标点先把字母原样上屏（动过高亮的空格才选词）；
-    /// 关着候选：字母由我们插入（大小写按 Shift）。其他键按英文模式那份全角设置转，转不了的交给应用。
+    /// 英文模式。开着候选：字母进缓冲区，选词与中文模式一样（空格选高亮、数字选当前页第 N 个、翻页键翻页），
+    /// 词上屏后空格照样交给应用；有候选时数字才选词，没候选（词表没有的词）时数字是标识符的一部分（`foo1`）。
+    /// 回车 / 标点先把字母原样上屏。关着候选：字母由我们插入（大小写按 Shift）。
+    /// 其他键按英文模式那份全角设置转，转不了的交给应用。
     fn apply_english(&mut self, c: char, candidates: bool, event: &KeyEvent) -> Effect {
         let composing = self.composing();
         if !candidates {
@@ -201,13 +203,25 @@ impl Router {
             };
             return with_prefix(raw, effect, c);
         }
+        if composing
+            && self.candidate_count() > 0
+            && let Some(digit) = codes::digit(event)
+        {
+            let page_size = self.config.page_size;
+            let page = self.highlight / page_size;
+            return Effect::Changed(self.commit_index(page * page_size + digit - 1));
+        }
         if c.is_ascii_alphabetic()
             || (composing && (c.is_ascii_digit() || matches!(c, '_' | '\'' | '-')))
         {
             return self.push_key(c);
         }
+        if composing && let Some(step) = codes::page_key(event, self.config.page_keys) {
+            self.page(step);
+            return Effect::Navigated;
+        }
         let committed = composing.then(|| {
-            if c == ' ' && self.navigated {
+            if c == ' ' {
                 self.commit_highlighted()
             } else {
                 self.engine.take_raw()

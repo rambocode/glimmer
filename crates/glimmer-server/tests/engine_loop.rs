@@ -429,7 +429,7 @@ fn minus_equals_page_keys_preserve_expression_input() {
 }
 
 #[test]
-fn english_mode_gives_candidates_and_space_commits_raw() {
+fn english_mode_gives_candidates_and_space_picks_highlighted() {
     let mut router = router();
     let (outcome, commit, frame) = type_english(&mut router, "hel");
     assert_eq!((outcome, commit), (KeyOutcome::Consumed, None));
@@ -439,11 +439,43 @@ fn english_mode_gives_candidates_and_space_commits_raw() {
         texts.contains(&"hello") && texts.contains(&"help"),
         "候选应来自英文词表：{texts:?}"
     );
-    // 没动过高亮的空格：字母原样上屏，空格一起插（放行会让应用先插空格）。
+    // 空格与中文模式一样选高亮的词，词后接上空格（放行会让应用先插空格）。
+    let first = frame.candidates.items[0].text.clone();
     let (outcome, commit, after) = press(&mut router, KeyEvent::new(0x20, Some(' '), ENGLISH));
     assert_eq!(outcome, KeyOutcome::Consumed);
-    assert_eq!(commit.as_deref(), Some("hel "));
+    assert_eq!(commit, Some(format!("{first} ")));
     assert!(after.is_empty());
+
+    // 回车仍把字母原样上屏：词表没有的写法靠它。
+    type_english(&mut router, "hel");
+    let (outcome, commit, _) = press(&mut router, function_key(0x0D));
+    assert_eq!(
+        (outcome, commit.as_deref()),
+        (KeyOutcome::Consumed, Some("hel"))
+    );
+}
+
+#[test]
+fn english_digits_pick_candidates_or_join_the_word() {
+    let mut router = router();
+    // 有候选：数字选当前页第 N 个，与中文模式一样。
+    let (_, _, frame) = type_english(&mut router, "hel");
+    let second = frame.candidates.items[1].text.clone();
+    let (outcome, commit, after) = press(&mut router, KeyEvent::new(0x32, Some('2'), ENGLISH));
+    assert_eq!((outcome, commit), (KeyOutcome::Consumed, Some(second)));
+    assert!(after.is_empty());
+
+    // 没候选（词表没有的词）：数字是标识符的一部分，回车整段原样上屏。
+    let (_, _, frame) = type_english(&mut router, "xq");
+    assert!(
+        frame.candidates.items.is_empty(),
+        "样例词表里没有 xq 开头的词"
+    );
+    let (outcome, commit, frame) = press(&mut router, KeyEvent::new(0x31, Some('1'), ENGLISH));
+    assert_eq!((outcome, commit), (KeyOutcome::Consumed, None));
+    assert_eq!(preedit(&frame), "xq1");
+    let (_, commit, _) = press(&mut router, function_key(0x0D));
+    assert_eq!(commit.as_deref(), Some("xq1"));
 }
 
 #[test]
@@ -515,7 +547,7 @@ fn app_list_is_looked_up_per_session() {
 }
 
 #[test]
-fn english_tab_and_navigated_space_pick_candidates() {
+fn english_tab_and_arrow_keys_pick_candidates() {
     let mut router = router();
     let (_, _, frame) = type_english(&mut router, "hel");
     let first = frame.candidates.items[0].text.clone();
@@ -526,7 +558,7 @@ fn english_tab_and_navigated_space_pick_candidates() {
         (KeyOutcome::Consumed, Some(first.as_str()))
     );
 
-    // 方向键动过高亮之后，空格也选那个词，再接上空格。
+    // 方向键移到第二个之后，空格选的是它，再接上空格。
     let (_, _, frame) = type_english(&mut router, "hel");
     let second = frame.candidates.items[1].text.clone();
     let (outcome, _, _) = press(&mut router, KeyEvent::new(0x28, None, ENGLISH));

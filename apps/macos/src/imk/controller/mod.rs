@@ -382,7 +382,9 @@ impl GlimmerInputController {
             c
         };
         host::with(|h| h.engine.set_english_mode(english_candidates && !question));
-        // 英文模式：不组句、不转标点，字母默认小写、按住 Shift 才大写
+        let (page_previous, page_next) =
+            host::with(|h| h.page_keys).unwrap_or(glimmer_platform::DEFAULT_PAGE_KEYS);
+        // Caps Lock 亮着 = 英文模式：不组句、不转标点，字母默认小写、按住 Shift 才大写
         if english && !question {
             // 使用事件里的 Shift，避免处理延迟期间用户松键造成大小写错误。
             let letter = if shift {
@@ -402,10 +404,23 @@ impl GlimmerInputController {
                 host::with(|h| h.engine.note_passthrough(c));
                 return false;
             }
-            // 英文候选：字母（以及组词中的数字、_ ' -）进缓冲区，候选来自英文词表；
-            // 空格、回车、标点先把敲的字母原样上屏再交给应用，数字键照常是数字。
-            // 选词靠 Tab 和方向键；用方向键动过高亮之后空格也选那个词（再把空格交给应用），
-            // 没动过的空格还是原样上屏——不选词时它和纯直通完全一样，打 kubectl 这类词表没有的词不会被补全替换
+            // 英文候选：字母（以及组词中的 _ ' -）进缓冲区，候选来自英文词表。选词与中文模式一样：
+            // 空格选高亮（词上屏后空格照样交给应用，接着打下一个词）、数字选当前页第 N 个、翻页键翻页；
+            // 有候选时数字才选词，没候选（kubectl 这类词表没有的词）时数字是标识符的一部分（foo1）。
+            // 回车、标点先把敲的字母原样上屏再交给应用
+            if composing && let Some(offset) = c.to_digit(10).filter(|d| *d > 0) {
+                let (index, cells) = host::with(|h| {
+                    (
+                        h.session.index_on_page(offset as usize - 1),
+                        h.session.page_cells().len(),
+                    )
+                })
+                .unwrap_or((None, 0));
+                if cells > 0 {
+                    // 空格子按了不算
+                    return index.is_none_or(|index| self.commit_index(index, client));
+                }
+            }
             if c.is_ascii_alphabetic()
                 || (composing && (c.is_ascii_digit() || matches!(c, '_' | '\'' | '-')))
             {
@@ -413,9 +428,14 @@ impl GlimmerInputController {
                 self.refresh(client);
                 return true;
             }
+            if composing && c == page_previous {
+                return self.turn_page(-1, client);
+            }
+            if composing && c == page_next {
+                return self.turn_page(1, client);
+            }
             if composing {
-                let navigated = host::with(|h| h.session.navigated).unwrap_or(false);
-                if c == ' ' && navigated {
+                if c == ' ' {
                     self.commit_highlighted(client);
                 } else {
                     self.commit_raw(client);
@@ -433,8 +453,6 @@ impl GlimmerInputController {
         // 微软 / 搜狗双拼的 `;` 是 ing 键：末尾有落单声母时进缓冲区，其他时候还是标点
         let semicolon =
             composing && c == ';' && host::with(|h| h.engine.takes_semicolon()).unwrap_or(false);
-        let (page_previous, page_next) =
-            host::with(|h| h.page_keys).unwrap_or(glimmer_platform::DEFAULT_PAGE_KEYS);
         // 组句中敲半角标点（含 `-`）：进不进缓冲区由 Core 按 `[general] punctuation_mode` 定——进了整段成为
         // 英文直输段（`hello,` `no-way`），不进就先把高亮候选上屏再当普通标点处理。翻页键除外（`-` 只在 `[general] page_keys` 选 `-=` 时是翻页键）；
         // ⇧+数字（! @ # …）在前面已被删候选 / 译词键截走
