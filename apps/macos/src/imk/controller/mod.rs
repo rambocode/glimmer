@@ -436,13 +436,14 @@ impl GlimmerInputController {
         let (page_previous, page_next) =
             host::with(|h| h.page_keys).unwrap_or(glimmer_platform::DEFAULT_PAGE_KEYS);
         // 组句中敲半角标点（含 `-`）：进不进缓冲区由 Core 按 `[general] punctuation_mode` 定——进了整段成为
-        // 英文直输段（`hello,` `no-way`），不进就先把高亮候选上屏再当普通标点处理。翻页键除外（`-` 永远不是翻页键）；
+        // 英文直输段（`hello,` `no-way`），不进就先把高亮候选上屏再当普通标点处理。翻页键除外（`-` 只在 `[general] page_keys` 选 `-=` 时是翻页键）；
         // ⇧+数字（! @ # …）在前面已被删候选 / 译词键截走
         let punctuation = composing
             && !question
             && !expression
             && c.is_ascii_punctuation()
-            && (c == '-' || (c != page_previous && c != page_next))
+            && c != page_previous
+            && c != page_next
             && host::with(|h| h.engine.takes_punctuation()).unwrap_or(true);
         if c.is_ascii_lowercase()
             || (composing && c == '\'')
