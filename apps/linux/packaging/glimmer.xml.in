@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  微明的 IBus 组件描述，装到 /usr/share/ibus/component/glimmer.xml。
+  apps/linux/scripts/package.sh 把 @VERSION@ 换成 Cargo 版本号（dev 版带 git 短哈希）后放进 deb。
+  ibus-daemon 启动时读这个目录登记引擎，用户切到「微明」时按 exec 拉起引擎进程（ibus 参数表示由 IBus 拉起）。
+-->
+<component>
+  <name>app.glimmer.IBus</name>
+  <description>微明输入法 / Glimmer input method</description>
+  <exec>/usr/lib/glimmer/glimmer-ibus --ibus</exec>
+  <version>@VERSION@</version>
+  <author>微明 Glimmer</author>
+  <license>GPL-3.0-or-later</license>
+  <homepage>https://glimmerinput.app</homepage>
+  <textdomain>glimmer</textdomain>
+  <engines>
+    <engine>
+      <name>glimmer</name>
+      <language>zh_CN</language>
+      <license>GPL-3.0-or-later</license>
+      <author>微明 Glimmer</author>
+      <icon>/usr/share/icons/hicolor/256x256/apps/glimmer.png</icon>
+      <layout>us</layout>
+      <longname>微明</longname>
+      <description>拼音输入法，候选旁附带所学语言的译词</description>
+      <!-- 同语言多个引擎时的缺省排序，高的在前；与常见拼音引擎同档而略低，不抢系统已有的缺省 -->
+      <rank>80</rank>
+      <symbol>微</symbol>
+    </engine>
+  </engines>
+</component>

@@ -1,4 +1,5 @@
-# 推 macos-v<版本> / windows-v<版本> 标签触发（各平台壳版本号独立：macOS 读 apps/macos/Cargo.toml，Windows 读 apps/windows/server/Cargo.toml），
+# 推 macos-v<版本> / windows-v<版本> / linux-v<版本> 标签触发（各平台壳版本号独立：macOS 读 apps/macos/Cargo.toml，Windows 读 apps/windows/server/Cargo.toml，
+# Linux 读 apps/linux/Cargo.toml），
 # 流程见 docs/notes/release.md。macOS 的签名与公证可选，下面的 Secrets 配齐才签，否则出 ad-hoc 包；
 # Windows 现在没有代码签名（GLIMMER_UIACCESS=0 关掉 uiAccess，否则没签名的 Server 起不来），证书办下来再加 signtool。
 #   GLIMMER_CERT_P12            Developer ID Application + Installer 两张证书（含私钥）导出的 .p12，base64
@@ -19,7 +20,7 @@ name: release
 
 on:
   push:
-    tags: ['macos-v*', 'windows-v*']
+    tags: ['macos-v*', 'windows-v*', 'linux-v*']
 
 env:
   CARGO_TERM_COLOR: always
@@ -266,6 +267,141 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: tools/release/publish-releases-json.sh "$GITHUB_REF_NAME" target/installer
+
+      - name: Trigger website build
+        if: steps.secrets.outputs.website == 'true'
+        env:
+          GLIMMER_WEB_TOKEN: ${{ secrets.GLIMMER_WEB_TOKEN }}
+        run: tools/release/bump-website.sh
+
+  # Linux：amd64 与 arm64 各在原生 runner 上打 deb（不交叉编译），传成 artifact，由 linux-release 汇总建 Release。
+  linux:
+    if: startsWith(github.ref_name, 'linux-v')
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # 门禁要看 main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+        with:
+          toolchain: 1.96.0
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+
+      - name: Install packaging tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends dpkg-dev pkg-config libssl-dev
+
+      - name: Check version matches tag and tag is on main
+        run: |
+          VERSION="$(sed -n 's/^version = "\(.*\)"/\1/p' apps/linux/Cargo.toml | head -1)"
+          TAG="${GITHUB_REF_NAME#linux-v}"
+          if [[ "$VERSION" != "$TAG" ]]; then
+            echo "apps/linux/Cargo.toml 是 $VERSION，标签是 $GITHUB_REF_NAME，先改版本号再打标签" >&2
+            exit 1
+          fi
+          if [[ "$VERSION" == *-dev ]]; then
+            echo "$VERSION 还是开发版号，发版提交要先去掉 -dev（docs/notes/release.md）" >&2
+            exit 1
+          fi
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "标签 $GITHUB_REF_NAME 指向的提交 $GITHUB_SHA 不在 main 上，先合并再发" >&2
+            exit 1
+          fi
+
+      - name: Fetch product data
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p data/generated data/model
+          gh release download data --pattern glimmer-data.tar.gz --pattern model.qjm --pattern SHA256SUMS --dir data
+          (cd data && grep -E 'glimmer-data.tar.gz|model.qjm' SHA256SUMS | sha256sum -c -)
+          tar -xzf data/glimmer-data.tar.gz -C data/generated
+          # 本地整句模型单文件：package.sh 见到 data/model/model.qjm 就装进 /usr/lib/glimmer/data/model
+          mv data/model.qjm data/model/
+          ls -la data/generated data/generated/dicts data/model
+
+      - name: Build deb
+        run: apps/linux/scripts/package.sh
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: deb-${{ matrix.arch }}
+          path: target/deb/*.deb
+          if-no-files-found: error
+
+  linux-release:
+    if: startsWith(github.ref_name, 'linux-v')
+    needs: linux
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+        with:
+          toolchain: 1.96.0
+
+      - name: Detect optional secrets
+        id: secrets
+        run: echo "website=${{ secrets.GLIMMER_WEB_TOKEN != '' }}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: deb-*
+          path: target/deb
+          merge-multiple: true
+
+      - name: Checksums and build info
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#linux-v}"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          # 两个构建 job 已按 data Release 的 SHA256SUMS 校验过下载的数据，这里直接取那份摘要记进 build-info.json
+          gh release download data --pattern SHA256SUMS --dir "$RUNNER_TEMP/data"
+          DATA_SHA256="$(awk '$2 ~ /glimmer-data\.tar\.gz$/ {print $1}' "$RUNNER_TEMP/data/SHA256SUMS")"
+          MODEL_SHA256="$(awk '$2 ~ /model\.qjm$/ {print $1}' "$RUNNER_TEMP/data/SHA256SUMS")"
+          cd target/deb
+          ls -la
+          debs=(./*.deb)
+          test "${#debs[@]}" -eq 2
+          sha256sum ./*.deb | tee SHA256SUMS
+          jq -n --arg version "$VERSION" --arg tag "$GITHUB_REF_NAME" --arg commit "$GITHUB_SHA" \
+            --arg built_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg toolchain "$(rustc --version)" \
+            --arg runner "$(. /etc/os-release && echo "$PRETTY_NAME")（amd64 与 arm64 各自原生 runner）" \
+            --arg data_sha256 "$DATA_SHA256" --arg model_sha256 "$MODEL_SHA256" \
+            '{version: $version, tag: $tag, commit: $commit, built_at: $built_at, toolchain: $toolchain, runner: $runner, data_sha256: $data_sha256, model_sha256: $model_sha256}' \
+            | tee build-info.json
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 tools/release/releases_json.py --notes-for "$VERSION" > "$RUNNER_TEMP/notes.md"
+          printf '\n> 目前只支持 IBus（Fcitx5 暂不支持）。安装：`sudo apt install ./Glimmer-%s-amd64.deb`（ARM 机器用 arm64 包），然后运行 `ibus restart`，在「设置 → 键盘 → 输入源」里添加「微明」。\n' "$VERSION" >> "$RUNNER_TEMP/notes.md"
+          gh release create "$GITHUB_REF_NAME" --title "微明 Linux $VERSION" --notes-file "$RUNNER_TEMP/notes.md" \
+            target/deb/*.deb target/deb/SHA256SUMS target/deb/build-info.json
+
+      - name: Generate releases.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: tools/release/publish-releases-json.sh "$GITHUB_REF_NAME" target/deb
 
       - name: Trigger website build
         if: steps.secrets.outputs.website == 'true'

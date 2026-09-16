@@ -50,6 +50,8 @@ ASSET_KINDS = [
     (re.compile(r"^Glimmer-.+-arm64\.pkg$"), "macos", "Apple Silicon"),
     (re.compile(r"^Glimmer-.+-x86_64\.pkg$"), "macos", "Intel"),
     (re.compile(r"^Glimmer-.+-Setup\.exe$"), "windows", "x64"),
+    (re.compile(r"^Glimmer-.+-amd64\.deb$"), "linux", "x86_64"),
+    (re.compile(r"^Glimmer-.+-arm64\.deb$"), "linux", "ARM64"),
 ]
 
 

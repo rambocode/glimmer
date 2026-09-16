@@ -7,7 +7,7 @@
 
 ## 一次发版做什么
 
-（下面以 macOS 为例；Windows 见「Windows 发版」一节，步骤同构。）
+（下面以 macOS 为例；Windows 与 Linux 见各自一节，步骤同构。）
 
 1. 改 `apps/macos/Cargo.toml` 的 `version`（`apps/macos` 的 Info.plist 版本号从这里取，pkg 文件名也是）：把 `0.1.2-dev` 改成 `0.1.2`。
    **发版之间版本号一直带 `-dev`**（Rust nightly / Firefox Nightly 那套）：本地装的、CI 中间构建的都显示 `0.1.2-dev`，版本号干净的一定是线上包；
@@ -48,6 +48,40 @@ Rust 工具链由 `rust-toolchain.toml` 钉版本（现在 1.96.0），两个 wo
 5. 官网：`releases.json` 里 Windows 包由文件名 `-Setup.exe` 识别（`ASSET_KINDS`），下载页按访问者平台取「有该平台安装包的最新版本」
    （`latestFor`），所以 macOS 与 Windows 各自的最新版互不干扰。
 
+## Linux 发版
+
+1. 改 `apps/linux/Cargo.toml` 的 `version`（打包脚本与 workflow 都读它）：发版之间是 `0.1.0-alpha.1-dev`，发版提交改成 `0.1.0-alpha.1`，标签推出去后改成下一个 `-dev`。
+2. `CHANGELOG.md` 加一节 `## 0.1.0-alpha.1 · 日期 · alpha`。
+3. 打标签 `linux-v0.1.0-alpha.1` 推送。`release.yml` 的 `linux` job 用 matrix 在 `ubuntu-24.04`（amd64）与 `ubuntu-24.04-arm`（arm64）原生 runner 上各跑一遍：
+   核对版本与 main → 下载 `data` Release 并按 `SHA256SUMS` 校验 → `apps/linux/scripts/package.sh` 出 deb → 传 artifact；
+   `linux-release` job 收齐两个 deb，生成 `SHA256SUMS` 与 `build-info.json`（数据摘要取 `data` Release 的 `SHA256SUMS`），建 Release，跑 `publish-releases-json.sh`，配了令牌就 `bump-website.sh`。
+4. 产物：`Glimmer-<版本>-amd64.deb`、`Glimmer-<版本>-arm64.deb`。只出 deb，不出 tar.gz / rpm / AppImage；目前只有 IBus 引擎，Fcitx5 未做。
+
+**版本号规则**：文件名用 Cargo 原样的版本；带 `-dev` 时接 git 短哈希，工作区有改动再加 `+`（`Glimmer-0.1.0-alpha.1-dev-1a2b3c4-arm64.deb`）。
+deb 的 `Version` 字段把 `-` 换成 `~`（`~` 在 dpkg 比较里排在一切之前，预发布版低于正式版）：`0.1.0-alpha.1` → `0.1.0~alpha.1`；
+dev 版再接 `+g<短哈希>`，有改动加 `.dirty`：`0.1.0~alpha.1~dev+g1a2b3c4`，比 `0.1.0~alpha.1` 低，正式版装上去会覆盖 dev 版。
+
+**deb 布局**（与 `glimmer.iss` 的文件清单一致，`glimmer_platform::resources::bundled_root()` 认 exe 同级的 `data/` 与 `assets/`）：
+
+| 路径 | 内容 |
+|---|---|
+| `/usr/lib/glimmer/glimmer-ibus` | 引擎进程，IBus 按组件描述以 `--ibus` 拉起 |
+| `/usr/lib/glimmer/data/generated/` | `dict.qj`、`lm.qj`、`glossary-{en,ja,zh}.qj`、`english.tsv`、`dicts/*.qj`、可选 `wubi86.qj` |
+| `/usr/lib/glimmer/data/model/model.qjm` | 本地整句模型，可选 |
+| `/usr/lib/glimmer/assets/` | `emoji/emoji-{zh,en}.tsv`、`levels/levels-{en,ja}.tsv`、`sample/dict.tsv`、`wubi/{LICENSE.LGPL-3.0,AUTHORS}`（带五笔码表时） |
+| `/usr/share/ibus/component/glimmer.xml` | IBus 组件（`app.glimmer.IBus`，引擎名 `glimmer`），模板 `apps/linux/packaging/glimmer.xml.in` |
+| `/usr/share/icons/hicolor/256x256/apps/glimmer.png` | 图标，`assets/icon/logo.png` 缩到 256 提交在 `apps/linux/packaging/`（改 logo 后重新缩放） |
+| `/usr/share/doc/glimmer/copyright` | 许可（GPL-3.0-or-later，五笔码表 LGPL-3.0，数据来源） |
+
+`postinst` / `postrm` 只刷新 `ibus write-cache --system` 并提示用户 `ibus restart`，不杀用户会话里的 ibus-daemon。
+`Depends` 是 `ibus (>= 1.5.20)` 加 `dpkg-shlibdeps` 从二进制算出的动态库依赖。用户配置在 `~/.config/glimmer/config.toml`，数据与日志在 `~/.local/share/glimmer/`，卸载不动。
+
+**本机打包**（macOS 上用 Docker）：`apps/linux/scripts/package-docker.sh` 在 `ubuntu:24.04` + rustup（版本读 `rust-toolchain.toml`）+ dpkg-dev 的镜像里跑 `package.sh`，
+容器的 cargo target 放 `target/linux-docker/`，registry 缓存放命名 volume，成品在 `target/deb/`。缺省打本机架构（Apple Silicon 上是 arm64），
+`GLIMMER_DOCKER_PLATFORM=linux/amd64` 打 amd64（走模拟，慢）。worktree 里没有产品数据时用 `GLIMMER_DATA_DIR=<主工作树>/data` 只读挂进去。
+在 Linux 机器上直接跑 `apps/linux/scripts/package.sh`（要 `dpkg-dev`）。和 `bundle.sh` 不同，它不从 TSV 重打 `.qj`，只装 `data/generated/` 里已有的；
+没有 `dict.qj` 时只带样例词库并打警告。
+
 ## 提交前检查与 CI
 
 本地 `git config core.hooksPath .githooks` 启用一次后，每次提交前 `.githooks/pre-commit` 先拒绝装饰性分隔注释（`// ====` / `// ────`，只做视觉分组不带「为什么」），再跑 `cargo fmt --check` 与 `cargo clippy -D warnings`（含 IMK 外壳，增量几十秒）；
@@ -64,7 +98,7 @@ cargo 命令全 `--locked`（含 `bundle.sh` 与 `build.ps1`）。普通 CI 只�
 | 文件 | 触发 | 做什么 |
 |---|---|---|
 | `.github/workflows/ci.yml` | push main、PR | Linux 上 `cargo fmt --check` / clippy / test，排除 `glimmer-macos`（IMK 外壳只能在 macOS 编译，macOS runner 计费是 Linux 的 10 倍） |
-| `.github/workflows/release.yml` | 推 `macos-v*` / `windows-v*` 标签 | `macos` job（`macos-26`）：下载产品数据 → 可选签名公证 → `bundle.sh --pkg` 打 arm64 与交叉编译的 x86_64 → 建 Release；`windows` job（`windows-latest`）：下载产品数据 → `build.ps1` 打 Inno Setup 安装包 → 建 Release。两者最后都跑 `publish-releases-json.sh` |
+| `.github/workflows/release.yml` | 推 `macos-v*` / `windows-v*` / `linux-v*` 标签 | `macos` job（`macos-26`）：下载产品数据 → 可选签名公证 → `bundle.sh --pkg` 打 arm64 与交叉编译的 x86_64 → 建 Release；`windows` job（`windows-latest`）：下载产品数据 → `build.ps1` 打 Inno Setup 安装包 → 建 Release；`linux` job（`ubuntu-24.04` 与 `ubuntu-24.04-arm` 两个 matrix）：下载产品数据 → `package.sh` 打 deb，`linux-release` 汇总建 Release。三者最后都跑 `publish-releases-json.sh` |
 
 ## 产品数据从哪来
 
@@ -122,7 +156,7 @@ Apple Developer 账号有了以后，在仓库 Secrets 里配齐 `release.yml` �
 
 - `releases` 从新到旧，`latest` 是第一条的版本号；官网「当前版本」取它，历史版本列表就是整个数组。
 - `channel` 是 `alpha` / `beta` / `rc` / `stable`，显示成什么字由官网定；`commit` / `built_at` / `sha256` 给用户核对下载的包，下载页应显示 sha256 与提交短哈希。
-- 平台与架构由文件名判定（`-arm64.pkg` → Apple Silicon，`-x86_64.pkg` → Intel，`-Setup.exe` → Windows x64），以后 Linux 的包在脚本的 `ASSET_KINDS` 里加一行。
+- 平台与架构由文件名判定（`-arm64.pkg` → Apple Silicon，`-x86_64.pkg` → Intel，`-Setup.exe` → Windows x64，`-amd64.deb` → Linux x86_64，`-arm64.deb` → Linux ARM64），新的包型在脚本的 `ASSET_KINDS` 里加一行。
 - `SHA256SUMS` 与 `releases.json` 自己不列进 `assets`。
 - 官网侧要做的：构建时下载这个文件替代手写的 `releases` 数组（与拉 `docs/user` 的 `sync-docs.mjs` 同一处、同一个令牌），
   `downloadsOpen` 开关仍由官网自己控制。

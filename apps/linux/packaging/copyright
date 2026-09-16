@@ -1,0 +1,45 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: glimmer
+Upstream-Contact: https://github.com/rambocode/glimmer/issues
+Source: https://github.com/rambocode/glimmer
+
+Files: *
+Copyright: 微明 Glimmer contributors
+License: GPL-3.0-or-later
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ version 3 can be found in "/usr/share/common-licenses/GPL-3".
+
+Files: usr/lib/glimmer/data/generated/wubi86.qj usr/lib/glimmer/assets/wubi/*
+Copyright: acevery (Yu Yuwei), ibus-table 五笔 86 码表；原始字根与编码 王永民 / Wang Yongmin (public domain)
+License: LGPL-3.0
+ 五笔 86 码表由 rime-wubi 的 wubi86.dict.yaml 转换而来，编者署名见
+ /usr/lib/glimmer/assets/wubi/AUTHORS，许可证全文见
+ /usr/lib/glimmer/assets/wubi/LICENSE.LGPL-3.0。
+ .
+ On Debian systems, the complete text of the GNU Lesser General Public
+ License version 3 can also be found in "/usr/share/common-licenses/LGPL-3".
+
+Files: usr/lib/glimmer/data/generated/dict.qj usr/lib/glimmer/data/generated/dicts/*
+Copyright: 通用规范汉字表；现代汉语常用词表（liuxilu 校对版）；THUOCL（清华大学自然语言处理实验室）；Unihan (Unicode, Inc.)
+License: MIT and Unicode-3.0
+ 来源与许可声明见 https://github.com/rambocode/glimmer/tree/main/assets/lexicon 。
+
+Files: usr/lib/glimmer/data/generated/lm.qj
+Copyright: 中文维基百科贡献者；LCCC（清华大学 CoAI）
+License: CC-BY-SA-4.0 and MIT
+ 语言模型由中文维基百科（CC BY-SA 4.0）与 LCCC（MIT）统计得到。
+
+Files: usr/lib/glimmer/assets/emoji/*
+Copyright: Unicode, Inc. (CLDR)
+License: Unicode-3.0
+
+Files: usr/lib/glimmer/assets/levels/*
+Copyright: The CEFR-J Wordlist Version 1.5, Yukio Tono (Tokyo University of Foreign Studies);
+ Octanove Vocabulary Profile C1/C2 1.0; JLPT 词表 Jonathan Waller (tanos.co.uk), elzup/jlpt-word-list
+License: CEFR-J (free with attribution) and CC-BY-SA-4.0 and CC-BY and MIT
+ 来源与署名写法见 https://github.com/rambocode/glimmer/tree/main/assets/levels 。

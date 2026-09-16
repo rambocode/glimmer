@@ -1,0 +1,17 @@
+Package: glimmer
+Version: @DEB_VERSION@
+Architecture: @ARCH@
+Maintainer: Glimmer <ci@glimmerinput.app>
+Installed-Size: @INSTALLED_SIZE@
+Depends: ibus (>= 1.5.20), @SHLIBS_DEPENDS@
+Section: utils
+Priority: optional
+Homepage: https://glimmerinput.app
+Description: 微明拼音输入法（IBus 引擎） / Glimmer pinyin input method for IBus
+ 微明是一个拼音输入法：候选词旁附带一条所学语言（英语 / 日语 / 西班牙语）的译词，
+ 输入的同时记住一个词。整句输入、简拼、拼写纠错、模糊音、双拼、五笔、英文模式
+ 全部在本机完成，不上传数据。
+ .
+ Glimmer is a Chinese pinyin input method that shows a translation in the
+ language you are learning next to each candidate. Sentence input, fuzzy
+ pinyin, shuangpin, wubi and spelling correction all run locally.

@@ -1,7 +1,7 @@
 ---
 title: 安装
 order: 1
-description: macOS 与 Windows 的安装步骤：系统要求、安装包、首次打开被系统拦截时的处理、安装后的位置。
+description: macOS、Windows 与 Linux 的安装步骤：系统要求、安装包、首次打开被系统拦截时的处理、安装后的位置。
 ---
 
 ## macOS
@@ -39,6 +39,26 @@ description: macOS 与 Windows 的安装步骤：系统要求、安装包、首�
 若某个程序中无法切换到微明，可注销后重新登录，或重启该程序。升级后，已打开的程序需重启才会使用新版本。
 
 **已知问题**：测试版没有正式的代码签名，在任务栏搜索框、「设置」等系统应用中，候选窗口可能被应用遮挡而不可见；输入与上屏不受影响。此问题将在签名版中解决。
+
+## Linux
+
+**系统要求**：使用 IBus 输入法框架、可安装 deb 包的发行版（Ubuntu 22.04、Debian 12 或更新）。目前只支持 IBus，Fcitx5 暂不支持。
+x86_64 与 ARM64 各有一个安装包；不确定机型时，在「终端」中执行 `dpkg --print-architecture`，输出 `amd64` 选前者，`arm64` 选后者。
+
+1. 下载 `Glimmer-<版本>-amd64.deb`（x86_64）或 `Glimmer-<版本>-arm64.deb`（ARM64）。
+2. 打开「终端」，进入下载目录，执行以下命令安装，需要管理员密码：
+
+   ```sh
+   sudo apt install ./Glimmer-<版本>-amd64.deb
+   ```
+
+3. 执行 `ibus restart`，或注销后重新登录。
+4. 到「设置 → 键盘 → 输入源 → +」，在「汉语」下添加「微明」。
+
+安装后：
+
+- 按 `Super + Space` 切换输入源。
+- Linux 版暂无设置界面，设置保存在配置文件中，位置见 [数据与日志](../help/data-and-logs.md)。
 
 ## 升级与卸载
 
