@@ -19,7 +19,7 @@
 - [ ] **用户能感知的行为变了（按键、候选、菜单、设置项、配置文件、数据文件），`docs/user/` 对应页面已同步改**，按键改动同时更新 `docs/user/getting-started/keys.md`
 - [ ] 一个功能只在一个平台实现时，已在文档里标明平台，并在 PR 里说明另一平台的差距
 - [ ] 代码标识符英文、注释与文档中文；新文件有 `//!` 文件头；单文件不超过 800 行
-- [ ] 提交信息用中文冒号格式（`macOS：……` / `Windows：……` / `Core：……`）；其余约定见 [docs/contributing.md](../docs/contributing.md)
+- [ ] 提交信息用 Conventional Commits（`fix(core): ……` / `feat(windows): ……`，说明写中文）；其余约定见 [docs/contributing.md](../docs/contributing.md)
 - [ ] 不改 `CHANGELOG.md`（发版时由维护者统一写）
 
 ## 怎么验证的

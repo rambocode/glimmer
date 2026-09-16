@@ -48,7 +48,15 @@
 
 ## 提交信息
 
-- 中文冒号格式：`macOS：……` / `Windows：……` / `Core：……` / `仓库：……` / `文档：……`；不加 AI 署名。
+- [Conventional Commits](https://www.conventionalcommits.org/zh-hans/)：第一行 `<类型>(<范围>): <说明>`，类型与范围英文小写，说明用中文，例如
+  `fix(core): 修自绘输入框吞数字`、`feat(windows): 三进程日志统一到 %LOCALAPPDATA%\Glimmer\logs`、`docs(changelog): 补 0.1.3 条目`。
+  - 类型：`feat` 新功能 / `fix` 修 bug / `docs` 只改文档 / `refactor` 不改行为的整理 / `perf` 性能 / `test` 只改测试 /
+    `build` 打包与构建脚本 / `ci` 工作流 / `chore` 版本号、依赖、仓库杂务 / `style` 只改格式 / `revert` 还原。
+  - 范围：crate 或壳的名字——`core` `platform` `render` `dictionary` `translate` `learning` `predict` `lm` `neural` `format` `cli`
+    `macos` `windows`（Server / DLL / 设置程序细分时用 `server` `tsf` `settings`）`installer` `linux` `tools` `docs` `ci` `deps` `release`；
+    跨好几处的可以省略。不兼容的改动在范围后加 `!`。
+  - 正文写「为什么」与取舍，一行一条；不加 AI 署名。`.githooks/commit-msg` 会拦第一行不合格式的提交。
+  - 2026-09-16 之前的历史是「`macOS：……` / `Core：……`」的中文冒号格式，不重写。
 
 ## 文档同步
 
@@ -58,7 +66,7 @@
 
 ## 提交前检查
 
-- 钩子：`.githooks/pre-commit`（禁装饰性分隔注释 + fmt + clippy），`.githooks/pre-push`（全 workspace 测试）；`git config core.hooksPath .githooks` 启用一次。
+- 钩子：`.githooks/pre-commit`（禁装饰性分隔注释 + fmt + clippy）、`.githooks/commit-msg`（提交信息格式）、`.githooks/pre-push`（全 workspace 测试）；`git config core.hooksPath .githooks` 启用一次。
 - 排序 / 整句 / 纠错的改动先跑 `apps/cli` 再合。
 
 ## CI 与发版

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# 提交信息按 Conventional Commits：`<类型>(<范围>): <说明>`，类型与范围是英文小写，说明用中文。
+# 启用：git config core.hooksPath .githooks；跳过：git commit --no-verify（合并 / revert / fixup 自动生成的信息放行）。
+set -euo pipefail
+file="$1"
+subject="$(sed -n '1p' "$file")"
+
+# 合并、还原、fixup / squash（rebase 自动挤压）的信息不检查
+if [[ "$subject" =~ ^(Merge|Revert|fixup!|squash!|amend!) ]]; then
+  exit 0
+fi
+
+types='feat|fix|docs|refactor|perf|test|build|ci|chore|style|revert'
+if [[ ! "$subject" =~ ^($types)(\([a-z0-9._/-]+\))?!?:\ [^[:space:]] ]]; then
+  cat >&2 <<MSG
+提交信息第一行要是「<类型>(<范围>): <说明>」，例如 fix(core): 修自绘输入框吞数字
+  类型：$types
+  范围：小写，crate 或壳的名字（core / platform / render / macos / windows / tsf / installer / cli / docs / ci / deps …），可省略
+  现在是：$subject
+约定见 docs/contributing.md「提交信息」。
+MSG
+  exit 1
+fi
