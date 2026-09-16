@@ -204,6 +204,8 @@ log_level = "info"
 input_log = true
 # 学习输入习惯：按你的选择调整候选顺序、记新词与敲错纠正。false 不再学，已学的仍参与排序；学习数据在数据目录，删掉文件即清空
 learning = true
+# 把系统设置「键盘 → 文本替换」里的条目当自定义短语：输入码（小写字母）敲全后短语出现在该码最靠前的空位；只有 macOS 用
+system_text_replacements = true
 
 # 自定义短语示例：取消下面各行注释后启用；同码同位置不能重复。
 # [[custom_phrases]]

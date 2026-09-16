@@ -1,6 +1,7 @@
 //! 配置热加载：config.toml 改了就整份重新套用到 Engine 与窗口；激活期间的定时事务。
 
 use super::init::load_glossary;
+use super::text_replacements;
 use super::*;
 
 impl Host {
@@ -13,12 +14,7 @@ impl Host {
             .set_full_width_punctuation(config.general.full_width_punctuation);
         self.engine
             .set_punctuation_mode(config.general.punctuation_mode);
-        if let Err(error) = self
-            .engine
-            .set_custom_phrases(config.custom_phrases.clone())
-        {
-            tracing::warn!(%error, "自定义短语配置未应用");
-        }
+        self.apply_custom_phrases(&config);
         self.engine.set_mode_keys(config.shortcut.mode);
         self.engine.set_chinese_first(config.general.chinese_first);
         self.engine.set_shuangpin(config.general.shuangpin());
@@ -102,6 +98,37 @@ impl Host {
             self.settings.error(),
             &self.dictionary_list,
         );
+    }
+
+    /// 配置里的自定义短语，`[general] system_text_replacements` 开着时再并上系统的文本替换，一起推给 Engine。
+    fn apply_custom_phrases(&mut self, config: &glimmer_platform::Config) {
+        let phrases = if config.general.system_text_replacements {
+            glimmer_core::custom_phrase::merge_replacements(
+                &config.custom_phrases,
+                self.text_replacements
+                    .iter()
+                    .map(|(code, text)| (code.as_str(), text.as_str())),
+            )
+        } else {
+            config.custom_phrases.clone()
+        };
+        if let Err(error) = self.engine.set_custom_phrases(phrases) {
+            tracing::warn!(%error, "自定义短语配置未应用");
+        }
+    }
+
+    /// 重读系统的文本替换（激活输入法时调，系统设置里改过就能跟上）；列表变了才重新套用短语。
+    pub fn refresh_text_replacements(&mut self) {
+        let latest = text_replacements::read_system();
+        if latest == self.text_replacements {
+            return;
+        }
+        tracing::info!(count = latest.len(), "系统文本替换已读取");
+        self.text_replacements = latest;
+        let config = self.settings.config().clone();
+        if config.general.system_text_replacements {
+            self.apply_custom_phrases(&config);
+        }
     }
 
     /// 学习语言变了就换释义表；文件缺失或坏了保持原样，只记日志。

@@ -83,6 +83,9 @@ pub enum Setting {
     /// 关闭编辑表单。
     CancelPhraseEdit,
 
+    /// `[general] system_text_replacements`，勾选框：系统的文本替换并进自定义短语。
+    SystemTextReplacements,
+
     /// `[predict] base_url`。
     BaseUrl,
 
@@ -201,7 +204,7 @@ impl Setting {
             Self::Layout => 12,
             Self::Preedit => 13,
             Self::EnglishCandidates => 14,
-            Self::ChineseFirst => 42,
+            Self::ChineseFirst => 51,
             Self::TranslationKeys => 15,
             Self::TranslationSecondKeys => 16,
             Self::TranslateSelectionKeys => 17,
@@ -236,6 +239,7 @@ impl Setting {
             Self::WubiHint => 45,
             Self::Renderer => 46,
             Self::Font => 47,
+            Self::SystemTextReplacements => 50,
             Self::Fuzzy(index) => FUZZY_TAG_BASE + index as NSInteger,
             Self::DictionaryEnabled(index) => DICTIONARY_ENABLED_TAG_BASE + index as NSInteger,
             Self::DictionaryRemove(index) => DICTIONARY_REMOVE_TAG_BASE + index as NSInteger,
@@ -261,7 +265,7 @@ impl Setting {
             12 => Self::Layout,
             13 => Self::Preedit,
             14 => Self::EnglishCandidates,
-            42 => Self::ChineseFirst,
+            51 => Self::ChineseFirst,
             15 => Self::TranslationKeys,
             16 => Self::TranslationSecondKeys,
             17 => Self::TranslateSelectionKeys,
@@ -294,6 +298,7 @@ impl Setting {
             43 => Self::Wubi,
             44 => Self::WubiAutoSelect,
             45 => Self::WubiHint,
+            50 => Self::SystemTextReplacements,
             _ if tag >= DICTIONARY_REMOVE_TAG_BASE => {
                 let index = usize::try_from(tag - DICTIONARY_REMOVE_TAG_BASE).ok()?;
                 (index < MAX_DICTIONARIES).then_some(Self::DictionaryRemove(index))?

@@ -110,6 +110,7 @@ define_class!(
                     h.active_controller = Some(me);
                     h.active_client = client;
                     h.engine.set_application(bundle);
+                    h.refresh_text_replacements();
                     h.reload_config_if_changed();
                     h.indicator.activate();
                     h.watch.start();

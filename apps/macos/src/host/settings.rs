@@ -440,6 +440,10 @@ impl Host {
             (Setting::Learning, SettingValue::Bool(on)) => {
                 self.settings.set_bool("general", "learning", on);
             }
+            (Setting::SystemTextReplacements, SettingValue::Bool(on)) => {
+                self.settings
+                    .set_bool("general", "system_text_replacements", on);
+            }
             (Setting::ClearInputLog, _) => {
                 self.clear_input_log();
                 return;

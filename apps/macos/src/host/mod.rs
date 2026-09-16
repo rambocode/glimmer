@@ -20,6 +20,7 @@ mod presenting;
 mod rescore_monitor;
 mod session;
 mod settings;
+mod text_replacements;
 mod translation_job;
 mod wubi;
 
@@ -150,6 +151,9 @@ pub struct Host {
 
     /// 英文模式是否给英文候选（配置 `[general] english_candidates`）。
     pub english_candidates: bool,
+
+    /// 上次从系统读到的文本替换（激活输入法时重读），`[general] system_text_replacements` 开着时并进自定义短语。
+    text_replacements: Vec<text_replacements::TextReplacement>,
 
     /// 按应用的行为（配置 `[apps]`）：哪些应用里英文模式不给候选。
     pub apps: AppsConfig,

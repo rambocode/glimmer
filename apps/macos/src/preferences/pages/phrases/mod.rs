@@ -49,6 +49,9 @@ pub struct PhrasesPage {
 
     /// 打开表单时的规则快照，用于识别外部修改并保留草稿。
     original: RefCell<Vec<CustomPhrase>>,
+
+    /// 系统设置「键盘 → 文本替换」里的条目也当短语。
+    system_replacements: Retained<NSButton>,
 }
 
 impl PhrasesPage {
@@ -96,6 +99,24 @@ impl PhrasesPage {
             layout,
             mtm,
             "勾选启用，双击一行编辑。长文本仅在列表中缩略显示。 ",
+        );
+        let system_replacements = checkbox(
+            mtm,
+            "也使用系统设置「键盘 → 文本替换」里的条目",
+            Setting::SystemTextReplacements,
+            target,
+        );
+        layout.place(
+            &system_replacements,
+            PAGE_PADDING,
+            layout.inner_width(),
+            ROW_HEIGHT,
+        );
+        layout.next_row(ROW_HEIGHT);
+        note_full(
+            layout,
+            mtm,
+            "输入码为小写字母的条目才用得上，敲全输入码后短语出现在该输入码最靠前的空位；上面的规则优先。 ",
         );
         let mut form = Layout::plain(520.0, 18.0);
         let layout = &mut form;
@@ -181,6 +202,7 @@ impl PhrasesPage {
             enabled,
             selected: Cell::new(None),
             original: RefCell::new(Vec::new()),
+            system_replacements,
         }
     }
 
@@ -192,6 +214,10 @@ impl PhrasesPage {
         self._source.replace(&config.custom_phrases);
         self.table.reloadData();
         self.select_row(selected);
+        set_checked(
+            &self.system_replacements,
+            config.general.system_text_replacements,
+        );
     }
 
     pub fn selected_row(&self) -> Option<usize> {
