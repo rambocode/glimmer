@@ -1,7 +1,7 @@
 [package]
 name = "glimmer-linux"
 description = "Linux 输入法：IBus 引擎进程（D-Bus），持有 Engine，把 IBus 按键翻成协议按键、把帧画成 IBus 的 preedit 与候选表"
-version = "0.1.0-linux.2"
+version = "0.1.0-linux.3-dev"
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
