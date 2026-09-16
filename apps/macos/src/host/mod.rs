@@ -21,6 +21,7 @@ mod rescore_monitor;
 mod session;
 mod settings;
 mod translation_job;
+mod wubi;
 
 use std::cell::RefCell;
 use std::path::PathBuf;
@@ -43,6 +44,8 @@ use glimmer_predict::{
 };
 use glimmer_translate::{Glossary, LayeredTranslator, LevelTable, PersonalGlossary};
 use objc2::MainThreadMarker;
+use objc2::rc::Retained;
+use objc2::runtime::AnyObject;
 use objc2_app_kit::{NSPasteboard, NSPasteboardTypeString};
 use objc2_foundation::{NSProcessInfo, NSRect, NSString};
 
@@ -51,7 +54,7 @@ use crate::app::{Settings, logging, paths};
 use crate::candidates::{CandidateWindow, Frame, Preedit, Row};
 use crate::error::HostError;
 use crate::menubar::{InputMenu, MenuAction, ModeIndicator};
-use crate::preferences::{PreferencesWindow, Setting, SettingValue};
+use crate::preferences::{PreferencesWindow, Setting, SettingValue, WUBI_VARIANTS};
 
 use cloud_test_monitor::CloudTestMonitor;
 use config_watch::ConfigWatch;
@@ -61,6 +64,7 @@ use predict_monitor::PredictMonitor;
 use rescore_monitor::RescoreMonitor;
 pub use session::Session;
 pub use translation_job::TranslationJob;
+use wubi::load_wubi_scheme;
 
 pub struct Host {
     /// 输入内核。平台层只能通过它的公开 API 拿候选，不允许碰词库或排序。
@@ -178,6 +182,13 @@ pub struct Host {
 
     /// 最近一次绘制时的光标矩形，联想结果到达后在同一位置重画。
     pub anchor: NSRect,
+
+    /// 当前激活会话的客户端（IMK 传给 activateServer 的 sender），给不在按键回调里的路径（配置热加载清组句）
+    /// 清 marked text 用；停用时清掉。对它的调用要放在 [`with`] 的借用之外（IPC 期间 IMK 可能重入）。
+    pub active_client: Option<Retained<AnyObject>>,
+
+    /// [`Host::reset_composition`] 清掉了正在组句的内容、而应用里的 marked text 还没清：等有客户端的路径来收。
+    pub marked_stale: bool,
 
     /// 当前激活的输入控制器（对象地址，只用来比对）。IMK 在同一应用里换焦点时先 activate 新会话、
     /// 再 deactivate 旧会话（Chromium 系浏览器里能隔两百多毫秒），旧会话的 deactivate 不能把全局状态拆掉。

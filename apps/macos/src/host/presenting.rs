@@ -61,6 +61,30 @@ impl Host {
         }
     }
 
+    /// 不在按键回调里把正在组句的内容整个作废（配置热加载换了输入方案，缓冲区里的键换了含义）：
+    /// 清引擎缓冲区与上屏链、作废联想与整句补全、清会话、收窗。应用里的 marked text 这里够不着，
+    /// 记一个 `marked_stale`，由拿得到客户端的路径（[`Self::take_stale_client`]）去清。
+    pub fn reset_composition(&mut self) {
+        let composing = !self.engine.composition().is_empty();
+        self.engine.break_chain();
+        self.engine.clear();
+        self.cancel_prediction();
+        self.sentence = None;
+        self.reset_session(None, Vec::new());
+        self.window.hide();
+        if composing {
+            self.marked_stale = true;
+        }
+    }
+
+    /// [`Self::reset_composition`] 之后要清 marked text 的客户端；没有欠着的返回 `None`。取一次就清了标记。
+    pub fn take_stale_client(&mut self) -> Option<Retained<AnyObject>> {
+        if !std::mem::take(&mut self.marked_stale) {
+            return None;
+        }
+        self.active_client.clone()
+    }
+
     /// 新一轮候选：每页格数取配置与窗口能画的行数中较小者，云端槽位数取配置。
     pub fn reset_session(&mut self, preedit: Option<Preedit>, candidates: Vec<Candidate>) {
         self.status = None;

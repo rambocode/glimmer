@@ -27,7 +27,7 @@ use objc2_app_kit::{NSButton, NSControlStateValueOn, NSPopUpButton, NSTextField}
 pub use file_dialog::choose_dictionary_file;
 pub use key_recorder::KeyRecorder;
 pub use pages::{REPOSITORY_URL, WEBSITE_URL};
-pub use setting::{Setting, SettingValue};
+pub use setting::{Setting, SettingValue, WUBI_VARIANTS};
 pub use window::PreferencesWindow;
 
 /// 从 `changed:` 的 sender 认出是哪个设置、现在的值是什么。

@@ -7,6 +7,10 @@
 //! （固定 autosave 名也保不住），而焦点每进出一次输入框 IMK 就 deactivate / activate 一轮。
 //! 停用时改成收成零宽、清空标题，并且延迟 [`COLLAPSE_DELAY`] 再收：焦点只是在输入框之间挪的话，半秒内就会再次激活，根本收不下去；
 //! 真换到别的输入法才收起来，切回来再展开，位置一直在。
+//!
+//! 收之前还要问一下系统当前输入源是不是微明：IMK 在焦点切换时常常只给 deactivate、之后不再补 activate（能照常打字，
+//! 日志里 activate 后几毫秒就 deactivate），只信回调就会在用户还在用微明时把它收掉——macOS 27 又把零宽的状态项画成一小块空白，
+//! 看着像图标坏了。当前输入源还是微明就不收、继续轮询。
 
 use objc2::rc::Retained;
 use objc2::runtime::AnyObject;
@@ -14,6 +18,7 @@ use objc2::{MainThreadMarker, MainThreadOnly, define_class, msg_send, sel};
 use objc2_app_kit::{NSMenu, NSStatusBar, NSStatusItem, NSVariableStatusItemLength};
 use objc2_foundation::{NSObject, NSObjectProtocol, NSString, NSTimer, ns_string};
 
+use crate::app::input_source;
 use crate::imk::modifiers;
 
 /// 轮询 Caps Lock 状态的间隔。
@@ -41,6 +46,12 @@ pub struct ModeIndicator {
     /// 云联想开着：标题带云朵，让用户一眼知道上下文会发出去。
     cloud: bool,
 
+    /// 当前输入方案在标题里的附注（五笔开着是 `Variant::label()`，如「86 五笔」），拼音下为 `None`。
+    scheme: Option<&'static str>,
+
+    /// 本输入法的输入源 ID，收起前与系统当前输入源比对。
+    source_id: String,
+
     mtm: MainThreadMarker,
 }
 
@@ -56,6 +67,8 @@ impl ModeIndicator {
             shown: false,
             english: None,
             cloud: false,
+            scheme: None,
+            source_id: input_source::main_bundle_source_id(),
             mtm,
         }
     }
@@ -107,10 +120,15 @@ impl ModeIndicator {
         self.collapse_timer = Some(timer);
     }
 
-    /// 收成零宽、清空标题；位置保留。
+    /// 收成零宽、清空标题；位置保留。系统当前输入源还是微明就不收（IMK 的 deactivate 不可信，见文件头），改为继续轮询。
     pub fn collapse(&mut self) {
         self.collapse_timer = None;
         if !self.shown {
+            return;
+        }
+        if input_source::current_source_id().as_deref() == Some(self.source_id.as_str()) {
+            tracing::debug!("当前输入源仍是微明，状态项不收起");
+            self.activate();
             return;
         }
         self.shown = false;
@@ -131,6 +149,12 @@ impl ModeIndicator {
         self.english = None;
     }
 
+    /// 换输入方案附注（`Some("86 五笔")` / `None`），下次 update 重设标题。
+    pub fn set_scheme(&mut self, scheme: Option<&'static str>) {
+        self.scheme = scheme;
+        self.english = None;
+    }
+
     /// 按输入法实际中英文模式刷新标题；收起时不动。
     pub fn update(&mut self) {
         if !self.shown {
@@ -142,12 +166,15 @@ impl ModeIndicator {
         }
         self.english = Some(english);
         if let Some(button) = self.item.button(self.mtm) {
-            let mode = if english { "英" } else { "中" };
-            let title = if self.cloud {
-                format!("{mode} ☁︎")
-            } else {
-                mode.to_owned()
-            };
+            // 中文模式下附方案名（「中 · 86 五笔」）；英文模式与方案无关，不附
+            let mut title = if english { "英" } else { "中" }.to_owned();
+            if let (false, Some(scheme)) = (english, self.scheme) {
+                title.push_str(" · ");
+                title.push_str(scheme);
+            }
+            if self.cloud {
+                title.push_str(" ☁︎");
+            }
             button.setTitle(&NSString::from_str(&title));
         }
     }

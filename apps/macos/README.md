@@ -9,7 +9,7 @@ macOS 输入法壳（InputMethodKit）。按键进 Core 的 `Engine`，候选画
 apps/macos/scripts/bundle.sh --install
 ```
 
-打包到 `target/Glimmer.app` 并装到 `~/Library/Input Methods/`，杀掉旧进程；切换一次输入法就会拉起新的。
+打包到 `target/bundle.noindex/Glimmer.app` 并装到 `~/Library/Input Methods/`，杀掉旧进程；切换一次输入法就会拉起新的。
 首次要在「系统设置 → 键盘 → 输入法 → 编辑 → +」的简体中文下添加「微明」，列表里没有就注销再登录。
 日志在 `~/Library/Logs/Glimmer/`，用户数据与 `config.toml` 在 `~/Library/Application Support/Glimmer/`。
 

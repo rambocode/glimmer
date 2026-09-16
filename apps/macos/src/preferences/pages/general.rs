@@ -1,4 +1,4 @@
-//! 「通用」页：学习语言、每页候选数、双拼方案、英文模式候选。
+//! 「通用」页：学习语言、每页候选数、双拼 / 五笔方案、英文模式候选。
 
 use glimmer_core::{Language, PunctuationMode, ShuangpinScheme};
 use glimmer_platform::{Config, MAX_PAGE_SIZE};
@@ -10,7 +10,7 @@ use crate::preferences::controls::{
     checkbox, language_label, note, row_checkbox, row_popup, select, set_checked,
 };
 use crate::preferences::layout::Layout;
-use crate::preferences::setting::Setting;
+use crate::preferences::setting::{Setting, WUBI_VARIANTS};
 use crate::preferences::target::PreferencesTarget;
 
 pub struct GeneralPage {
@@ -22,6 +22,15 @@ pub struct GeneralPage {
 
     /// 双拼方案（第 0 项是关）。
     shuangpin: Retained<NSPopUpButton>,
+
+    /// 五笔版本（第 0 项是关）；开着时双拼菜单置灰。
+    wubi: Retained<NSPopUpButton>,
+
+    /// 五笔：敲满四码命中全码就自动上屏。
+    wubi_auto_select: Retained<NSButton>,
+
+    /// 五笔：逐键提示候选右侧显示完整编码。
+    wubi_hint: Retained<NSButton>,
 
     /// 英文模式也给候选。
     english: Retained<NSButton>,
@@ -89,6 +98,24 @@ impl GeneralPage {
             mtm,
             "开双拼后 v、u、i 是音节键，表达式与问字模式只能用 ? 开头进；微软、搜狗方案的 ; 键是 ing。",
         );
+        let wubi_titles: Vec<String> = std::iter::once("关".to_owned())
+            .chain(WUBI_VARIANTS.iter().map(|v| v.label().to_owned()))
+            .collect();
+        let wubi = row_popup(layout, mtm, "五笔", &wubi_titles, Setting::Wubi, target);
+        note(
+            layout,
+            mtm,
+            "开五笔后按码表出字，双拼与注音设置不再生效；z 开头是拼音反查，候选右侧注五笔码。",
+        );
+        let wubi_auto_select = checkbox(mtm, "四码自动上屏", Setting::WubiAutoSelect, target);
+        row_checkbox(layout, &wubi_auto_select);
+        let wubi_hint = checkbox(mtm, "显示编码提示", Setting::WubiHint, target);
+        row_checkbox(layout, &wubi_hint);
+        note(
+            layout,
+            mtm,
+            "敲满四码且命中全码时首选直接上屏，不用按空格；编码提示是逐键提示候选右侧的完整编码。",
+        );
         let punctuation = row_popup(
             layout,
             mtm,
@@ -142,6 +169,9 @@ impl GeneralPage {
             learning_language,
             page_size,
             shuangpin,
+            wubi,
+            wubi_auto_select,
+            wubi_hint,
             english,
             english_off_in_apps,
             languages: languages.to_vec(),
@@ -178,6 +208,22 @@ impl GeneralPage {
                     .map_or(0, |i| i + 1)
             })),
         );
+        // 五笔与双拼互斥：五笔开着时 Core 忽略双拼，菜单也置灰说明这一点（注音只有配置文件能开，界面上没有控件）
+        let wubi = general.wubi();
+        select(
+            &self.wubi,
+            Some(wubi.map_or(0, |variant| {
+                WUBI_VARIANTS
+                    .iter()
+                    .position(|v| *v == variant)
+                    .map_or(0, |i| i + 1)
+            })),
+        );
+        self.shuangpin.setEnabled(wubi.is_none());
+        set_checked(&self.wubi_auto_select, config.wubi.auto_select);
+        set_checked(&self.wubi_hint, config.wubi.hint);
+        self.wubi_auto_select.setEnabled(wubi.is_some());
+        self.wubi_hint.setEnabled(wubi.is_some());
         set_checked(&self.english, general.english_candidates);
         set_checked(
             &self.english_off_in_apps,

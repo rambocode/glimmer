@@ -25,6 +25,10 @@ pub const ATTRIBUTIONS: &[(&str, &str)] = &[
         "语言模型",
         "中文维基百科（CC BY-SA 4.0）与 LCCC（清华大学 CoAI，MIT）语料统计。",
     ),
+    (
+        "五笔 86 码表",
+        "rime-wubi（LGPL-3.0，Gong Chen、Yu Yuwei）；极点五笔码表 Wozy、Chen Xing；字根与编码 王永民（公有领域）。许可证全文随包附带。",
+    ),
     ("释义表", "由大语言模型（DeepSeek）生成，微明自建。"),
     ("emoji", "Unicode CLDR annotations（Unicode License v3）。"),
     (

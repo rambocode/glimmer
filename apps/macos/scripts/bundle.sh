@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 把 glimmer-macos 打包成 Glimmer.app。
 #
-#   scripts/bundle.sh            # 只打包到 target/Glimmer.app
+#   scripts/bundle.sh            # 只打包到 target/bundle.noindex/Glimmer.app
 #   scripts/bundle.sh --install  # 打包并安装到 ~/Library/Input Methods/，杀掉旧进程（开发用）
 #   scripts/bundle.sh --pkg      # 打包并做成 target/pkg/Glimmer-<版本>-<arm64|x86_64>.pkg（分发给测试者）
 #
@@ -23,7 +23,9 @@ ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 APP_NAME="Glimmer"
 BIN_NAME="glimmer-macos"
 PROFILE="${PROFILE:-release}"
-APP="$ROOT/target/$APP_NAME.app"
+# 成品放 .noindex 目录：Spotlight / Launch Services 不扫描它，构建出来的 .app 就不会被登记成又一份同 ID 的输入法
+# （登记多份时启用与切换会失灵，「添加输入法」里出现重复条目）。
+APP="$ROOT/target/bundle.noindex/$APP_NAME.app"
 INSTALL_DIR="$HOME/Library/Input Methods"
 # 目标三元组为空就是本机；架构名按 pkg 文件名与 distribution.xml 的 hostArchitectures 用的写法（arm64 / x86_64）
 TARGET="${GLIMMER_TARGET:-}"
@@ -118,6 +120,14 @@ if [[ -f data/generated/dict.tsv || -f data/generated/dict.qj ]]; then
   done
   echo "使用 data/generated/ 的产品数据（自建词库）"
 fi
+# 五笔 86 码表（assets/wubi/ 的 rime-wubi 转出，LGPL-3.0，许可证全文随包）：有就带，没生成就跳过，包照样能打，只是开不了五笔
+if [[ -f data/generated/wubi86.qj ]]; then
+  cp data/generated/wubi86.qj "$APP/Contents/Resources/"
+  cp assets/wubi/LICENSE.LGPL-3.0 "$APP/Contents/Resources/LICENSE.wubi86.LGPL-3.0"
+  echo "打包五笔 86 码表：data/generated/wubi86.qj"
+else
+  echo "注意: 没有 data/generated/wubi86.qj，包里不带五笔码表（生成命令见 assets/wubi/README.md）" >&2
+fi
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
 # 图标：从 assets/icon/logo.png 生成 .icns（应用图标）；输入法菜单图标用 assets/icon/menu-icon.pdf
@@ -144,7 +154,8 @@ echo "打包完成: ${APP}（版本 ${VERSION}，构建 ${BUILD_NUMBER}，${ARCH
 if [[ "${1:-}" == "--pkg" ]]; then
   # 每个架构一个工作目录，成品都放 target/pkg/，两个架构接着打互不覆盖
   PKG="$ROOT/target/pkg/$APP_NAME-$VERSION-$ARCH.pkg"
-  PKG_DIR="$ROOT/target/pkg/$ARCH"
+  PKG_DIR="$ROOT/target/pkg.noindex/$ARCH"
+  mkdir -p "$(dirname "$PKG")"
   rm -rf "$PKG_DIR"
   mkdir -p "$PKG_DIR/root" "$PKG_DIR/resources"
   # 不带扩展属性复制，否则载荷里全是 ._ 元数据文件
@@ -198,6 +209,12 @@ fi
 # 「添加输入法」对话框里就会出现多条同名甚至空白的条目，同一个输入源 ID 对应多个包时启用也会失灵。
 # 打完包就把它们从登记里注销，只留真正装到 Input Methods 下的那份。
 LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
-for stray in "$APP" "$ROOT/target/pkg/$ARCH/root/$APP_NAME.app"; do
-  [[ -d "$stray" ]] && "$LSREGISTER" -u "$stray" >/dev/null 2>&1 || true
+# 顺带把旧版本脚本留在 target/ 里的那些登记也注销掉（路径可能已不存在，lsregister -u 对不存在的路径无害）
+for stray in "$APP" "$PKG_DIR/root/$APP_NAME.app" "$ROOT/target/$APP_NAME.app" "$ROOT/target/Qingjian.app" \
+  "$ROOT"/target/pkg/*/root/*.app "$ROOT"/target/install-*/root/*.app; do
+  "$LSREGISTER" -u "$stray" >/dev/null 2>&1 || true
 done
+# 装到 Input Methods 的那份重新登记一次，系统里只认它
+if [[ "${1:-}" == "--install" ]]; then
+  "$LSREGISTER" -f "$INSTALL_DIR/$APP_NAME.app" >/dev/null 2>&1 || true
+fi

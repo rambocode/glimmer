@@ -21,6 +21,7 @@ impl Host {
         }
         self.engine.set_mode_keys(config.shortcut.mode);
         self.engine.set_shuangpin(config.general.shuangpin());
+        self.apply_wubi(&config);
         logging::set_level(config.general.log_level);
         self.translation_keys = config.shortcut.translation_keys();
         self.delete_keys = config.shortcut.delete_keys();
@@ -77,9 +78,13 @@ impl Host {
             self.applied_model = Some(config.model.clone());
         }
         let cloud_active = self.engine.prediction_enabled();
+        let wubi = self.engine.wubi().map(glimmer_core::wubi::Scheme::variant);
         self.indicator.set_cloud(cloud_active);
+        self.indicator
+            .set_scheme(wubi.map(glimmer_core::WubiVariant::label));
         self.indicator.update();
-        self.menu.sync(&config, cloud_active, self.settings.error());
+        self.menu
+            .sync(&config, cloud_active, wubi, self.settings.error());
         let key_present = config
             .predict
             .api_key

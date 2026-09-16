@@ -27,8 +27,15 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
         .or_else(|| languages.first().copied())
         .unwrap_or(Language::English);
     let glossary = load_glossary(learning_language)?;
+    // 五笔：配置开着就装码表；装不上当没开。学习器的分目录按实际装上的方案定，而不是按配置写的
+    let wubi = settings
+        .config()
+        .general
+        .wubi()
+        .and_then(|variant| load_wubi_scheme(variant, settings.config().wubi.options()));
+    let scheme_key = wubi.as_ref().map(glimmer_core::wubi::Scheme::key);
     let learner = match paths::user_data_dir() {
-        Some(dir) => load_learner(&dir),
+        Some(dir) => load_learner(&dir, scheme_key),
         None => FrequencyLearner::default(),
     };
     // 英文词表可选：没有就不出英文候选
@@ -47,6 +54,7 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
     let mut engine = Engine::new(dictionary)
         .with_translator(Box::new(glossary))
         .with_learner(Box::new(learner));
+    engine.set_wubi(wubi);
     // 输入统计（打了多少字）：与学习数据同目录；没有数据目录就只在内存里数
     if let Some(dir) = paths::user_data_dir() {
         // 词汇等级表（levels-en.tsv / levels-ja.tsv）随包可选：有就按级统计
@@ -129,6 +137,8 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
             watch,
             last_flush: std::time::Instant::now(),
             active_controller: None,
+            active_client: None,
+            marked_stale: false,
             applied_predict: PredictConfig::default(),
             applied_dictionaries: DictionariesConfig::default(),
             dictionary_list: Vec::new(),
@@ -166,11 +176,12 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
     Ok(())
 }
 
-/// 读用户的学习数据。格式坏掉的行学习 crate 自己跳过；真读不了（权限、坏盘）就退回只在内存里学，
+/// 读用户的学习数据。`scheme` 是输入方案键（五笔 `wubi86`）：按输入串记的表落到 `<数据目录>/<scheme>/`，拼音为 `None`。
+/// 格式坏掉的行学习 crate 自己跳过；真读不了（权限、坏盘）就退回只在内存里学，
 /// 输入法照常启动，也不会拿空表覆盖用户的文件。学习数据出问题不能让输入法起不来。
-pub(super) fn load_learner(dir: &std::path::Path) -> FrequencyLearner {
+pub(super) fn load_learner(dir: &std::path::Path, scheme: Option<&str>) -> FrequencyLearner {
     let path = dir.join("user.tsv");
-    match FrequencyLearner::from_path(&path) {
+    match FrequencyLearner::from_path_with_scheme(&path, scheme) {
         Ok(learner) => learner,
         Err(error) => {
             tracing::error!(path = %path.display(), %error, "学习数据读取失败，本次只在内存里学习");

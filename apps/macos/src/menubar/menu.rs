@@ -1,4 +1,4 @@
-use glimmer_core::FuzzyRules;
+use glimmer_core::{FuzzyRules, WubiVariant};
 use glimmer_platform::Config;
 use objc2::rc::Retained;
 use objc2::{MainThreadMarker, sel};
@@ -19,8 +19,14 @@ pub struct InputMenu {
     /// 模糊音子菜单的九条勾选项，顺序同 [`FuzzyRules::NAMES`]。
     fuzzy: Vec<Retained<NSMenuItem>>,
 
-    /// 配置文件解析失败时显示的提示行，平时隐藏。
-    error: Retained<NSMenuItem>,
+    /// 版本行；配置文件解析失败时标题换成错误提示（不另加一行，菜单项运行中不能隐藏 / 显示，见 [`action_item`]）。
+    about: Retained<NSMenuItem>,
+
+    /// 版本行平时的标题。
+    about_title: String,
+
+    /// 当前输入方案的展示行（「输入方案：拼音」/「输入方案：86 五笔」）；常驻只改标题，不隐藏 / 显示切换（见 [`action_item`]）。
+    scheme: Retained<NSMenuItem>,
 
     /// 所有条目的 target，要和菜单活得一样久。
     _target: Retained<MenuTarget>,
@@ -33,6 +39,9 @@ impl InputMenu {
         // 不让 AppKit 按响应链判断可用性：它找不到 target 就会把整份菜单灰掉
         menu.setAutoenablesItems(false);
 
+        let scheme = action_item(mtm, "输入方案：拼音", None, &target);
+        scheme.setEnabled(false);
+        menu.addItem(&scheme);
         let cloud = action_item(mtm, "云联想", Some(MenuAction::ToggleCloud), &target);
         menu.addItem(&cloud);
 
@@ -71,11 +80,8 @@ impl InputMenu {
         ));
         menu.addItem(&NSMenuItem::separatorItem(mtm));
 
-        let error = action_item(mtm, "", None, &target);
-        error.setEnabled(false);
-        error.setHidden(true);
-        menu.addItem(&error);
-        let about = action_item(mtm, &format!("微明 {version}"), None, &target);
+        let about_title = format!("微明 {version}");
+        let about = action_item(mtm, &about_title, None, &target);
         about.setEnabled(false);
         menu.addItem(&about);
 
@@ -83,7 +89,9 @@ impl InputMenu {
             menu,
             cloud,
             fuzzy,
-            error,
+            about,
+            about_title,
+            scheme,
             _target: target,
         }
     }
@@ -95,7 +103,17 @@ impl InputMenu {
 
     /// 按当前配置刷新勾选状态。`cloud_active` 是 Engine 里真接上了 Predictor：
     /// 配置开了但没接上（多半是没密钥）时不打勾，标题说明原因，不能显示开了实际没开。
-    pub fn sync(&self, config: &Config, cloud_active: bool, error: Option<&str>) {
+    /// `wubi` 同理是 Engine 里真装上的五笔版本（码表缺了配置开着也是 `None`），顶上那行方案名照它写。
+    pub fn sync(
+        &self,
+        config: &Config,
+        cloud_active: bool,
+        wubi: Option<WubiVariant>,
+        error: Option<&str>,
+    ) {
+        let scheme = wubi.map_or("拼音", WubiVariant::label);
+        self.scheme
+            .setTitle(&NSString::from_str(&format!("输入方案：{scheme}")));
         let title = match (config.predict.enabled, cloud_active) {
             (true, false) => "云联想（启用失败，见日志）",
             _ => "云联想",
@@ -105,18 +123,19 @@ impl InputMenu {
         for (item, name) in self.fuzzy.iter().zip(FuzzyRules::NAMES) {
             set_checked(item, config.fuzzy.is_on(name));
         }
-        match error {
-            Some(message) => {
-                self.error
-                    .setTitle(&NSString::from_str(&format!("配置文件有错误：{message}")));
-                self.error.setHidden(false);
-            }
-            None => self.error.setHidden(true),
-        }
+        let about = match error {
+            Some(message) => format!("配置文件有错误：{message}"),
+            None => self.about_title.clone(),
+        };
+        self.about.setTitle(&NSString::from_str(&about));
     }
 }
 
-/// 建一个菜单项。`action` 为 `None` 的是纯展示项（子菜单父项、关于行）。
+/// 建一个菜单项。`action` 为 `None` 的是纯展示项（子菜单父项、方案行、版本行）。
+///
+/// 菜单项建好之后**只能改标题与勾选**，不能运行中 `setHidden` / 增删：IMK 把菜单同步给系统时按项记录，
+/// 没有 action 的项记成 NULL，这一项的显示状态一变它释放旧记录就 `CFRelease(NULL)` 崩（macOS 27，栈在
+/// `_copySynchronizedActions:withMenuItems:`）；而给展示项也绑上选择器，系统输入源菜单又会整份不显示我们的条目。
 fn action_item(
     mtm: MainThreadMarker,
     title: &str,

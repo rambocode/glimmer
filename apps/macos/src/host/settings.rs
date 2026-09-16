@@ -368,6 +368,20 @@ impl Host {
                     .map_or("", |scheme| scheme.key());
                 self.settings.set_value("general", "shuangpin", key);
             }
+            // 弹出菜单第 0 项是「关」，之后按 WUBI_VARIANTS 的顺序
+            (Setting::Wubi, SettingValue::Index(index)) => {
+                let key = index
+                    .checked_sub(1)
+                    .and_then(|i| WUBI_VARIANTS.get(i))
+                    .map_or("", |variant| variant.config_key());
+                self.settings.set_value("general", "wubi", key);
+            }
+            (Setting::WubiAutoSelect, SettingValue::Bool(on)) => {
+                self.settings.set_bool("wubi", "auto_select", on);
+            }
+            (Setting::WubiHint, SettingValue::Bool(on)) => {
+                self.settings.set_bool("wubi", "hint", on);
+            }
             // 文本框失焦也会发 action：值没变就不写，免得每次切窗口都重写一遍配置
             (Setting::BaseUrl, SettingValue::Text(text)) => {
                 let text = text.trim();

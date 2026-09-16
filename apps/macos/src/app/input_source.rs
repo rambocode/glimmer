@@ -46,6 +46,41 @@ unsafe extern "C" {
 
     /// 属性键：是否已启用（CFBoolean）。
     static kTISPropertyInputSourceIsEnabled: NonNull<CFString>;
+
+    /// 当前选中的键盘输入源；按 Copy 规则归调用方释放。
+    fn TISCopyCurrentKeyboardInputSource() -> *mut TISInputSource;
+}
+
+#[link(name = "CoreFoundation", kind = "framework")]
+unsafe extern "C" {
+    /// 释放一个 CF 对象（TISInputSourceRef 也是 CF 类型）。
+    fn CFRelease(cf: *const c_void);
+}
+
+/// 本 bundle 的输入源 ID：`Info.plist` 的 `TISInputSourceID`，没写就用缺省标识。
+pub fn main_bundle_source_id() -> String {
+    NSBundle::mainBundle()
+        .objectForInfoDictionaryKey(&NSString::from_str("TISInputSourceID"))
+        .and_then(|value| value.downcast::<NSString>().ok())
+        .map(|s| s.to_string())
+        .unwrap_or_else(|| super::bundle::DEFAULT_IDENTIFIER.to_owned())
+}
+
+/// 系统当前选中的键盘输入源 ID；拿不到返回 `None`。
+/// 状态项靠它判断「用户还在用微明」：IMK 在焦点切换时会给一个 deactivate 而不一定再补 activate，
+/// 不能只信回调（见 `menubar/indicator.rs`）。
+pub fn current_source_id() -> Option<String> {
+    // SAFETY: Copy 规则返回的句柄由我们释放；属性值归系统，只读；空指针都判过。
+    unsafe {
+        let source = TISCopyCurrentKeyboardInputSource();
+        if source.is_null() {
+            return None;
+        }
+        let value = TISGetInputSourceProperty(source, kTISPropertyInputSourceID);
+        let id = value.cast::<CFString>().as_ref().map(CFString::to_string);
+        CFRelease(source.cast::<c_void>());
+        id
+    }
 }
 
 /// 注册当前进程所在的 `.app`、启用并切成当前输入源。启用成功返回 `Ok(是否也切成了当前)`，失败带一句能打到安装日志里的说明。
@@ -55,12 +90,7 @@ pub fn register_main_bundle() -> Result<bool, String> {
     if !path.ends_with(".app") {
         return Err(format!("不是从 .app 里运行的：{path}"));
     }
-    let source_id = bundle
-        .objectForInfoDictionaryKey(&NSString::from_str("TISInputSourceID"))
-        .and_then(|value| value.downcast::<NSString>().ok())
-        .map(|s| s.to_string())
-        .unwrap_or_else(|| super::bundle::DEFAULT_IDENTIFIER.to_owned());
-    register_and_enable(Path::new(&path), &source_id)
+    register_and_enable(Path::new(&path), &main_bundle_source_id())
 }
 
 /// 注册 `app`，启用 ID 为 `source_id` 的输入源并切成当前。

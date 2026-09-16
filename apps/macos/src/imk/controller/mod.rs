@@ -19,6 +19,7 @@ use crate::candidates::Preedit;
 use crate::host;
 use crate::menubar;
 
+mod commit;
 mod event;
 
 define_class!(
@@ -104,8 +105,10 @@ define_class!(
                     tracing::debug!(%bundle, "当前应用");
                 }
                 let me = self.address();
+                let client = sender.map(objc2::Message::retain);
                 host::with(|h| {
                     h.active_controller = Some(me);
+                    h.active_client = client;
                     h.engine.set_application(bundle);
                     h.reload_config_if_changed();
                     h.indicator.activate();
@@ -120,7 +123,12 @@ define_class!(
         /// 系统输入源菜单（菜单栏旗帜图标）每次展开前来取输入法自己的条目。
         #[unsafe(method_id(menu))]
         fn menu(&self) -> Option<Retained<NSMenu>> {
-            host::with(|h| h.menu.ns_menu())
+            let menu = host::with(|h| h.menu.ns_menu());
+            tracing::debug!(
+                items = menu.as_ref().map_or(0, |m| m.numberOfItems()),
+                "输入源菜单来取条目"
+            );
+            menu
         }
 
         /// 输入源菜单里点了条目：IMK 转发到控制器，sender 是带 IMKCommandMenuItem 的字典。
@@ -140,6 +148,7 @@ define_class!(
             let current = host::with(|h| {
                 if h.active_controller == Some(me) {
                     h.active_controller = None;
+                    h.active_client = None;
                     true
                 } else {
                     false
@@ -438,8 +447,7 @@ impl GlimmerInputController {
             || (unicode && (c.is_ascii_digit() || c == '+'))
             || punctuation
         {
-            host::with(|h| h.engine.push(c));
-            self.refresh(client);
+            self.push_and_refresh(c, client);
             return true;
         }
         // 直输段里的空格：整段原样上屏，空格本身也交给应用（`hello, world` 里的空格要在）
@@ -756,43 +764,6 @@ impl GlimmerInputController {
         if turned {
             self.render(client);
         }
-        true
-    }
-
-    fn commit_highlighted(&self, client: TextClient<'_>) -> bool {
-        let index = host::with(|h| h.session.highlighted).unwrap_or(0);
-        self.commit_index(index, client)
-    }
-
-    /// 上屏第 `index` 个候选；没有候选时上屏拼音本身。上屏后剩余拼音继续组句。
-    fn commit_index(&self, index: usize, client: TextClient<'_>) -> bool {
-        let candidate = host::with(|h| h.session.candidate(index)).flatten();
-        let Some(candidate) = candidate else {
-            if host::with(|h| index < h.session.layout.len()).unwrap_or(false) {
-                return true;
-            }
-            return self.commit_raw(client);
-        };
-        let Some(text) = host::with(|h| h.engine.commit(&candidate)) else {
-            return false;
-        };
-        tracing::debug!(%text, "commit");
-        client.insert_text(&text);
-        self.refresh(client);
-        true
-    }
-
-    /// 把拼音原样上屏并清空。缓冲区为空时返回 false。
-    fn commit_raw(&self, client: TextClient<'_>) -> bool {
-        let Some(raw) = host::with(|h| h.engine.take_raw()) else {
-            return false;
-        };
-        if raw.is_empty() {
-            return false;
-        }
-        tracing::debug!(%raw, "commit raw");
-        client.insert_text(&raw);
-        self.refresh(client);
         true
     }
 }

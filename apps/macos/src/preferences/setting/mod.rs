@@ -2,8 +2,11 @@ mod value;
 
 pub use value::SettingValue;
 
-use glimmer_core::FuzzyRules;
+use glimmer_core::{FuzzyRules, WubiVariant};
 use objc2_foundation::NSInteger;
+
+/// 偏好设置里可选的五笔版本，弹出菜单第 0 项「关」之后按这个顺序列；98 版码表还没进包，先不放。
+pub const WUBI_VARIANTS: &[WubiVariant] = &[WubiVariant::Wubi86];
 
 /// 模糊音勾选框的 tag 起点，后面加规则在 [`FuzzyRules::NAMES`] 里的下标。
 const FUZZY_TAG_BASE: NSInteger = 100;
@@ -154,6 +157,15 @@ pub enum Setting {
 
     /// 「关于」页「GitHub」按钮。
     OpenRepository,
+
+    /// `[general] wubi`，弹出菜单：关 + [`WUBI_VARIANTS`] 里的版本。
+    Wubi,
+
+    /// `[wubi] auto_select`，勾选框：敲满四码命中全码就自动上屏。
+    WubiAutoSelect,
+
+    /// `[wubi] hint`，勾选框：逐键提示候选右侧显示完整编码。
+    WubiHint,
 }
 
 impl Setting {
@@ -201,6 +213,9 @@ impl Setting {
             Self::CancelPhraseEdit => 40,
             Self::ModeSwitchKeys => 41,
             Self::PunctuationMode => 42,
+            Self::Wubi => 43,
+            Self::WubiAutoSelect => 44,
+            Self::WubiHint => 45,
             Self::Fuzzy(index) => FUZZY_TAG_BASE + index as NSInteger,
             Self::DictionaryEnabled(index) => DICTIONARY_ENABLED_TAG_BASE + index as NSInteger,
             Self::DictionaryRemove(index) => DICTIONARY_REMOVE_TAG_BASE + index as NSInteger,
@@ -251,6 +266,9 @@ impl Setting {
             40 => Self::CancelPhraseEdit,
             41 => Self::ModeSwitchKeys,
             42 => Self::PunctuationMode,
+            43 => Self::Wubi,
+            44 => Self::WubiAutoSelect,
+            45 => Self::WubiHint,
             _ if tag >= DICTIONARY_REMOVE_TAG_BASE => {
                 let index = usize::try_from(tag - DICTIONARY_REMOVE_TAG_BASE).ok()?;
                 (index < MAX_DICTIONARIES).then_some(Self::DictionaryRemove(index))?
@@ -308,6 +326,9 @@ mod tests {
             Setting::TestCloud,
             Setting::OpenWebsite,
             Setting::OpenRepository,
+            Setting::Wubi,
+            Setting::WubiAutoSelect,
+            Setting::WubiHint,
             Setting::DictionaryEnabled(0),
             Setting::DictionaryEnabled(MAX_DICTIONARIES - 1),
             Setting::DictionaryRemove(3),
