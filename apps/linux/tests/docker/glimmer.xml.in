@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 端到端测试用的 IBus 组件描述；run.sh 把 @EXEC@ 换成编译出的 glimmer-ibus 路径。 -->
+<component>
+    <name>app.glimmer.IBus</name>
+    <description>Glimmer input method</description>
+    <exec>@EXEC@ --ibus</exec>
+    <version>0.1.0</version>
+    <author>Glimmer</author>
+    <license>GPL-3.0-or-later</license>
+    <homepage>https://github.com/rambocode/glimmer</homepage>
+    <textdomain>glimmer</textdomain>
+    <engines>
+        <engine>
+            <name>glimmer</name>
+            <language>zh_CN</language>
+            <license>GPL-3.0-or-later</license>
+            <author>Glimmer</author>
+            <icon></icon>
+            <layout>us</layout>
+            <longname>微明</longname>
+            <description>微明拼音</description>
+            <rank>0</rank>
+        </engine>
+    </engines>
+</component>

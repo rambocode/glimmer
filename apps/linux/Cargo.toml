@@ -11,6 +11,13 @@ name = "glimmer-ibus"
 path = "src/main.rs"
 
 [dependencies]
+glimmer-core.workspace = true
+glimmer-platform.workspace = true
+thiserror.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time", "sync"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true
+zbus = { version = "5.19.0", default-features = false, features = ["tokio"] }
 
 [lints]
 workspace = true
