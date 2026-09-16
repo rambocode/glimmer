@@ -16,17 +16,19 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
         .into_iter()
         .filter(|language| glossary_path(*language).is_ok())
         .collect();
-    // 配置里的学习语言没有对应释义表时退回第一种有的；一种都没有就按老样子报错
-    let learning_language = settings
-        .config()
-        .general
-        .learning_language
-        .parse::<Language>()
-        .ok()
-        .filter(|language| languages.contains(language))
-        .or_else(|| languages.first().copied())
-        .unwrap_or(Language::English);
-    let glossary = load_glossary(learning_language)?;
+    // 写 off 就关；配置里的学习语言没有对应释义表时退回第一种有的，一种都没有也当关
+    let general = &settings.config().general;
+    let learning_language = if general.learning_language_off() {
+        None
+    } else {
+        general
+            .learning_language
+            .parse::<Language>()
+            .ok()
+            .filter(|language| languages.contains(language))
+            .or_else(|| languages.first().copied())
+    };
+    let glossary = learning_language.map(load_glossary).transpose()?;
     // 五笔：配置开着就装码表；装不上当没开。学习器的分目录按实际装上的方案定，而不是按配置写的
     let wubi = settings
         .config()
@@ -45,15 +47,16 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
         .transpose()?;
     tracing::info!(
         entries = dictionary.len(),
-        glosses = glossary.len(),
+        glosses = glossary.as_ref().map_or(0, LayeredTranslator::len),
         english = english.as_ref().map_or(0, WordList::len),
         learned = learner.len(),
         dictionary_ms,
         "数据加载完成"
     );
-    let mut engine = Engine::new(dictionary)
-        .with_translator(Box::new(glossary))
-        .with_learner(Box::new(learner));
+    let mut engine = Engine::new(dictionary).with_learner(Box::new(learner));
+    if let Some(glossary) = glossary {
+        engine = engine.with_translator(Box::new(glossary));
+    }
     engine.set_wubi(wubi);
     // 输入统计（打了多少字）：与学习数据同目录；没有数据目录就只在内存里数
     if let Some(dir) = paths::user_data_dir() {

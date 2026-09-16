@@ -15,10 +15,13 @@ pub const PAGE_KEY_OPTIONS: [&str; 2] = ["[]", ",."];
 pub const DEFAULT_PAGE_KEYS: (char, char) = ('[', ']');
 
 /// `[general]` 分节：与具体功能无关的常规项。
+/// `learning_language` 写这个值表示不显示译文。
+pub const LEARNING_LANGUAGE_OFF: &str = "off";
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(default)]
 pub struct GeneralConfig {
-    /// 学习语言（ISO 639-1，`en` / `ja` / `es`）：候选旁显示哪种语言的译文。要有对应的释义表文件才生效。
+    /// 学习语言（ISO 639-1，`en` / `ja` / `es`；`off` 不显示译文）：候选旁显示哪种语言的译文。要有对应的释义表文件才生效。
     pub learning_language: String,
 
     /// 每页候选数，1–9。
@@ -110,6 +113,13 @@ impl Default for GeneralConfig {
 }
 
 impl GeneralConfig {
+    /// 学习语言关着（`learning_language = "off"`）：候选旁不显示译文，生词标记与释义兜底也停。
+    pub fn learning_language_off(&self) -> bool {
+        self.learning_language
+            .trim()
+            .eq_ignore_ascii_case(LEARNING_LANGUAGE_OFF)
+    }
+
     /// 双拼方案；没开或写得不认识时为 `None`（全拼）。
     pub fn shuangpin(&self) -> Option<ShuangpinScheme> {
         let key = self.shuangpin.trim();

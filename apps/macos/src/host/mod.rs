@@ -29,16 +29,16 @@ use std::path::PathBuf;
 
 use glimmer_core::{
     Candidate, CandidateKind, Cell, CloudWord, EmojiTable, Engine, FuzzyRules, Language, ModeKeys,
-    NoGlossFiller, NoInputLogger, NoPredictor, Prediction, ShuangpinScheme,
+    NoGlossFiller, NoInputLogger, NoPredictor, NoTranslator, Prediction, ShuangpinScheme,
 };
 use glimmer_dictionary::{Dictionary, WordList};
 use glimmer_learning::{FrequencyLearner, InputLog, UsageStats, VocabularyBook};
 use glimmer_lm::BigramModel;
 use glimmer_platform::extra_dictionaries;
 use glimmer_platform::{
-    AppsConfig, CandidateRenderer, DEFAULT_ENGLISH_CANDIDATES_OFF, DictionariesConfig, KeyCombo, LayoutMode,
-    LocalModelConfig, LogLevel, ModeSwitch, Modifiers, PAGE_KEY_OPTIONS, PreeditMode,
-    ShortcutConfig, ThemeMode,
+    AppsConfig, CandidateRenderer, DEFAULT_ENGLISH_CANDIDATES_OFF, DictionariesConfig,
+    GeneralConfig, KeyCombo, LEARNING_LANGUAGE_OFF, LayoutMode, LocalModelConfig, LogLevel,
+    ModeSwitch, Modifiers, PAGE_KEY_OPTIONS, PreeditMode, ShortcutConfig, ThemeMode,
 };
 use glimmer_predict::{
     CloudGlossFiller, CloudPredictor, ConnectionTest, PredictConfig, PredictError,
@@ -101,8 +101,8 @@ pub struct Host {
     /// 偏好设置「词库」页显示的列表，勾选框 / 移除按钮的下标对着它。
     dictionary_list: Vec<DictionaryInfo>,
 
-    /// 当前接在 Engine 上的释义表语言。
-    learning_language: Language,
+    /// 当前学习语言；`None` 为关（不显示译文）。
+    learning_language: Option<Language>,
 
     /// 打进包里的释义表语言，设置窗口按这个顺序列。
     languages: Vec<Language>,

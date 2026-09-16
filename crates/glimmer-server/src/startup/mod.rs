@@ -8,7 +8,9 @@ use std::path::{Path, PathBuf};
 use glimmer_core::{Engine, Language};
 use glimmer_platform::Config;
 
-use crate::assembly::{self, AssemblySpec, LanguageModelFiles, WubiSpec};
+use crate::assembly::{
+    self, AssemblySpec, LanguageModelFiles, WubiSpec, glossary_file, learning_language,
+};
 use crate::dispatch::{self, Router, RouterConfig};
 use crate::error::ServerError;
 
@@ -22,13 +24,16 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
     let dict = std::env::var_os("GLIMMER_DICT")
         .map(PathBuf::from)
         .unwrap_or_else(|| default_dict(root));
-    let glossary = std::env::var_os("GLIMMER_GLOSSARY")
-        .map(PathBuf::from)
-        .or_else(|| glossary_file(root, language))
-        .filter(|path| path.is_file());
-    let bundled_dicts_dir = Some(root.join("data/generated/dicts")).filter(|dir| dir.is_dir());
+    // 学习语言关着（`off`）就不装释义表
+    let glossary_path = language.and_then(|language| {
+        std::env::var_os("GLIMMER_GLOSSARY")
+            .map(PathBuf::from)
+            .or_else(|| glossary_file(root, language))
+            .filter(|path| path.is_file())
+    });
+    let glossary = language.zip(glossary_path);
     let spec = AssemblySpec {
-        glossary: glossary.clone().map(|path| (language, path)),
+        glossary: glossary.clone(),
         english_glossary: glossary_file(root, Language::Chinese),
         english: generated(root, "english.tsv"),
         emoji: ["emoji-zh.tsv", "emoji-en.tsv"]
@@ -36,7 +41,7 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
             .filter_map(|name| asset(root, &format!("emoji/{name}")))
             .collect(),
         language_model: LanguageModelFiles::find(&root.join("data/generated")),
-        bundled_dicts_dir: bundled_dicts_dir.clone(),
+        bundled_dicts_dir: Some(root.join("data/generated/dicts")).filter(|dir| dir.is_dir()),
         dictionaries: config.dictionaries.clone(),
         levels_dir: Some(root.join("assets/levels")),
         user_dir: paths.user_dir.clone(),
@@ -65,7 +70,7 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
         router.watch_config(
             config,
             path.clone(),
-            bundled_dicts_dir,
+            root.to_path_buf(),
             paths.user_dir.clone(),
             Some(assembly::wubi_dir(&dict).to_path_buf()),
         );
@@ -74,8 +79,8 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
         platform = paths.platform,
         version = paths.version,
         dict = %dict.display(),
-        glossary = glossary.as_deref().map(|p| p.display().to_string()).unwrap_or_default(),
-        language = language.code(),
+        glossary = glossary.as_ref().map(|(_, p)| p.display().to_string()).unwrap_or_default(),
+        language = language.map_or("off", |l| l.code()),
         page_size = router_config.page_size,
         page_keys = %format!("{}{}", router_config.page_keys.0, router_config.page_keys.1),
         layout = router_config.layout.key(),
@@ -89,15 +94,6 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
         "微明 Router 就绪"
     );
     Ok(router)
-}
-
-/// 学习语言；不认识的代码按英文。
-fn learning_language(config: &Config) -> Language {
-    let code = &config.general.learning_language;
-    code.parse().unwrap_or_else(|_| {
-        tracing::warn!(code, "不认识的学习语言，按英文");
-        Language::English
-    })
 }
 
 /// `<root>/data/generated/<name>`，不存在为 `None`。
@@ -123,13 +119,6 @@ fn default_dict(root: &Path) -> PathBuf {
 /// 随 git 的样例词库。
 fn sample_dict(root: &Path) -> PathBuf {
     root.join("assets/sample/dict.tsv")
-}
-
-/// 某语言的释义表：打包过的优先，否则随 git 的 TSV。
-fn glossary_file(root: &Path, language: Language) -> Option<PathBuf> {
-    let code = language.code();
-    generated(root, &format!("glossary-{code}.qj"))
-        .or_else(|| asset(root, &format!("glossary/glossary-{code}.tsv")))
 }
 
 /// 正式词库装配失败回落样例词库，连样例都装不起来才报错。

@@ -4,13 +4,13 @@ mod language_model;
 mod spec;
 mod wubi;
 
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::time::Instant;
 
 use glimmer_core::{EmojiTable, Engine, Language};
 use glimmer_dictionary::{Dictionary, WordList};
 use glimmer_learning::{FrequencyLearner, InputLog, UsageStats, VocabularyBook};
-use glimmer_platform::extra_dictionaries;
+use glimmer_platform::{Config, extra_dictionaries};
 use glimmer_translate::{Glossary, LayeredTranslator, LevelTable, PersonalGlossary};
 
 use crate::error::ServerError;
@@ -119,8 +119,33 @@ pub(crate) fn load_learner(dir: &Path, scheme: Option<&str>) -> FrequencyLearner
     }
 }
 
-/// 随包释义表叠上个人释义表（`user-glossary-<语言>.tsv`）。
-fn load_glossary(
+/// 配置里的学习语言；`off` 为 `None`（不显示译文），写得不认识按英文。
+pub fn learning_language(config: &Config) -> Option<Language> {
+    if config.general.learning_language_off() {
+        return None;
+    }
+    let code = &config.general.learning_language;
+    Some(code.parse().unwrap_or_else(|_| {
+        tracing::warn!(code, "不认识的学习语言，按英文");
+        Language::English
+    }))
+}
+
+/// 某语言的释义表：`<root>/data/generated/` 打包过的 `.qj` 优先，否则随 git 的 `assets/glossary/` TSV；都没有为 `None`。
+pub fn glossary_file(root: &Path, language: Language) -> Option<PathBuf> {
+    let code = language.code();
+    [
+        root.join("data/generated")
+            .join(format!("glossary-{code}.qj")),
+        root.join("assets/glossary")
+            .join(format!("glossary-{code}.tsv")),
+    ]
+    .into_iter()
+    .find(|path| path.is_file())
+}
+
+/// 随包释义表叠上个人释义表（`user-glossary-<语言>.tsv`）。启动装配与热加载换语言共用。
+pub(crate) fn load_glossary(
     language: Language,
     path: &Path,
     user_dir: Option<&Path>,

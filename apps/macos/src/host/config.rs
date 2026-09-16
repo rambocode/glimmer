@@ -35,7 +35,7 @@ impl Host {
         self.window.set_layout(config.general.layout);
         self.window.set_font(&config.general.font);
         self.window.set_renderer(config.general.renderer);
-        self.apply_learning_language(&config.general.learning_language);
+        self.apply_learning_language(&config.general);
         if self.input_log_enabled != Some(config.general.input_log) {
             self.input_log_enabled = Some(config.general.input_log);
             self.open_input_log(config.general.input_log);
@@ -131,13 +131,21 @@ impl Host {
         }
     }
 
-    /// 学习语言变了就换释义表；文件缺失或坏了保持原样，只记日志。
-    pub(super) fn apply_learning_language(&mut self, code: &str) {
+    /// 学习语言变了就换释义表，`off` 换成不翻译；文件缺失或坏了保持原样，只记日志。
+    pub(super) fn apply_learning_language(&mut self, general: &GeneralConfig) {
+        if general.learning_language_off() {
+            if self.learning_language.take().is_some() {
+                self.engine.set_translator(Box::new(NoTranslator));
+                tracing::info!("学习语言已关，不显示译文");
+            }
+            return;
+        }
+        let code = general.learning_language.as_str();
         let Ok(language) = code.parse::<Language>() else {
             tracing::warn!(code, "不认识的学习语言，保持不变");
             return;
         };
-        if language == self.learning_language {
+        if self.learning_language == Some(language) {
             return;
         }
         match load_glossary(language) {
@@ -148,7 +156,7 @@ impl Host {
                     "释义表已切换"
                 );
                 self.engine.set_translator(Box::new(glossary));
-                self.learning_language = language;
+                self.learning_language = Some(language);
             }
             Err(error) => tracing::warn!(%error, "释义表加载失败，学习语言不变"),
         }

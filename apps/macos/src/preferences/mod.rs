@@ -88,7 +88,7 @@ pub fn preview_main() {
     window.sync_usage(
         &UsageSummary::default(),
         &VocabularySummary::default(),
-        Language::English,
+        Some(Language::English),
     );
     window.select_page(page);
     window.show();
