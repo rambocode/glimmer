@@ -32,7 +32,7 @@ impl Renderer {
 
     /// 横排时高亮候选的译文行尺寸；高亮候选没有译文时为 `None`。
     fn highlighted_annotation_size(&mut self, frame: &Frame, m: &Metrics) -> Option<(f32, f32)> {
-        let row = frame.rows.get(frame.highlighted)?;
+        let row = frame.rows.get(frame.highlighted?)?;
         if row.annotation.is_empty() {
             return None;
         }
@@ -80,6 +80,7 @@ impl Renderer {
         if frame.rows.is_empty() {
             return;
         }
+        // 量尺寸时已整形过一遍，这里再整形一遍；等渲染器定型再把结果从 render 传下来。
         let (items, row_height) = self.items(&frame.rows, m);
         let top = y + m.row_padding();
         let text_height = m.px(m.theme.text_font.line_height);
@@ -87,7 +88,7 @@ impl Renderer {
         let mut x = left + m.padding() + inset;
         for (i, (row, item)) in frame.rows.iter().zip(&items).enumerate() {
             let item_width = item.index_width + m.px(INDEX_GAP) + item.text_width;
-            if i == frame.highlighted {
+            if Some(i) == frame.highlighted {
                 self.fill_highlight(
                     canvas,
                     m,
@@ -101,8 +102,8 @@ impl Renderer {
                 canvas,
                 &row.index,
                 &m.index_style(),
-                top + m.small_offset(text_height),
                 x,
+                top + m.small_offset(text_height),
             );
             self.draw_word(
                 canvas,
@@ -121,17 +122,17 @@ impl Renderer {
                 canvas,
                 footer,
                 &style,
-                top + m.small_offset(text_height),
                 left + content_width - m.padding() - size.width,
+                top + m.small_offset(text_height),
             );
         }
         // 高亮候选的译文
-        if let Some(row) = frame.rows.get(frame.highlighted) {
+        if let Some(row) = frame.highlighted.and_then(|i| frame.rows.get(i)) {
             let mut x = left + m.padding() + inset;
             let annotation_top = y + row_height + m.row_padding() / 2.0;
             for (segment, tone) in &row.annotation {
                 let style = m.annotation_style(m.tone_color(*tone));
-                x += self.draw_text(canvas, segment, &style, annotation_top, x);
+                x += self.draw_text(canvas, segment, &style, x, annotation_top);
             }
         }
     }

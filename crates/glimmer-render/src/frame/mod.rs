@@ -16,8 +16,8 @@ pub struct Frame {
     /// 候选行。
     pub rows: Vec<Row>,
 
-    /// 高亮行下标；不想高亮任何行就给 `usize::MAX`。
-    pub highlighted: usize,
+    /// 高亮行；`None` 不高亮。
+    pub highlighted: Option<usize>,
 
     /// 右下角页码。
     pub footer: Option<String>,

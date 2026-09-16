@@ -6,15 +6,10 @@ const SYSTEM_FONTS: &str = "/System/Library/Fonts";
 
 /// 界面字体：SF Pro（文件名 SFNS，字族名 `.SF NS`）。
 pub(super) fn ui_fonts() -> Vec<PathBuf> {
-    // 开发期换界面字体文件做对比实验用
-    std::env::var_os("GLIMMER_RENDER_UI_FONT")
-        .map(PathBuf::from)
-        .into_iter()
-        .chain([
-            PathBuf::from(format!("{SYSTEM_FONTS}/SFNS.ttf")),
-            PathBuf::from(format!("{SYSTEM_FONTS}/Helvetica.ttc")),
-        ])
-        .collect()
+    vec![
+        PathBuf::from(format!("{SYSTEM_FONTS}/SFNS.ttf")),
+        PathBuf::from(format!("{SYSTEM_FONTS}/Helvetica.ttc")),
+    ]
 }
 
 /// 按 locale 要的汉字字体，加日文作为日语译文的回退。

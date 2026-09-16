@@ -58,7 +58,7 @@ impl Renderer {
                 m.theme.colors.gloss
             };
             let style = m.annotation_style(color);
-            self.draw_text(canvas, text, &style, top, x);
+            self.draw_text(canvas, text, &style, x, top);
         }
         line_height + m.row_padding() * 2.0
     }
@@ -80,7 +80,7 @@ impl Renderer {
                 PreeditStyle::Rest => m.annotation_style(m.theme.colors.pos),
                 PreeditStyle::Struck => m.annotation_style(m.theme.colors.pos).struck(),
             };
-            cursor_x += self.draw_text(canvas, &segment.text, &style, top, cursor_x);
+            cursor_x += self.draw_text(canvas, &segment.text, &style, cursor_x, top);
         }
         let measure_style = m.annotation_style(m.theme.colors.gloss);
         let caret_x = x + self.measure(&preedit.before_cursor(), &measure_style).width;

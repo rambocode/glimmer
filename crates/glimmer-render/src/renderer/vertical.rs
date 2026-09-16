@@ -59,12 +59,13 @@ impl Renderer {
         mut y: f32,
         content_width: f32,
     ) {
+        // 量尺寸时已整形过一遍，这里再整形一遍；等渲染器定型再把结果从 render 传下来。
         let columns = self.columns(&frame.rows, m);
         let text_x = left + m.padding() + columns.index_width + m.column_gap();
         let annotation_x = text_x + columns.text_width + m.column_gap();
         let text_height = m.px(m.theme.text_font.line_height);
         for (i, row) in frame.rows.iter().enumerate() {
-            if i == frame.highlighted {
+            if Some(i) == frame.highlighted {
                 self.fill_highlight(
                     canvas,
                     m,
@@ -80,14 +81,14 @@ impl Renderer {
                 canvas,
                 &row.index,
                 &m.index_style(),
-                top + small_offset,
                 left + m.padding(),
+                top + small_offset,
             );
             self.draw_word(canvas, m, row, text_x, top, text_height);
             let mut x = annotation_x;
             for (segment, tone) in &row.annotation {
                 let style = m.annotation_style(m.tone_color(*tone));
-                x += self.draw_text(canvas, segment, &style, top + small_offset, x);
+                x += self.draw_text(canvas, segment, &style, x, top + small_offset);
             }
             y += columns.row_height;
         }
@@ -98,8 +99,8 @@ impl Renderer {
                 canvas,
                 footer,
                 &style,
-                y + m.row_padding(),
                 left + content_width - m.padding() - size.width,
+                y + m.row_padding(),
             );
         }
     }

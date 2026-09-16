@@ -50,7 +50,12 @@ impl Trak {
             Some(i) => {
                 let (s0, s1) = (self.sizes[i - 1], self.sizes[i]);
                 let (v0, v1) = (f32::from(self.values[i - 1]), f32::from(self.values[i]));
-                v0 + (v1 - v0) * (size - s0) / (s1 - s0)
+                // 采样点该严格升序；相邻相等的坏表别除出 NaN。
+                if s1 <= s0 {
+                    v0
+                } else {
+                    v0 + (v1 - v0) * (size - s0) / (s1 - s0)
+                }
             }
         };
         units / self.units_per_em

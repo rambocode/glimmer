@@ -70,7 +70,7 @@ pub fn family_files(family: &str) -> Vec<PathBuf> {
 }
 
 /// 本机字体文件的路径；网络 / 内存字体（不是本地加载器）返回 `None`。
-unsafe fn file_path(file: &IDWriteFontFile) -> Option<PathBuf> {
+fn file_path(file: &IDWriteFontFile) -> Option<PathBuf> {
     // SAFETY: 引用键由 DirectWrite 持有、随 file 存活；路径缓冲按报的长度加终止符分配。
     unsafe {
         let mut key = std::ptr::null_mut();
@@ -111,7 +111,7 @@ pub fn families() -> Vec<String> {
 }
 
 /// 本地化字符串里的英文名，没有就取第 0 条。
-unsafe fn localized(strings: &IDWriteLocalizedStrings) -> Option<String> {
+fn localized(strings: &IDWriteLocalizedStrings) -> Option<String> {
     // SAFETY: 只读查询；缓冲按报的长度加终止符分配。
     unsafe {
         let mut index = 0u32;

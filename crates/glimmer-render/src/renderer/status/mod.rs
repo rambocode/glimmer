@@ -7,10 +7,10 @@ mod rendered;
 pub use cell::StatusCell;
 pub use rendered::RenderedStatus;
 
+use super::{Metrics, Rendered, Renderer};
 use crate::canvas::Canvas;
 use crate::error::RenderError;
 use crate::gear::draw_gear;
-use crate::renderer::{Metrics, Rendered, Renderer};
 use crate::shadow::Shadow;
 use crate::theme::Theme;
 
@@ -121,7 +121,7 @@ impl Renderer {
                 let size = self.measure(text, &style);
                 let left = x + (width - size.width) / 2.0;
                 let top = y + (height - size.height) / 2.0;
-                self.draw_text(canvas, text, &style, top, left);
+                self.draw_text(canvas, text, &style, left, top);
             }
             StatusCell::Gear => {
                 let size = m.px(GEAR_SIZE);

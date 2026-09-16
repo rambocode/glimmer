@@ -6,6 +6,7 @@ mod columns;
 mod horizontal;
 mod item;
 mod rendered;
+mod status;
 mod top_line;
 mod vertical;
 
@@ -21,6 +22,7 @@ use crate::text::{TextPainter, TextSize, TextStyle};
 use crate::theme::{FontSpec, Theme};
 
 pub use rendered::Rendered;
+pub use status::{RenderedStatus, StatusCell};
 
 /// preedit 光标的宽度（点）。
 const CARET_WIDTH: f32 = 1.5;
@@ -49,17 +51,17 @@ pub struct Renderer {
 }
 
 /// 一次渲染期间的上下文：主题按倍数换算后的像素值。
-pub(crate) struct Metrics<'a> {
-    pub(crate) theme: &'a Theme,
-    pub(crate) scale: f32,
+pub(super) struct Metrics<'a> {
+    pub(super) theme: &'a Theme,
+    pub(super) scale: f32,
 }
 
 impl Metrics<'_> {
-    pub(crate) fn px(&self, points: f32) -> f32 {
+    pub(super) fn px(&self, points: f32) -> f32 {
         points * self.scale
     }
 
-    pub(crate) fn padding(&self) -> f32 {
+    pub(super) fn padding(&self) -> f32 {
         self.px(self.theme.padding)
     }
 
@@ -71,11 +73,11 @@ impl Metrics<'_> {
         self.px(self.theme.column_gap)
     }
 
-    pub(crate) fn corner_radius(&self) -> f32 {
+    pub(super) fn corner_radius(&self) -> f32 {
         self.px(self.theme.corner_radius)
     }
 
-    pub(crate) fn style(&self, font: FontSpec, color: Color) -> TextStyle {
+    pub(super) fn style(&self, font: FontSpec, color: Color) -> TextStyle {
         TextStyle::new(
             font.scaled(self.scale),
             font.size,
@@ -84,7 +86,7 @@ impl Metrics<'_> {
         )
     }
 
-    pub(crate) fn text_style(&self) -> TextStyle {
+    pub(super) fn text_style(&self) -> TextStyle {
         self.style(self.theme.text_font, self.theme.colors.text)
     }
 
@@ -198,18 +200,18 @@ impl Renderer {
         )
     }
 
-    pub(crate) fn measure(&mut self, text: &str, style: &TextStyle) -> TextSize {
+    pub(super) fn measure(&mut self, text: &str, style: &TextStyle) -> TextSize {
         self.text.measure(text, style)
     }
 
-    /// 画一段文字，返回它的宽度。参数顺序是 (顶边 y, 左边 x)，与画图时「先定行再定列」的习惯一致。
-    pub(crate) fn draw_text(
+    /// 画一段文字（`x` 左边、`y` 行框顶边），返回它的宽度。
+    pub(super) fn draw_text(
         &mut self,
         canvas: &mut Canvas,
         text: &str,
         style: &TextStyle,
-        y: f32,
         x: f32,
+        y: f32,
     ) -> f32 {
         self.text.draw(canvas, text, style, x, y)
     }
@@ -254,7 +256,7 @@ impl Renderer {
             m.theme.colors.text
         };
         let style = m.style(m.theme.text_font, color);
-        self.draw_text(canvas, &row.text, &style, top, word_x);
+        self.draw_text(canvas, &row.text, &style, word_x, top);
     }
 
     fn fill_highlight(

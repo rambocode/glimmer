@@ -16,7 +16,6 @@ mod gear;
 mod layout;
 mod renderer;
 mod shadow;
-mod status;
 mod text;
 mod theme;
 
@@ -28,9 +27,8 @@ pub use fonts::directwrite as system_fonts;
 pub use fonts::{FontLibrary, UiFont};
 pub use frame::{Frame, Preedit, PreeditSegment, PreeditStyle, Row, Tone};
 pub use layout::Layout;
-pub use renderer::{Rendered, Renderer};
+pub use renderer::{Rendered, RenderedStatus, Renderer, StatusCell};
 pub use shadow::Shadow;
-pub use status::{RenderedStatus, StatusCell};
 pub use theme::{FontSpec, Palette, Theme};
 
 /// 让 `tiny_skia::Pixmap` 的使用方不用再单独依赖 tiny-skia。
