@@ -38,6 +38,9 @@ pub struct GeneralPage {
     /// 终端 / 编辑器里不给英文候选。
     english_off_in_apps: Retained<NSButton>,
 
+    /// 中英混输时中文候选排在英文词前。
+    chinese_first: Retained<NSButton>,
+
     /// 学习语言弹出菜单里各项对应的语言。
     languages: Vec<Language>,
 
@@ -165,6 +168,18 @@ impl GeneralPage {
             mtm,
             "终端、iTerm、Warp、Ghostty、VS Code、Cursor、Zed、JetBrains、Xcode 等，那里的候选窗口会挡住应用自己的补全；名单可在配置文件里改。",
         );
+        let chinese_first = checkbox(
+            mtm,
+            "输入拼音时中文候选排在英文词前面",
+            Setting::ChineseFirst,
+            target,
+        );
+        row_checkbox(layout, &chinese_first);
+        note(
+            layout,
+            mtm,
+            "勾上后整段输入是英文词时（hello、key）英文词排第二，空格上屏的仍是中文；不勾（缺省）拼音不成立的输入英文词排第一。",
+        );
         Self {
             learning_language,
             page_size,
@@ -174,6 +189,7 @@ impl GeneralPage {
             wubi_hint,
             english,
             english_off_in_apps,
+            chinese_first,
             languages: languages.to_vec(),
             punctuation,
             punctuation_mode,
@@ -231,5 +247,6 @@ impl GeneralPage {
         );
         self.english_off_in_apps
             .setEnabled(general.english_candidates);
+        set_checked(&self.chinese_first, general.chinese_first);
     }
 }

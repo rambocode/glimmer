@@ -24,6 +24,8 @@ description: 日期时间、算式与中文数字、按码点输入字符、中�
 中文模式下无需切换：
 
 - 整段输入为英文词时直接给出英文候选。拼音不成立时（`hello` 只能切成 `he l l o`）英文排第一，拼音成立时（`china`）英文排第二。
+  勾选「偏好设置 → 通用」的「输入拼音时中文候选排在英文词前面」后英文固定排第二（`hello` 先 荷兰咯 再 hello，`key` 先 可以 再 key），
+  `Space` 上屏的仍是中文，按 `2` 选英文；没有中文候选时（`github`）英文仍排第一。
 - 拼音不成立且不少于 3 个字母时补全前缀：`compa` → company / companies / compared。
 - 一句拼音末尾接一个英文词时，整句直接包含该词：`woxiangxuehaorust` → 我想学好rust，`wodeid` → 我的ID，`woyongvim` → 我用vim。
   拼音行显示 `wo'xiang'xue'hao'rust`，`Space` 上屏整句。该英文词需在词表中（用户自己输入过的也算，见 [英文模式](english-mode.md)）。

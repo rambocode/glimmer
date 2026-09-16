@@ -73,6 +73,10 @@ pub struct Args {
     #[arg(long)]
     pub english_mode: bool,
 
+    /// 打开中文优先（配置 [general] chinese_first = true）：整段是英文词时中文候选排第一、英文第二，评测两种排法用
+    #[arg(long)]
+    pub chinese_first: bool,
+
     /// 双拼方案（xiaohe / ziranma / microsoft / sogou），覆盖配置里的 [general] shuangpin；off 强制全拼
     #[arg(long)]
     pub shuangpin: Option<String>,

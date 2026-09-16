@@ -58,7 +58,8 @@ impl Engine {
     }
 
     /// 中英混输：整段输入是英文词就把它加进候选。
-    /// 作为拼音「不像话」（切不动、或除末尾外还有声母缩写 / 残缺音节）时排第一，否则排第二。
+    /// 缺省作为拼音「不像话」（切不动、或除末尾外还有声母缩写 / 残缺音节）时排第一，否则排第二；
+    /// 开了中文优先（`chinese_first`）整句 / 首个中文候选已经在前，英文词排第二。没有中文候选时总在第一。
     pub(super) fn insert_english(&self, items: &mut Vec<Candidate>, unlikely_pinyin: bool) {
         // 五笔下没有中英混输候选：编码与英文词撞形太多
         if self.wubi.is_some() {
@@ -87,7 +88,8 @@ impl Engine {
             .filter(|c| c.kind == CandidateKind::Chinese)
             .map_or(0, |c| self.learner.choice_weight(text, &c.text));
         let english_weight = word.map_or(0, |w| self.learner.weight(w));
-        let mut position = if items.is_empty() || (unlikely_pinyin && chosen <= english_weight) {
+        let english_first = !self.chinese_first && unlikely_pinyin && chosen <= english_weight;
+        let mut position = if items.is_empty() || english_first {
             0
         } else {
             1
@@ -129,6 +131,7 @@ impl Engine {
     }
 
     /// emoji 候选：前几个中文候选里有配 emoji 的，emoji 紧跟在那个词后面，右侧标注它对应的词。
+    /// 词后面紧挨着的英文词候选（中文优先时 `key` → 可以、key）不被 emoji 挤开，emoji 排在它之后。
     pub(super) fn insert_emoji(&self, items: &mut Vec<Candidate>) {
         let Some(table) = &self.emoji else { return };
         let mut inserted = 0;
@@ -156,6 +159,14 @@ impl Engine {
             }
             let word = item.text.clone();
             let syllables = item.syllables.clone();
+            if item.kind != CandidateKind::English {
+                while items
+                    .get(index)
+                    .is_some_and(|next| next.kind == CandidateKind::English)
+                {
+                    index += 1;
+                }
+            }
             for emoji in emojis.iter().take(EMOJI_PER_WORD) {
                 if inserted >= EMOJI_TOTAL {
                     break;

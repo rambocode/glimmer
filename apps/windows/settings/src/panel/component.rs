@@ -51,6 +51,7 @@ impl Component for Settings {
             Message::WubiAutoSelect(on) => self.save("wubi", "auto_select", on),
             Message::WubiHint(on) => self.save("wubi", "hint", on),
             Message::EnglishCandidates(on) => self.save("general", "english_candidates", on),
+            Message::ChineseFirst(on) => self.save("general", "chinese_first", on),
             Message::FullWidthPunctuation(on) => {
                 self.save("general", "full_width_punctuation", on);
             }

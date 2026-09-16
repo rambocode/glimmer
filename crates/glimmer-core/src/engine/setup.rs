@@ -344,6 +344,16 @@ impl Engine {
         self.modes
     }
 
+    /// 中英混输里中文候选是否总排在英文词前面（配置 `[general] chinese_first`，缺省关）。
+    /// 关着时拼音「不像话」的输入英文词排第一（`hello` 先英文再 荷兰咯）；开了英文词固定第二。
+    pub fn set_chinese_first(&mut self, on: bool) {
+        self.chinese_first = on;
+    }
+
+    pub fn chinese_first(&self) -> bool {
+        self.chinese_first
+    }
+
     pub fn with_learner(mut self, learner: Box<dyn Learner>) -> Self {
         self.learner.replace(learner);
         self.forget_span_cache();

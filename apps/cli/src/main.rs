@@ -43,6 +43,7 @@ fn run() -> Result<(), CliError> {
     let mut engine = build_engine(&args)?;
     tracing::info!(total_ms = started.elapsed().as_millis(), "Engine 就绪");
     engine.set_english_mode(args.english_mode);
+    engine.set_chinese_first(args.chinese_first);
     tuning::apply(&mut engine, &args.tune)?;
     if let Some(path) = &args.replay {
         let report = replay::run(&mut engine, path, args.misses)?;

@@ -82,7 +82,12 @@ fn english_word_yields_to_a_chinese_word_the_user_keeps_choosing() {
             .unwrap();
         engine.commit(&candidate);
     };
-    // ke'y 末尾落单一个字母，拼音不像话：英文词在前
+    // 开了中文优先：ke'y 再不像话，中文词也在前、英文第二
+    engine.set_chinese_first(true);
+    engine.set_input("key");
+    assert_eq!(first_two(&engine), ("可以".into(), "key".into()));
+    // 缺省关：末尾落单一个字母、拼音不像话，英文词在前
+    engine.set_chinese_first(false);
     engine.set_input("key");
     assert_eq!(first_two(&engine), ("key".into(), "可以".into()));
     // 这段字母下选过一次 可以：中文在前，英文退到第二

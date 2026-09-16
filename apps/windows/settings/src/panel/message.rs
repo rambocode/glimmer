@@ -17,6 +17,7 @@ pub(crate) enum Message {
     /// `[wubi] hint`。
     WubiHint(bool),
     EnglishCandidates(bool),
+    ChineseFirst(bool),
     FullWidthPunctuation(bool),
     EnglishFullWidthPunctuation(bool),
     PunctuationMode(Option<usize>),

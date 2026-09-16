@@ -367,6 +367,9 @@ impl Host {
             (Setting::EnglishCandidates, SettingValue::Bool(on)) => {
                 self.settings.set_bool("general", "english_candidates", on);
             }
+            (Setting::ChineseFirst, SettingValue::Bool(on)) => {
+                self.settings.set_bool("general", "chinese_first", on);
+            }
             // 勾上写缺省的终端 / 编辑器列表，去掉写空表；手改过的列表勾一下就回缺省
             (Setting::EnglishCandidatesOffInApps, SettingValue::Bool(on)) => {
                 let apps: toml_edit::Array = if on {

@@ -116,6 +116,7 @@ impl Router {
             .set_punctuation_mode(config.general.punctuation_mode);
         self.engine.set_learning(config.general.learning);
         self.engine.set_mode_keys(config.shortcut.mode);
+        self.engine.set_chinese_first(config.general.chinese_first);
         let previous = self.config.render_settings();
         self.config = RouterConfig::from(config);
         let settings = self.config.render_settings();

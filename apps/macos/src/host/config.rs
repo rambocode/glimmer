@@ -20,6 +20,7 @@ impl Host {
             tracing::warn!(%error, "自定义短语配置未应用");
         }
         self.engine.set_mode_keys(config.shortcut.mode);
+        self.engine.set_chinese_first(config.general.chinese_first);
         self.engine.set_shuangpin(config.general.shuangpin());
         self.apply_wubi(&config);
         self.engine.set_learning(config.general.learning);
