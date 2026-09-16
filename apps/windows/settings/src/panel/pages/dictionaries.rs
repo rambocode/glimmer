@@ -194,12 +194,9 @@ pub(crate) fn import(settings: &mut Settings) {
     for source in &sources {
         match glimmer_core::dictionary::import::import(source, &dir) {
             Ok(imported) => {
-                let stem = imported
-                    .path
-                    .file_stem()
-                    .and_then(|s| s.to_str())
-                    .expect("dictionary importer produces a UTF-8 file stem");
-                disabled.retain(|name| name != stem);
+                if let Some(stem) = imported.path.file_stem().and_then(|s| s.to_str()) {
+                    disabled.retain(|name| name != stem);
+                }
                 succeeded += 1;
                 results.push(format!(
                     "已导入「{}」，共 {} 条。",

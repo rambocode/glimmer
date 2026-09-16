@@ -155,10 +155,6 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
   `[apps] english_candidates_off` 按 bundle identifier 列出英文模式不给候选的应用（缺省终端 / 编辑器 / IDE，`*` 前缀匹配）；
   `[dictionaries] domains` 打开随包的领域词库（`Resources/dicts/` 11 本，缺省只开 `idioms`），`disabled` 关掉用户目录 `dicts/` 里的某本导入词库；
   偏好设置「词库」页随包的可开关、导入的可开关 / 移除，可导入 TSV / Rime yaml / .qj。
-  Windows 设置页共用 `glimmer-dictionary::import` 转成 `.qj`，拒绝空词库，导入后自动启用并显示结果；
-  文件选择器支持多选，逐个转换、汇总结果，成功项的启用配置一次写回，失败不打断整批。
-  Server 每秒比较用户词库的路径 / mtime / 长度快照，配置没变时也能重载新增、同名更新和移除。
-  词库扫描独立于配置解析：配置损坏时沿用上次有效的词库开关，直到配置 mtime 变化才重新解析。
 - 系统文本替换（系统设置「键盘 → 文本替换」）：`host/config/text_replacements.rs` 从 `NSUserDefaults` 全局域读 `NSUserDictionaryReplacementItems`
   （每条 `{ on, replace, with }`），激活输入法时重读，变了就经 Core `merge_replacements` 并进配置里的自定义短语再 `set_custom_phrases`；
   `[general] system_text_replacements` 开关（缺省开，「自定义短语」页勾选框），内容可能含证件号、地址，日志只记条数。
@@ -178,6 +174,9 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 
 TSF 原有数字 / OEM 标点 / 空格键码按当前布局用 `ToUnicodeEx` 解析（bit 2 避免改变键盘状态），
 仅接受单个非代理项 UTF-16 单元。字母、小键盘和 AltGr 处理不变，不保证组合音符输入。
+
+词库导入（设置「词库」页）走 `glimmer-dictionary::import` 转成 `.qj`（空词库拒绝），多选批量、成功的从 `[dictionaries] disabled` 摘掉、页面显示每个文件的结果；
+Server 每次轮询比对用户 `dicts\` 的路径 / mtime / 长度快照，配置没变也重载新增、同名更新与移除；配置解析失败时词库沿用上次有效的开关（#36）。
 
 ## apps/linux
 
