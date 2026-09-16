@@ -1,8 +1,11 @@
 //! 配置热加载：空闲时看 `config.toml` 的 mtime，改了就重读并应用（与 macOS 壳对齐）。
-//! 便宜的设置无条件重设；云联想 / 附加词库 / 释义表只在对应项变了才重建，五笔在 [`wubi`]。热加载状态在 [`ConfigReload`]。
+//! 便宜的设置无条件重设；云联想 / 释义表按配置变化重建，附加词库也检查文件增删与更新，五笔在 [`wubi`]。热加载状态在 [`ConfigReload`]。
 
 mod state;
 mod wubi;
+
+#[cfg(test)]
+mod tests;
 
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant, SystemTime};
@@ -102,6 +105,9 @@ impl Router {
         wubi_dir: Option<PathBuf>,
     ) {
         let last_mtime = mtime(&config_path);
+        let dictionary_files = user_dicts_dir(user_dir.as_deref())
+            .map(|dir| extra_dictionaries::snapshot(&dir))
+            .unwrap_or_default();
         let bundled_dicts_dir = Some(root.join("data/generated/dicts")).filter(|dir| dir.is_dir());
         self.reload = Some(ConfigReload {
             config_path,
@@ -113,6 +119,7 @@ impl Router {
             last_mtime,
             applied_predict: config.predict.clone(),
             applied_dictionaries: config.dictionaries.clone(),
+            dictionary_files,
             applied_language: assembly::learning_language(config),
         });
     }
@@ -126,6 +133,16 @@ impl Router {
             return;
         }
         reload.last_check = Instant::now();
+        let files = user_dicts_dir(reload.user_dir.as_deref())
+            .map(|dir| extra_dictionaries::snapshot(&dir))
+            .unwrap_or_default();
+        let dictionaries_changed = files != reload.dictionary_files;
+        if dictionaries_changed {
+            // 配置损坏也继续使用上次有效的词库开关；文件变化不触发配置重试。
+            self.engine
+                .set_extra_dictionaries(reload.load_dictionaries());
+            reload.dictionary_files = files;
+        }
         let current = mtime(&reload.config_path);
         if current == reload.last_mtime {
             return;
@@ -181,15 +198,9 @@ impl Router {
             reload.applied_language = language;
         }
         if config.dictionaries != reload.applied_dictionaries {
-            // 别传用户目录本身：那里的学习数据 .tsv 会被当词库装。
-            let dicts = extra_dictionaries::load(
-                reload.bundled_dicts_dir.as_deref(),
-                user_dicts_dir(reload.user_dir.as_deref()).as_deref(),
-                &config.dictionaries,
-            );
-            tracing::info!(count = dicts.len(), "附加词库已热重装");
-            self.engine.set_extra_dictionaries(dicts);
             reload.applied_dictionaries = config.dictionaries.clone();
+            self.engine
+                .set_extra_dictionaries(reload.load_dictionaries());
         }
     }
 }

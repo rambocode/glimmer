@@ -7,8 +7,8 @@ use objc2::rc::Retained;
 use objc2_app_kit::{NSButton, NSPopUpButton};
 
 use crate::preferences::controls::{
-    button, checkbox, note, note_full, page_keys_label, row_checkbox, row_popup,
-    row_recorder, select, set_checked,
+    button, checkbox, note, note_full, page_keys_label, row_checkbox, row_popup, row_recorder,
+    select, set_checked,
 };
 use crate::preferences::key_recorder::KeyRecorder;
 use crate::preferences::layout::{Layout, PAGE_PADDING, ROW_HEIGHT};

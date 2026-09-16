@@ -27,8 +27,8 @@ use windows::Win32::UI::WindowsAndMessaging::{
 use windows::core::{Error, PCWSTR, Result, w};
 
 use glimmer_platform::ThemeMode;
-use glimmer_server::dispatch::StatusView;
 use glimmer_render::StatusCell;
+use glimmer_server::dispatch::StatusView;
 
 use self::cell::CellSpec;
 use self::placement::{Placement, StatusAction};

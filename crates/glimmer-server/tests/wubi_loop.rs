@@ -235,7 +235,7 @@ fn hot_reload_switches_wubi_on_and_off_with_its_own_learning_dir() {
     router.watch_config(
         &Config::default(),
         config_path,
-        None,
+        root.to_path_buf(),
         Some(user_dir.clone()),
         Some(data_dir),
     );
@@ -298,7 +298,7 @@ fn hot_reload_with_a_missing_table_leaves_pinyin_and_the_buffer_alone() {
     router.watch_config(
         &Config::default(),
         config_path,
-        None,
+        root.to_path_buf(),
         None,
         Some(dir.clone()),
     );
@@ -354,7 +354,7 @@ fn hot_reload_turns_on_xinshiji_with_its_own_learning_dir() {
     router.watch_config(
         &Config::default(),
         config_path,
-        None,
+        root.to_path_buf(),
         Some(user_dir.clone()),
         Some(data_dir),
     );

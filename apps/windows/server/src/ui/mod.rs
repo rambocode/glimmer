@@ -29,7 +29,9 @@ use windows::Win32::UI::WindowsAndMessaging::{
 use windows::core::{Error, Result};
 
 use glimmer_platform::protocol::{Frame, ScreenRect};
-use glimmer_server::dispatch::{CandidateSink, RenderSettings, StatusEvent, StatusSink, StatusView};
+use glimmer_server::dispatch::{
+    CandidateSink, RenderSettings, StatusEvent, StatusSink, StatusView,
+};
 
 use self::candidates::CandidateWindow;
 use self::command::UiCommand;

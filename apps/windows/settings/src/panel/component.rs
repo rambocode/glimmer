@@ -23,6 +23,7 @@ impl Component for Settings {
             path,
             page: "general".to_string(),
             cloud_status: CloudStatus::Idle,
+            dictionary_status: String::new(),
             families: glimmer_render::system_fonts::families(),
             font_query: None,
         }
