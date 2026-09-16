@@ -18,7 +18,7 @@ use crate::preferences::target::PreferencesTarget;
 /// 列表里一行的高度。
 const ROW: f64 = ROW_HEIGHT + 6.0;
 
-/// 列表区的高度（约放得下 8 本），更多的滚。
+/// 列表区的最小高度（约放得下 8 本）；窗口更高时撑到页底，装不下的滚。
 const LIST_HEIGHT: f64 = 10.0 * ROW;
 
 pub struct DictionariesPage {
@@ -61,7 +61,7 @@ impl DictionariesPage {
         scroll.setHasVerticalScroller(true);
         scroll.setDrawsBackground(false);
         scroll.setDocumentView(Some(&list));
-        layout.place(&scroll, PAGE_PADDING, layout.inner_width(), LIST_HEIGHT);
+        layout.place_fill(&scroll, PAGE_PADDING, layout.inner_width(), LIST_HEIGHT);
         layout.next_row(LIST_HEIGHT);
         let empty = small_label(mtm, "还没有附加词库。随包的基础词库不在这里，它一直启用。");
         list.addSubview(&empty);
@@ -88,7 +88,8 @@ impl DictionariesPage {
         self.empty.setHidden(!dictionaries.is_empty());
         let width = PAGE_WIDTH - 2.0 * PAGE_PADDING;
         // 文档视图按行数撑高（至少一屏），行从顶部往下排；滚动条要留出位置
-        let document_height = (ROW * dictionaries.len() as f64).max(LIST_HEIGHT);
+        let visible_height = self.scroll.contentSize().height.max(LIST_HEIGHT);
+        let document_height = (ROW * dictionaries.len() as f64).max(visible_height);
         let content_width = self.scroll.contentSize().width.min(width);
         self.list.setFrame(NSRect::new(
             NSPoint::ZERO,

@@ -47,8 +47,8 @@ pub struct Layout {
     /// 这一页的宽度。
     width: f64,
 
-    /// 已摆的控件及其（x, 顶部距离, 宽, 高）。
-    placed: Vec<(Retained<NSView>, f64, f64, f64, f64)>,
+    /// 已摆的控件及其（x, 顶部距离, 宽, 高, 是否撑到页底）。
+    placed: Vec<(Retained<NSView>, f64, f64, f64, f64, bool)>,
 
     /// 当前行的顶部距离。
     top: f64,
@@ -104,6 +104,12 @@ impl Layout {
         self.group_bottom = self.group_bottom.max(self.top + height);
         self.placed
             .push((view.retain(), x, self.top, width, height));
+    }
+
+    /// 放一个想撑满剩余高度的控件。卡片布局下窗口高度随页伸缩、页底没有余量，所以等同 [`Self::place`]，
+    /// 高度就是 `min_height`；留这个名字是为了与上游的词库页对齐。
+    pub fn place_fill(&mut self, view: &NSView, x: f64, width: f64, min_height: f64) {
+        self.place(view, x, width, min_height);
     }
 
     /// 换到下一行。
