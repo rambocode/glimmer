@@ -8,6 +8,6 @@ pub mod ipc;
 #[cfg(windows)]
 pub mod ui;
 
-pub use assembly::{AssemblySpec, LanguageModelFiles};
+pub use assembly::{AssemblySpec, LanguageModelFiles, WubiSpec};
 pub use dispatch::{Router, RouterConfig};
 pub use error::ServerError;

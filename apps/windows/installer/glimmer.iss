@@ -75,6 +75,10 @@ Source: "{#Repo}\data\generated\glossary-ja.qj"; DestDir: "{app}\data\generated"
 Source: "{#Repo}\data\generated\glossary-zh.qj"; DestDir: "{app}\data\generated";       Flags: ignoreversion
 Source: "{#Repo}\data\generated\english.tsv";    DestDir: "{app}\data\generated";       Flags: ignoreversion
 Source: "{#Repo}\data\generated\dicts\*.qj";     DestDir: "{app}\data\generated\dicts";  Flags: ignoreversion
+; 五笔 86 码表（dict-convert 打成的 .qj，LGPL-3.0，许可与署名随包）；没有就不装，[general] wubi 开着时 Server 记 warn 当没开
+Source: "{#Repo}\data\generated\wubi86.qj";      DestDir: "{app}\data\generated";       Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#Repo}\assets\wubi\LICENSE.LGPL-3.0";  DestDir: "{app}\assets\wubi";         Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#Repo}\assets\wubi\AUTHORS";           DestDir: "{app}\assets\wubi";         Flags: ignoreversion skipifsourcedoesntexist
 ; —— 本地整句模型（tools/release/pack-model.sh 打成的单文件 data\model\model.qjm；没有就不装，Server 不重排）——
 Source: "{#Repo}\data\model\model.qjm"; DestDir: "{app}\data\model"; Flags: ignoreversion skipifsourcedoesntexist
 ; —— 随 git 的资源 ——

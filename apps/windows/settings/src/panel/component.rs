@@ -43,6 +43,11 @@ impl Component for Settings {
                 self.save("general", "shuangpin", general::SHUANGPIN[i].1);
             }
             Message::Zhuyin(on) => self.save("general", "zhuyin", on),
+            Message::Wubi(Some(i)) if i < general::WUBI.len() => {
+                self.save("general", "wubi", general::WUBI[i].1);
+            }
+            Message::WubiAutoSelect(on) => self.save("wubi", "auto_select", on),
+            Message::WubiHint(on) => self.save("wubi", "hint", on),
             Message::EnglishCandidates(on) => self.save("general", "english_candidates", on),
             Message::FullWidthPunctuation(on) => {
                 self.save("general", "full_width_punctuation", on);

@@ -2,6 +2,7 @@
 
 mod language_model;
 mod spec;
+mod wubi;
 
 use std::path::Path;
 use std::time::Instant;
@@ -16,12 +17,19 @@ use crate::error::ServerError;
 
 pub use self::language_model::LanguageModelFiles;
 pub use self::spec::AssemblySpec;
+pub use self::wubi::{WubiSpec, load_scheme};
 
 pub fn assemble(spec: &AssemblySpec) -> Result<Engine, ServerError> {
     let started = Instant::now();
     let dictionary = Dictionary::from_path(&spec.dict)?;
+    // 码表先于学习器：按输入串记的用户词 / 选择记录 / 敲错表在五笔下落到方案子目录，
+    // 而码表打不开时五笔算没开，学习器就得用拼音那份，所以目录要看真正装上的方案
+    let wubi = spec
+        .wubi
+        .and_then(|wubi| load_scheme(wubi_dir(&spec.dict), wubi));
+    let scheme_key = wubi.as_ref().map(|scheme| scheme.key());
     let learner = match &spec.user_dir {
-        Some(dir) => load_learner(dir),
+        Some(dir) => load_learner(dir, scheme_key),
         None => FrequencyLearner::default(),
     };
     tracing::info!(
@@ -82,7 +90,13 @@ pub fn assemble(spec: &AssemblySpec) -> Result<Engine, ServerError> {
         );
         engine = engine.with_language_model(Box::new(model));
     }
+    engine.set_wubi(wubi);
     Ok(engine)
+}
+
+/// 五笔码表所在目录：与主词库同目录（`data/generated/`）。
+pub fn wubi_dir(dict: &Path) -> &Path {
+    dict.parent().unwrap_or_else(|| Path::new("."))
 }
 
 /// 用户导入词库目录 `dicts/`，不存在则创建；建不了当没有。
@@ -92,10 +106,11 @@ fn user_dicts_dir(user_dir: Option<&Path>) -> Option<std::path::PathBuf> {
     Some(dir)
 }
 
-/// 读不了就退回只在内存里学，不拿空表覆盖用户文件。
-fn load_learner(dir: &Path) -> FrequencyLearner {
+/// 读不了就退回只在内存里学，不拿空表覆盖用户文件。`scheme` 是输入方案键（`wubi86`）：按输入串记的表落到
+/// `<dir>/<scheme>/`，拼音为 `None`。
+pub(crate) fn load_learner(dir: &Path, scheme: Option<&str>) -> FrequencyLearner {
     let path = dir.join("user.tsv");
-    match FrequencyLearner::from_path(&path) {
+    match FrequencyLearner::from_path_with_scheme(&path, scheme) {
         Ok(learner) => learner,
         Err(error) => {
             tracing::error!(path = %path.display(), %error, "学习数据读取失败，本次只在内存里学习");

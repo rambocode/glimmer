@@ -1,7 +1,8 @@
 //! 配置热加载：空闲时看 `config.toml` 的 mtime，改了就重读并应用（与 macOS 壳对齐）。
-//! 便宜的设置无条件重设；云联想 / 附加词库只在对应分节变了才重建。热加载状态在 [`ConfigReload`]。
+//! 便宜的设置无条件重设；云联想 / 附加词库只在对应分节变了才重建，五笔在 [`wubi`]。热加载状态在 [`ConfigReload`]。
 
 mod state;
+mod wubi;
 
 use std::path::{Path, PathBuf};
 use std::time::{Duration, Instant, SystemTime};
@@ -57,13 +58,14 @@ impl Router {
             .map(|reload| reload.config_path.as_path())
     }
 
-    /// 开启热加载：记下路径与当前已应用的 predict / dictionaries。
+    /// 开启热加载：记下路径与当前已应用的 predict / dictionaries；`wubi_dir` 是码表目录（换五笔版本时重开码表）。
     pub fn watch_config(
         &mut self,
         config: &Config,
         config_path: PathBuf,
         bundled_dicts_dir: Option<PathBuf>,
         user_dir: Option<PathBuf>,
+        wubi_dir: Option<PathBuf>,
     ) {
         let last_mtime = mtime(&config_path);
         self.reload = Some(ConfigReload {
@@ -71,6 +73,7 @@ impl Router {
             last_check: Instant::now(),
             bundled_dicts_dir,
             user_dir,
+            wubi_dir,
             last_mtime,
             applied_predict: config.predict.clone(),
             applied_dictionaries: config.dictionaries.clone(),
@@ -101,8 +104,10 @@ impl Router {
         }
     }
 
-    /// 应用新配置。学习语言变了仍需重启（要换释义表 / 等级表）。
-    fn apply_config(&mut self, config: &Config) {
+    /// 应用新配置。学习语言变了仍需重启（要换释义表 / 等级表）。文件监视之外也可直接调（测试）。
+    /// 五笔先对齐：双拼 / 注音在五笔开着时被 Core 忽略，先定五笔再设它们，警告才准。
+    pub fn apply_config(&mut self, config: &Config) {
+        self.apply_wubi_config(config);
         self.engine.set_fuzzy(config.fuzzy);
         self.engine.set_shuangpin(config.general.shuangpin());
         self.engine.set_zhuyin_mode(config.general.zhuyin);

@@ -1,4 +1,4 @@
-//! 「通用」页：学习语言、每页候选数、双拼、英文模式候选。
+//! 「通用」页：学习语言、每页候选数、双拼 / 注音 / 五笔、英文模式候选。
 
 use glimmer_platform::{MAX_PAGE_SIZE, PunctuationMode};
 use windows_reactor::*;
@@ -19,6 +19,9 @@ pub(crate) const SHUANGPIN: [(&str, &str); 5] = [
     ("搜狗双拼", "sogou"),
 ];
 
+/// 五笔：界面名 + 配置写法（空串关）。开着时双拼与注音被忽略，界面上置灰。
+pub(crate) const WUBI: [(&str, &str); 2] = [("关（拼音）", ""), ("86 五笔", "86")];
+
 fn string_combo(
     options: &'static [(&str, &str)],
     current: &str,
@@ -32,6 +35,9 @@ fn string_combo(
 
 pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> View {
     let g = &settings.config.general;
+    let wubi = &settings.config.wubi;
+    // 五笔开着时 Core 忽略双拼 / 注音，界面上把它们置灰
+    let wubi_on = g.wubi().is_some();
     let english_off = !settings.config.apps.english_candidates_off.is_empty();
     let rows = [
         field(
@@ -59,14 +65,37 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
                 &SHUANGPIN,
                 &g.shuangpin,
                 context.callback(Message::Shuangpin),
-            ),
+            )
+            .is_enabled(!wubi_on),
         ),
         field(
             "大千注音",
             "启用大千注音键盘布局（容错设定如 ㄢㄤ、ㄣㄥ 不分，请至「模糊音」分页开启）。",
             ToggleSwitch::new()
                 .is_on(g.zhuyin)
+                .is_enabled(!wubi_on)
                 .on_toggled(context.callback(Message::Zhuyin)),
+        ),
+        field(
+            "五笔",
+            "a–y 是编码键，最长四码；z 开头是拼音反查。开五笔后双拼与注音不再生效。",
+            string_combo(&WUBI, &g.wubi, context.callback(Message::Wubi)),
+        ),
+        field(
+            "四码自动上屏",
+            "敲满四码且有全码命中时首选直接上屏，不用再按空格。",
+            ToggleSwitch::new()
+                .is_on(wubi.auto_select)
+                .is_enabled(wubi_on)
+                .on_toggled(context.callback(Message::WubiAutoSelect)),
+        ),
+        field(
+            "显示编码提示",
+            "逐键提示的候选右侧显示完整编码。",
+            ToggleSwitch::new()
+                .is_on(wubi.hint)
+                .is_enabled(wubi_on)
+                .on_toggled(context.callback(Message::WubiHint)),
         ),
         field(
             "中文模式标点转全角",

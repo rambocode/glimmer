@@ -88,13 +88,18 @@ impl Router {
     pub(super) fn reconcile_status(&mut self) {
         match self.status_mode {
             Some(english) if self.config.status_enabled => {
+                // 五笔开着时双拼 / 注音被 Core 忽略，方案名只标五笔；看 Engine 上真装着的（码表缺了就不算开）
+                let wubi = self.engine.wubi().map(|scheme| scheme.variant());
                 self.status.show_status(StatusView {
                     english,
-                    zhuyin: self.config.zhuyin,
-                    scheme: self
-                        .config
-                        .shuangpin
-                        .map(|scheme| scheme.label().to_owned()),
+                    zhuyin: self.config.zhuyin && wubi.is_none(),
+                    scheme: match wubi {
+                        Some(variant) => Some(variant.label().to_owned()),
+                        None => self
+                            .config
+                            .shuangpin
+                            .map(|scheme| scheme.label().to_owned()),
+                    },
                     full_width: self.full_width_for(english),
                     theme: self.config.theme,
                     anchor: self.config.status_pos,

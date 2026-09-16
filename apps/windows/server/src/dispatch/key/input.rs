@@ -32,8 +32,7 @@ impl Router {
         // 缓冲区为空时敲 `?` 先进问字模式，中英文模式都行：后面跟字母就是在问字，跟别的键就还原成问号。
         if !self.composing() && c == QUESTION_PREFIX {
             self.engine.set_english_mode(false);
-            self.engine.push(c);
-            return Effect::Changed(None);
+            return self.push_key(c);
         }
         let question = self.composing() && self.engine.question_mode();
         // 英文模式下问字：Caps 让字母以大写送来，按小写收进问题。
@@ -155,8 +154,7 @@ impl Router {
             return with_prefix(raw, Effect::Passthrough, c);
         }
         if c.is_ascii_lowercase() {
-            self.engine.push(c);
-            return Effect::Changed(None);
+            return self.push_key(c);
         }
         if !self.composing() {
             return self.apply_punctuation(c, event);
@@ -193,8 +191,7 @@ impl Router {
         if c.is_ascii_alphabetic()
             || (composing && (c.is_ascii_digit() || matches!(c, '_' | '\'' | '-')))
         {
-            self.engine.push(c);
-            return Effect::Changed(None);
+            return self.push_key(c);
         }
         let committed = composing.then(|| {
             if c == ' ' && self.navigated {
@@ -217,8 +214,7 @@ impl Router {
             || (self.engine.unicode_entry() && (c.is_ascii_digit() || c == '+'))
             || (c == ';' && self.engine.takes_semicolon())
         {
-            self.engine.push(c);
-            return Effect::Changed(None);
+            return self.push_key(c);
         }
         if let Some(digit) = codes::digit(event)
             && self.candidate_count() > 0
@@ -245,8 +241,19 @@ impl Router {
             let effect = self.apply_punctuation(c, event);
             return with_prefix(Some(committed), effect, c);
         }
+        self.push_key(c)
+    }
+
+    /// 把一个键推进缓冲区。五笔下 Core 可能在这一键之后要求自动上屏（敲满四码全码命中、顶字）：
+    /// 照壳协议先取走，用与手动选词同一条 `commit` 路径上屏（学习 / 日志 / 统计一致），
+    /// 上屏文本与剩余缓冲区（顶字时 Core 已把新键补回去）一起随本次 `KeyResult` 回给 DLL，
+    /// 剩余缓冲区由随后的 `recompose` 刷新。拼音下 `take_auto_commit` 恒为 `None`。
+    fn push_key(&mut self, c: char) -> Effect {
         self.engine.push(c);
-        Effect::Changed(None)
+        match self.engine.take_auto_commit() {
+            Some(candidate) => Effect::Changed(Some(self.engine.commit(&candidate))),
+            None => Effect::Changed(None),
+        }
     }
 
     /// 上屏高亮候选；没有候选时缓冲原样上屏。

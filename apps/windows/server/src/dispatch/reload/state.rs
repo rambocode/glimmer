@@ -17,8 +17,11 @@ pub(crate) struct ConfigReload {
     /// 随包领域词库目录。
     pub(super) bundled_dicts_dir: Option<PathBuf>,
 
-    /// 用户数据目录（导入词库在其 `dicts/` 下）。
+    /// 用户数据目录（导入词库在其 `dicts/` 下，五笔的学习数据在其 `<方案键>/` 下）。
     pub(super) user_dir: Option<PathBuf>,
+
+    /// 五笔码表所在目录（与主词库同目录）；`None` 时热加载开不了五笔。
+    pub(super) wubi_dir: Option<PathBuf>,
 
     /// 上次看到的 mtime。
     pub(super) last_mtime: Option<SystemTime>,

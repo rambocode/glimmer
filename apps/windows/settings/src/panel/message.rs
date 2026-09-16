@@ -11,6 +11,11 @@ pub(crate) enum Message {
     PageSize(Option<f64>),
     Shuangpin(Option<usize>),
     Zhuyin(bool),
+    Wubi(Option<usize>),
+    /// `[wubi] auto_select`。
+    WubiAutoSelect(bool),
+    /// `[wubi] hint`。
+    WubiHint(bool),
     EnglishCandidates(bool),
     FullWidthPunctuation(bool),
     EnglishFullWidthPunctuation(bool),

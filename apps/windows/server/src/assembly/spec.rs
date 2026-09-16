@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use glimmer_core::Language;
 use glimmer_platform::DictionariesConfig;
 
-use super::LanguageModelFiles;
+use super::{LanguageModelFiles, WubiSpec};
 
 /// 装配要用的数据文件。除词库外都可选：缺哪个就少哪个功能。
 pub struct AssemblySpec {
@@ -39,6 +39,9 @@ pub struct AssemblySpec {
 
     /// 是否写输入日志（`[general] input_log`）。
     pub input_log: bool,
+
+    /// 五笔（`[general] wubi` + `[wubi]`）；码表在 `dict` 同目录。`None` 是拼音。
+    pub wubi: Option<WubiSpec>,
 }
 
 impl AssemblySpec {
@@ -55,6 +58,7 @@ impl AssemblySpec {
             levels_dir: None,
             user_dir: None,
             input_log: false,
+            wubi: None,
         }
     }
 }

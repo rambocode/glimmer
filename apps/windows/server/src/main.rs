@@ -7,7 +7,8 @@ use std::path::{Path, PathBuf};
 use glimmer_core::{Engine, Language};
 use glimmer_platform::{Config, ConfigError, LogLevel, resources};
 use glimmer_windows_server::{
-    AssemblySpec, LanguageModelFiles, Router, RouterConfig, ServerError, assembly, dispatch,
+    AssemblySpec, LanguageModelFiles, Router, RouterConfig, ServerError, WubiSpec, assembly,
+    dispatch,
 };
 
 /// 用户数据目录 `%APPDATA%\Glimmer`。非 Windows 拿不到。
@@ -175,6 +176,11 @@ fn main() {
         levels_dir: Some(root.join("assets/levels")),
         user_dir: user_dir(),
         input_log: config.general.input_log,
+        // 码表与 dict.qj 同目录；文件不在就记 warn 当没开
+        wubi: config.general.wubi().map(|variant| WubiSpec {
+            variant,
+            options: config.wubi.options(),
+        }),
         ..AssemblySpec::new(&dict)
     };
     let mut engine = match assemble_with_fallback(spec, &root) {
@@ -195,7 +201,13 @@ fn main() {
     let model_path = dispatch::find_model(user_dir().as_deref(), &root);
     router.configure_local_model(model_path.clone(), &config.model);
     if let Some(path) = config_path() {
-        router.watch_config(&config, path, bundled_dicts_dir, user_dir());
+        router.watch_config(
+            &config,
+            path,
+            bundled_dicts_dir,
+            user_dir(),
+            Some(assembly::wubi_dir(&dict).to_path_buf()),
+        );
     }
     tracing::info!(
         dict = %dict.display(),
@@ -206,6 +218,7 @@ fn main() {
         layout = router_config.layout.key(),
         theme = router_config.theme.key(),
         shuangpin = config.general.shuangpin().map(|s| s.key()).unwrap_or("全拼"),
+        wubi = router.wubi_key().unwrap_or("关"),
         fuzzy = config.fuzzy.any(),
         cloud = config.predict.enabled,
         model = model_path.as_deref().map(|p| p.display().to_string()).unwrap_or_default(),
