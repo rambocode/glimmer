@@ -64,8 +64,9 @@ pub fn init_logging() -> Option<tracing_appender::non_blocking::WorkerGuard> {
         Some(config) if config.general.log_level == LogLevel::Debug => "debug",
         _ => "info",
     };
+    // zbus 的 info 日志每条都带整条 D-Bus 消息的 span，压到 warn
     let filter = tracing_subscriber::EnvFilter::try_from_env("RUST_LOG")
-        .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new(level));
+        .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new(format!("{level},zbus=warn")));
     let appender = data_dir()
         .map(|dir| dir.join("logs"))
         .filter(|dir| std::fs::create_dir_all(dir).is_ok())
