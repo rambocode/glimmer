@@ -1,3 +1,4 @@
+#![allow(clippy::result_large_err)]
 //! 微明 CLI：Phase 1 的测试工具。
 //!
 //! 输入拼音，打印候选（词性 + 译文）和各阶段耗时；输入序号上屏并记入用户词频。
@@ -254,6 +255,7 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
     if config.fuzzy.any() {
         tracing::info!(rules = ?config.fuzzy, "模糊音已启用");
     }
+    engine.set_traditional_mode(config.general.traditional);
     engine.set_fuzzy(config.fuzzy);
     engine.set_mode_keys(config.shortcut.mode);
     if let Some(scheme) = config.general.shuangpin() {

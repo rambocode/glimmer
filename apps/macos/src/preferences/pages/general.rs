@@ -31,6 +31,8 @@ pub struct GeneralPage {
 
     /// 五笔：逐键提示候选右侧显示完整编码。
     wubi_hint: Retained<NSButton>,
+    /// 繁体输出模式。
+    traditional: Retained<NSButton>,
 
     /// 英文模式也给候选。
     english: Retained<NSButton>,
@@ -134,6 +136,8 @@ impl GeneralPage {
             mtm,
             "仅影响标点，字母和数字保持半角；自定义短语原样输出。设置会保存。 ",
         );
+        let traditional = checkbox(mtm, "繁体输出", Setting::Traditional, target);
+        row_checkbox(layout, &traditional);
         let mode_titles: Vec<String> = PunctuationMode::ALL
             .iter()
             .map(|m| m.label().to_owned())
@@ -189,6 +193,7 @@ impl GeneralPage {
             wubi,
             wubi_auto_select,
             wubi_hint,
+            traditional,
             english,
             english_off_in_apps,
             chinese_first,
@@ -246,6 +251,7 @@ impl GeneralPage {
         set_checked(&self.wubi_hint, config.wubi.hint);
         self.wubi_auto_select.setEnabled(wubi.is_some());
         self.wubi_hint.setEnabled(wubi.is_some());
+        set_checked(&self.traditional, general.traditional);
         set_checked(&self.english, general.english_candidates);
         set_checked(
             &self.english_off_in_apps,

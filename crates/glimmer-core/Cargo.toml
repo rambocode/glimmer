@@ -10,6 +10,7 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
+ferrous-opencc.workspace = true
 foldhash.workspace = true
 jiff.workspace = true
 glimmer-dictionary.workspace = true

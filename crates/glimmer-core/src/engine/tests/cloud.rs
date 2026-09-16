@@ -383,6 +383,41 @@ fn committing_a_cloud_word_learns_it_and_it_ranks_first_next_time() {
 }
 
 #[test]
+fn traditional_mode_preserves_original_text_across_queries() {
+    let mut engine = engine()
+        .with_predictor(Box::new(EchoPredictor {
+            submitted: std::rc::Rc::new(std::cell::RefCell::new(Vec::new())),
+            sentence: false,
+            replies: vec![Prediction {
+                sequence: 1,
+                words: vec![cloud("凯发", &["kai", "fa"])],
+                sentence: None,
+            }],
+        }))
+        .with_learner(Box::new(WordLearner::default()));
+
+    engine.set_traditional_mode(true);
+    engine.set_input("kaifa");
+    engine.request_prediction(None, &[]);
+    let prediction = engine.poll_prediction().unwrap();
+    let cloud_text = prediction.words[0].text.clone();
+
+    engine.query().unwrap(); // 第二次 query() 不应清空云端词的映射
+
+    let word = Candidate {
+        text: cloud_text,
+        kind: CandidateKind::Cloud,
+        syllables: vec!["kai".into(), "fa".into()],
+        reading: None,
+        translation: None,
+    };
+    assert_eq!(engine.commit(&word), "凱發");
+    // 检查词库里学到的是简体「凯发」
+    assert!(engine.learner().weight("凯发") > 0);
+    assert_eq!(engine.learner().weight("凱發"), 0);
+}
+
+#[test]
 fn cloud_words_are_learned_with_the_typed_reading_when_it_fits() {
     let mut engine = engine().with_learner(Box::new(WordLearner::default()));
     let cloud_word = |text: &str, syllables: &[&str]| Candidate {

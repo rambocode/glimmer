@@ -16,6 +16,7 @@ pub(crate) enum Message {
     WubiAutoSelect(bool),
     /// `[wubi] hint`。
     WubiHint(bool),
+    Traditional(bool),
     EnglishCandidates(bool),
     ChineseFirst(bool),
     FullWidthPunctuation(bool),

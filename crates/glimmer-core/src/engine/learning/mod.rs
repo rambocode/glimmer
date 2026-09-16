@@ -150,6 +150,13 @@ impl Engine {
     /// 用户要求删掉一个候选（修饰键 + 数字）：中文词与云端词交给 Learner 删用户词、清学习；英文词删个人英文词；
     /// 整句、快捷候选、emoji 没什么可删。删完缓存作废，它也不再当下一个词的上文。
     pub fn forget(&mut self, candidate: &Candidate) -> Forgotten {
+        let mut candidate_owned = candidate.clone();
+        if self.traditional
+            && let Some(simp) = self.traditional_map.borrow().get(&candidate_owned.text)
+        {
+            candidate_owned.text = simp.clone();
+        }
+        let candidate = &candidate_owned;
         let forgotten = match candidate.kind {
             CandidateKind::Chinese | CandidateKind::Cloud => self.learner.forget(&candidate.text),
             CandidateKind::English => Forgotten {

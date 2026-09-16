@@ -29,7 +29,7 @@
 **目標客群**：習慣打拼音（全拼 / 雙拼），但希望能直接輸出繁體字的用戶。
 **作法**：
 1. 將 `ferrous-opencc` 作為 `glimmer-core` 的一個可選依賴或內建功能。
-2. 在 `GeneralConfig` 增加 `traditional_output: bool` 的設定選項。
+2. 在 `GeneralConfig` 增加 `traditional: bool` 的設定選項。
 3. 在 Core 的候選詞結果輸出前，若該選項為 `true`，則進行簡轉繁。
 **優點**：架構改動最小，跨平台（Windows / macOS / CLI）共享一致的轉換邏輯，完全滿足官方維護者的期望。
 

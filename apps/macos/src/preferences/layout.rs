@@ -48,7 +48,7 @@ pub struct Layout {
     width: f64,
 
     /// 已摆的控件及其（x, 顶部距离, 宽, 高, 是否撑到页底）。
-    placed: Vec<(Retained<NSView>, f64, f64, f64, f64, bool)>,
+    placed: Vec<(Retained<NSView>, f64, f64, f64, f64)>,
 
     /// 当前行的顶部距离。
     top: f64,

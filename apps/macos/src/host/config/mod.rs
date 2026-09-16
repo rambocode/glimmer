@@ -15,6 +15,7 @@ impl Host {
     pub fn apply_config(&mut self, force: bool) {
         let config = self.settings.config().clone();
         self.engine.set_fuzzy(config.fuzzy);
+        self.engine.set_traditional_mode(config.general.traditional);
         self.engine
             .set_full_width_punctuation(config.general.full_width_punctuation);
         self.engine

@@ -25,6 +25,7 @@ repository = "https://github.com/rambocode/glimmer"
 all = "warn"
 
 [workspace.dependencies]
+ferrous-opencc = "0.4.0"
 # 内部 crate
 glimmer-core = { path = "crates/glimmer-core" }
 glimmer-dictionary = { path = "crates/glimmer-dictionary" }

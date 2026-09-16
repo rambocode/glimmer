@@ -140,6 +140,9 @@ pub enum Setting {
     /// `[general] shuangpin`，弹出菜单：关 + 四套方案。
     Shuangpin,
 
+    /// [general] traditional，勾选框：繁体输出。
+    Traditional,
+
     /// `[general] log_level`，勾选框：勾上是 debug。
     VerboseLog,
 
@@ -211,6 +214,7 @@ impl Setting {
             Self::ResetShortcuts => 18,
             Self::ImportDictionary => 19,
             Self::Shuangpin => 20,
+            Self::Traditional => 52,
             Self::VerboseLog => 21,
             Self::OpenLogDirectory => 22,
             Self::CopyDiagnostics => 23,
@@ -272,6 +276,7 @@ impl Setting {
             18 => Self::ResetShortcuts,
             19 => Self::ImportDictionary,
             20 => Self::Shuangpin,
+            52 => Self::Traditional,
             21 => Self::VerboseLog,
             22 => Self::OpenLogDirectory,
             23 => Self::CopyDiagnostics,
@@ -347,6 +352,7 @@ mod tests {
             Setting::ResetShortcuts,
             Setting::ImportDictionary,
             Setting::Shuangpin,
+            Setting::Traditional,
             Setting::VerboseLog,
             Setting::OpenLogDirectory,
             Setting::CopyDiagnostics,

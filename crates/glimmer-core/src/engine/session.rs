@@ -130,5 +130,6 @@ impl Engine {
         *self.correction_cache.borrow_mut() = None;
         *self.last_query.borrow_mut() = None;
         self.forget_span_cache();
+        self.traditional_map.borrow_mut().clear();
     }
 }

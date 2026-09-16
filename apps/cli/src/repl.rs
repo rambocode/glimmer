@@ -1,3 +1,4 @@
+#![allow(clippy::result_large_err)]
 //! 交互模式：拼音 → 候选；数字 → 上屏；`:raw` 把上一次输入原样上屏（相当于回车）；`:q` 退出。
 
 use std::io::{self, BufRead, Write};

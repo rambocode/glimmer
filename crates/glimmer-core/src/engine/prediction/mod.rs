@@ -198,6 +198,25 @@ impl Engine {
                         });
                     }
                 }
+                if self.traditional
+                    && self.last_prediction_kind != PredictionKind::Translate
+                    && let Some(opencc) = &self.opencc
+                {
+                    for word in &mut prediction.words {
+                        let traditional = opencc.convert(&word.text);
+                        self.traditional_map
+                            .borrow_mut()
+                            .insert(traditional.clone(), word.text.clone());
+                        word.text = traditional;
+                    }
+                    if let Some(sentence) = &mut prediction.sentence {
+                        let traditional = opencc.convert(sentence);
+                        self.traditional_map
+                            .borrow_mut()
+                            .insert(traditional.clone(), sentence.clone());
+                        *sentence = traditional;
+                    }
+                }
                 return Some(prediction);
             }
             tracing::debug!(
@@ -230,10 +249,23 @@ impl Engine {
         });
     }
 
-    /// 用户接受了一条整句补全：作用域内的拼音作废、句子上屏。句子没有拼音，记不了词频与用户词，
+    /// 用户接受一条整句补全：作用域内的拼音作废、句子上屏。句子没有拼音，记不了词频与用户词，
     /// 但按语言模型把它切成词（[`sentence::segment_text`]）逐条记进个人 n-gram，与选整句候选一样；
     /// 标点处断句，句尾是标点时之后的词按句首记。整句退格删光再重打时这些转移一并退回。
     pub fn accept_prediction(&mut self, text: &str) -> String {
+        let traditional_text = text.to_owned();
+        let original_text_owned;
+        let text = if self.traditional {
+            original_text_owned = self
+                .traditional_map
+                .borrow()
+                .get(text)
+                .cloned()
+                .unwrap_or_else(|| text.to_owned());
+            &original_text_owned
+        } else {
+            text
+        };
         let (_, input) = self.whole_scope();
         self.apply_retraction(&input, text);
         self.recording.clear();
@@ -265,7 +297,7 @@ impl Engine {
         }
         let commit = LastCommit {
             text: text.to_owned(),
-            chars: text.chars().count(),
+            chars: traditional_text.chars().count(),
             input,
             chosen: None,
             transitions: std::mem::take(&mut self.recording),
@@ -275,7 +307,7 @@ impl Engine {
             phrase: None,
         };
         self.remember_commit(commit);
-        text.to_owned()
+        traditional_text
     }
 
     /// 云端词学成用户词时用哪套音节。模型给的读音偶有错（我的 → wo di），错读音学进去以后只会按错读音出来，

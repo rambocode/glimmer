@@ -108,6 +108,13 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
                 .on_toggled(context.callback(Message::WubiHint)),
         ),
         field(
+            "繁体输出",
+            "打字时将候选词转换为繁体中文。",
+            ToggleSwitch::new()
+                .is_on(g.traditional)
+                .on_toggled(context.callback(Message::Traditional)),
+        ),
+        field(
             "中文模式标点转全角",
             "没在打拼音时敲 , . ? ! 等出「，。？！」，数字后面的点保持半角；悬浮状态条的「，。」格也能切，切的是当前模式那份。",
             ToggleSwitch::new()

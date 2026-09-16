@@ -367,6 +367,9 @@ impl Host {
             (Setting::CloudSlots, SettingValue::Index(index)) => {
                 self.settings.set_value("predict", "slots", index as i64);
             }
+            (Setting::Traditional, SettingValue::Bool(on)) => {
+                self.settings.set_bool("general", "traditional", on);
+            }
             (Setting::EnglishCandidates, SettingValue::Bool(on)) => {
                 self.settings.set_bool("general", "english_candidates", on);
             }

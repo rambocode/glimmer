@@ -101,7 +101,17 @@ impl Router {
                 self.engine.clear();
                 Effect::Changed(None)
             }
-            codes::RETURN => Effect::Changed(Some(self.engine.take_raw())),
+            codes::RETURN => {
+                if self.engine.is_zhuyin_mode() {
+                    if event.modifiers.shift {
+                        Effect::Changed(Some(self.engine.take_raw()))
+                    } else {
+                        Effect::Changed(Some(self.commit_highlighted()))
+                    }
+                } else {
+                    Effect::Changed(Some(self.engine.take_raw()))
+                }
+            }
             codes::TAB if self.engine.english_mode() => {
                 Effect::Changed(Some(self.commit_highlighted()))
             }
@@ -154,7 +164,9 @@ impl Router {
             self.engine.note_passthrough(c);
             return with_prefix(raw, Effect::Passthrough, c);
         }
-        if c.is_ascii_lowercase() {
+        let is_zhuyin_key = self.engine.is_zhuyin_mode()
+            && (c.is_ascii_digit() || matches!(c, '-' | ';' | ',' | '.' | '/'));
+        if c.is_ascii_lowercase() || is_zhuyin_key {
             return self.push_key(c);
         }
         if !self.composing() {
@@ -219,6 +231,7 @@ impl Router {
         }
         if let Some(digit) = codes::digit(event)
             && self.candidate_count() > 0
+            && (!self.engine.is_zhuyin_mode() || self.navigated)
         {
             let page_size = self.config.page_size;
             let page = self.highlight / page_size;
@@ -229,6 +242,10 @@ impl Router {
             return Effect::Navigated;
         }
         if c == ' ' {
+            if self.engine.zhuyin_needs_tone() {
+                self.engine.push(c);
+                return Effect::Changed(None);
+            }
             return Effect::Changed(Some(self.commit_highlighted()));
         }
         // 表达式 / 问字模式下的其他字符不进缓冲区（与 macOS 壳一致）：先把高亮候选上屏，再按没在组句处理这个键；

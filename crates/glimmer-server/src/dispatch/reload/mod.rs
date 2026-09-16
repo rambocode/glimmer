@@ -167,6 +167,7 @@ impl Router {
         self.engine.set_zhuyin_mode(config.general.zhuyin);
         self.engine
             .set_punctuation_mode(config.general.punctuation_mode);
+        self.engine.set_traditional_mode(config.general.traditional);
         self.engine.set_learning(config.general.learning);
         self.engine.set_mode_keys(config.shortcut.mode);
         self.engine.set_chinese_first(config.general.chinese_first);

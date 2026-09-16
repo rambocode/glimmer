@@ -250,6 +250,14 @@ pub struct Engine {
 
     /// 顶字上屏时被暂时从缓冲区拿掉的新键：旧段被 `commit` 吃掉后再补回缓冲区。
     deferred_key: Option<char>,
+    /// 繁体输出模式。
+    traditional: bool,
+
+    /// 繁体转换器。
+    opencc: Option<ferrous_opencc::OpenCC>,
+
+    /// 繁体反向映射。
+    traditional_map: std::cell::RefCell<std::collections::HashMap<String, String>>,
 }
 
 /// 英文补全最多几条（`compa` → company / compare / …）。
@@ -382,6 +390,9 @@ impl Engine {
             wubi: None,
             pending_auto_commit: None,
             deferred_key: None,
+            traditional: false,
+            opencc: None,
+            traditional_map: std::cell::RefCell::new(std::collections::HashMap::new()),
         }
     }
 }
