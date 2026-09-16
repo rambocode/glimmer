@@ -7,7 +7,7 @@ description: 微明输入法使用文档（macOS、Windows 与 Linux 测试版�
 微明是一个拼音输入法。输入时，候选词旁边附带一条所学语言的译词，在输入的同时记住一个词。
 它首先是一个完整的输入法：整句输入、简拼、拼写纠错、模糊音、双拼、五笔、英文模式，全部在本机完成，不上传数据。
 
-macOS 版与 Windows 版均为测试版，Linux 版为早期测试版（仅支持 IBus）。macOS 与 Windows 功能相同，按键按各自系统的习惯设计，见 [按键与快捷键](getting-started/keys.md)。
+macOS 版与 Windows 版均为测试版，Linux 版为早期测试版（支持 IBus 与 Fcitx5）。macOS 与 Windows 功能相同，按键按各自系统的习惯设计，见 [按键与快捷键](getting-started/keys.md)。
 
 ## 从哪里开始
 

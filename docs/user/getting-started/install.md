@@ -42,7 +42,12 @@ description: macOS、Windows 与 Linux 的安装步骤：系统要求、安装�
 
 ## Linux
 
-**系统要求**：使用 IBus 输入法框架、可安装 deb 包的发行版（Ubuntu 22.04、Debian 12 或更新）。目前只支持 IBus，Fcitx5 暂不支持。
+**系统要求**：可安装 deb 包的发行版，使用以下任一输入法框架：
+
+- **IBus**：Ubuntu 22.04、Debian 12 或更新。GNOME 桌面缺省使用 IBus。
+- **Fcitx5**：需 5.1 或更新，即 Ubuntu 24.04、Debian 13 或更新。KDE 等桌面常用 Fcitx5。
+
+两种框架共用同一个安装包。不确定在用哪一个时，在「终端」中执行 `pgrep -l 'ibus-daemon|fcitx5'`，看输出中出现的是哪个名字。
 x86_64 与 ARM64 各有一个安装包；不确定机型时，在「终端」中执行 `dpkg --print-architecture`，输出 `amd64` 选前者，`arm64` 选后者。
 
 1. 下载 `Glimmer-<版本>-amd64.deb`（x86_64）或 `Glimmer-<版本>-arm64.deb`（ARM64）。
@@ -52,12 +57,13 @@ x86_64 与 ARM64 各有一个安装包；不确定机型时，在「终端」中
    sudo apt install ./Glimmer-<版本>-amd64.deb
    ```
 
-3. 执行 `ibus restart`，或注销后重新登录。
-4. 到「设置 → 键盘 → 输入源 → +」，在「汉语」下添加「微明」。
+3. 按所用框架添加「微明」：
+   - **IBus**：执行 `ibus restart`，或注销后重新登录；然后到「设置 → 键盘 → 输入源 → +」，在「汉语」下添加「微明」。
+   - **Fcitx5**：执行 `fcitx5 -r`，或注销后重新登录；然后打开「Fcitx5 配置」，在「输入法」页的右侧列表中找到「微明」，添加到左侧列表（找不到时取消勾选「仅显示当前语言」）。
 
 安装后：
 
-- 按 `Super + Space` 切换输入源。
+- IBus 下按 `Super + Space` 切换输入源；Fcitx5 下按 `Ctrl + Space` 切换输入法（以 Fcitx5 配置中的「全局选项」为准）。
 - Linux 版暂无设置界面，设置保存在配置文件中，位置见 [数据与日志](../help/data-and-logs.md)。
 
 ## 升级与卸载

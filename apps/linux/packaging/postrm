@@ -1,5 +1,5 @@
 #!/bin/sh
-# 卸载后：刷新 IBus 的系统级组件缓存，提示用户重启 IBus。用户数据（~/.config/glimmer、~/.local/share/glimmer）不动。
+# 卸载后：刷新 IBus 的系统级组件缓存，提示用户重启 IBus 或 Fcitx5。用户数据（~/.config/glimmer、~/.local/share/glimmer）不动。
 set -e
 
 case "$1" in
@@ -7,7 +7,7 @@ case "$1" in
     if command -v ibus >/dev/null 2>&1; then
       ibus write-cache --system >/dev/null 2>&1 || true
     fi
-    echo "微明已卸载。运行 ibus restart 或注销后生效；个人数据保留在 ~/.config/glimmer 与 ~/.local/share/glimmer。"
+    echo "微明已卸载。运行 ibus restart（Fcitx5 用 fcitx5 -r）或注销后生效；个人数据保留在 ~/.config/glimmer 与 ~/.local/share/glimmer。"
     ;;
 esac
 

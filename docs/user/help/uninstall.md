@@ -35,7 +35,7 @@ description: 卸载微明、连同学习数据一起删除、只清除输入日�
 sudo apt remove glimmer
 ```
 
-然后执行 `ibus restart`，或注销后重新登录。
+然后执行 `ibus restart`（Fcitx5 下执行 `fcitx5 -r`），或注销后重新登录。
 
 学习数据与设置保留在「~/.local/share/glimmer/」与「~/.config/glimmer/」，重新安装后仍可用；连同数据一起删除时，卸载后手动删除这两个文件夹。
 

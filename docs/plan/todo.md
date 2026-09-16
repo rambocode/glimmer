@@ -110,5 +110,5 @@
     data Release 传 `model.qjm`，bundle.sh / glimmer.iss 只带一个文件），待 mac 与 box 真机各装一次验加载与重排；
     密码框已按 TSF 规范做（2026-09-12）：`KEYBOARD_DISABLED` compartment 整键放行不组句，`IS_PRIVATE` / 密码 / PIN 输入范围为私密（组句但不学不记不发云端，`ClientMessage::Privacy` → `Engine::set_private`），box 真机验过：Edge 密码框整键放行；InPrivate 网页文本框报 `IS_SEARCH` 不报 `IS_PRIVATE`，私密路径只靠单测覆盖；CI 两个 job 都从 `data` Release 取 `model.qjm`（已做）。
 - [ ] Linux（Phase 5，IBus 版已做、未上真机）：GNOME / KDE 真机验；翻译选中文字（用 surrounding text 的选区）；面板上点第 10 个以后的候选；
-  失焦时落进应用的是屏上 preedit（带音节分隔）而不是原文；全角 / 半角与设置界面；Fcitx5
+  失焦时落进应用的是屏上 preedit（带音节分隔）而不是原文；全角 / 半角与设置界面；Fcitx5 插件真机验（KDE Plasma）
 - [ ] 配置同步、跨平台词库

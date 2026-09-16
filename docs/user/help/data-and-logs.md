@@ -10,7 +10,7 @@ description: 微明在本机保存的文件及其内容、云联想发送的内�
 
 - **macOS**：「~/Library/Application Support/Glimmer/」（访达中按 `⇧⌘G` 输入此路径）。
 - **Windows**：「%APPDATA%\Glimmer」（在资源管理器地址栏中直接输入此路径）。
-- **Linux**：配置文件为「~/.config/glimmer/config.toml」，其余文件在「~/.local/share/glimmer/」。
+- **Linux**：配置文件为「~/.config/glimmer/config.toml」，其余文件在「~/.local/share/glimmer/」。IBus 与 Fcitx5 共用这些文件，换框架后学习数据仍在。
 
 从「青简」升级来的用户：macOS 上首次运行时会把原来的「~/Library/Application Support/Qingjian/」整个搬到新位置，学习数据与配置都会保留。
 
@@ -59,6 +59,6 @@ description: 微明在本机保存的文件及其内容、云联想发送的内�
 
 - **macOS**：「~/Library/Logs/Glimmer/」。
 - **Windows**：「%APPDATA%\Glimmer\logs」；此外每个应用内的输入法部分另写一份到「%LOCALAPPDATA%\Glimmer」下的「tsf.日期.log」，同样按天分文件、保留 7 天。
-- **Linux**：「~/.local/share/glimmer/」下。
+- **Linux**：「~/.local/share/glimmer/」下，IBus 与 Fcitx5 下都写在这里。
 
 按天分文件，保留 7 天。缺省级别不记录输入内容；仅在「高级」页打开「详细日志」后才逐键记录，用于排查问题，排查完成后请关闭。

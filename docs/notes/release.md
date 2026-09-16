@@ -53,10 +53,18 @@ Rust 工具链由 `rust-toolchain.toml` 钉版本（现在 1.96.0），两个 wo
 1. 改 `apps/linux/Cargo.toml` 的 `version`（打包脚本与 workflow 都读它）：发版之间是 `0.1.0-linux.1-dev`，发版提交改成 `0.1.0-linux.1`，标签推出去后改成下一个 `-dev`。
    **版本号不能与其他平台撞号**：更新日志与官网都按版本号索引，Windows 已占用 `0.1.0-alpha.N`，所以 Linux 用 `0.1.0-linux.N` 这一串预发布号。
 2. `CHANGELOG.md` 加一节 `## 0.1.0-linux.1 · 日期 · alpha`。
-3. 打标签 `linux-v0.1.0-linux.1` 推送。`release.yml` 的 `linux` job 用 matrix 在 `ubuntu-24.04`（amd64）与 `ubuntu-24.04-arm`（arm64）原生 runner 上各跑一遍：
-   核对版本与 main → 下载 `data` Release 并按 `SHA256SUMS` 校验 → `apps/linux/scripts/package.sh` 出 deb → 传 artifact；
+3. 打标签 `linux-v0.1.0-linux.1` 推送。`release.yml` 的 Linux 部分分四段，两半在不同系统上编（amd64 与 arm64 都在原生 runner 上，不交叉编译）：
+   - `linux-check`（`ubuntu-24.04`）：门禁，版本 = 标签、不带 `-dev`、标签在 main 上；后面的 job 都 `needs` 它。
+   - `linux-ibus`（matrix `ubuntu-22.04` / `ubuntu-22.04-arm`）：`cargo build --release --locked -p glimmer-linux`，传 artifact `ibus-<arch>`（`glimmer-ibus`）。
+   - `linux-fcitx5`（matrix `ubuntu-24.04` / `ubuntu-24.04-arm`）：apt 装 Fcitx5 5.1 构建依赖，编 `glimmer-fcitx5` 静态库 + cmake，`DESTDIR=<目录> cmake --install`，传 artifact `fcitx5-<arch>`（整个安装目录）。
+   - `linux-package`（每架构一个，matrix `ubuntu-22.04` / `ubuntu-22.04-arm`）：下载两个 artifact 与 `data` Release（按 `SHA256SUMS` 校验），
+     `GLIMMER_IBUS_BIN=… GLIMMER_FCITX5_STAGE=… apps/linux/scripts/package.sh` 出 deb，Depends 里带 `t64` 直接失败，传 artifact `deb-<arch>`。
    `linux-release` job 收齐两个 deb，生成 `SHA256SUMS` 与 `build-info.json`（数据摘要取 `data` Release 的 `SHA256SUMS`），建 Release，跑 `publish-releases-json.sh`，配了令牌就 `bump-website.sh`。
-4. 产物：`Glimmer-<版本>-amd64.deb`、`Glimmer-<版本>-arm64.deb`。只出 deb，不出 tar.gz / rpm / AppImage；目前只有 IBus 引擎，Fcitx5 未做。
+
+   **为什么这样拆**：deb 的 Depends 跟着构建机走。在 24.04 上编、打包得到 `libc6 (>= 2.39), libssl3t64`，只有 24.04 起装得上；
+   IBus 引擎在 22.04 上编、在 22.04 上跑 `dpkg-shlibdeps`，得到 `libc6 (>= 2.3x), libgcc-s1, libssl3 (>= 3.0.0)` 一类，22.04 / Debian 12 / 24.04 都能装
+   （24.04 的 `libssl3t64` 有 `Provides: libssl3`）。Fcitx5 5.1 开发包只在 24.04 / Debian 13 起才有，插件只能在 24.04 上编；它只在 fcitx5 ≥ 5.1 的系统上被加载，所以不进 Depends 的计算。
+4. 产物：`Glimmer-<版本>-amd64.deb`、`Glimmer-<版本>-arm64.deb`。只出 deb，不出 tar.gz / rpm / AppImage；同一个 deb 同时带 IBus 引擎与 Fcitx5 插件。
 
 **版本号规则**：文件名用 Cargo 原样的版本；带 `-dev` 时接 git 短哈希，工作区有改动再加 `+`（`Glimmer-0.1.0-linux.1-dev-1a2b3c4-arm64.deb`）。
 deb 的 `Version` 字段把 `-` 换成 `~`（`~` 在 dpkg 比较里排在一切之前，预发布版低于正式版）：`0.1.0-linux.1` → `0.1.0~linux.1`；
@@ -71,17 +79,39 @@ dev 版再接 `+g<短哈希>`，有改动加 `.dirty`：`0.1.0~linux.1~dev+g1a2b
 | `/usr/lib/glimmer/data/model/model.qjm` | 本地整句模型，可选 |
 | `/usr/lib/glimmer/assets/` | `emoji/emoji-{zh,en}.tsv`、`levels/levels-{en,ja}.tsv`、`sample/dict.tsv`、`wubi/{LICENSE.LGPL-3.0,AUTHORS}`（带五笔码表时） |
 | `/usr/share/ibus/component/glimmer.xml` | IBus 组件（`app.glimmer.IBus`，引擎名 `glimmer`），模板 `apps/linux/packaging/glimmer.xml.in` |
+| `/usr/lib/<multiarch>/fcitx5/glimmer.so` | Fcitx5 插件（C++ 半边静态链进 `libglimmer_fcitx5.a`），与 IBus 引擎共用 `/usr/lib/glimmer` 下的资源 |
+| `/usr/share/fcitx5/addon/glimmer.conf`、`/usr/share/fcitx5/inputmethod/glimmer.conf` | Fcitx5 的插件与输入法描述（输入法名 `glimmer`，图标名 `glimmer`），由 `apps/linux/fcitx5/addon` 的 CMake 安装规则生成 |
 | `/usr/share/icons/hicolor/256x256/apps/glimmer.png` | 图标，`assets/icon/logo.png` 缩到 256 提交在 `apps/linux/packaging/`（改 logo 后重新缩放） |
 | `/usr/share/doc/glimmer/copyright` | 许可（GPL-3.0-or-later，五笔码表 LGPL-3.0，数据来源） |
 
-`postinst` / `postrm` 只刷新 `ibus write-cache --system` 并提示用户 `ibus restart`，不杀用户会话里的 ibus-daemon。
-`Depends` 是 `ibus (>= 1.5.20)` 加 `dpkg-shlibdeps` 从二进制算出的动态库依赖。用户配置在 `~/.config/glimmer/config.toml`，数据与日志在 `~/.local/share/glimmer/`，卸载不动。
+`postinst` / `postrm` 只刷新 `ibus write-cache --system` 并提示用户 `ibus restart` 或 `fcitx5 -r`，不杀用户会话里的 ibus-daemon / fcitx5。
+`Depends` 是 `ibus (>= 1.5.20) | fcitx5 (>= 5.1)` 加 `dpkg-shlibdeps` **只从 IBus 引擎二进制**算出的动态库依赖。插件 `.so` 不进 `dpkg-shlibdeps`：
+它在 24.04 上编，会带进 `libc6 (>= 2.39)` 与 `libfcitx5*`，逼 22.04 / Debian 12 的 IBus 用户装不上；它要的 `libstdc++` / `libfcitx5*` 由 `fcitx5 (>= 5.1)` 包带来，OpenSSL 与引擎共用。
+IBus 部分支持 Ubuntu 22.04 / Debian 12 起，Fcitx5 部分要 5.1（Ubuntu 24.04 / Debian 13 起）。
 
-**本机打包**（macOS 上用 Docker）：`apps/linux/scripts/package-docker.sh` 在 `ubuntu:24.04` + rustup（版本读 `rust-toolchain.toml`）+ dpkg-dev 的镜像里跑 `package.sh`，
-容器的 cargo target 放 `target/linux-docker/`，registry 缓存放命名 volume，成品在 `target/deb/`。缺省打本机架构（Apple Silicon 上是 arm64），
+**Fcitx5 插件的构建**（CI 的 `linux-fcitx5` job 与 `package.sh` 本机编时同一套命令，在 `cargo build --release --locked -p glimmer-fcitx5` 之后）：
+`cmake -S apps/linux/fcitx5/addon -B <target>/fcitx5-build/<arch> -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DGLIMMER_RUST_LIB=<target>/release/libglimmer_fcitx5.a -DGLIMMER_DATA_ROOT=/usr/lib/glimmer`，
+`cmake --build`，`DESTDIR=<staging> cmake --install`。构建依赖 `cmake g++ extra-cmake-modules libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev fcitx5-modules-dev`（CI 与 Docker 镜像都装）。
+发版包必须两个框架都带：本机编插件时缺 cmake 或 Fcitx5 开发包，`package.sh` 失败退出；本地只打 IBus 包用 `GLIMMER_SKIP_FCITX5=1`（不支持交叉编译插件，`GLIMMER_TARGET` 时也要设它或给 `GLIMMER_FCITX5_STAGE`）。用户配置在 `~/.config/glimmer/config.toml`，数据与日志在 `~/.local/share/glimmer/`，卸载不动。
+
+**`package.sh` 的环境变量**：
+- `GLIMMER_IBUS_BIN`：现成的 `glimmer-ibus`，设了就不 `cargo build` 它（CI 用 22.04 上编的）。
+- `GLIMMER_FCITX5_STAGE`：现成的插件安装目录（`DESTDIR=<目录> cmake --install` 的结果，里面是 `usr/…`），设了就整个拷进 staging，不编静态库也不跑 cmake。
+- 两个都不设时本机一把编完，打一行警告：Depends 由构建机决定，发版包由 CI 分开编。`GLIMMER_SKIP_FCITX5=1` 不带插件（`GLIMMER_FCITX5_STAGE` 随之忽略）。
+- 引擎二进制与插件 `.so` 都在 `package.sh` 里 `strip`（本机架构时）。
+
+**本机打包**（macOS 上用 Docker）：`apps/linux/scripts/package-docker.sh` 在 `<基础镜像>` + rustup（版本读 `rust-toolchain.toml`）+ dpkg-dev 的镜像里跑 `package.sh`，
+基础镜像的 `libfcitx5core-dev` ≥ 5.1 时再装 Fcitx5 构建依赖（改 apt 清单时改镜像名里的 `-deps<N>`）。基础镜像由 `GLIMMER_DOCKER_BASE` 选，缺省 `ubuntu:24.04`；
+`ubuntu:22.04` 这类没有 Fcitx5 5.1 开发包的，要配 `GLIMMER_SKIP_FCITX5=1` 或 `GLIMMER_FCITX5_STAGE`，否则脚本在编译前就退出。
+容器的 cargo target 放 `target/linux-docker/`（`ubuntu:24.04`）或 `target/linux-docker-<基础镜像>/`（如 `linux-docker-ubuntu22.04`，glibc 不同的产物不混用），registry 缓存放命名 volume，成品在 `target/deb/`。
+`GLIMMER_IBUS_BIN` / `GLIMMER_FCITX5_STAGE` 要在仓库目录里（容器只挂仓库），脚本换成容器路径再传。缺省打本机架构（Apple Silicon 上是 arm64），
 `GLIMMER_DOCKER_PLATFORM=linux/amd64` 打 amd64（走模拟，慢）。worktree 里没有产品数据时用 `GLIMMER_DATA_DIR=<主工作树>/data` 只读挂进去。
-在 Linux 机器上直接跑 `apps/linux/scripts/package.sh`（要 `dpkg-dev`）。和 `bundle.sh` 不同，它不从 TSV 重打 `.qj`，只装 `data/generated/` 里已有的；
+想在本机得到与发版包一样的 Depends：`GLIMMER_DOCKER_BASE=ubuntu:22.04 GLIMMER_SKIP_FCITX5=1 apps/linux/scripts/package-docker.sh`（只有 IBus），
+或先在 24.04 上编出插件安装目录再用 `GLIMMER_FCITX5_STAGE` 交给 22.04 那次打包。
+在 Linux 机器上直接跑 `apps/linux/scripts/package.sh`（要 `dpkg-dev`，本机编插件时另要上面的 Fcitx5 构建依赖）。和 `bundle.sh` 不同，它不从 TSV 重打 `.qj`，只装 `data/generated/` 里已有的；
 没有 `dict.qj` 时只带样例词库并打警告。
+装机端到端：`apps/linux/tests/docker/install.sh <deb>` 在干净的基础镜像（`GLIMMER_DOCKER_BASE`，缺省 `ubuntu:24.04`）里装 deb，先测 IBus（`e2e_router.py`），再装 fcitx5 测插件（`apps/linux/fcitx5/tests/docker/e2e.py` 的装机模式）；
+`--ibus-only` 只测前者；基础镜像的 fcitx5 低于 5.1（`ubuntu:22.04`、`debian:12`）时插件那一遍自动跳过。
 
 ## 提交前检查与 CI
 
@@ -99,7 +129,7 @@ cargo 命令全 `--locked`（含 `bundle.sh` 与 `build.ps1`）。普通 CI 只�
 | 文件 | 触发 | 做什么 |
 |---|---|---|
 | `.github/workflows/ci.yml` | push main、PR | Linux 上 `cargo fmt --check` / clippy / test，排除 `glimmer-macos`（IMK 外壳只能在 macOS 编译，macOS runner 计费是 Linux 的 10 倍） |
-| `.github/workflows/release.yml` | 推 `macos-v*` / `windows-v*` / `linux-v*` 标签 | `macos` job（`macos-26`）：下载产品数据 → 可选签名公证 → `bundle.sh --pkg` 打 arm64 与交叉编译的 x86_64 → 建 Release；`windows` job（`windows-latest`）：下载产品数据 → `build.ps1` 打 Inno Setup 安装包 → 建 Release；`linux` job（`ubuntu-24.04` 与 `ubuntu-24.04-arm` 两个 matrix）：下载产品数据 → `package.sh` 打 deb，`linux-release` 汇总建 Release。三者最后都跑 `publish-releases-json.sh` |
+| `.github/workflows/release.yml` | 推 `macos-v*` / `windows-v*` / `linux-v*` 标签 | `macos` job（`macos-26`）：下载产品数据 → 可选签名公证 → `bundle.sh --pkg` 打 arm64 与交叉编译的 x86_64 → 建 Release；`windows` job（`windows-latest`）：下载产品数据 → `build.ps1` 打 Inno Setup 安装包 → 建 Release；`linux-check` 门禁 → `linux-ibus`（`ubuntu-22.04` / `-arm` 编引擎）与 `linux-fcitx5`（`ubuntu-24.04` / `-arm` 编插件）→ `linux-package`（`ubuntu-22.04` / `-arm` 下载产品数据、用预编产物跑 `package.sh` 出 deb），`linux-release` 汇总建 Release。三者最后都跑 `publish-releases-json.sh` |
 
 ## 产品数据从哪来
 

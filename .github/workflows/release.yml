@@ -274,17 +274,14 @@ jobs:
           GLIMMER_WEB_TOKEN: ${{ secrets.GLIMMER_WEB_TOKEN }}
         run: tools/release/bump-website.sh
 
-  # Linux：amd64 与 arm64 各在原生 runner 上打 deb（不交叉编译），传成 artifact，由 linux-release 汇总建 Release。
-  linux:
+  # Linux：两半在不同系统上编，最后在 22.04 上合成 deb（amd64 与 arm64 各在原生 runner 上，不交叉编译），由 linux-release 汇总建 Release。
+  #   linux-check    门禁（版本 = 标签、不带 -dev、标签在 main 上），其余 job 都 needs 它
+  #   linux-ibus     Ubuntu 22.04 上编 glimmer-ibus：deb 的 Depends 只由它算，22.04 / Debian 12 起都能装
+  #   linux-fcitx5   Ubuntu 24.04 上编 Fcitx5 插件（要 Fcitx5 5.1 开发包，22.04 没有），cmake --install 到目录
+  #   linux-package  Ubuntu 22.04 上用两份预编产物跑 package.sh：dpkg-shlibdeps 在 22.04 上才算出 libssl3（24.04 是 libssl3t64）
+  linux-check:
     if: startsWith(github.ref_name, 'linux-v')
-    strategy:
-      matrix:
-        include:
-          - runner: ubuntu-24.04
-            arch: amd64
-          - runner: ubuntu-24.04-arm
-            arch: arm64
-    runs-on: ${{ matrix.runner }}
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
@@ -293,15 +290,6 @@ jobs:
           # 门禁要看 main
           fetch-depth: 0
           persist-credentials: false
-
-      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
-        with:
-          toolchain: 1.96.0
-
-      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
-
-      - name: Install packaging tools
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends dpkg-dev pkg-config libssl-dev
 
       - name: Check version matches tag and tag is on main
         run: |
@@ -321,6 +309,118 @@ jobs:
             exit 1
           fi
 
+  linux-ibus:
+    needs: linux-check
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            arch: amd64
+          - runner: ubuntu-22.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+        with:
+          toolchain: 1.96.0
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config libssl-dev
+
+      - name: Build glimmer-ibus
+        run: |
+          cargo build --release --locked -p glimmer-linux
+          readelf -d target/release/glimmer-ibus | grep NEEDED
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ibus-${{ matrix.arch }}
+          path: target/release/glimmer-ibus
+          if-no-files-found: error
+
+  linux-fcitx5:
+    needs: linux-check
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            arch: amd64
+          - runner: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+        with:
+          toolchain: 1.96.0
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+
+      - name: Install build dependencies
+        run: >-
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends pkg-config libssl-dev
+          cmake g++ extra-cmake-modules libfcitx5core-dev libfcitx5config-dev libfcitx5utils-dev fcitx5-modules-dev
+
+      # 与 package.sh 本机编插件同一套命令：前缀 /usr、资源根 /usr/lib/glimmer，装到 DESTDIR 目录交给 linux-package
+      - name: Build Fcitx5 addon
+        run: |
+          cargo build --release --locked -p glimmer-fcitx5
+          cmake -S apps/linux/fcitx5/addon -B "$RUNNER_TEMP/fcitx5-build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
+            -DGLIMMER_RUST_LIB="$PWD/target/release/libglimmer_fcitx5.a" -DGLIMMER_DATA_ROOT=/usr/lib/glimmer
+          cmake --build "$RUNNER_TEMP/fcitx5-build" -j "$(nproc)"
+          DESTDIR="$RUNNER_TEMP/fcitx5-stage" cmake --install "$RUNNER_TEMP/fcitx5-build"
+          find "$RUNNER_TEMP/fcitx5-stage" -type f
+          readelf -d "$RUNNER_TEMP"/fcitx5-stage/usr/lib/*/fcitx5/glimmer.so | grep NEEDED
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fcitx5-${{ matrix.arch }}
+          path: ${{ runner.temp }}/fcitx5-stage/
+          if-no-files-found: error
+
+  linux-package:
+    needs: [linux-ibus, linux-fcitx5]
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            arch: amd64
+          - runner: ubuntu-22.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install packaging tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends dpkg-dev
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ibus-${{ matrix.arch }}
+          path: ${{ runner.temp }}/ibus
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: fcitx5-${{ matrix.arch }}
+          path: ${{ runner.temp }}/fcitx5-stage
+
       - name: Fetch product data
         env:
           GH_TOKEN: ${{ github.token }}
@@ -333,8 +433,17 @@ jobs:
           mv data/model.qjm data/model/
           ls -la data/generated data/generated/dicts data/model
 
+      # artifact 不保留可执行位，先补上；Depends 里出现 t64 说明依赖算在了 24.04 上，22.04 / Debian 12 装不了，直接失败
       - name: Build deb
-        run: apps/linux/scripts/package.sh
+        run: |
+          chmod +x "$RUNNER_TEMP/ibus/glimmer-ibus"
+          GLIMMER_IBUS_BIN="$RUNNER_TEMP/ibus/glimmer-ibus" GLIMMER_FCITX5_STAGE="$RUNNER_TEMP/fcitx5-stage" apps/linux/scripts/package.sh
+          DEPENDS="$(dpkg-deb -f target/deb/*.deb Depends)"
+          echo "Depends: $DEPENDS"
+          if [[ "$DEPENDS" == *t64* ]]; then
+            echo "Depends 带 t64，Ubuntu 22.04 / Debian 12 装不了" >&2
+            exit 1
+          fi
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -344,7 +453,7 @@ jobs:
 
   linux-release:
     if: startsWith(github.ref_name, 'linux-v')
-    needs: linux
+    needs: linux-package
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -373,7 +482,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#linux-v}"
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
-          # 两个构建 job 已按 data Release 的 SHA256SUMS 校验过下载的数据，这里直接取那份摘要记进 build-info.json
+          # 两个 linux-package job 已按 data Release 的 SHA256SUMS 校验过下载的数据，这里直接取那份摘要记进 build-info.json
           gh release download data --pattern SHA256SUMS --dir "$RUNNER_TEMP/data"
           DATA_SHA256="$(awk '$2 ~ /glimmer-data\.tar\.gz$/ {print $1}' "$RUNNER_TEMP/data/SHA256SUMS")"
           MODEL_SHA256="$(awk '$2 ~ /model\.qjm$/ {print $1}' "$RUNNER_TEMP/data/SHA256SUMS")"
@@ -384,7 +493,7 @@ jobs:
           sha256sum ./*.deb | tee SHA256SUMS
           jq -n --arg version "$VERSION" --arg tag "$GITHUB_REF_NAME" --arg commit "$GITHUB_SHA" \
             --arg built_at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" --arg toolchain "$(rustc --version)" \
-            --arg runner "$(. /etc/os-release && echo "$PRETTY_NAME")（amd64 与 arm64 各自原生 runner）" \
+            --arg runner "$(. /etc/os-release && echo "$PRETTY_NAME")（汇总机；IBus 引擎在 Ubuntu 22.04、Fcitx5 插件在 Ubuntu 24.04 上编，amd64 与 arm64 各自原生 runner）" \
             --arg data_sha256 "$DATA_SHA256" --arg model_sha256 "$MODEL_SHA256" \
             '{version: $version, tag: $tag, commit: $commit, built_at: $built_at, toolchain: $toolchain, runner: $runner, data_sha256: $data_sha256, model_sha256: $model_sha256}' \
             | tee build-info.json
@@ -394,7 +503,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 tools/release/releases_json.py --notes-for "$VERSION" > "$RUNNER_TEMP/notes.md"
-          printf '\n> 目前只支持 IBus（Fcitx5 暂不支持）。安装：`sudo apt install ./Glimmer-%s-amd64.deb`（ARM 机器用 arm64 包），然后运行 `ibus restart`，在「设置 → 键盘 → 输入源」里添加「微明」。\n' "$VERSION" >> "$RUNNER_TEMP/notes.md"
+          printf '\n> 同一个安装包支持 IBus 与 Fcitx5。安装：`sudo apt install ./Glimmer-%s-amd64.deb`（ARM 机器用 arm64 包）。IBus（Ubuntu 22.04、Debian 12 或更新）：运行 `ibus restart`，在「设置 → 键盘 → 输入源」里添加「微明」；Fcitx5（5.1 或更新）：运行 `fcitx5 -r`，在「Fcitx5 配置」里把「微明」加进输入法列表。\n' "$VERSION" >> "$RUNNER_TEMP/notes.md"
           gh release create "$GITHUB_REF_NAME" --title "微明 Linux $VERSION" --notes-file "$RUNNER_TEMP/notes.md" \
             target/deb/*.deb target/deb/SHA256SUMS target/deb/build-info.json
 

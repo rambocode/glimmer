@@ -1,6 +1,6 @@
 #!/bin/sh
-# 装完 / 升级后：刷新 IBus 的系统级组件缓存，提示用户重启 IBus 并添加「微明」。
-# 不去杀用户会话里的 ibus-daemon：postinst 以 root 跑，碰不到也不该碰用户会话。
+# 装完 / 升级后：刷新 IBus 的系统级组件缓存，提示用户重启 IBus 或 Fcitx5 并添加「微明」。
+# Fcitx5 启动时扫插件目录，没有缓存要刷。不去杀用户会话里的 ibus-daemon / fcitx5：postinst 以 root 跑，碰不到也不该碰用户会话。
 set -e
 
 case "$1" in
@@ -9,7 +9,9 @@ case "$1" in
     if command -v ibus >/dev/null 2>&1; then
       ibus write-cache --system >/dev/null 2>&1 || true
     fi
-    echo "微明已安装。运行 ibus restart 或注销后，在「设置 → 键盘 → 输入源」里添加「微明」。"
+    echo "微明已安装。"
+    echo "  IBus：运行 ibus restart 或注销后，在「设置 → 键盘 → 输入源」里添加「微明」。"
+    echo "  Fcitx5：运行 fcitx5 -r 或注销后，在「Fcitx5 配置 → 输入法」里添加「微明」。"
     ;;
 esac
 
