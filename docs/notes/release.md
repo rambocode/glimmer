@@ -75,14 +75,14 @@ dev 版再接 `+g<短哈希>`，有改动加 `.dirty`：`0.1.0~linux.1~dev+g1a2b
 | 路径 | 内容 |
 |---|---|
 | `/usr/lib/glimmer/glimmer-ibus` | 引擎进程，IBus 按组件描述以 `--ibus` 拉起 |
-| `/usr/lib/glimmer/data/generated/` | `dict.qj`、`lm.qj`、`glossary-{en,ja,zh}.qj`、`english.tsv`、`dicts/*.qj`、可选 `wubi86.qj` |
+| `/usr/lib/glimmer/data/generated/` | `dict.qj`、`lm.qj`、`glossary-{en,ja,zh}.qj`、`english.tsv`、`dicts/*.qj`、可选 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`（有几份带几份） |
 | `/usr/lib/glimmer/data/model/model.qjm` | 本地整句模型，可选 |
-| `/usr/lib/glimmer/assets/` | `emoji/emoji-{zh,en}.tsv`、`levels/levels-{en,ja}.tsv`、`sample/dict.tsv`、`wubi/{LICENSE.LGPL-3.0,AUTHORS}`（带五笔码表时） |
+| `/usr/lib/glimmer/assets/` | `emoji/emoji-{zh,en}.tsv`、`levels/levels-{en,ja}.tsv`、`sample/dict.tsv`、`wubi/wubi86/{LICENSE.LGPL-3.0,AUTHORS}`、`wubi/wubi98/LICENSE.LGPL-3.0`、`wubi/wubixsj/AUTHORS`（各自的码表带上时） |
 | `/usr/share/ibus/component/glimmer.xml` | IBus 组件（`app.glimmer.IBus`，引擎名 `glimmer`），模板 `apps/linux/packaging/glimmer.xml.in` |
 | `/usr/lib/<multiarch>/fcitx5/glimmer.so` | Fcitx5 插件（C++ 半边静态链进 `libglimmer_fcitx5.a`），与 IBus 引擎共用 `/usr/lib/glimmer` 下的资源 |
 | `/usr/share/fcitx5/addon/glimmer.conf`、`/usr/share/fcitx5/inputmethod/glimmer.conf` | Fcitx5 的插件与输入法描述（输入法名 `glimmer`，图标名 `glimmer`），由 `apps/linux/fcitx5/addon` 的 CMake 安装规则生成 |
 | `/usr/share/icons/hicolor/256x256/apps/glimmer.png` | 图标，`assets/icon/logo.png` 缩到 256 提交在 `apps/linux/packaging/`（改 logo 后重新缩放） |
-| `/usr/share/doc/glimmer/copyright` | 许可（GPL-3.0-or-later，五笔码表 LGPL-3.0，数据来源） |
+| `/usr/share/doc/glimmer/copyright` | 许可（GPL-3.0-or-later，五笔码表 86 与 98 LGPL-3.0 / 新世纪 LGPL，数据来源） |
 
 `postinst` / `postrm` 只刷新 `ibus write-cache --system` 并提示用户 `ibus restart` 或 `fcitx5 -r`，不杀用户会话里的 ibus-daemon / fcitx5。
 `Depends` 是 `ibus (>= 1.5.20) | fcitx5 (>= 5.1)` 加 `dpkg-shlibdeps` **只从 IBus 引擎二进制**算出的动态库依赖。插件 `.so` 不进 `dpkg-shlibdeps`：
@@ -133,8 +133,8 @@ cargo 命令全 `--locked`（含 `bundle.sh` 与 `build.ps1`）。普通 CI 只�
 
 ## 产品数据从哪来
 
-词库、语言模型、释义表、五笔码表（`data/generated/*.qj`、`dicts/*.qj`、英文词表）不在 git 里，体积约 85 MB 且由本机数据管道生成。
-`tools/release/data-bundle.sh` 把它们打成 `glimmer-data.tar.gz`，把本地整句模型单文件 `data/model/model.qjm`
+词库、语言模型、释义表、三份五笔码表（`data/generated/*.qj`、`dicts/*.qj`、英文词表）不在 git 里，体积约 85 MB 且由本机数据管道生成。
+`tools/release/data-bundle.sh` 把它们打成 `glimmer-data.tar.gz`（`PRODUCT_FILES` 里 `wubi86.qj`、`wubi98.qj`、`wubixsj.qj` 三份都在，缺一份就打不出包），把本地整句模型单文件 `data/model/model.qjm`
 （训练仓库导出三件套到 `data/model/`，`tools/release/pack-model.sh` 打成一个 `.qj` 容器，fp16 约 56 MB，元数据也写在那个脚本里）
 原样上传，连同 LLM 生成的续跑中间产物 `glimmer-llm-intermediates.tar.gz` 一起放到仓库里一个名为 `data` 的**预发布** Release
 （预发布不会成为 GitHub 的 latest，官网取 latest 时不会拿到它）。

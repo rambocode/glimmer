@@ -144,7 +144,11 @@ Linux    → IBus / Fcitx
 「微明」名字与 logo 不在授权范围内。微明在官方渠道免费；若你为获得它向他人付费，你被骗了。
 
 随包数据（词库、五笔码表、语言模型、释义表、emoji、英文词表、词汇等级）各自遵循来源的许可证，清单见 [docs/design/landscape.md](docs/design/landscape.md)，偏好设置「关于」页也列了一份。
-其中五笔 86 码表来自 [rime-wubi](https://github.com/rime/rime-wubi)（LGPL-3.0；极点五笔血统，字根与编码规则由王永民发明、已进入公有领域），许可证全文与署名在 [assets/wubi/](assets/wubi/README.md)。
+其中三份五笔码表（字根与编码规则由王永民发明）的来源是：
+
+- 86 五笔：[rime-wubi](https://github.com/rime/rime-wubi)（LGPL-3.0；极点五笔血统，86 版的编码规则已进入公有领域），见 [assets/wubi/wubi86/](assets/wubi/wubi86/README.md)。
+- 98 五笔：[98wubi](https://github.com/yanhuacuo/98wubi) 的含词码表（LGPL-3.0），见 [assets/wubi/wubi98/](assets/wubi/wubi98/README.md)。
+- 新世纪五笔：[wubixinshiji](https://github.com/GuoBinyong/wubixinshiji)（郭斌勇整理，`AUTHORS` 声明 LGPL），见 [assets/wubi/wubixsj/](assets/wubi/wubixsj/README.md)。
 
 ---
 

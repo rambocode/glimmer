@@ -28,7 +28,10 @@
   偏好设置「通用」页弹出菜单，CLI `--shuangpin`
 - [x] 五笔 86（2026-09-16，Core `wubi`，方案 `docs/plan/wubi.md`）：码表复用 `Dictionary`（编码当音节，rime-wubi LGPL-3.0 转出 `wubi86.qj`），全码在前 / 前缀逐键提示、
   简码固定序、四码自动上屏与顶字（`take_auto_commit`）、空码保留、`z` + 全拼反查注编码、自动造词按 AaAbBaBb 规则编码，学习数据按方案分目录；配置 `[general] wubi` + `[wubi]`，CLI `--wubi 86`；
-  壳与 98 版见 `todo.md`
+  壳见 `todo.md`
+- [x] 五笔 98 与新世纪（2026-09-17，Core `wubi::Variant`）：与 86 并列成三个可选版本（`[general] wubi = "86"|"98"|"xsj"`，偏好设置弹出菜单四项，Linux 改配置文件），
+  行为与 86 完全一致，只换字根与码表；随包 `wubi98.qj`（yanhuacuo/98wubi 的含词表 `wubi98_ci.dict.yaml`，LGPL-3.0）与 `wubixsj.qj`（GuoBinyong/wubixinshiji，AUTHORS 声明 LGPL）；
+  学习数据按方案键分目录（`wubi86/` / `wubi98/` / `wubixsj/`），CLI `--wubi 86|98|xsj|off`，回放一次只装一种版本
 - [x] 查词性能：`lookup_pattern` / `lookup_exact` 逐级前缀二分收窄（简拼位置按音节块跳扫，小区间线性），
   同一次查询内前缀模式记忆化，排序键预计算 + 只选前 500 条。长输入 20 ms → 0.2 ms，全简拼 `zhgdoima` 70 ms → 1 到 3 ms，单字母 30 ms → 3 到 4 ms
 - [x] 逐键性能（2026-09-05，`glimmer-cli --typing` 按前缀逐键计时）：纠错变体先用无分配的「能否完整切分」过滤

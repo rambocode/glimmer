@@ -80,7 +80,8 @@ glimmer-core
 ├── emoji           # emoji 候选：EmojiTable（词 → emoji，Unicode CLDR 中文 annotations）
 ├── fuzzy           # 模糊音：FuzzyRules（配置 [fuzzy]）把每个音节扩展成多种写法，Expanded 借出给词库多写法查询
 ├── shuangpin       # 双拼：Scheme 四套方案的键位表，decode 把敲的键解成全拼（音节间带 '），Decoded 把上屏消耗换算回键数；切分之后全部复用全拼
-├── wubi            # 五笔：Scheme = 码表（复用 Dictionary，一条编码整个当一个音节）+ Reverse 字 → 全码 + Options（[wubi]）+ encode 造词规则（AaAbBaBb / AaBaCaCb / AaBaCaZa）；
+├── wubi            # 五笔：Variant 是版本（86 / 98 / 新世纪，定配置写法 86|98|xsj、方案键 wubi86|wubi98|wubixsj、码表文件名与界面名；三版行为一致，只换字根与码表）；
+│                   # Scheme = Variant + 码表（复用 Dictionary，一条编码整个当一个音节）+ Reverse 字 → 全码 + Options（[wubi]）+ encode 造词规则（AaAbBaBb / AaBaCaCb / AaBaCaZa）；
 │                   # 查询 / 自动上屏 / 上屏消耗在 engine/query/wubi.rs 与 engine/commit/wubi.rs，z 开头回到拼音路径反查并注编码；开着时双拼 / 注音 / 整句 / 纠错 / 模糊音全部让位
 │                   # engine::ModeKeys（配置 [shortcut]）：表达式 / 问字前缀键，只能是 v / u / i；问字键后跟十六进制出码点字符
 ├── engine          # 对外门面：Engine，以及 Translator / Learner trait 与空实现
@@ -198,7 +199,7 @@ CSR 偏移与后继）原样落盘，打开时 mmap 整个文件、校验一遍�
 - 文件 = 32 字节头（魔数 `GLIMMER`、格式版本、数据种类 `Kind`、分节数）+ 分节表（4 字节标签 + 偏移 + 长度，正文 8 字节对齐）
   + 各分节。第一节固定是 `META`：TOML 的 `Metadata`（名称、许可证 SPDX、署名、来源、版本、条数、生成者），
   偏好设置里的词库列表直接显示它，第三方词库各带各的许可证靠的就是这一节。
-- 数据种类：词库（含五笔码表 `wubi86.qj`：同一种类、同一查询接口，编码当音节）、语言模型、释义表、emoji 表、英文词表，以及本地整句模型 `Kind::Model`——扩展名换成 `.qjm`，
+- 数据种类：词库（含三份五笔码表 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`：同一种类、同一查询接口，编码当音节）、语言模型、释义表、emoji 表、英文词表，以及本地整句模型 `Kind::Model`——扩展名换成 `.qjm`，
   三节 `CONF` / `VOCB` / `SAFT` 原样装训练仓库导出的 `config.json` / `vocab.json` / `model.safetensors`（safetensors 是不透明载荷，
   mmap 后切片给 candle，张量搬上设备后容器即丢；`META.entries` 记参数量）。`glimmer-neural::find_model(dir)` 先找 `.qjm`、没有再认三件套目录，
   所以开发直接加载训练直出的目录，随包与用户目录只有一个文件；`dict-convert pack model`（`tools/release/pack-model.sh` 带元数据调它）打包。
@@ -215,7 +216,7 @@ CSR 偏移与后继）原样落盘，打开时 mmap 整个文件、校验一遍�
   自己写风险最小。若以后碰撞或分布出问题，换成 xxh3 并把 `FORMAT_VERSION` 加一。
 - 写文件先写同目录 `.qj.tmp` 再改名；数据文件只整体替换，从不就地修改（mmap 的安全前提）。
 - 生成：`cargo run --release -p glimmer-dict-convert -- pack dict --name … --license … --source …` → `dict.qj`，
-  `pack lm --name … --license …` → `lm.qj`（`bundle.sh` 在 TSV 比 `.qj` 新时自动重打）；五笔码表 `dict-convert wubi` 转出 `wubi86.tsv` 后 `pack dict --output wubi86.qj`（META 记 LGPL-3.0 与 rime-wubi 署名）。`Dictionary::from_path` 按魔数自动选
+  `pack lm --name … --license …` → `lm.qj`（`bundle.sh` 在 TSV 比 `.qj` 新时自动重打）；三份五笔码表各由 `dict-convert wubi` 转出 `<版本>.tsv` 再 `pack dict --output <版本>.qj`（META 记各自的许可与署名，逐版本命令在 `assets/wubi/<版本>/README.md`）。`Dictionary::from_path` 按魔数自动选
   `.qj` / TSV 路径，`BigramModel::from_path`（`.qj`）与 `from_paths`（TSV）分开；输入法与 CLI 有 `.qj` 就用它。
   释义表、emoji 表、英文词表还是 TSV（加载各 20 ms 以内，等有需要再进容器）。
 - 格式版本不兼容时 `FORMAT_VERSION` 加一，读旧版的代码按需保留；`Kind` 编号只增不改。

@@ -18,7 +18,7 @@ README.md 只介绍项目，所有技术内容放在这里，分四类：前三�
 | [design/landscape.md](design/landscape.md) | 同类项目（水杉、Rime）、可用数据源及其许可 |
 | [plan/roadmap.md](plan/roadmap.md) | 分阶段路线图、各阶段的依赖关系与已完成项 |
 | [plan/zh_tw_support_plan.md](plan/zh_tw_support_plan.md) | 繁体输出与台湾注音支持的分析与方案（贡献者 pinchiu，#22）：读音标准差异、台湾用语、简转繁一对多；两条路线 |
-| [plan/wubi.md](plan/wubi.md) | 五笔支持方案（2026-09-16）：码表选型与许可（rime-wubi 86 LGPL 首选、98 Unlicense 次之、新世纪不做）、按 fcitx5 / librime 缺省定的行为、复用 Dictionary 的架构与分步实施；Core 与数据已落地，壳在做，98 / 通配 / 双拼反查在第二阶段 |
+| [plan/wubi.md](plan/wubi.md) | 五笔支持方案（2026-09-16 起草，2026-09-17 补三版）：码表选型与许可（86 rime-wubi LGPL、98 yanhuacuo/98wubi 含词表 LGPL、新世纪 wubixinshiji）、按 fcitx5 / librime 缺省定的行为、复用 Dictionary 的架构与分步实施；三个版本都已落地，`z` 通配 / 历史造词 / 双拼反查在第二阶段 |
 | [plan/todo.md](plan/todo.md) | 待办清单，按「从自用到能给别人用」排 |
 | [notes/crate-notes.md](notes/crate-notes.md) | 各 crate / app / tool 的实现要点：入口类型、数据文件、常数、生成命令 |
 | [notes/performance.md](notes/performance.md) | 历次性能优化：起因、定位方法、改法、数字前后对比与经验 |
