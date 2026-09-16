@@ -12,14 +12,17 @@ use glimmer_translate::Glossary;
 use crate::args::PackKind;
 use crate::error::ConvertError;
 
-/// 打包一种数据。`inputs` 为空时从 `out_dir` 里找缺省的 TSV。
+/// 打包一种数据。`inputs` 为空时从 `out_dir` 里找缺省的 TSV；`output` 给了就用它当输出文件名，否则按种类取缺省名。
 pub fn pack(
     kind: PackKind,
     inputs: &[PathBuf],
     language: &str,
+    output: Option<&str>,
     metadata: Metadata,
     out_dir: &Path,
 ) -> Result<(), ConvertError> {
+    // 输出文件名：显式给的优先，否则用各种类的缺省名
+    let out_path = |default: String| out_dir.join(output.map_or(default, str::to_owned));
     let metadata = Metadata {
         generator: format!("glimmer-dict-convert {}", env!("CARGO_PKG_VERSION")),
         ..metadata
@@ -32,7 +35,7 @@ pub fn pack(
                 .cloned()
                 .unwrap_or_else(|| out_dir.join("dict.tsv"));
             let dictionary = Dictionary::from_path(&input)?;
-            let out = out_dir.join("dict.qj");
+            let out = out_path("dict.qj".to_owned());
             dictionary.write_qj(&out, &metadata)?;
             report(&out, dictionary.len(), started);
         }
@@ -45,7 +48,7 @@ pub fn pack(
                 ),
             };
             let model = BigramModel::from_paths(&unigram, &bigram)?;
-            let out = out_dir.join("lm.qj");
+            let out = out_path("lm.qj".to_owned());
             model.write_qj(&out, &metadata)?;
             report(&out, model.bigram_count(), started);
         }
@@ -59,7 +62,7 @@ pub fn pack(
                 PathBuf::from("assets/glossary").join(format!("glossary-{}.tsv", language.code()))
             });
             let glossary = Glossary::from_path(language, &input)?;
-            let out = out_dir.join(format!("glossary-{}.qj", language.code()));
+            let out = out_path(format!("glossary-{}.qj", language.code()));
             glossary.write_qj(&out, &metadata)?;
             report(&out, glossary.len(), started);
         }
@@ -68,7 +71,7 @@ pub fn pack(
                 .first()
                 .cloned()
                 .unwrap_or_else(|| PathBuf::from("data/model"));
-            let out = out_dir.join("model.qjm");
+            let out = out_path("model.qjm".to_owned());
             let parameters = glimmer_neural::qjm::pack(&input, &out, &metadata)?;
             report(
                 &out,

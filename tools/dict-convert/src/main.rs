@@ -7,8 +7,9 @@
 //! - `bigram`：纯文本语料（如 `tools/corpus/parquet_to_text.py` 转出的中文维基 CC BY-SA 4.0、LCCC 对话 MIT）→ `lm-unigram.tsv` + `lm-bigram.tsv`
 //! - `mine`：语料里分词落成连续单字的段 → `oov-candidates.tsv`（词库没收的高频词，标音后用 `lexicon --extra-words` 并入）
 //! - `phrases`：bigram 表的相邻两词 + 语料的相邻三词 → `phrases.tsv`（我的 / 不知道 这类短语层，读音由成分词拼出，同样用 `lexicon --extra-words` 并入）
+//! - `wubi`：Rime 五笔码表 `assets/wubi/wubi86.dict.yaml`（LGPL-3.0）→ `wubi86.tsv`（编码当音节，缺省按常用字集过滤，`--extended` 全留）
 //! - `pack dict|lm|glossary|model`：TSV → `.qj` 容器（`dict.qj` / `lm.qj`），带名称 / 许可证 / 署名元数据，输入法与 CLI 优先加载它；
-//!   `model` 把本地整句模型的三件套目录打成一个 `model.qjm`
+//!   `model` 把本地整句模型的三件套目录打成一个 `model.qjm`；`--output` 改输出文件名（五笔码表打成 `wubi86.qj`）
 //!
 //! 输出默认写到仓库根目录 `data/generated/`（gitignore）。
 
@@ -22,6 +23,7 @@ mod lexicon;
 mod oov_filter;
 mod pack;
 mod phrases;
+mod wubi;
 
 use clap::Parser;
 use tracing_subscriber::EnvFilter;
@@ -129,6 +131,13 @@ fn run() -> Result<(), ConvertError> {
             },
             &args.out_dir,
         ),
+        Command::Wubi {
+            from: args::WubiSource::Rime,
+            input,
+            out,
+            extended,
+            charset,
+        } => wubi::convert(&input, &out, extended, charset.as_deref()),
         Command::Pack {
             kind,
             input,
@@ -138,10 +147,12 @@ fn run() -> Result<(), ConvertError> {
             source,
             data_version,
             language,
+            output,
         } => pack::pack(
             kind,
             &input,
             &language,
+            output.as_deref(),
             glimmer_format::Metadata {
                 name,
                 license,

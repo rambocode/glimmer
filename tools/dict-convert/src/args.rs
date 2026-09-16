@@ -162,6 +162,29 @@ pub enum Command {
         max_chars: usize,
     },
 
+    /// 五笔码表：Rime `wubi86.dict.yaml`（`text\tcode\tweight[\tstem]`）→ 微明 TSV `词\t编码\t词频`，编码整个当一个音节；
+    /// 缺省只留每个字都在常用字集（GB2312 + `--charset` 主词库里出现过的字）的条目，`--extended` 保留全部
+    Wubi {
+        /// 码表格式
+        #[arg(long, value_enum, default_value_t = WubiSource::Rime)]
+        from: WubiSource,
+
+        /// 输入码表（assets/wubi/wubi86.dict.yaml）
+        input: PathBuf,
+
+        /// 输出 TSV
+        #[arg(long, default_value = "data/generated/wubi86.tsv")]
+        out: PathBuf,
+
+        /// 不做字符集过滤（增广字集）
+        #[arg(long)]
+        extended: bool,
+
+        /// 主词库（TSV 或 .qj）：里面出现过的字并入常用字集
+        #[arg(long)]
+        charset: Option<PathBuf>,
+    },
+
     /// 把 TSV 打包成 `.qj` 容器（mmap 直接用，启动近零耗时）：`dict` 读 dict.tsv 写 dict.qj，`lm` 读 lm-unigram/bigram.tsv 写 lm.qj，
     /// `glossary --language en` 读 glossary-en.tsv 写 glossary-en.qj；`model` 把训练仓库导出的三件套目录（缺省 data/model）
     /// 打成一个 model.qjm（`--out-dir data/model` 就写回原目录，随包只带这一个文件）
@@ -196,7 +219,18 @@ pub enum Command {
         /// `glossary` 专用：释义表的语言代码（en / ja / zh），决定输出文件名 glossary-<语言>.qj
         #[arg(long, default_value = "en")]
         language: String,
+
+        /// 输出文件名（放在输出目录下）；缺省按种类：dict.qj / lm.qj / glossary-<语言>.qj / model.qjm。五笔码表用 wubi86.qj
+        #[arg(long)]
+        output: Option<String>,
     },
+}
+
+/// `wubi` 能读的码表格式。
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]
+pub enum WubiSource {
+    /// Rime `.dict.yaml`（rime-wubi）
+    Rime,
 }
 
 /// `pack` 能打的数据种类。

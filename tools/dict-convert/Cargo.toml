@@ -8,6 +8,7 @@ repository.workspace = true
 
 [dependencies]
 clap.workspace = true
+encoding_rs = "0.8.41"
 glimmer-core.workspace = true
 glimmer-dictionary.workspace = true
 glimmer-format.workspace = true
