@@ -1,0 +1,2 @@
+# 上游码表原文按原字节入库（98 与新世纪是 CRLF），README 里记的 SHA256 才对得上
+assets/wubi/*/*.dict.yaml -text
