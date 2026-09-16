@@ -6,22 +6,14 @@
 //! 设置窗口、手改文件被监视到，全都走它；三个入口都只写 `config.toml`，不各存一套状态。
 
 mod cloud;
-mod cloud_test_monitor;
 mod config;
-mod config_watch;
 mod diagnostics;
 mod dictionaries;
-mod dictionary_info;
 mod init;
 mod model;
-mod notice;
-mod predict_monitor;
 mod presenting;
-mod rescore_monitor;
 mod session;
 mod settings;
-mod text_replacements;
-mod translation_job;
 mod wubi;
 
 use std::cell::RefCell;
@@ -57,14 +49,14 @@ use crate::error::HostError;
 use crate::menubar::{InputMenu, MenuAction, ModeIndicator};
 use crate::preferences::{PreferencesWindow, Setting, SettingValue, WUBI_VARIANTS};
 
-use cloud_test_monitor::CloudTestMonitor;
-use config_watch::ConfigWatch;
-pub use dictionary_info::DictionaryInfo;
+use cloud::{CloudTestMonitor, PredictMonitor};
+use config::{ConfigWatch, TextReplacement};
+pub use dictionaries::DictionaryInfo;
 pub use init::init;
-use predict_monitor::PredictMonitor;
-use rescore_monitor::RescoreMonitor;
+use model::RescoreMonitor;
+use presenting::Notice;
+pub use presenting::TranslationJob;
 pub use session::Session;
-pub use translation_job::TranslationJob;
 use wubi::load_wubi_scheme;
 
 pub struct Host {
@@ -144,7 +136,7 @@ pub struct Host {
     pub translation: Option<TranslationJob>,
 
     /// 正在显示的提示（候选窗口里一行字，几秒后自动收）。
-    pub notice: Option<notice::Notice>,
+    pub notice: Option<Notice>,
 
     /// 组句中的拼音显示在行内、候选窗口还是两处。
     pub preedit_mode: PreeditMode,
@@ -153,7 +145,7 @@ pub struct Host {
     pub english_candidates: bool,
 
     /// 上次从系统读到的文本替换（激活输入法时重读），`[general] system_text_replacements` 开着时并进自定义短语。
-    text_replacements: Vec<text_replacements::TextReplacement>,
+    text_replacements: Vec<TextReplacement>,
 
     /// 按应用的行为（配置 `[apps]`）：哪些应用里英文模式不给候选。
     pub apps: AppsConfig,

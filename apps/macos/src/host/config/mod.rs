@@ -1,7 +1,12 @@
 //! 配置热加载：config.toml 改了就整份重新套用到 Engine 与窗口；激活期间的定时事务。
 
+mod text_replacements;
+mod watch;
+
+pub(super) use text_replacements::TextReplacement;
+pub(super) use watch::ConfigWatch;
+
 use super::init::load_glossary;
-use super::text_replacements;
 use super::*;
 
 impl Host {
