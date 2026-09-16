@@ -10,7 +10,7 @@
 # 架构：缺省编译本机架构；GLIMMER_TARGET=x86_64-unknown-linux-gnu / aarch64-unknown-linux-gnu 交叉编译（要自备链接器）。
 # 产品数据：data/generated/ 里有 dict.qj 就按产品数据装（缺哪个随包文件打警告），没有就只带 assets/sample/ 样例词库并打警告；
 # 与 bundle.sh 不同，这里不从 TSV 重打 .qj，CI 从 data Release 解出的就是 .qj，本机先跑过 bundle.sh 或 data-bundle.sh 流程。
-# 本地整句模型 data/model/model.qjm、五笔码表 data/generated/wubi86.qj 有就带，没有就跳过。
+# 本地整句模型 data/model/model.qjm、五笔码表 data/generated/wubi{86,98,xsj}.qj 有就带，没有就跳过。
 #
 # 版本号（apps/linux/Cargo.toml 的 version，各平台壳独立）：
 #   - 文件名用 Cargo 原样的版本；带 -dev 时接 git 短哈希（工作区有改动再加 +）：Glimmer-0.1.0-linux.1-dev-1a2b3c4-arm64.deb
@@ -193,15 +193,23 @@ if [[ -f "$GEN/dict.qj" ]]; then
 else
   echo "警告: 没有 $GEN/dict.qj，只带 assets/sample/ 样例词库（不是产品词库，分发前先下载或生成产品数据）" >&2
 fi
-# 五笔 86 码表（LGPL-3.0，许可与署名随包）：没有就不装，开着五笔时引擎当没开
-if [[ -f "$GEN/wubi86.qj" ]]; then
-  install -D -m 644 "$GEN/wubi86.qj" "$LIB/data/generated/wubi86.qj"
-  install -D -m 644 assets/wubi/LICENSE.LGPL-3.0 "$LIB/assets/wubi/LICENSE.LGPL-3.0"
-  install -D -m 644 assets/wubi/AUTHORS "$LIB/assets/wubi/AUTHORS"
-  echo "打包五笔 86 码表：$GEN/wubi86.qj"
-else
-  echo "注意: 没有 $GEN/wubi86.qj，包里不带五笔码表（生成命令见 assets/wubi/README.md）" >&2
-fi
+# 五笔码表三版（86 / 98 / 新世纪，各自的许可与署名随包）：缺哪版就不装哪版，引擎选到缺的版本时当没开五笔
+for v in wubi86 wubi98 wubixsj; do
+  if [[ -f "$GEN/$v.qj" ]]; then
+    install -D -m 644 "$GEN/$v.qj" "$LIB/data/generated/$v.qj"
+    # 各版带的许可 / 署名文件不一样（98 只有 LICENSE.LGPL-3.0，新世纪只有 AUTHORS）：
+    # LICENSE* 是通配，set -euo pipefail 下无匹配时 shell 原样返回带 * 的串，所以逐个判存在；
+    # 这里用 if 而不是 [[ … ]] && …，后者判假会让循环以非零状态结束，set -e 直接掐掉整个打包
+    for f in "assets/wubi/$v/"LICENSE* "assets/wubi/$v/AUTHORS"; do
+      if [[ -f "$f" ]]; then
+        install -D -m 644 "$f" "$LIB/assets/wubi/$v/$(basename "$f")"
+      fi
+    done
+    echo "打包五笔码表：$GEN/$v.qj"
+  else
+    echo "注意: 没有 $GEN/$v.qj，包里不带这版五笔码表（生成命令见 assets/wubi/$v/README.md）" >&2
+  fi
+done
 # 本地整句模型单文件（tools/release/pack-model.sh 打成）：没有就不装，引擎不重排
 MODEL="${GLIMMER_MODEL_DIR:-data/model}/model.qjm"
 if [[ -f "$MODEL" ]]; then
