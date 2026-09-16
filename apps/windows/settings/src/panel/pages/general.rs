@@ -20,7 +20,13 @@ pub(crate) const SHUANGPIN: [(&str, &str); 5] = [
 ];
 
 /// 五笔：界面名 + 配置写法（空串关）。开着时双拼与注音被忽略，界面上置灰。
-pub(crate) const WUBI: [(&str, &str); 2] = [("关（拼音）", ""), ("86 五笔", "86")];
+/// 首项之后逐项对齐 `glimmer_core::WubiVariant::ALL`（顺序与文案由底部单测守住）。
+pub(crate) const WUBI: [(&str, &str); 4] = [
+    ("关（拼音）", ""),
+    ("86 五笔", "86"),
+    ("98 五笔", "98"),
+    ("新世纪五笔", "xsj"),
+];
 
 fn string_combo(
     options: &'static [(&str, &str)],
@@ -141,4 +147,22 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
         ),
     ];
     page("通用", StackPanel::new().spacing(16.0).children(rows))
+}
+
+#[cfg(test)]
+mod tests {
+    use glimmer_core::WubiVariant;
+
+    use super::WUBI;
+
+    /// 界面的五笔下拉必须跟着 Core 的版本表走：多一个版本没加进 WUBI，或者文案 / 配置写法
+    /// 与 Core 对不上，用户选了就会写出 Core 不认的 `[general] wubi`，这里直接拦住。
+    #[test]
+    fn wubi_options_match_core_variants() {
+        assert_eq!(WUBI.len(), WubiVariant::ALL.len() + 1);
+        for (option, variant) in WUBI[1..].iter().zip(WubiVariant::ALL) {
+            assert_eq!(option.0, variant.label());
+            assert_eq!(option.1, variant.config_key());
+        }
+    }
 }
