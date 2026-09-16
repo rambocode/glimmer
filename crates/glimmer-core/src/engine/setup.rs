@@ -95,9 +95,10 @@ impl Engine {
     pub fn set_traditional_mode(&mut self, on: bool) {
         self.traditional = on;
         if on && self.opencc.is_none() {
-            self.opencc =
-                ferrous_opencc::OpenCC::from_config(ferrous_opencc::config::BuiltinConfig::S2tw)
-                    .ok();
+            match ferrous_opencc::OpenCC::from_config(ferrous_opencc::config::BuiltinConfig::S2tw) {
+                Ok(opencc) => self.opencc = Some(opencc),
+                Err(error) => tracing::warn!(%error, "繁体转换器初始化失败，候选仍是简体"),
+            }
         }
     }
 
