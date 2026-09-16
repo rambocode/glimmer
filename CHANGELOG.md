@@ -3,6 +3,11 @@
 一个版本一节，标题写「版本 · 日期 · 渠道」（渠道是 alpha / beta / rc / stable），正文一行一条、面向用户的措辞。
 发版时 CI 从这里取该版本的说明写进 GitHub Release，并汇总成官网下载页用的 `releases.json`（`tools/release/releases_json.py`）。
 
+## 0.1.4 · 2026-09-17 · beta
+
+- 五笔新增 98 五笔与新世纪五笔：「偏好设置 → 通用」的「五笔」菜单里选，按键与 86 五笔完全一致
+- 五笔同一编码的多个候选改成按码表原有顺序排列
+
 ## 0.1.0-linux.2 · 2026-09-17 · alpha
 
 - 支持 Fcitx5（KDE Plasma 等默认用 Fcitx5 的桌面）：同一个安装包，装好后运行 `fcitx5 -r`，在「Fcitx5 配置」里把「微明」加进输入法列表；需要 Fcitx5 5.1 或更新（Ubuntu 24.04、Debian 13 或更新）
