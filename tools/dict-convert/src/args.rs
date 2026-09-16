@@ -91,9 +91,10 @@ pub enum Command {
         #[arg(long)]
         phrases: Vec<PathBuf>,
 
-        /// 品牌词文件（assets/lexicon/brand.tsv）：语料里没有的词按文件给的次数写进一元表
+        /// 品牌词文件（assets/lexicon/brand.tsv，可给多个，中英混杂词 mixed_words.tsv 也走这条路）：语料里没有的词按文件给的次数写进一元表。
+        /// 与 --phrases 的区别：合成计数要成分词在语料里，C盘 的 C 不是语料 token，只能直接给
         #[arg(long)]
-        brand: Option<PathBuf>,
+        brand: Vec<PathBuf>,
 
         /// 计数低于此值的二元组不输出
         #[arg(long, default_value_t = 3)]

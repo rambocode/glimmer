@@ -380,7 +380,7 @@ pub fn convert(
     corpus: &[PathBuf],
     dict: &Path,
     phrases: &[PathBuf],
-    brand: Option<&Path>,
+    brand: &[PathBuf],
     min_count: u32,
     max_bigrams: usize,
     out_dir: &Path,
@@ -438,9 +438,9 @@ pub fn convert(
         distinct_bigrams = bigram.len(),
         "统计完成"
     );
-    // 品牌词（微明）语料里没有：按 brand.tsv 给的次数写进一元，句首二元给八分之一（请柬 209 次里 25 次在句首，同一比例），
+    // 品牌词（微明）与中英混杂词（C盘）语料里没有：按文件给的次数写进一元，句首二元给八分之一（请柬 209 次里 25 次在句首，同一比例），
     // 让词级排序不把它当模型不认识的词扣分、能与同音词（请柬）平起平坐，又不压过 请见 这种整句路径
-    if let Some(path) = brand {
+    for path in brand {
         let mut added = 0usize;
         for line in std::fs::read_to_string(path)?.lines() {
             if line.is_empty() || line.starts_with('#') {
