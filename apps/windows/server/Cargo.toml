@@ -16,19 +16,12 @@ embed-manifest.workspace = true
 
 [dependencies]
 glimmer-core.workspace = true
-glimmer-dictionary.workspace = true
-glimmer-learning.workspace = true
-glimmer-lm.workspace = true
-glimmer-neural.workspace = true
 glimmer-platform.workspace = true
-glimmer-predict.workspace = true
-glimmer-translate.workspace = true
+glimmer-server.workspace = true
 dotenvy.workspace = true
-thiserror.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
 tracing-appender.workspace = true
-toml_edit.workspace = true
 
 [lints]
 workspace = true

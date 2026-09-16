@@ -1,3 +1,5 @@
+//! Server 装配 Engine 的错误类型。
+
 use glimmer_dictionary::DictionaryError;
 use glimmer_lm::LmError;
 use glimmer_translate::GlossaryError;

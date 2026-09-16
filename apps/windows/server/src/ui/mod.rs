@@ -26,11 +26,11 @@ use windows::Win32::UI::WindowsAndMessaging::{
 use windows::core::{Error, Result};
 
 use glimmer_platform::protocol::{Frame, ScreenRect};
+use glimmer_server::dispatch::{CandidateSink, StatusEvent, StatusSink, StatusView};
 
 use self::candidates::CandidateWindow;
 use self::command::UiCommand;
 use self::status::StatusBar;
-use crate::dispatch::{CandidateSink, StatusEvent, StatusSink, StatusView};
 
 /// 状态条上的操作（点格子 / 拖动结束）回给 Router 的回调，UI 线程上调。
 pub type StatusEvents = Box<dyn Fn(StatusEvent) + Send>;

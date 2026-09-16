@@ -1,4 +1,4 @@
-//! 按键分派用的虚拟键码与字符解析。
+//! 按键分派用的 Windows 虚拟键码（VK）与字符解析；非 Windows 客户端发来前先翻成 VK。
 
 use glimmer_platform::protocol::KeyEvent;
 

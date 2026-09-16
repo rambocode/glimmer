@@ -11,8 +11,7 @@ pub use work::Work;
 use std::io::{Read, Write};
 
 use glimmer_platform::protocol::ClientMessage;
-
-use crate::dispatch::Router;
+use glimmer_server::dispatch::Router;
 
 /// 在一条已连上的双工流上服务一个客户端：读消息、交给 Router、写回，直到对端在帧边界关闭。
 pub fn serve<S: Read + Write>(stream: &mut S, router: &mut Router) -> Result<(), CodecError> {

@@ -19,10 +19,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `crates/glimmer-lm`：整句转换的 bigram 语言模型 `BigramModel`。
 - `crates/glimmer-neural`：字级 Transformer 本地推理 `CharScorer`（candle），给整句前几条路径重打分。
 - `crates/glimmer-format`：`.qj` 数据容器（mmap 读、零拷贝视图、写入器、哈希索引）。
+- `crates/glimmer-server`：输入法 Server 的平台无关部分：Engine 装配（`assembly`）与协议分派 `Router`（协议消息 → Engine → 帧），Windows Server 与 Linux 引擎进程共用。
 - `crates/glimmer-platform`：平台层共用：`Config`（TOML 配置）、`extra_dictionaries`、Windows Server ↔ DLL 的 `protocol` 类型。
 - `apps/cli`：Core 的验证工具：查询、逐键计时、输入日志回放、整句评测、常数扫描。排序 / 整句 / 纠错的改动先跑它再合。
 - `apps/macos`：IMK 壳，按 `app / host / imk / candidates / menubar / preferences` 分目录；`scripts/bundle.sh --install` 装到本机，`--pkg` 出分发包。
-- `apps/windows`：`server`（Server 进程：Engine + IPC + 自绘候选窗与状态条）+ `tsf`（TSF DLL）+ `settings`（WinUI 3）+ `installer`（Inno）。DLL 不能带 Engine 的依赖树，所以是两个 package。
+- `apps/windows`：`server`（Server 进程：命名管道 + 自绘候选窗与状态条，Engine 与分派来自 `glimmer-server`）+ `tsf`（TSF DLL）+ `settings`（WinUI 3）+ `installer`（Inno）。DLL 不能带 Engine 的依赖树，所以是两个 package。
 - `tools/dict-convert`、`tools/gloss-gen`、`tools/corpus`：产品数据生成（词库 / 语言模型 / 释义表 / emoji / 英文词表），输出到 `data/generated/`（gitignore）。
 - `tools/eval/sweep.sh`：回放扫参（多组 `--tune` 并行跑 `glimmer-cli --replay` 汇成 TSV），用法见 `docs/notes/constant-sweep.md`。
 - `tools/release/`：发版脚本（数据包上传 `data-bundle.sh`、模型单文件 `pack-model.sh`、`releases.json`、官网触发），流程见 `docs/notes/release.md`。

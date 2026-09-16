@@ -1,4 +1,4 @@
-//! 装配 Engine：Server 里唯一知道具体 Translator / Learner 类型的地方，装的东西与 macOS 的 `host::init` 一致。
+//! 装配 Engine：Server（Windows Server 进程 / Linux 引擎进程）里唯一知道具体 Translator / Learner 类型的地方，装的东西与 macOS 的 `host::init` 一致。
 
 mod language_model;
 mod spec;

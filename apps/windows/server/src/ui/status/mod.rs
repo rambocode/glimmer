@@ -24,6 +24,7 @@ use windows::Win32::UI::WindowsAndMessaging::{
 use windows::core::{PCWSTR, Result, w};
 
 use glimmer_platform::ThemeMode;
+use glimmer_server::dispatch::StatusView;
 
 use self::cell::CellSpec;
 use self::placement::{Placement, StatusAction};
@@ -34,7 +35,6 @@ use super::candidates::view;
 use super::layered::{self, Layered};
 use super::monitor;
 use super::window_class::WindowClass;
-use crate::dispatch::StatusView;
 
 const CLASS_NAME: PCWSTR = w!("GlimmerStatusBar");
 static CLASS: WindowClass = WindowClass::new();

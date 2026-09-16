@@ -1,4 +1,5 @@
-//! 协议分派：把 DLL 发来的 [`ClientMessage`] 交给 Engine，产出回给 DLL 的 [`ServerMessage`]。
+//! 协议分派：把客户端（Windows 的 TSF DLL / Linux 的 IBus 引擎前端）发来的 [`ClientMessage`] 交给 Engine，
+//! 产出回给客户端的 [`ServerMessage`]。下文说的「DLL」泛指客户端。
 //! 消息分派在 [`message`]，会话在 [`session`]，组句展示状态在 [`composed`]，按键在 [`key`]，
 //! 候选窗口输出在 [`candidates`]，状态条在 [`status`]，翻译选中文字在 [`translate`]，配置热加载在 [`reload`]，
 //! 本地整句模型在 [`rescore`]。
@@ -80,10 +81,10 @@ pub struct Router {
     /// 配置热加载状态；`None` 表示不热加载。
     reload: Option<ConfigReload>,
 
-    /// 候选窗口输出端；Windows 上由 [`crate::ui`] 注入。
+    /// 候选窗口输出端；由平台壳（如 Windows Server 的自绘 UI 线程）注入。
     candidates: Box<dyn CandidateSink>,
 
-    /// 悬浮状态条输出端；Windows 上由 [`crate::ui`] 注入。
+    /// 悬浮状态条输出端；由平台壳注入。
     status: Box<dyn StatusSink>,
 
     /// 状态条要显示的中英模式；`None` 表示微明没在前台（还没有会话报过模式 / 切成了别的输入法），不显示。
@@ -110,9 +111,13 @@ pub struct Router {
 
     /// 重排的防抖 / 轮询进行态。
     rescore: RescoreState,
+
+    /// 写输入日志会话条目用的壳版本号与平台名（`log_session`）；由平台壳设置。
+    log_identity: (&'static str, &'static str),
 }
 
 impl Router {
+    /// 用装配好的 Engine 与配置建 Router；输出端默认不画，由平台壳再注入。
     pub fn new(engine: Engine, config: RouterConfig) -> Self {
         Self {
             engine,
@@ -142,13 +147,21 @@ impl Router {
             model_loader: None,
             applied_model: LocalModelConfig::default(),
             rescore: RescoreState::default(),
+            log_identity: ("", "unknown"),
         }
     }
 
+    /// 设置输入日志会话条目里的壳版本号与平台名（如 `("0.1.0", "windows")`）；各壳版本独立，不能用本 crate 的版本。
+    pub fn set_log_identity(&mut self, version: &'static str, platform: &'static str) {
+        self.log_identity = (version, platform);
+    }
+
+    /// 注入候选窗口输出端。
     pub fn set_candidate_sink(&mut self, sink: Box<dyn CandidateSink>) {
         self.candidates = sink;
     }
 
+    /// 注入悬浮状态条输出端。
     pub fn set_status_sink(&mut self, sink: Box<dyn StatusSink>) {
         self.status = sink;
     }
@@ -162,6 +175,7 @@ impl Router {
         response
     }
 
+    /// 立刻把学习数据落盘（退出前 / 定时）。
     pub fn flush_learning(&mut self) {
         self.engine.flush_learning();
         self.last_flush = Instant::now();

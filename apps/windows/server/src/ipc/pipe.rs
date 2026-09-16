@@ -24,9 +24,9 @@ use windows::Win32::System::Pipes::{
 use windows::core::{HRESULT, HSTRING};
 
 use glimmer_platform::protocol::{ClientMessage, ServerMessage, read_message, write_message};
+use glimmer_server::dispatch::Router;
 
 use super::Work;
-use crate::dispatch::Router;
 
 pub use glimmer_platform::protocol::DEFAULT_PIPE_NAME;
 

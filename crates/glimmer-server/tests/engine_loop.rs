@@ -10,8 +10,8 @@ use glimmer_platform::protocol::{
     SessionId,
 };
 use glimmer_platform::{AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS};
-use glimmer_windows_server::dispatch::{StatusEvent, StatusSink, StatusView};
-use glimmer_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
+use glimmer_server::dispatch::{StatusEvent, StatusSink, StatusView};
+use glimmer_server::{AssemblySpec, Router, RouterConfig, assembly};
 
 const SESSION: SessionId = SessionId(1);
 
@@ -54,7 +54,7 @@ fn router_in_app(app: &str) -> Router {
 }
 
 fn router_in(config: RouterConfig, app: Option<String>) -> Router {
-    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../..");
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let dict = root.join("assets/sample/dict.tsv");
     let glossary = root.join("assets/sample/glossary-en.tsv");
     let mut engine = assembly::assemble(&AssemblySpec {
@@ -606,7 +606,7 @@ fn unconfigured_modifier_digit_is_not_a_selection() {
 
 #[test]
 fn learning_data_persists_to_user_dir() {
-    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../..");
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let user_dir =
         std::env::temp_dir().join(format!("glimmer-windows-learning-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&user_dir);
@@ -1053,7 +1053,7 @@ impl SentenceScorer for Prefers {
 
 /// 接了假模型的 Router：本地整句模型在壳里是异步接法，按键先按词级出候选，停顿后 tick 才换。
 fn router_with_scorer(preferred: &'static str) -> Router {
-    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../..");
+    let root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let mut engine = assembly::assemble(&AssemblySpec::new(root.join("assets/sample/dict.tsv")))
         .expect("assemble engine from sample data");
     engine.set_async_sentence_scorer(Some(Box::new(Prefers(preferred))));

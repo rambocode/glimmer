@@ -1,5 +1,6 @@
 //! 按键处理：键码 / 字符解析在 [`codes`]，分流在 [`input`]，「修饰键 + 数字」快捷键在 [`shortcut`]，
 //! 一次按键的结果是 [`Effect`]。
+//! 键码是 Windows 虚拟键码（VK）语义；Linux 端负责把 X keysym 翻成 VK 再发来。
 
 mod codes;
 mod effect;

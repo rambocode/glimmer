@@ -7,8 +7,9 @@ use std::cell::{Cell, RefCell};
 use windows::Win32::Foundation::{HWND, RECT};
 use windows::Win32::UI::WindowsAndMessaging::GetWindowRect;
 
+use glimmer_server::dispatch::StatusEvent;
+
 pub(super) use self::action::StatusAction;
-use crate::dispatch::StatusEvent;
 use crate::ui::StatusEvents;
 
 /// 窗口过程也要读写的摆放状态，经 `PLACEMENTS` 按 HWND 查到。

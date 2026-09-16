@@ -87,6 +87,13 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 前 `RESCORE_P
 （mac 壳与 Windows Server 共用，同名 `.qj` 优先于 `.tsv`）；`protocol` 模块是 Windows Server ↔ TSF DLL 的 IPC 协议类型
 （`ClientMessage` / `ServerMessage` / `Frame` / `PreeditSegment`，全 serde，两端共用，见 `docs/design/architecture.md`「Windows：TSF」）。
 
+## crates/glimmer-server
+
+输入法 Server 的平台无关部分，从 `apps/windows/server` 抽出，Windows Server 进程与 Linux IBus 引擎进程共用：`assembly`（按 `AssemblySpec` 装配 Engine：词库 / 释义 / 学习 / 语言模型 / 五笔码表）、
+`dispatch::Router`（`ClientMessage` → Engine → `ServerMessage` / `Frame`：多会话、按键、上屏、翻译选中文字、配置热加载、本地整句模型重排的节拍 `next_tick` / `tick`）、`error::ServerError`。
+不含传输与绘制：候选窗 / 状态条经 `CandidateSink` / `StatusSink` 由平台壳注入，默认不画。键码沿用 Windows 虚拟键码（VK）语义，Linux 端把 keysym 翻成 VK 再发。
+输入日志的会话条目（版本号 / 平台名）由壳用 `Router::set_log_identity` 设置。集成测试 `tests/engine_loop.rs` / `wubi_loop.rs` 用 `assets/sample/` 样例数据，全平台可跑。
+
 ## crates/glimmer-render
 
 自绘渲染器（还在分支 renderer-spike 上，未合入 main）：候选窗一帧 + 主题 → 预乘 RGBA 位图，tiny-skia 栅格 + cosmic-text 文字（fontdb 按平台清单只加载几个字体文件、不扫系统），
@@ -137,7 +144,7 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 
 ## apps/windows
 
-一个产品两个 package：`server`（Server 进程：IPC 分派 + Engine + 命名管道 + 自绘候选窗与悬浮状态条）与 `tsf`（TSF 文本服务 DLL，lib 名固定 `glimmer_tsf`），
+一个产品两个 package：`server`（Server 进程：命名管道传输 + 自绘候选窗与悬浮状态条；Engine 装配与协议分派在 `crates/glimmer-server`）与 `tsf`（TSF 文本服务 DLL，lib 名固定 `glimmer_tsf`），
 外加 `settings`（WinUI 3 设置程序）与 `installer`（Inno Setup）。不合成一个 crate，因为 DLL 不能带 Engine 的依赖树，见 `apps/windows/README.md`；
 协议类型在 `glimmer-platform::protocol`，设计见 `docs/design/architecture.md`「Windows：TSF」。
 

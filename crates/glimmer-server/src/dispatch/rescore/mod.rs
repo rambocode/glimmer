@@ -93,8 +93,8 @@ impl Router {
                         self.engine
                             .set_async_sentence_scorer(Some(Box::new(scorer)));
                         // 模型上线了：日志里补一条会话信息，之后的条目知道重排开着
-                        self.engine
-                            .log_session(env!("CARGO_PKG_VERSION"), "windows");
+                        let (version, platform) = self.log_identity;
+                        self.engine.log_session(version, platform);
                     }
                     Err(error) => tracing::warn!(%error, "本地整句模型加载失败，不重排"),
                 }

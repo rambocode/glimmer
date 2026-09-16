@@ -11,8 +11,8 @@ use glimmer_platform::Config;
 use glimmer_platform::protocol::{
     ClientMessage, Frame, KeyEvent, KeyOutcome, PROTOCOL_VERSION, ServerMessage, SessionId,
 };
-use glimmer_windows_server::dispatch::{StatusSink, StatusView};
-use glimmer_windows_server::{AssemblySpec, Router, RouterConfig, assembly};
+use glimmer_server::dispatch::{StatusSink, StatusView};
+use glimmer_server::{AssemblySpec, Router, RouterConfig, assembly};
 
 const SESSION: SessionId = SessionId(1);
 
@@ -20,7 +20,7 @@ const SESSION: SessionId = SessionId(1);
 const TABLE: &str = "工\ta\t9000\n工\taaaa\t100\n式\taa\t8000\n王\tgggg\t9000\n一\tggll\t9000\n五\tgg\t7000\n玉\tgy\t6000\n主\tygd\t5000\n天\tgd\t7000\n是\tjghu\t9000\n中\tkhk\t9000\n中国\tkhlg\t8000\n国\tlgyi\t8000\n";
 
 fn repo_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../..")
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..")
 }
 
 /// 样例词库装的 Router，再把内嵌码表设成 86 五笔，开好一个会话。

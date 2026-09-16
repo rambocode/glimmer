@@ -1,8 +1,7 @@
 //! 交给 UI 线程执行的命令。
 
 use glimmer_platform::protocol::{Frame, ScreenRect};
-
-use crate::dispatch::StatusView;
+use glimmer_server::dispatch::StatusView;
 
 /// 交给 UI 线程执行的命令。`Frame` 较大，装箱免得枚举过胖。
 pub(super) enum UiCommand {
