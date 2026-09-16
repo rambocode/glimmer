@@ -68,7 +68,7 @@ cargo 命令全 `--locked`（含 `bundle.sh` 与 `build.ps1`）。普通 CI 只�
 
 ## 产品数据从哪来
 
-词库、语言模型、释义表（`data/generated/*.qj`、`dicts/*.qj`、英文词表）不在 git 里，体积约 85 MB 且由本机数据管道生成。
+词库、语言模型、释义表、五笔码表（`data/generated/*.qj`、`dicts/*.qj`、英文词表）不在 git 里，体积约 85 MB 且由本机数据管道生成。
 `tools/release/data-bundle.sh` 把它们打成 `glimmer-data.tar.gz`，把本地整句模型单文件 `data/model/model.qjm`
 （训练仓库导出三件套到 `data/model/`，`tools/release/pack-model.sh` 打成一个 `.qj` 容器，fp16 约 56 MB，元数据也写在那个脚本里）
 原样上传，连同 LLM 生成的续跑中间产物 `glimmer-llm-intermediates.tar.gz` 一起放到仓库里一个名为 `data` 的**预发布** Release
