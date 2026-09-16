@@ -5,8 +5,8 @@ pub use value::SettingValue;
 use glimmer_core::{FuzzyRules, WubiVariant};
 use objc2_foundation::NSInteger;
 
-/// 偏好设置里可选的五笔版本，弹出菜单第 0 项「关」之后按这个顺序列；98 版码表还没进包，先不放。
-pub const WUBI_VARIANTS: &[WubiVariant] = &[WubiVariant::Wubi86];
+/// 偏好设置里可选的五笔版本，弹出菜单第 0 项「关」之后按这个顺序列。
+pub const WUBI_VARIANTS: &[WubiVariant] = &WubiVariant::ALL;
 
 /// 模糊音勾选框的 tag 起点，后面加规则在 [`FuzzyRules::NAMES`] 里的下标。
 const FUZZY_TAG_BASE: NSInteger = 100;

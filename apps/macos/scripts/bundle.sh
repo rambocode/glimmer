@@ -120,14 +120,25 @@ if [[ -f data/generated/dict.tsv || -f data/generated/dict.qj ]]; then
   done
   echo "使用 data/generated/ 的产品数据（自建词库）"
 fi
-# 五笔 86 码表（assets/wubi/ 的 rime-wubi 转出，LGPL-3.0，许可证全文随包）：有就带，没生成就跳过，包照样能打，只是开不了五笔
-if [[ -f data/generated/wubi86.qj ]]; then
-  cp data/generated/wubi86.qj "$APP/Contents/Resources/"
-  cp assets/wubi/LICENSE.LGPL-3.0 "$APP/Contents/Resources/LICENSE.wubi86.LGPL-3.0"
-  echo "打包五笔 86 码表：data/generated/wubi86.qj"
-else
-  echo "注意: 没有 data/generated/wubi86.qj，包里不带五笔码表（生成命令见 assets/wubi/README.md）" >&2
-fi
+# 五笔码表（assets/wubi/<方案>/ 的码表转出，各方案的许可证与署名全文随包，具体许可见各自的 README.md）：
+# 哪一版生成了就带哪一版，缺的只提示不中断，包照样能打，只是开不了那一版五笔
+for wubi in wubi86 wubi98 wubixsj; do
+  if [[ ! -f "data/generated/$wubi.qj" ]]; then
+    echo "注意: 没有 data/generated/$wubi.qj，包里不带这一版五笔码表（生成命令见 assets/wubi/$wubi/README.md）" >&2
+    continue
+  fi
+  cp "data/generated/$wubi.qj" "$APP/Contents/Resources/"
+  # 许可证与署名按方案加前缀放进 Resources（LICENSE.wubi86.LGPL-3.0 这样）。各方案带的文件不一样
+  # （98 只有 LICENSE、新世纪只有 AUTHORS，它的 LGPL 全文引用 86 那份），所以逐个判断存在才拷；
+  # set -u 下 glob 无匹配时 $f 会是字面量，靠 -f 挡掉
+  for f in "assets/wubi/$wubi"/LICENSE*; do
+    [[ -f "$f" ]] || continue
+    license_name="$(basename "$f")"
+    cp "$f" "$APP/Contents/Resources/LICENSE.$wubi.${license_name#LICENSE.}"
+  done
+  [[ -f "assets/wubi/$wubi/AUTHORS" ]] && cp "assets/wubi/$wubi/AUTHORS" "$APP/Contents/Resources/AUTHORS.$wubi"
+  echo "打包五笔码表：data/generated/$wubi.qj"
+done
 printf 'APPL????' > "$APP/Contents/PkgInfo"
 
 # 图标：从 assets/icon/logo.png 生成 .icns（应用图标）；输入法菜单图标用 assets/icon/menu-icon.pdf
@@ -210,7 +221,8 @@ fi
 # 打完包就把它们从登记里注销，只留真正装到 Input Methods 下的那份。
 LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
 # 顺带把旧版本脚本留在 target/ 里的那些登记也注销掉（路径可能已不存在，lsregister -u 对不存在的路径无害）
-for stray in "$APP" "$PKG_DIR/root/$APP_NAME.app" "$ROOT/target/$APP_NAME.app" "$ROOT/target/Qingjian.app" \
+# PKG_DIR 只在 --pkg 时定义，--install 路径下 set -u 会掐掉整段，所以给缺省值
+for stray in "$APP" "${PKG_DIR:-$ROOT/target/pkg.noindex/$ARCH}/root/$APP_NAME.app" "$ROOT/target/$APP_NAME.app" "$ROOT/target/Qingjian.app" \
   "$ROOT"/target/pkg/*/root/*.app "$ROOT"/target/install-*/root/*.app; do
   "$LSREGISTER" -u "$stray" >/dev/null 2>&1 || true
 done
