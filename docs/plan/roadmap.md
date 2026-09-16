@@ -165,7 +165,12 @@
   - [x] preedit 内联下划线、候选窗（词性 + 译文 + 分页 + 阴影）、云联想、失焦上屏、中英切换、设置界面、Inno 安装器
   - [x] 候选窗渲染搬进 Server 进程 + `uiAccess` + 自签，覆盖微软商店 / 任务栏搜索等高 z-band 宿主
   - [ ] 发版：Certum 开源代码签名证书、`windows-v<版本>` 标签与 CI
-- [ ] Linux IBus / Fcitx
+- [~] Linux IBus（`apps/linux`，Docker 里端到端测过，未上真机桌面；细节见 `docs/design/architecture.md`「Linux：IBus / Fcitx」）
+  - [x] Router 与启动装配抽成 `crates/glimmer-server`，Windows Server 与 Linux 引擎共用
+  - [x] IBus 引擎进程（纯 Rust D-Bus）：keysym → VK、单击 Shift 切中英、preedit 与 IBus 候选表、中英属性
+  - [x] deb 打包（amd64 / arm64）、`linux-v<版本>` 标签与 CI、装机端到端测试
+  - [ ] 真机桌面（GNOME / KDE 的 IBus）验：候选表位置、面板翻页、失焦上屏
+  - [ ] Fcitx5 支持
 - [ ] 配置同步
 - [ ] 跨平台词库
 

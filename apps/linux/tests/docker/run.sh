@@ -17,8 +17,10 @@ if [[ "${1:-}" != "--in-container" ]]; then
         "$IMAGE" bash /work/apps/linux/tests/docker/run.sh --in-container
 fi
 
-cargo build -p glimmer-linux --bin glimmer-ibus
-EXEC="$CARGO_TARGET_DIR/debug/glimmer-ibus"
+# 用 release：arm64 Linux 上 debug 构建编不过 gemm-f16（candle 的依赖，内联汇编要 fullfp16 特性，
+# release 下那些函数没被实例化）；全局开 +fp16 又会让包在没有 fp16 的 ARM 机器上起不来。顺带复用打包的编译缓存
+cargo build --release -p glimmer-linux --bin glimmer-ibus
+EXEC="$CARGO_TARGET_DIR/release/glimmer-ibus"
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT

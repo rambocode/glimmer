@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 仓库现状
 
-跨平台输入法，Core 平台无关，各平台只做壳。已发版 macOS 0.1.2（自用 + 测试者）、Windows 0.1.0-alpha.2（内测）；Linux 未开工。
+跨平台输入法，Core 平台无关，各平台只做壳。已发版 macOS 0.1.3（自用 + 测试者）、Windows 0.1.0-alpha.3（内测）；Linux IBus 版已做完、未发版。
 阶段与已完成项见 `docs/plan/roadmap.md`，待办见 `docs/plan/todo.md`。
 
 ## 目录地图

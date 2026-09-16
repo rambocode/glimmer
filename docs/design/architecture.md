@@ -449,5 +449,25 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
 
 ### Linux：IBus / Fcitx
 
-- IBus 走 D-Bus（`zbus`），纯 Rust 即可。
-- Fcitx5 需要一层 C++ shim(Maybe)。
+**已落地：IBus（2026-09-16）。** Fcitx5 加载不了 IBus 引擎，要单独做（C++ 插件或 Fcitx5 的 D-Bus 前端），还没开始。
+
+- **进程结构**：`apps/linux`（package `glimmer-linux`，bin `glimmer-ibus`）是一个 IBus 引擎进程，ibus-daemon 按组件 XML（`/usr/share/ibus/component/glimmer.xml`）以 `--ibus` 拉起。
+  IBus 的引擎本来就在应用进程外，所以不需要 Windows 那样的 Server / DLL 两半：Engine 与 `Router` 就在这个进程里，前端直接调 `Router::handle`，协议消息不过管道。
+- **复用 Windows 的 Router**：`Router`（协议消息 → Engine → `Frame`）与启动装配（`startup::build_router`：按配置找随包数据、装 Engine、接本地整句模型与配置热加载）
+  从 `apps/windows/server` 抽成 `crates/glimmer-server`，两个平台共用；平台差异只在 `StartupPaths`（用户目录、配置路径、资源根、平台名）。
+  协议的键码仍是 Windows 虚拟键码（VK），Linux 前端把 X11 keysym 翻成 VK 再发（`apps/linux/src/key/`），Router 一行不用改。
+- **纯 Rust D-Bus**：用 `zbus`（tokio 运行时），不链接 libibus。IBus 对象（`IBusText` / `IBusAttrList` / `IBusLookupTable` / `IBusProperty`）按 ibus 源码的序列化格式手写成 D-Bus 变体
+  （每个都是 `(s a{sv} …)`：类型名 + 空附件 + 子类字段，嵌套对象再包一层 `v`），签名有单测断言。私有总线地址按 `ibus_get_socket_path` 的规则找（`IBUS_ADDRESS` → `$XDG_CONFIG_HOME/ibus/bus/<machine-id>-<host>-<display>`）。
+  引擎接口用 `spawn = false` 保证按键按顺序处理，信号在方法返回前发完。
+- **显示面用 IBus 自带的面板，不自绘**（与「显示面自绘」的总原则不同，是有意的取舍）：Wayland 下普通应用拿不到光标的屏幕坐标、也不能随意摆弹出窗，
+  自绘候选窗要走各桌面的私有协议；IBus 的面板（GNOME Shell 内置 / ibus-ui-gtk3）已经解决了定位。preedit 发 `UpdatePreeditText`（带下划线属性），
+  候选页发 `UpdateLookupTable`（只放当前页，译词接在候选文字后面并用属性变灰），中 / 英是一个 `IBusProperty`（面板上可点）。代价是没有词性、生词标记这些自绘细节。
+- **中英模式**：与 Windows 一致，单击 Shift 翻转（按下 Shift 到松开之间没有别的键），状态记在前端，经 `ModeChanged` 告诉 Router，按键带 `english_mode` 位。
+- **失焦上屏**：ibus-daemon 在失焦时先清 preedit 再摘引擎，引擎这时发的 `CommitText` 会丢（Docker 里实测）。所以 preedit 用 `IBUS_ENGINE_PREEDIT_COMMIT` 模式，
+  由 daemon / 客户端把屏上的 preedit 落进应用，引擎给 Router 发 `Commit` 只为清缓冲、丢掉返回的原文（与 DLL 的 server_stale 分支同理）。代价是落进应用的是带音节分隔的 preedit。
+- **空闲节拍**：Windows 的工人循环靠 `recv_timeout(next_tick)` 醒来；Linux 前端起一个 tokio 任务按 `Router::next_tick` 调 `tick`（接模型、推进重排、看配置文件），组句中另有 60 ms 一次的 `Poll` 拉云端与重排结果。
+- **私密输入**：IBus 的 `ContentType` 是密码 / PIN 或带 `HINT_PRIVATE` 时发 `Privacy`，与 Windows 同一条 `Engine::set_private` 路径。
+- **路径**：配置 `$XDG_CONFIG_HOME/glimmer/config.toml`（与 `.env`），学习数据与日志 `$XDG_DATA_HOME/glimmer/`；随包资源在 `/usr/lib/glimmer/`，与可执行文件同级（`resources::bundled_root`）。
+- **测试**：`apps/linux/tests/docker/run.sh` 在 Ubuntu 容器里起真的 ibus-daemon，用 PyGObject 的 IBus 客户端驱动回显后端（`--echo`）验 D-Bus 链路；
+  `install.sh <deb>` 在干净容器里 apt 装包，用真 Router 与随包词库敲 `nihao` 上屏「你好」。arm64 上 debug 构建编不过 `gemm-f16`（要 fullfp16），两个脚本都用 release。
+- **打包与发版**：deb（amd64 / arm64），`linux-v<版本>` 标签触发 CI，见 `docs/notes/release.md`。

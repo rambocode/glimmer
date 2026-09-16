@@ -148,6 +148,16 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 外加 `settings`（WinUI 3 设置程序）与 `installer`（Inno Setup）。不合成一个 crate，因为 DLL 不能带 Engine 的依赖树，见 `apps/windows/README.md`；
 协议类型在 `glimmer-platform::protocol`，设计见 `docs/design/architecture.md`「Windows：TSF」。
 
+## apps/linux
+
+IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/design/architecture.md`「Linux：IBus / Fcitx」。
+
+- 分层：`ibus/`（zbus 连私有总线、导出 Factory / Engine、IBus 对象的变体编码）→ `frontend/`（与 D-Bus 无关的会话状态机，`Frame` → preedit / 候选表）→ `backend/`（`Backend` trait：`RouterBackend` 是真后端，`EchoBackend` 只验链路）；`key/` 是 keysym → VK 与单击 Shift 判定；`startup.rs` 是 XDG 路径、配置模板与日志。
+- 启动：`glimmer-ibus --ibus`（`--echo` 换回显后端）；日志写 stderr 与 `~/.local/share/glimmer/logs/glimmer-ibus.<日期>.log`，zbus 压到 warn。
+- 常数：组句中 `Poll` 间隔 60 ms；空闲时学习数据 60 s 落盘一次。
+- 打包：`scripts/package.sh`（Linux 上）/ `scripts/package-docker.sh`（macOS 上，`GLIMMER_DATA_DIR` 指向有产品数据的 `data/`）出 `target/deb/Glimmer-<版本>-<arch>.deb`；装机布局与版本号规则见 `docs/notes/release.md`。
+- 测试：`cargo test -p glimmer-linux`（keysym、变体签名、会话状态机）；`tests/docker/run.sh`（回显后端 + 真 ibus-daemon）；`tests/docker/install.sh <deb>`（干净 Ubuntu 装包、真 Router 打字）。
+
 ## assets
 
 - `assets/sample/`：手写样例词库与释义表，不是产品数据。
