@@ -162,18 +162,18 @@ pub enum Command {
         max_chars: usize,
     },
 
-    /// 五笔码表：Rime `wubi86.dict.yaml`（`text\tcode\tweight[\tstem]`）→ 微明 TSV `词\t编码\t词频`，编码整个当一个音节；
-    /// 缺省只留每个字都在常用字集（GB2312 + `--charset` 主词库里出现过的字）的条目，`--extended` 保留全部
+    /// 五笔码表：Rime 四列码表（`text\tcode\tweight[\tstem]`，86 / 98 / 新世纪同一种格式）→ 微明 TSV `词\t编码\t词频`，
+    /// 编码整个当一个音节；缺省只留每个字都在常用字集（GB2312 + `--charset` 主词库里出现过的字）的条目，`--extended` 保留全部
     Wubi {
         /// 码表格式
         #[arg(long, value_enum, default_value_t = WubiSource::Rime)]
         from: WubiSource,
 
-        /// 输入码表（assets/wubi/wubi86.dict.yaml）
+        /// 输入码表（assets/wubi/<方案>/*.dict.yaml）
         input: PathBuf,
 
-        /// 输出 TSV
-        #[arg(long, default_value = "data/generated/wubi86.tsv")]
+        /// 输出 TSV；不给缺省值，免得几个方案互相覆盖
+        #[arg(long)]
         out: PathBuf,
 
         /// 不做字符集过滤（增广字集）

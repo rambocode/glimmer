@@ -38,7 +38,11 @@ impl Table {
     ///
     /// 文件分三段：`---` 之前只有注释；`---` 到 `...` 是 YAML 头；之后是表体。先定位头部范围并解析出列序，
     /// 再按列序解析表体。没有 `---` 的文件（少数手写表）从第一条含制表符的行起当表体。
+    ///
+    /// 开头先剥 UTF-8 BOM：上游码表有的是 Windows 编辑器存的，带 BOM 时第一行会变成 `\u{feff}# Rime …`，
+    /// `---` 与 `#` 的判断全部错位，头部会整段读不到。
     pub fn parse(text: &str) -> Self {
+        let text = text.strip_prefix('\u{feff}').unwrap_or(text);
         let lines: Vec<&str> = text.lines().map(str::trim_end).collect();
         let mut table = Self {
             lines: lines.len(),

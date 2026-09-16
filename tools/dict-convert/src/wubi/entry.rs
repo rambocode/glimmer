@@ -2,7 +2,7 @@
 
 use super::header::Header;
 
-/// 编码最长几位：五笔 86 / 98 都是四码上屏，更长的码 Core 永远敲不到。
+/// 编码最长几位：五笔各方案（86 / 98 / 新世纪）都是四码上屏，更长的码 Core 永远敲不到。
 pub const MAX_CODE_LEN: usize = 4;
 
 /// 一条码表记录。
@@ -16,6 +16,9 @@ pub struct Entry {
 
     /// 词频（Rime 的 weight 列）；缺省 0。
     pub weight: u32,
+
+    /// 上游这一行到底给没给 weight 列。整表都没给时按文件顺序补词频（见 `wubi::convert`）。
+    pub weighted: bool,
 
     /// 构词码（Rime 的 stem 列），只有一级简码那几行有。
     pub stem: Option<String>,
@@ -48,15 +51,13 @@ impl Entry {
         if code.len() > MAX_CODE_LEN || !code.bytes().all(|b| b.is_ascii_lowercase()) {
             return Err(Rejection::Invalid);
         }
-        let weight = field("weight")
-            .filter(|w| !w.is_empty())
-            .map(parse_weight)
-            .unwrap_or(0);
+        let raw_weight = field("weight").filter(|w| !w.is_empty());
         let stem = field("stem").filter(|s| !s.is_empty()).map(str::to_owned);
         Ok(Self {
             text: text.to_owned(),
             code: code.to_owned(),
-            weight,
+            weight: raw_weight.map_or(0, parse_weight),
+            weighted: raw_weight.is_some(),
             stem,
         })
     }

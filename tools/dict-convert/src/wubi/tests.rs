@@ -86,6 +86,21 @@ fn header_fields() {
     );
 }
 
+/// 带 UTF-8 BOM 的码表（Windows 编辑器存的）解析结果必须和不带 BOM 的完全一样。
+#[test]
+fn header_and_body_survive_utf8_bom() {
+    let with_bom = format!("\u{feff}{SAMPLE}");
+    let table = Table::parse(&with_bom);
+    let plain = Table::parse(SAMPLE);
+    assert_eq!(table.header, plain.header);
+    assert_eq!(table.entries, plain.entries);
+    assert_eq!(table.entries[0].text, "工");
+    assert_eq!(
+        (table.comments, table.invalid, table.z_codes),
+        (plain.comments, plain.invalid, plain.z_codes)
+    );
+}
+
 #[test]
 fn header_defaults_without_columns() {
     let table = Table::parse("---\nname: x\n...\n王\tggll\t5\n");
@@ -139,6 +154,49 @@ fn merge_takes_max_weight() {
         .collect();
     assert_eq!(wang.len(), 1);
     assert_eq!(wang[0].weight, 827_000_000);
+}
+
+/// 上游只给 `词\t编码` 两列（新世纪码表就是这样）时，按同一编码下的出现顺序补词频，同码候选保住上游排好的顺序。
+#[test]
+fn unweighted_table_gets_in_code_order_weights() {
+    let two_columns =
+        "---\nname: x\n...\n工\taaaa\n恭恭敬敬\taaaa\n工戈\taaaa\n王\tgggg\n一一\tgggg\n";
+    let mut table = Table::parse(two_columns);
+    assert!(table.entries.iter().all(|e| !e.weighted));
+    assert!(super::apply_in_code_order_weights(&mut table.entries));
+    // 名次在各自的编码组里从 0 起：aaaa 组三条，gggg 组重新从第一名算，组间不可比
+    let weights: Vec<u32> = table.entries.iter().map(|e| e.weight).collect();
+    assert_eq!(weights, [1_000_000, 500_000, 333_333, 1_000_000, 500_000]);
+    let (entries, _, _) = select(&table.entries, None);
+    let texts: Vec<&str> = entries.iter().map(|e| e.text.as_str()).collect();
+    assert_eq!(texts, ["工", "恭恭敬敬", "工戈", "王", "一一"]);
+}
+
+/// 同一编码下条目再多，补出来的词频也不会掉到 0（0 会被 Core 当成没词频）。
+#[test]
+fn in_code_order_weights_never_reach_zero() {
+    let mut source = "---\nname: x\n...\n".to_owned();
+    for index in 0..1_200 {
+        source.push_str(&format!("词{index}\taaaa\n"));
+    }
+    let mut table = Table::parse(&source);
+    assert!(super::apply_in_code_order_weights(&mut table.entries));
+    assert!(table.entries.iter().all(|entry| entry.weight >= 1));
+    assert_eq!(table.entries.last().unwrap().weight, 1_000_000 / 1_200);
+}
+
+/// 上游给了词频的表（86 / 98）一行都不能动，免得补出来的名次盖掉真词频。
+#[test]
+fn weighted_table_keeps_upstream_weights() {
+    let mut table = Table::parse(SAMPLE);
+    let before: Vec<u32> = table.entries.iter().map(|e| e.weight).collect();
+    assert!(!super::apply_in_code_order_weights(&mut table.entries));
+    let after: Vec<u32> = table.entries.iter().map(|e| e.weight).collect();
+    assert_eq!(before, after);
+    // 两列的那行（𬳶 cmkg）仍然是 0：整表一起换，不逐行混
+    let sparse = table.entries.iter().find(|e| e.text == "𬳶").unwrap();
+    assert!(!sparse.weighted);
+    assert_eq!(sparse.weight, 0);
 }
 
 #[test]

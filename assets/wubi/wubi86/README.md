@@ -1,7 +1,7 @@
 # 五笔 86 码表
 
 随包的五笔 86 码表，来自 [rime/rime-wubi](https://github.com/rime/rime-wubi) 的 `wubi86.dict.yaml`（极点五笔 6.0 血统，带词频与一级简码的构词码列）。
-输入法与 CLI 用的是它转出来的 `data/generated/wubi86.qj`，本目录只放上游原文与许可。
+输入法与 CLI 用的是它转出来的 `data/generated/wubi86.qj`，本目录只放上游原文与许可。三个方案的索引见 [../README.md](../README.md)。
 
 ## 文件
 
@@ -47,7 +47,7 @@
 （GB2312 一二级汉字 + 主词库里出现过的字）里的条目，`--extended` 保留全部；再用 `pack dict --output` 打成 `.qj`：
 
 ```sh
-cargo run --release -p glimmer-dict-convert -- wubi --from rime assets/wubi/wubi86.dict.yaml \
+cargo run --release -p glimmer-dict-convert -- wubi --from rime assets/wubi/wubi86/wubi86.dict.yaml \
   --out data/generated/wubi86.tsv --charset data/generated/dict.qj
 cargo run --release -p glimmer-dict-convert -- pack dict --input data/generated/wubi86.tsv --output wubi86.qj \
   --name "五笔 86 码表（极点）" --license LGPL-3.0 \

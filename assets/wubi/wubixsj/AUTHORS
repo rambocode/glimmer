@@ -1,0 +1,11 @@
+
+郭斌勇整理的新世纪版五笔词库 | 该词库由尊敬的王永民先生发明
+  wubixinshiji.dict.yaml
+
+郭斌勇 <guobinyong@qq.com> : (LGPL)
+  wubixinshiji.*.yaml
+  wubixinshiji_pinyin.*.yaml
+  wubixinshiji_trad.*.yaml
+
+雪齋 <leoyoontsaw@gmail.com> : (LGPL)
+  opencc/*.*
