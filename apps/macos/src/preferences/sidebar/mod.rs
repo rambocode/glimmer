@@ -1,4 +1,4 @@
-//! 设置窗口左侧的导航栏：半透明侧栏材质上一列「图标 + 页名」，选中哪行右边就显示哪一页。
+//! 设置窗口左侧的导航栏：浅灰底色（`SIDEBAR_COLOR`）上一列「图标 + 页名」，选中哪行右边就显示哪一页。
 
 mod source;
 
@@ -6,9 +6,9 @@ use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2::runtime::ProtocolObject;
 use objc2_app_kit::{
-    NSAutoresizingMaskOptions, NSColor, NSFocusRingType, NSScrollView, NSTableColumn, NSTableView,
-    NSTableViewSelectionHighlightStyle, NSTableViewStyle, NSView, NSVisualEffectBlendingMode,
-    NSVisualEffectMaterial, NSVisualEffectView,
+    NSAutoresizingMaskOptions, NSBox, NSBoxType, NSColor, NSFocusRingType, NSScrollView,
+    NSTableColumn, NSTableView, NSTableViewSelectionHighlightStyle, NSTableViewStyle,
+    NSTitlePosition, NSView,
 };
 use objc2_foundation::{NSIndexSet, NSPoint, NSRect, NSSize, NSString};
 
@@ -16,6 +16,13 @@ use source::SidebarSource;
 
 /// 侧栏宽度。
 pub const SIDEBAR_WIDTH: f64 = 180.0;
+
+/// 侧栏底色 #F9F9FA（sRGB），不随系统深浅色变。
+const SIDEBAR_COLOR: (f64, f64, f64) = (
+    0xF9 as f64 / 255.0,
+    0xF9 as f64 / 255.0,
+    0xFA as f64 / 255.0,
+);
 
 /// 侧栏顶部留给红黄绿按钮的高度（标题栏透明，侧栏一直伸到窗口顶）。
 const TOP_INSET: f64 = 52.0;
@@ -32,10 +39,10 @@ pub struct SidebarEntry {
     pub symbol: &'static str,
 }
 
-/// 侧栏：材质视图里装一个源列表样式的表格。
+/// 侧栏：纯色底板里装一个源列表样式的表格。
 pub struct Sidebar {
-    /// 侧栏本体，加到窗口内容视图的最左边。
-    view: Retained<NSVisualEffectView>,
+    /// 侧栏本体（无边框、纯色填充的 NSBox），加到窗口内容视图的最左边。
+    view: Retained<NSBox>,
 
     /// 列表。
     table: Retained<NSTableView>,
@@ -53,9 +60,14 @@ impl Sidebar {
         on_select: Box<dyn Fn(usize)>,
     ) -> Self {
         let frame = NSRect::new(NSPoint::ZERO, NSSize::new(SIDEBAR_WIDTH, height));
-        let view = NSVisualEffectView::initWithFrame(mtm.alloc(), frame);
-        view.setMaterial(NSVisualEffectMaterial::Sidebar);
-        view.setBlendingMode(NSVisualEffectBlendingMode::BehindWindow);
+        // 纯色底板：NSBox 的 Custom 类型可以直接填色、不画边框
+        let view = NSBox::initWithFrame(mtm.alloc(), frame);
+        view.setBoxType(NSBoxType::Custom);
+        view.setTitlePosition(NSTitlePosition::NoTitle);
+        view.setContentViewMargins(NSSize::ZERO);
+        view.setBorderWidth(0.0);
+        let (r, g, b) = SIDEBAR_COLOR;
+        view.setFillColor(&NSColor::colorWithSRGBRed_green_blue_alpha(r, g, b, 1.0));
         view.setAutoresizingMask(NSAutoresizingMaskOptions::ViewHeightSizable);
 
         let table = NSTableView::initWithFrame(mtm.alloc(), NSRect::ZERO);
