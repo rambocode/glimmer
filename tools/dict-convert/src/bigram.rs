@@ -546,8 +546,29 @@ fn phrase_components(
     Ok(parts)
 }
 
+/// 短语自身的合成次数：两词就是成分二元 c(a,b)，更长的按链式 c(a,b)·c(b,c)/c(b) 估（算法见模块注释）。
+pub(crate) fn phrase_count(parts: &[u32], unigram: &[u64], bigram: &HashMap<u64, u32>) -> f64 {
+    let pair = |a: u32, b: u32| {
+        f64::from(
+            bigram
+                .get(&((u64::from(a) << 32) | u64::from(b)))
+                .copied()
+                .unwrap_or(0),
+        )
+    };
+    let mut count = pair(parts[0], parts[1]);
+    for window in parts.windows(2).skip(1) {
+        let middle = unigram[window[0] as usize] as f64;
+        if middle <= 0.0 {
+            return 0.0;
+        }
+        count *= pair(window[0], window[1]) / middle;
+    }
+    count
+}
+
 /// 给短语合成一元（写进 `unigram`）与前后接的二元计数（返回，算法见模块注释）。
-fn synthesize_phrases(
+pub(crate) fn synthesize_phrases(
     phrases: &[(u32, Vec<u32>)],
     unigram: &mut [u64],
     bigram: &HashMap<u64, u32>,
@@ -562,23 +583,11 @@ fn synthesize_phrases(
         by_second.entry(second).or_default().push((first, count));
         by_first.entry(first).or_default().push((second, count));
     }
-    let pair = |bigram: &HashMap<u64, u32>, a: u32, b: u32| {
-        f64::from(bigram.get(&key(a, b)).copied().unwrap_or(0))
-    };
     let mut added = 0usize;
     let mut rows: Vec<(u64, u32)> = Vec::new();
     for (id, parts) in phrases {
         let (first, last) = (parts[0], parts[parts.len() - 1]);
-        // 短语自身的次数：两词就是成分二元，三词按链式估
-        let mut count = pair(bigram, parts[0], parts[1]);
-        for window in parts.windows(2).skip(1) {
-            let middle = unigram[window[0] as usize] as f64;
-            if middle <= 0.0 {
-                count = 0.0;
-                break;
-            }
-            count *= pair(bigram, window[0], window[1]) / middle;
-        }
+        let count = phrase_count(parts, unigram, bigram);
         if count < f64::from(min_count) {
             continue;
         }

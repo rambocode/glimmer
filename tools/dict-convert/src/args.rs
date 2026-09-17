@@ -178,6 +178,50 @@ pub enum Command {
         max_chars: usize,
     },
 
+    /// 找常用词缺口：外部词表（每行 `词[\t拼音]`，如 CC-CEDICT / jieba 词表转出的）里词库（含同目录 dicts/）与语言模型都没有的词，
+    /// 按 lm.qj 里成分词的二元合成语料次数 → gap-candidates.tsv（人工挑进 assets/lexicon/common_words.tsv）
+    Gaps {
+        /// 候选词表
+        #[arg(required = true)]
+        candidates: Vec<PathBuf>,
+
+        /// 基础词库（微明 TSV，同目录 dicts/ 一并当已有词）
+        #[arg(long, default_value = "assets/lexicon/dict.tsv")]
+        dict: PathBuf,
+
+        /// 语言模型
+        #[arg(long, default_value = "data/generated/lm.qj")]
+        lm: PathBuf,
+
+        /// 合成次数低于此值的不要
+        #[arg(long, default_value_t = 20)]
+        min_count: u32,
+
+        /// 最多几个字
+        #[arg(long, default_value_t = 4)]
+        max_chars: usize,
+    },
+
+    /// 补充词表（`词\t次数\t拼音`）并进已有词库与语言模型，不用语料：写 dict.tsv 与 lm-unigram.tsv / lm-bigram.tsv（按成分合成计数），再 pack。
+    /// 与全量重跑 `lexicon --extra-words` + `bigram --phrases` 等价；已有的词跳过，重复跑幂等
+    Supplement {
+        /// 补充词表，可给多个
+        #[arg(long, required = true)]
+        words: Vec<PathBuf>,
+
+        /// 基础词库（微明 TSV）
+        #[arg(long, default_value = "assets/lexicon/dict.tsv")]
+        dict: PathBuf,
+
+        /// 已有的语言模型
+        #[arg(long, default_value = "data/generated/lm.qj")]
+        lm: PathBuf,
+
+        /// 合成计数低于此值的二元不输出（与 bigram --min-count 一致）
+        #[arg(long, default_value_t = 3)]
+        min_count: u32,
+    },
+
     /// 五笔码表：Rime 四列码表（`text\tcode\tweight[\tstem]`，86 / 98 / 新世纪同一种格式）→ 微明 TSV `词\t编码\t词频`，
     /// 编码整个当一个音节；缺省只留每个字都在常用字集（GB2312 + `--charset` 主词库里出现过的字）的条目，`--extended` 保留全部
     Wubi {

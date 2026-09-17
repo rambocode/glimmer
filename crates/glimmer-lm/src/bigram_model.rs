@@ -239,6 +239,25 @@ impl BigramModel {
         self.successors.len()
     }
 
+    /// 按编号顺序列出词表：(词, 一元计数)，含句首标记。导出 TSV、在已有模型上补词（`dict-convert supplement`）用。
+    pub fn unigrams(&self) -> impl Iterator<Item = (&str, u32)> + '_ {
+        self.entries
+            .iter()
+            .map(|entry| (word_text(&self.words, entry), entry.count))
+    }
+
+    /// 列出全部二元：(前词编号, 后词编号, 计数)，按前词、后词编号升序；编号与 [`Self::unigrams`] 的顺序一致。
+    pub fn bigrams(&self) -> impl Iterator<Item = (u32, u32, u32)> + '_ {
+        self.offsets
+            .windows(2)
+            .enumerate()
+            .flat_map(move |(previous, range)| {
+                self.successors[range[0] as usize..range[1] as usize]
+                    .iter()
+                    .map(move |s| (previous as u32, s.word, s.count))
+            })
+    }
+
     /// `.qj` 里的来历；TSV 解析的返回 `None`。
     pub fn metadata(&self) -> Option<&Metadata> {
         self.metadata.as_ref()
@@ -345,6 +364,15 @@ mod tests {
         assert_eq!(mapped.word_count(), model.word_count());
         assert_eq!(mapped.bigram_count(), model.bigram_count());
         assert_eq!(mapped.metadata().unwrap().entries, 4);
+        // 导出的词表与二元和解析前一致（按编号顺序）
+        assert_eq!(
+            mapped.unigrams().collect::<Vec<_>>(),
+            [("<s>", 100), ("我", 50), ("想", 30), ("去", 20), ("翔", 1)]
+        );
+        assert_eq!(
+            mapped.bigrams().collect::<Vec<_>>(),
+            [(0, 1, 40), (1, 2, 25), (1, 4, 1), (2, 3, 15)]
+        );
         for (previous, word) in [
             (None, "我"),
             (Some("我"), "想"),

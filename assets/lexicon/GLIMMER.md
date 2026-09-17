@@ -35,10 +35,10 @@ cargo run --release -p glimmer-dict-convert -- lexicon --pinyin data/generated/p
 #     词库已并入过短语时重跑要加 --refresh assets/lexicon/phrases.tsv（先把上次的短语从分词词表摘掉，否则 我的 是一个词、挖不出 我 + 的）
 cargo run --release -p glimmer-dict-convert -- phrases data/corpus/*.txt   # 重跑：--refresh assets/lexicon/phrases.tsv
 cp data/generated/phrases.tsv assets/lexicon/phrases.tsv
-cargo run --release -p glimmer-dict-convert -- lexicon --pinyin data/generated/pinyin-llm.jsonl --frequency data/generated/lm-unigram.tsv --extra-words assets/lexicon/mined_words.tsv --extra-words assets/lexicon/phrases.tsv --extra-words assets/lexicon/brand.tsv --extra-words assets/lexicon/domain_words.tsv --extra-words assets/lexicon/mixed_words.tsv
+cargo run --release -p glimmer-dict-convert -- lexicon --pinyin data/generated/pinyin-llm.jsonl --frequency data/generated/lm-unigram.tsv --extra-words assets/lexicon/mined_words.tsv --extra-words assets/lexicon/phrases.tsv --extra-words assets/lexicon/brand.tsv --extra-words assets/lexicon/domain_words.tsv --extra-words assets/lexicon/mixed_words.tsv --extra-words assets/lexicon/common_words.tsv
 #     语言模型不把短语当 token 统计（那样 而 + 是 的二元证据没了，二十 会压过 而是）：--phrases 让分词跳过短语、统计完按成分合成它们的计数，
 #     短语在整句与词级排序里的得分与原来走两个词的路径完全一样，只是多了个能整块选的词（见 tools/dict-convert/src/bigram.rs 模块注释）
-cargo run --release -p glimmer-dict-convert -- bigram --phrases assets/lexicon/phrases.tsv --phrases assets/lexicon/domain_words.tsv --brand assets/lexicon/brand.tsv --brand assets/lexicon/mixed_words.tsv data/corpus/*.txt
+cargo run --release -p glimmer-dict-convert -- bigram --phrases assets/lexicon/phrases.tsv --phrases assets/lexicon/domain_words.tsv --phrases assets/lexicon/common_words.tsv --brand assets/lexicon/brand.tsv --brand assets/lexicon/mixed_words.tsv data/corpus/*.txt
 # 4d. 领域词：输入日志里选过、词库与短语层都没有、但公开语料里出现过的词（对齐 / 后端 / 词库 / 候选框），人工挑进 assets/lexicon/domain_words.tsv（词\t次数\t拼音，
 #     次数用语料次数，不到 20 的按 20；只在日志里出现的不进基础词库，留在个人词库）。语言模型里它们**也走 --phrases 的合成路**：
 #     语料里只有几十次的词当 token 统计会把成分词的二元证据吸走（词库 77 次，词 + 库 的路径没了，反被 词哭 压过），合成计数则整句得分与原路径一样，词级多一个能整块选的词。
@@ -46,6 +46,19 @@ cargo run --release -p glimmer-dict-convert -- bigram --phrases assets/lexicon/p
 # 4e. 中英混杂词（C盘 / B站 / U盘 / T恤）：assets/lexicon/mixed_words.tsv（词\t次数\t拼音，字母音节 + 汉字拼音），
 #     与 phrases / domain_words 一样走 lexicon --extra-words；语言模型走 bigram --brand 直接写一元（--phrases 的合成要成分词在语料里，C 不是 token）。
 #     次数对着同音竞争词定：C盘 8000 > 裁判 5416 可以抢首选；B站 要 40000：本站 7533 次里六成在句首（维基页脚），--brand 的句首二元按八分之一算，得盖过 4562；B股 / H股 / G盘 / F盘 / X光 压到几百，别压过 不顾 / 回顾 / 光盘 / 翻盘 / 星光。
+# 4f. 补充常用词（取餐 / 弹出 / 这时 / 播放器 / 一十 这类：一个成分是高频虚字或已成词，mine 与 phrases 都挖不到）：assets/lexicon/common_words.tsv（词\t次数\t拼音），
+#     见 docs/notes/common-words.md。gaps 拿许可清楚的外部词表当白名单（CC-CEDICT CC BY-SA 4.0、jieba dict.txt MIT，都不进仓库，用时现下），
+#     列出词库与语言模型都没有的词，次数按 lm.qj 里成分二元合成（与 --phrases 同一公式）；人工审过拷进 common_words.tsv。
+#     和 domain_words 一样走 lexicon --extra-words 与 bigram --phrases（上面两条命令已带上）。
+curl -sSL https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.txt.gz | gunzip | grep -v '^#' \
+  | awk '{ s=$0; if (match(s, /\[[^]]*\]/)) { py=substr(s, RSTART+1, RLENGTH-2); if (py ~ /[A-Z]/) next; gsub(/u:/, "v", py); gsub(/[0-9]/, "", py); print $2 "\t" py } }' > data/generated/cedict-words.tsv
+curl -sSL https://raw.githubusercontent.com/fxsjy/jieba/master/jieba/dict.txt | cut -d' ' -f1 > data/generated/jieba-words.txt
+cargo run --release -p glimmer-dict-convert -- gaps data/generated/cedict-words.tsv data/generated/jieba-words.txt   # → data/generated/gap-candidates.tsv
+#     没有语料时（只有发布的 lm.qj）用 supplement 增量补：把 common_words.tsv 并进 dict.tsv、在 lm.qj 上合成计数写回 lm-*.tsv，再打包（第 6 步）；
+#     结果与全量重跑一致，已有的词跳过，重复跑幂等。AI 领域词库要按新的主词库重新排除一次（5b）
+cargo run --release -p glimmer-dict-convert -- supplement --words assets/lexicon/common_words.tsv   # 读 assets/lexicon/dict.tsv + data/generated/lm.qj
+cp data/generated/dict.tsv assets/lexicon/dict.tsv
+cargo run --release -p glimmer-dict-convert -- pack lm --name "微明语言模型（中文维基 + LCCC，微明词库分词）" --license "CC-BY-SA-4.0 AND MIT" --attribution "中文维基百科（CC BY-SA 4.0）；LCCC（清华大学 CoAI，MIT）"
 # 5. 英文词表
 cargo run --release -p glimmer-dict-convert -- english assets/lexicon/05_english/00_all_words.tsv assets/lexicon/05_english/07_display_forms.tsv
 uv run tools/corpus/english_frequency.py data/generated/english.tsv -o data/generated/english-frequency.tsv
@@ -53,7 +66,7 @@ cargo run --release -p glimmer-dict-convert -- english assets/lexicon/05_english
 # 5b. AI 与软件开发独立领域词库：生成主词库之后跑，不能用 --extra-words 并入主词库
 cargo run --release --locked -p glimmer-dict-convert -- ai --exclude data/generated/dict.tsv --corpus assets/lexicon/ai/corpus.txt --corpus assets/lexicon/ai/development.txt
 # 6. 打包（bundle.sh 会自动做；领域词库的 .qj 第 4 步已经写好，bundle.sh 直接拷进 Resources/dicts/）
-cargo run --release -p glimmer-dict-convert -- pack dict --name 微明基础词库 --license "MIT AND Unicode-3.0"
+cargo run --release -p glimmer-dict-convert -- pack dict --name 微明基础词库 --license "MIT AND Unicode-3.0 AND CC-BY-SA-4.0"
 ```
 
 读音来自 Unihan（`data/unihan/Unihan_Readings.txt`，从 https://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip 解出，Unicode License v3）；

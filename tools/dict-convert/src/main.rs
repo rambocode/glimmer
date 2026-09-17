@@ -7,6 +7,8 @@
 //! - `bigram`：纯文本语料（如 `tools/corpus/parquet_to_text.py` 转出的中文维基 CC BY-SA 4.0、LCCC 对话 MIT）→ `lm-unigram.tsv` + `lm-bigram.tsv`
 //! - `mine`：语料里分词落成连续单字的段 → `oov-candidates.tsv`（词库没收的高频词，标音后用 `lexicon --extra-words` 并入）
 //! - `phrases`：bigram 表的相邻两词 + 语料的相邻三词 → `phrases.tsv`（我的 / 不知道 这类短语层，读音由成分词拼出，同样用 `lexicon --extra-words` 并入）
+//! - `gaps`：许可清楚的外部词表 × 已有 `lm.qj` 的成分二元 → `gap-candidates.tsv`（词库与语言模型都没有的常用词，人工挑进 `assets/lexicon/common_words.tsv`）
+//! - `supplement`：补充词表并进已有的 `dict.tsv` 与 `lm.qj`（合成计数，不用语料）→ `dict.tsv` + `lm-unigram.tsv` + `lm-bigram.tsv`
 //! - `wubi`：Rime 五笔码表 `assets/wubi/<方案>/*.dict.yaml`（86 / 98 / 新世纪）→ `wubi<方案>.tsv`（编码当音节，缺省按常用字集过滤，`--extended` 全留）
 //! - `pack dict|lm|glossary|model`：TSV → `.qj` 容器（`dict.qj` / `lm.qj`），带名称 / 许可证 / 署名元数据，输入法与 CLI 优先加载它；
 //!   `model` 把本地整句模型的三件套目录打成一个 `model.qjm`；`--output` 改输出文件名（五笔码表打成 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`）
@@ -24,6 +26,7 @@ mod lexicon;
 mod oov_filter;
 mod pack;
 mod phrases;
+mod supplement;
 mod wubi;
 
 use clap::Parser;
@@ -134,6 +137,36 @@ fn run() -> Result<(), ConvertError> {
                 dialogue,
                 min_count,
                 max_chars,
+            },
+            &args.out_dir,
+        ),
+        Command::Gaps {
+            candidates,
+            dict,
+            lm,
+            min_count,
+            max_chars,
+        } => supplement::gaps(
+            &supplement::GapOptions {
+                candidates,
+                dict,
+                lm,
+                min_count,
+                max_chars,
+            },
+            &args.out_dir,
+        ),
+        Command::Supplement {
+            words,
+            dict,
+            lm,
+            min_count,
+        } => supplement::supplement(
+            &supplement::SupplementOptions {
+                words,
+                dict,
+                lm,
+                min_count,
             },
             &args.out_dir,
         ),

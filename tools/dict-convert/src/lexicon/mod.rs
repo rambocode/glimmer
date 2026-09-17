@@ -11,7 +11,7 @@
 //! `dicts/<领域>.tsv` 与带元数据的 `dicts/<领域>.qj`，随包分发、缺省关闭，用户按需打开。基础词库与各领域词库互不重叠。
 
 mod annotations;
-mod corpus;
+pub(crate) mod corpus;
 mod entry;
 mod pack;
 mod readings;
@@ -356,7 +356,7 @@ pub fn convert(
     writeln!(
         file,
         "# 微明基础词库，由 glimmer-dict-convert lexicon 生成。词\t音节\t词频\n\
-# 来源：通用规范汉字表（8105 字）；现代汉语常用词表（liuxilu 校对版）；THUOCL 领域词（MIT，清华大学自然语言处理实验室）；\n\
+# 来源：通用规范汉字表（8105 字）；现代汉语常用词表（liuxilu 校对版）；THUOCL 领域词（MIT，清华大学自然语言处理实验室）；补充常用词（common_words.tsv，白名单 CC-CEDICT CC BY-SA 4.0 与 jieba 词表 MIT，人工审）；\n\
 # 读音：Unihan（Unicode License）+ LLM 标注多音字词；词频：微明自己的语料统计（中文维基 CC BY-SA 4.0、LCCC MIT）。"
     )?;
     for entry in entries.values() {

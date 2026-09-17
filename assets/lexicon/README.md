@@ -49,6 +49,7 @@
 - **规范字**：[iDvel文字转录](https://github.com/iDvel/The-Table-of-General-Standard-Chinese-Characters)，以[shengdoushi分级字表](https://github.com/shengdoushi/common-standard-chinese-characters-table)交叉核对。两份字序一致。此数据仅提供字形与级别，不含完整读音。
 - **通用词**：[liuxilu校对词表](https://github.com/liuxilu/Proofread-Modern-Chinese-Common-Lexicon)。读音仍需按输入法需求校验。
 - **领域词**：[THUOCL](https://github.com/thunlp/THUOCL)，采用[MIT许可证](00_meta/THUOCL_LICENSE.txt)，分发时保留版权及许可声明。
+- **补充常用词**（微明加的，`common_words.tsv`）：词库缺的常用词，候选来自[CC-CEDICT](https://www.mdbg.net/chinese/dictionary?page=cc-cedict)（MDBG，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）与[jieba](https://github.com/fxsjy/jieba)词表（MIT），次数由微明语料统计合成，逐条人工审定并核对读音；做法见[GLIMMER.md](GLIMMER.md)第4f步。
 
 英文来源为ESDB、CSpell和typos，许可声明见[英文sources](05_english/README.md#sources)。
 

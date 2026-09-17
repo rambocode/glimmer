@@ -1,0 +1,1362 @@
+# 补充常用词：词库与语言模型都没有、却是日常会整块打的词（取餐 / 弹出 / 这时 / 播放器 / 一十，上游 issue #98 #121 #127）。2026-09-17，做法见 docs/notes/common-words.md。
+# 白名单：CC-CEDICT（CC BY-SA 4.0，MDBG 2026-09-15 版）与 jieba 词表 dict.txt（MIT）里词库没有的词，用 dict-convert gaps 按 lm.qj 成分二元合成语料次数，
+# CEDICT 词 ≥ 200 次、jieba 独有词 ≥ 1000 次、去掉短语边界规则挡住的，逐条人工审（只留常用词，丢碎片 / 专名 / 百科腔 / 生僻，核多音字读音）；
+# 另加手机电脑界面与生活服务常用词的人工清单（弹窗 / 长按 / 登录框 / 快递柜 …），次数同样按语料合成。
+# 次数与 dict.tsv 词频同一尺度，不到 20 的按 20 计；读音全部给定。进语言模型走 bigram --phrases 的合成路（supplement 在已有 lm.qj 上做同样的合成）。词\t次数\t拼音
+人口密度	60057	ren kou mi du
+总面积	40847	zong mian ji
+总人口	39740	zong ren kou
+平方千米	39194	ping fang qian mi
+人口普查	21046	ren kou pu cha
+你我	15073	ni wo
+又名	14499	you ming
+全国人大	13074	quan guo ren da
+人大代表	12404	ren da dai biao
+名为	12177	ming wei
+副主任	11435	fu zhu ren
+奥地利	10951	ao di li
+全国政协	10548	quan guo zheng xie
+分为	9773	fen wei
+世界大战	8873	shi jie da zhan
+又称	8854	you cheng
+西班牙语	7967	xi ban ya yu
+将会	7605	jiang hui
+官方网站	7437	guan fang wang zhan
+中共中央	6948	zhong gong zhong yang
+民主党	6893	min zhu dang
+北海道	6879	bei hai dao
+无症状	6729	wu zheng zhuang
+葡萄牙	6522	pu tao ya
+罗马尼亚	6454	luo ma ni ya
+制作人	6449	zhi zuo ren
+历史上	6412	li shi shang
+工作室	6090	gong zuo shi
+联合会	5895	lian he hui
+每日	5815	mei ri
+主题曲	5805	zhu ti qu
+足球队	5654	zu qiu dui
+女主角	5560	nv zhu jue
+领导人	5409	ling dao ren
+十月	5396	shi yue
+河南省	5261	he nan sheng
+女演员	5238	nv yan yuan
+大规模	4973	da gui mo
+外交部	4936	wai jiao bu
+代表团	4782	dai biao tuan
+电视节目	4697	dian shi jie mu
+两者	4475	liang zhe
+降雨量	4130	jiang yu liang
+男主角	4037	nan zhu jue
+博士学位	3965	bo shi xue wei
+二月	3937	er yue
+出入口	3866	chu ru kou
+轨道交通	3762	gui dao jiao tong
+意识到	3679	yi shi dao
+第一名	3672	di yi ming
+送到	3602	song dao
+受害者	3588	shou hai zhe
+这类	3491	zhe lei
+影响力	3448	ying xiang li
+可能性	3401	ke neng xing
+综艺节目	3389	zong yi jie mu
+接到	3388	jie dao
+历史学家	3371	li shi xue jia
+事实上	3350	shi shi shang
+电子游戏	3340	dian zi you xi
+公共交通	3268	gong gong jiao tong
+工作者	3254	gong zuo zhe
+国防部	3203	guo fang bu
+十二月	3178	shi er yue
+使用者	3157	shi yong zhe
+总决赛	3156	zong jue sai
+十一月	3099	shi yi yue
+研究中心	3076	yan jiu zhong xin
+任何人	3062	ren he ren
+新冠肺炎	2954	xin guan fei yan
+大城市	2952	da cheng shi
+硕士学位	2930	shuo shi xue wei
+记者会	2930	ji zhe hui
+另一方面	2878	ling yi fang mian
+大学毕业	2836	da xue bi ye
+受欢迎	2762	shou huan ying
+孩子们	2751	hai zi men
+电影节	2743	dian ying jie
+代表队	2740	dai biao dui
+动车组	2733	dong che zu
+评论家	2715	ping lun jia
+抗日战争	2702	kang ri zhan zheng
+支持者	2698	zhi chi zhe
+每月	2632	mei yue
+最少	2536	zui shao
+广州市	2531	guang zhou shi
+重要性	2513	zhong yao xing
+男演员	2510	nan yan yuan
+来源于	2504	lai yuan yu
+外国人	2480	wai guo ren
+手中	2444	shou zhong
+哲学家	2430	zhe xue jia
+这时	2359	zhe shi
+漫画家	2353	man hua jia
+处理器	2305	chu li qi
+清华大学	2303	qing hua da xue
+大学教授	2293	da xue jiao shou
+志愿者	2280	zhi yuan zhe
+这天	2248	zhe tian
+普通人	2244	pu tong ren
+几分钟	2218	ji fen zhong
+音乐节	2213	yin yue jie
+爱好者	2208	ai hao zhe
+上一个	2181	shang yi ge
+下一次	2177	xia yi ci
+不佳	2146	bu jia
+留下来	2113	liu xia lai
+资格赛	2086	zi ge sai
+取决于	2083	qu jue yu
+每天晚上	2083	mei tian wan shang
+每晚	2062	mei wan
+制造商	2059	zhi zao shang
+世界各地	2058	shi jie ge di
+仅次于	2058	jin ci yu
+方程式	2054	fang cheng shi
+说完	2049	shuo wan
+随你	2037	sui ni
+心理学	2034	xin li xue
+走出	2033	zou chu
+主打歌	2023	zhu da ge
+物理学家	2020	wu li xue jia
+看清楚	2014	kan qing chu
+打篮球	2012	da lan qiu
+下午茶	2005	xia wu cha
+脑子里	2001	nao zi li
+物理学	1993	wu li xue
+消费者	1992	xiao fei zhe
+星期日	1980	xing qi ri
+打广告	1972	da guang gao
+没准	1963	mei zhun
+洗衣服	1961	xi yi fu
+大学城	1960	da xue cheng
+音乐剧	1960	yin yue ju
+考虑一下	1953	kao lv yi xia
+大火	1951	da huo
+生日礼物	1933	sheng ri li wu
+掉下来	1925	diao xia lai
+人设	1923	ren she
+感谢您	1915	gan xie nin
+科长	1913	ke zhang
+难不成	1893	nan bu cheng
+爬起来	1887	pa qi lai
+婚纱照	1885	hun sha zhao
+试一下	1878	shi yi xia
+一年级	1869	yi nian ji
+反对派	1863	fan dui pai
+打错字	1863	da cuo zi
+用到	1860	yong dao
+篮球队	1858	lan qiu dui
+拍出来	1854	pai chu lai
+上个月	1847	shang ge yue
+负责任	1839	fu ze ren
+感受一下	1837	gan shou yi xia
+锻炼身体	1832	duan lian shen ti
+最好是	1826	zui hao shi
+没用过	1826	mei yong guo
+上下车	1822	shang xia che
+小说家	1816	xiao shuo jia
+出问题	1815	chu wen ti
+大结局	1810	da jie ju
+足球赛	1805	zu qiu sai
+动画电影	1803	dong hua dian ying
+解释一下	1801	jie shi yi xia
+长得帅	1798	zhang de shuai
+双下巴	1795	shuang xia ba
+浪费时间	1795	lang fei shi jian
+有魅力	1789	you mei li
+预告片	1787	yu gao pian
+流行音乐	1786	liu xing yin yue
+正常人	1783	zheng chang ren
+太过分	1772	tai guo fen
+吃宵夜	1771	chi xiao ye
+说起	1767	shuo qi
+无法自拔	1766	wu fa zi ba
+节目组	1763	jie mu zu
+待会	1761	dai hui
+手机号	1759	shou ji hao
+不忍心	1755	bu ren xin
+熊孩子	1747	xiong hai zi
+发工资	1746	fa gong zi
+有能力	1744	you neng li
+用完	1744	yong wan
+粉红色	1742	fen hong se
+当地人	1741	dang di ren
+治好	1741	zhi hao
+这方面	1739	zhe fang mian
+无论是	1738	wu lun shi
+转到	1726	zhuan dao
+不满意	1725	bu man yi
+不舍	1723	bu she
+练习生	1721	lian xi sheng
+公众人物	1720	gong zhong ren wu
+好莱坞	1713	hao lai wu
+两分钟	1712	liang fen zhong
+电动车	1712	dian dong che
+那一刻	1706	na yi ke
+没多久	1705	mei duo jiu
+键盘侠	1705	jian pan xia
+第一轮	1695	di yi lun
+段子手	1693	duan zi shou
+照镜子	1693	zhao jing zi
+追溯到	1689	zhui su dao
+家门口	1687	jia men kou
+打不过	1687	da bu guo
+买家	1682	mai jia
+另一半	1678	ling yi ban
+坐下	1677	zuo xia
+什么地方	1676	shen me di fang
+吃零食	1671	chi ling shi
+站点	1670	zhan dian
+不给力	1666	bu gei li
+背景音乐	1662	bei jing yin yue
+到不行	1660	dao bu xing
+文化遗产	1657	wen hua yi chan
+有资格	1639	you zi ge
+抓紧时间	1636	zhua jin shi jian
+数学家	1630	shu xue jia
+节点	1622	jie dian
+垃圾桶	1619	la ji tong
+购物车	1615	gou wu che
+保护区	1615	bao hu qu
+哪一个	1614	na yi ge
+看错	1614	kan cuo
+偶像剧	1613	ou xiang ju
+买下	1612	mai xia
+改名字	1611	gai ming zi
+支持率	1610	zhi chi lv
+外地人	1605	wai di ren
+旅途愉快	1595	lv tu yu kuai
+坐地铁	1592	zuo di tie
+活下去	1590	huo xia qu
+发电厂	1581	fa dian chang
+坚持下去	1574	jian chi xia qu
+高中毕业	1569	gao zhong bi ye
+跟上	1566	gen shang
+新专辑	1539	xin zhuan ji
+找回	1538	zhao hui
+二年级	1537	er nian ji
+交通事故	1536	jiao tong shi gu
+没有关系	1533	mei you guan xi
+警察局	1532	jing cha ju
+聊聊天	1525	liao liao tian
+听完	1524	ting wan
+无数次	1512	wu shu ci
+多年来	1511	duo nian lai
+默默地	1511	mo mo de
+老天	1504	lao tian
+认出来	1499	ren chu lai
+新家	1487	xin jia
+肚子饿	1485	du zi e
+售票机	1481	shou piao ji
+卖家	1477	mai jia
+比如说	1476	bi ru shuo
+肚子疼	1475	du zi teng
+合唱团	1473	he chang tuan
+小男孩	1471	xiao nan hai
+解决问题	1467	jie jue wen ti
+恭喜发财	1463	gong xi fa cai
+奥特曼	1462	ao te man
+超级英雄	1460	chao ji ying xiong
+再一次	1458	zai yi ci
+有线	1435	you xian
+不同于	1433	bu tong yu
+又一次	1432	you yi ci
+悄悄的	1431	qiao qiao de
+研究人员	1431	yan jiu ren yuan
+写下	1427	xie xia
+本地人	1427	ben di ren
+近距离	1422	jin ju li
+非常感谢	1415	fei chang gan xie
+不怎么样	1414	bu zen me yang
+真人秀	1409	zhen ren xiu
+英国人	1403	ying guo ren
+最先	1399	zui xian
+吉他手	1398	ji ta shou
+一上午	1395	yi shang wu
+越过	1395	yue guo
+不甘心	1392	bu gan xin
+想出	1392	xiang chu
+牛津大学	1392	niu jin da xue
+中文版	1387	zhong wen ban
+重新开始	1386	chong xin kai shi
+再怎么	1384	zai zen me
+火车票	1380	huo che piao
+别生气	1378	bie sheng qi
+哈佛大学	1378	ha fo da xue
+绝大多数	1372	jue da duo shu
+做作业	1370	zuo zuo ye
+教育局	1369	jiao yu ju
+不简单	1367	bu jian dan
+好几遍	1366	hao ji bian
+拿起	1359	na qi
+没事干	1359	mei shi gan
+走进	1359	zou jin
+经济学家	1357	jing ji xue jia
+外交部长	1356	wai jiao bu zhang
+玻璃心	1348	bo li xin
+咖啡店	1347	ka fei dian
+不听话	1344	bu ting hua
+祝你成功	1344	zhu ni cheng gong
+总冠军	1343	zong guan jun
+三年级	1341	san nian ji
+买回来	1338	mai hui lai
+世界末日	1335	shi jie mo ri
+实体店	1333	shi ti dian
+找借口	1332	zhao jie kou
+多少次	1331	duo shao ci
+中方	1330	zhong fang
+才怪	1329	cai guai
+分公司	1328	fen gong si
+淡淡的	1324	dan dan de
+看开	1323	kan kai
+高中同学	1323	gao zhong tong xue
+别提了	1320	bie ti le
+找出	1318	zhao chu
+新春快乐	1317	xin chun kuai le
+我国	1315	wo guo
+别难过	1306	bie nan guo
+竞争对手	1305	jing zheng dui shou
+为准	1304	wei zhun
+一巴掌	1301	yi ba zhang
+小帅哥	1299	xiao shuai ge
+加分	1297	jia fen
+狮子座	1297	shi zi zuo
+见面会	1296	jian mian hui
+下线	1295	xia xian
+小组赛	1295	xiao zu sai
+天天向上	1294	tian tian xiang shang
+接地气	1293	jie di qi
+看着办	1293	kan zhe ban
+辣眼睛	1293	la yan jing
+充电宝	1292	chong dian bao
+中超	1289	zhong chao
+美团	1288	mei tuan
+挺好玩	1288	ting hao wan
+挑战赛	1281	tiao zhan sai
+市政厅	1280	shi zheng ting
+棒棒糖	1280	bang bang tang
+副总理	1279	fu zong li
+停下来	1278	ting xia lai
+省长	1273	sheng zhang
+起到	1270	qi dao
+保守党	1269	bao shou dang
+文科生	1269	wen ke sheng
+片头曲	1269	pian tou qu
+短时间	1269	duan shi jian
+第一阶段	1268	di yi jie duan
+不管怎样	1266	bu guan zen yang
+控制器	1266	kong zhi qi
+二十世纪	1262	er shi shi ji
+十几年	1262	shi ji nian
+反过来	1261	fan guo lai
+蒙古国	1260	meng gu guo
+昨天下午	1259	zuo tian xia wu
+狗年	1257	gou nian
+幸福感	1256	xing fu gan
+德国人	1255	de guo ren
+别着急	1254	bie zhao ji
+异世界	1254	yi shi jie
+重来	1253	chong lai
+不敢相信	1252	bu gan xiang xin
+离家出走	1252	li jia chu zou
+竞技场	1244	jing ji chang
+开放式	1241	kai fang shi
+换衣服	1241	huan yi fu
+社会学	1239	she hui xue
+巴士站	1238	ba shi zhan
+斗地主	1238	dou di zhu
+交界处	1232	jiao jie chu
+放暑假	1232	fang shu jia
+朝鲜半岛	1231	chao xian ban dao
+流浪狗	1230	liu lang gou
+影评人	1227	ying ping ren
+聊天记录	1225	liao tian ji lu
+不懂事	1223	bu dong shi
+主办方	1221	zhu ban fang
+被誉为	1220	bei yu wei
+加勒比海	1219	jia le bi hai
+睡得着	1217	shui de zhao
+发射器	1216	fa she qi
+广场舞	1213	guang chang wu
+电影票	1212	dian ying piao
+交朋友	1211	jiao peng you
+事实证明	1210	shi shi zheng ming
+被困	1210	bei kun
+总编辑	1207	zong bian ji
+搜到	1207	sou dao
+毕业证	1207	bi ye zheng
+总教练	1206	zong jiao lian
+自己动手	1205	zi ji dong shou
+寄过来	1201	ji guo lai
+世界纪录	1200	shi jie ji lu
+有价值	1200	you jia zhi
+现实生活	1197	xian shi sheng huo
+男歌手	1195	nan ge shou
+角色扮演	1194	jue se ban yan
+同班同学	1193	tong ban tong xue
+睡午觉	1193	shui wu jiao
+越来越少	1189	yue lai yue shao
+往前走	1188	wang qian zou
+不愁	1184	bu chou
+大笑	1182	da xiao
+超能力	1181	chao neng li
+好奇心	1180	hao qi xin
+三分钟	1176	san fen zhong
+早生贵子	1176	zao sheng gui zi
+阳光明媚	1175	yang guang ming mei
+马甲线	1175	ma jia xian
+双子座	1174	shuang zi zuo
+日常生活	1174	ri chang sheng huo
+中文系	1168	zhong wen xi
+流浪猫	1168	liu lang mao
+中央政府	1165	zhong yang zheng fu
+同学们	1160	tong xue men
+当地时间	1158	dang di shi jian
+长成	1158	zhang cheng
+外交关系	1157	wai jiao guan xi
+消防员	1156	xiao fang yuan
+祝好	1154	zhu hao
+一直以来	1152	yi zhi yi lai
+原声带	1152	yuan sheng dai
+毕业典礼	1152	bi ye dian li
+操作系统	1151	cao zuo xi tong
+体育课	1146	ti yu ke
+供应商	1145	gong ying shang
+蹭热度	1145	ceng re du
+喝一杯	1144	he yi bei
+上热搜	1142	shang re sou
+住宅区	1136	zhu zhai qu
+必胜客	1136	bi sheng ke
+想当年	1136	xiang dang nian
+国防部长	1133	guo fang bu zhang
+认识一下	1133	ren shi yi xia
+幼稚园	1132	you zhi yuan
+时长	1131	shi chang
+哈士奇	1128	ha shi qi
+悠着点	1127	you zhe dian
+期末考试	1121	qi mo kao shi
+带回去	1118	dai hui qu
+恕我直言	1116	shu wo zhi yan
+那倒是	1115	na dao shi
+野生动物	1115	ye sheng dong wu
+尽管如此	1112	jin guan ru ci
+更何况	1110	geng he kuang
+吃光	1108	chi guang
+演艺圈	1108	yan yi quan
+表面上	1107	biao mian shang
+霸道总裁	1103	ba dao zong cai
+懂不懂	1098	dong bu dong
+没话说	1098	mei hua shuo
+放寒假	1094	fang han jia
+没脑子	1093	mei nao zi
+资格证	1093	zi ge zheng
+理解能力	1092	li jie neng li
+接电话	1090	jie dian hua
+短篇小说	1089	duan pian xiao shuo
+不正经	1087	bu zheng jing
+不注意	1086	bu zhu yi
+右上角	1086	you shang jiao
+没出息	1083	mei chu xi
+多样性	1080	duo yang xing
+热烈欢迎	1080	re lie huan ying
+查到	1079	cha dao
+管好	1079	guan hao
+调到	1079	diao dao
+不在意	1077	bu zai yi
+女子双打	1076	nv zi shuang da
+完整版	1074	wan zheng ban
+爱情故事	1074	ai qing gu shi
+第一步	1074	di yi bu
+环境保护	1071	huan jing bao hu
+公安部	1067	gong an bu
+男子双打	1066	nan zi shuang da
+毕业论文	1064	bi ye lun wen
+不咋地	1063	bu za de
+混合双打	1062	hun he shuang da
+包饺子	1058	bao jiao zi
+对外开放	1058	dui wai kai fang
+高尔夫	1058	gao er fu
+下次见	1050	xia ci jian
+不用客气	1050	bu yong ke qi
+投票率	1050	tou piao lv
+讲故事	1050	jiang gu shi
+倾向于	1048	qing xiang yu
+吐出来	1047	tu chu lai
+交通工具	1045	jiao tong gong ju
+电话号码	1045	dian hua hao ma
+翻出来	1043	fan chu lai
+政府官员	1041	zheng fu guan yuan
+考驾照	1041	kao jia zhao
+女子单打	1040	nv zi dan da
+最差	1040	zui cha
+成就感	1037	cheng jiu gan
+没良心	1036	mei liang xin
+目前为止	1036	mu qian wei zhi
+流鼻血	1032	liu bi xue
+熬过去	1032	ao guo qu
+倒下	1029	dao xia
+嫁出去	1029	jia chu qu
+掉头发	1029	diao tou fa
+张开	1027	zhang kai
+选秀节目	1027	xuan xiu jie mu
+谈到	1026	tan dao
+长见识	1024	zhang jian shi
+叫外卖	1023	jiao wai mai
+新一代	1020	xin yi dai
+航站楼	1019	hang zhan lou
+一等奖	1014	yi deng jiang
+利比亚	1013	li bi ya
+大哭	1013	da ku
+有利于	1008	you li yu
+理科生	1003	li ke sheng
+暖宝宝	1002	nuan bao bao
+祝你快乐	1001	zhu ni kuai le
+副总裁	1000	fu zong cai
+别客气	998	bie ke qi
+常规赛	998	chang gui sai
+哪里哪里	997	na li na li
+不值	996	bu zhi
+吃瓜群众	995	chi gua qun zhong
+脸皮厚	995	lian pi hou
+程序员	991	cheng xu yuan
+店长	989	dian zhang
+情何以堪	983	qing he yi kan
+打底裤	982	da di ku
+老朋友	982	lao peng you
+不必要	978	bu bi yao
+网球场	977	wang qiu chang
+一觉醒来	971	yi jiao xing lai
+找机会	969	zhao ji hui
+不愉快	967	bu yu kuai
+快进	963	kuai jin
+平常心	955	ping chang xin
+世界和平	951	shi jie he ping
+杠杠的	946	gang gang de
+人身攻击	944	ren shen gong ji
+泡温泉	942	pao wen quan
+期末考	941	qi mo kao
+想通	939	xiang tong
+大国	937	da guo
+线下	936	xian xia
+新时代	933	xin shi dai
+交叉口	926	jiao cha kou
+合作伙伴	924	he zuo huo ban
+五月份	923	wu yue fen
+顺着	922	shun zhe
+一个样	921	yi ge yang
+当上	920	dang shang
+总统大选	920	zong tong da xuan
+营销号	918	ying xiao hao
+冒出来	912	mao chu lai
+较真	907	jiao zhen
+嘉年华	900	jia nian hua
+情侣装	884	qing lv zhuang
+哺乳动物	882	bu ru dong wu
+国内外	878	guo nei wai
+下定决心	874	xia ding jue xin
+发小	871	fa xiao
+炒鸡蛋	870	chao ji dan
+有型	867	you xing
+城里人	865	cheng li ren
+九月份	861	jiu yue fen
+百科	856	bai ke
+过马路	853	guo ma lu
+不值钱	852	bu zhi qian
+国考	849	guo kao
+一路上	848	yi lu shang
+创作者	847	chuang zuo zhe
+一日游	846	yi ri you
+三月份	842	san yue fen
+玫瑰花	840	mei gui hua
+医护人员	837	yi hu ren yuan
+大热天	836	da re tian
+阅读理解	834	yue du li jie
+冷空气	830	leng kong qi
+停下	828	ting xia
+月收入	823	yue shou ru
+打扫卫生	821	da sao wei sheng
+中小学	814	zhong xiao xue
+足球场	813	zu qiu chang
+四月份	804	si yue fen
+拍电影	804	pai dian ying
+未来可期	804	wei lai ke qi
+烦心事	804	fan xin shi
+百分百	800	bai fen bai
+高光	800	gao guang
+肚子痛	799	du zi tong
+办好	796	ban hao
+打雪仗	796	da xue zhang
+旗舰店	790	qi jian dian
+农民工	789	nong min gong
+化妆师	788	hua zhuang shi
+有礼貌	788	you li mao
+取消关注	783	qu xiao guan zhu
+怪人	783	guai ren
+六月份	782	liu yue fen
+篮球场	782	lan qiu chang
+兄弟姐妹	778	xiong di jie mei
+相比之下	776	xiang bi zhi xia
+分段	772	fen duan
+大喊	771	da han
+卷发棒	767	juan fa bang
+不及格	766	bu ji ge
+上下班	762	shang xia ban
+烫头发	760	tang tou fa
+卡住	759	ka zhu
+据报道	752	ju bao dao
+单身汪	750	dan shen wang
+偶像包袱	749	ou xiang bao fu
+此时此刻	744	ci shi ci ke
+跑步机	744	pao bu ji
+快递员	742	kuai di yuan
+后援会	740	hou yuan hui
+十月份	739	shi yue fen
+儿媳妇	737	er xi fu
+人力资源	735	ren li zi yuan
+结婚证	735	jie hun zheng
+可持续	731	ke chi xu
+胡辣汤	731	hu la tang
+乱吃	729	luan chi
+自个儿	729	zi ge er
+八月份	727	ba yue fen
+塑料袋	727	su liao dai
+生意兴隆	727	sheng yi xing long
+想想看	726	xiang xiang kan
+七月份	724	qi yue fen
+二师兄	720	er shi xiong
+拉风	718	la feng
+发型师	714	fa xing shi
+顺风车	713	shun feng che
+现场直播	713	xian chang zhi bo
+上分	712	shang fen
+合伙人	712	he huo ren
+旅游景点	710	lv you jing dian
+睫毛膏	709	jie mao gao
+按下	704	an xia
+累成狗	703	lei cheng gou
+心灵鸡汤	697	xin ling ji tang
+新冠病毒	696	xin guan bing du
+换位思考	695	huan wei si kao
+加班费	691	jia ban fei
+突然间	691	tu ran jian
+女性主义	690	nv xing zhu yi
+瓜子脸	690	gua zi lian
+无业游民	687	wu ye you min
+自我介绍	687	zi wo jie shao
+路由器	685	lu you qi
+打发时间	684	da fa shi jian
+剪刀手	683	jian dao shou
+受得了	679	shou de liao
+走秀	678	zou xiu
+上楼	676	shang lou
+直播间	674	zhi bo jian
+不情愿	670	bu qing yuan
+电子书	670	dian zi shu
+打马赛克	666	da ma sai ke
+土豆丝	664	tu dou si
+私家车	663	si jia che
+赞助商	662	zan zhu shang
+雪地靴	661	xue di xue
+小精灵	660	xiao jing ling
+无意中	659	wu yi zhong
+洗车	653	xi che
+不对劲	652	bu dui jin
+真事	650	zhen shi
+厚脸皮	647	hou lian pi
+共享单车	644	gong xiang dan che
+关键字	643	guan jian zi
+老歌	643	lao ge
+女星	639	nv xing
+素人	638	su ren
+二哈	636	er ha
+鬼故事	632	gui gu shi
+潜规则	629	qian gui ze
+历史悠久	626	li shi you jiu
+大男人	626	da nan ren
+天呀	623	tian ya
+去你的	622	qu ni de
+老实说	622	lao shi shuo
+卡顿	620	ka dun
+睡过头	617	shui guo tou
+路人甲	615	lu ren jia
+早点儿	611	zao dian er
+喵星人	608	miao xing ren
+高管	606	gao guan
+不争气	605	bu zheng qi
+开发商	604	kai fa shang
+没礼貌	597	mei li mao
+长篇小说	597	chang pian xiao shuo
+人字拖	595	ren zi tuo
+高质量	595	gao zhi liang
+推理小说	594	tui li xiao shuo
+家里蹲	593	jia li dun
+点亮	591	dian liang
+黑历史	591	hei li shi
+倒时差	587	dao shi cha
+帅呆了	586	shuai dai le
+长知识	584	zhang zhi shi
+区号	583	qu hao
+脑回路	582	nao hui lu
+公共场所	581	gong gong chang suo
+挖掘机	581	wa jue ji
+考拉	579	kao la
+古装剧	577	gu zhuang ju
+花样滑冰	577	hua yang hua bing
+一月份	573	yi yue fen
+冷笑话	573	leng xiao hua
+旧爱	570	jiu ai
+成语接龙	568	cheng yu jie long
+说话算数	567	shuo hua suan shu
+公交卡	566	gong jiao ka
+魔法师	566	mo fa shi
+播放器	560	bo fang qi
+搞好	560	gao hao
+加钱	557	jia qian
+古典音乐	555	gu dian yin yue
+念想	555	nian xiang
+脚趾头	549	jiao zhi tou
+起球	548	qi qiu
+面包机	548	mian bao ji
+恐怖分子	547	kong bu fen zi
+慢动作	546	man dong zuo
+气候变化	546	qi hou bian hua
+吃腻	545	chi ni
+国行	545	guo hang
+火大	545	huo da
+赶时间	544	gan shi jian
+不划算	542	bu hua suan
+沐浴露	542	mu yu lu
+饭点	542	fan dian
+鼓起勇气	542	gu qi yong qi
+火鸡面	541	huo ji mian
+老年痴呆	537	lao nian chi dai
+花时间	533	hua shi jian
+马戏团	533	ma xi tuan
+玩完	531	wan wan
+打分	530	da fen
+副歌	526	fu ge
+姐妹花	525	jie mei hua
+日系	525	ri xi
+不如人意	524	bu ru ren yi
+好办	522	hao ban
+比对	520	bi dui
+停车位	519	ting che wei
+不服气	517	bu fu qi
+头等舱	517	tou deng cang
+真题	516	zhen ti
+说定	516	shuo ding
+标志性	515	biao zhi xing
+一般而言	513	yi ban er yan
+美容觉	512	mei rong jiao
+造型师	512	zao xing shi
+实名制	510	shi ming zhi
+划重点	508	hua zhong dian
+当回事	507	dang hui shi
+不耐烦	506	bu nai fan
+变速箱	506	bian su xiang
+一股清流	504	yi gu qing liu
+花光	502	hua guang
+展会	500	zhan hui
+一个劲	497	yi ge jin
+逆生长	497	ni sheng zhang
+天然呆	496	tian ran dai
+科幻小说	495	ke huan xiao shuo
+大嘴巴	494	da zui ba
+大牛	494	da niu
+女权主义	494	nv quan zhu yi
+代表人物	493	dai biao ren wu
+看头	490	kan tou
+长期以来	490	chang qi yi lai
+恐怖袭击	487	kong bu xi ji
+长记性	487	zhang ji xing
+大范围	486	da fan wei
+乌鸦嘴	485	wu ya zui
+让开	485	rang kai
+飞行模式	483	fei xing mo shi
+放鸽子	483	fang ge zi
+相爱相杀	483	xiang ai xiang sha
+漂流瓶	481	piao liu ping
+极少数	480	ji shao shu
+路边摊	479	lu bian tan
+游泳圈	476	you yong quan
+貌美如花	476	mao mei ru hua
+偏要	475	pian yao
+涨姿势	475	zhang zi shi
+表达式	475	biao da shi
+友谊赛	474	you yi sai
+市面上	473	shi mian shang
+签售会	473	qian shou hui
+感冒药	472	gan mao yao
+滑雪场	472	hua xue chang
+时间线	471	shi jian xian
+饿肚子	471	e du zi
+旅行团	470	lv xing tuan
+枪击案	469	qiang ji an
+娶媳妇	468	qu xi fu
+真人版	468	zhen ren ban
+艺术馆	468	yi shu guan
+大美人	467	da mei ren
+私底下	466	si di xia
+作息时间	465	zuo xi shi jian
+荧光棒	465	ying guang bang
+守护神	464	shou hu shen
+中招	462	zhong zhao
+路由	460	lu you
+五星级	459	wu xing ji
+挨个	459	ai ge
+起作用	459	qi zuo yong
+空调房	458	kong tiao fang
+宿舍楼	456	su she lou
+放鞭炮	456	fang bian pao
+公交站	455	gong jiao zhan
+微积分	455	wei ji fen
+群发	455	qun fa
+热水澡	453	re shui zao
+平假名	451	ping jia ming
+硬生生	450	ying sheng sheng
+试穿	449	shi chuan
+内心深处	448	nei xin shen chu
+毫不犹豫	446	hao bu you yu
+生态系统	446	sheng tai xi tong
+大码	445	da ma
+情侣头像	445	qing lv tou xiang
+柠檬水	443	ning meng shui
+阿尔法	442	a er fa
+摩的	441	mo di
+三分球	439	san fen qiu
+放风筝	438	fang feng zheng
+话说回来	438	hua shuo hui lai
+飞机票	437	fei ji piao
+会议室	436	hui yi shi
+面包店	434	mian bao dian
+不止一次	433	bu zhi yi ci
+空气污染	431	kong qi wu ran
+情景喜剧	430	qing jing xi ju
+年费	428	nian fei
+民意调查	428	min yi diao cha
+凹造型	427	ao zao xing
+大胃王	426	da wei wang
+起名	426	qi ming
+好样的	424	hao yang de
+现阶段	421	xian jie duan
+但愿如此	420	dan yuan ru ci
+有一套	419	you yi tao
+数据线	417	shu ju xian
+护发素	416	hu fa su
+终成眷属	416	zhong cheng juan shu
+萌新	416	meng xin
+初中生	415	chu zhong sheng
+难懂	414	nan dong
+上半场	407	shang ban chang
+美容院	407	mei rong yuan
+小心眼	406	xiao xin yan
+勇气可嘉	404	yong qi ke jia
+二宝	401	er bao
+年味	401	nian wei
+荷尔蒙	401	he er meng
+修成正果	399	xiu cheng zheng guo
+不准确	398	bu zhun que
+家长会	397	jia zhang hui
+腊八节	397	la ba jie
+心地善良	396	xin di shan liang
+驾驶证	396	jia shi zheng
+体力活	395	ti li huo
+哪门子	394	na men zi
+毫无疑问	393	hao wu yi wen
+爱情片	393	ai qing pian
+此话怎讲	392	ci hua zen jiang
+后备箱	391	hou bei xiang
+时光机	391	shi guang ji
+自然卷	388	zi ran juan
+不可避免	387	bu ke bi mian
+手办	387	shou ban
+手机卡	387	shou ji ka
+欢迎光临	387	huan ying guang lin
+大哥大	385	da ge da
+不经意间	384	bu jing yi jian
+花店	384	hua dian
+解决办法	384	jie jue ban fa
+招人喜欢	383	zhao ren xi huan
+听上去	381	ting shang qu
+装睡	381	zhuang shui
+仅供参考	380	jin gong can kao
+仅此而已	380	jin ci er yi
+意志力	379	yi zhi li
+不自在	376	bu zi zai
+型男	376	xing nan
+阴谋论	376	yin mou lun
+夸克	375	kua ke
+归属感	375	gui shu gan
+平行世界	373	ping xing shi jie
+打法	373	da fa
+包治百病	372	bao zhi bai bing
+小白脸	372	xiao bai lian
+金主	372	jin zhu
+萨摩耶	371	sa mo ye
+高反	370	gao fan
+乱花钱	369	luan hua qian
+省电	369	sheng dian
+眼线笔	368	yan xian bi
+八块腹肌	367	ba kuai fu ji
+脑子进水	367	nao zi jin shui
+审美观	365	shen mei guan
+营业时间	363	ying ye shi jian
+鸳鸯锅	363	yuan yang guo
+不敢恭维	362	bu gan gong wei
+久等	362	jiu deng
+入行	362	ru hang
+老地方	362	lao di fang
+变道	360	bian dao
+查水表	360	cha shui biao
+牛人	360	niu ren
+冰棒	357	bing bang
+焦虑症	357	jiao lv zheng
+月牙	356	yue ya
+笑场	354	xiao chang
+柠檬茶	351	ning meng cha
+辨识度	351	bian shi du
+成绩单	350	cheng ji dan
+疾控中心	350	ji kong zhong xin
+讨人喜欢	350	tao ren xi huan
+不平凡	349	bu ping fan
+农历新年	349	nong li xin nian
+内心戏	348	nei xin xi
+接单	348	jie dan
+鞋跟	348	xie gen
+观众席	347	guan zhong xi
+跑腿	347	pao tui
+配眼镜	347	pei yan jing
+饮水机	347	yin shui ji
+邀请函	346	yao qing han
+重出江湖	346	chong chu jiang hu
+不过如此	343	bu guo ru ci
+初学者	342	chu xue zhe
+模拟器	341	mo ni qi
+自制力	340	zi zhi li
+弹出	339	tan chu
+大灰狼	338	da hui lang
+待见	338	dai jian
+商业化	336	shang ye hua
+可喜可贺	335	ke xi ke he
+女高音	333	nv gao yin
+源代码	333	yuan dai ma
+精神病院	333	jing shen bing yuan
+落地签	333	luo di qian
+爵士鼓	332	jue shi gu
+大姐大	331	da jie da
+情绪化	331	qing xu hua
+东南西北	329	dong nan xi bei
+帆布鞋	329	fan bu xie
+正经事	329	zheng jing shi
+这阵子	329	zhe zhen zi
+铁板烧	329	tie ban shao
+扑克牌	328	pu ke pai
+低收入	327	di shou ru
+攻击力	327	gong ji li
+新能源	327	xin neng yuan
+留守儿童	326	liu shou er tong
+写手	325	xie shou
+点餐	324	dian can
+农家乐	322	nong jia le
+起床气	321	qi chuang qi
+班花	319	ban hua
+全副武装	318	quan fu wu zhuang
+回本	318	hui ben
+室内设计	318	shi nei she ji
+拉伤	318	la shang
+棒极了	318	bang ji le
+对话框	315	dui hua kuang
+纯牛奶	315	chun niu nai
+移动电源	312	yi dong dian yuan
+孔明灯	311	kong ming deng
+畅销书	311	chang xiao shu
+紧接着	311	jin jie zhe
+健康码	310	jian kang ma
+言情小说	310	yan qing xiao shuo
+三次元	309	san ci yuan
+添麻烦	309	tian ma fan
+心理作用	308	xin li zuo yong
+群众演员	308	qun zhong yan yuan
+外貌协会	307	wai mao xie hui
+校运会	307	xiao yun hui
+点击率	307	dian ji lv
+电动牙刷	307	dian dong ya shua
+自古以来	307	zi gu yi lai
+黑天鹅	305	hei tian e
+掉线	303	diao xian
+快点儿	303	kuai dian er
+熊猫眼	302	xiong mao yan
+砸场子	302	za chang zi
+好记	301	hao ji
+小番茄	301	xiao fan qie
+脱离苦海	301	tuo li ku hai
+高性能	301	gao xing neng
+低成本	300	di cheng ben
+帮帮忙	300	bang bang mang
+满天星	300	man tian xing
+装可爱	300	zhuang ke ai
+不明觉厉	298	bu ming jue li
+吃豆腐	298	chi dou fu
+概率论	298	gai lv lun
+翻开	298	fan kai
+搓麻将	297	cuo ma jiang
+老夫老妻	297	lao fu lao qi
+不久前	296	bu jiu qian
+叫作	296	jiao zuo
+童话故事	295	tong hua gu shi
+过去式	295	guo qu shi
+白米饭	294	bai mi fan
+交换生	293	jiao huan sheng
+满足感	293	man zu gan
+人际关系	292	ren ji guan xi
+吐舌头	292	tu she tou
+走神	292	zou shen
+二月份	291	er yue fen
+咸鸭蛋	291	xian ya dan
+通电话	290	tong dian hua
+办到	289	ban dao
+刻板印象	288	ke ban yin xiang
+大厂	288	da chang
+生活水平	288	sheng huo shui ping
+移情别恋	288	yi qing bie lian
+偏高	287	pian gao
+试玩	287	shi wan
+马卡龙	287	ma ka long
+长按	286	chang an
+无线网	286	wu xian wang
+医务人员	286	yi wu ren yuan
+蛋包饭	286	dan bao fan
+园长	285	yuan zhang
+小老鼠	285	xiao lao shu
+开骂	285	kai ma
+人人有责	284	ren ren you ze
+留白	284	liu bai
+小年夜	281	xiao nian ye
+折耳根	281	zhe er gen
+珍珠奶茶	280	zhen zhu nai cha
+听错	279	ting cuo
+搬出去	279	ban chu qu
+环卫工人	276	huan wei gong ren
+动感单车	275	dong gan dan che
+外太空	275	wai tai kong
+报名费	275	bao ming fei
+槽点	275	cao dian
+转接	274	zhuan jie
+糟了	273	zao le
+金句	273	jin ju
+雷人	272	lei ren
+保暖内衣	271	bao nuan nei yi
+忽略不计	271	hu lve bu ji
+压马路	269	ya ma lu
+波点	269	bo dian
+调味料	269	tiao wei liao
+下拉	268	xia la
+不识字	268	bu shi zi
+上桌	267	shang zhuo
+不吉利	267	bu ji li
+润唇膏	267	run chun gao
+韭菜盒子	267	jiu cai he zi
+黑咖啡	267	hei ka fei
+拼多多	266	pin duo duo
+周年庆	266	zhou nian qing
+讨论区	266	tao lun qu
+意思意思	265	yi si yi si
+主题公园	264	zhu ti gong yuan
+后花园	264	hou hua yuan
+搜索引擎	264	sou suo yin qing
+编辑器	263	bian ji qi
+我司	263	wo si
+创造力	262	chuang zao li
+月租	262	yue zu
+黄牛票	262	huang niu piao
+保鲜膜	261	bao xian mo
+截止到	260	jie zhi dao
+冷酷无情	259	leng ku wu qing
+加冰	259	jia bing
+博眼球	259	bo yan qiu
+肉片	259	rou pian
+边儿	259	bian er
+略过	258	lve guo
+体育生	257	ti yu sheng
+平面设计	257	ping mian she ji
+有料	256	you liao
+玻璃杯	256	bo li bei
+破纪录	255	po ji lu
+还款	255	huan kuan
+打地铺	254	da di pu
+长满	254	zhang man
+咖啡机	253	ka fei ji
+姐们儿	253	jie men er
+分布式	252	fen bu shi
+坐电梯	251	zuo dian ti
+心知肚明	251	xin zhi du ming
+老寒腿	251	lao han tui
+贩卖机	251	fan mai ji
+吃播	250	chi bo
+塔罗牌	250	ta luo pai
+机灵鬼	250	ji ling gui
+武侠小说	250	wu xia xiao shuo
+肚脐眼	250	du qi yan
+工作狂	249	gong zuo kuang
+没眼看	249	mei yan kan
+滑板鞋	249	hua ban xie
+脸皮薄	249	lian pi bao
+准妈妈	248	zhun ma ma
+歌儿	248	ge er
+洗手液	248	xi shou ye
+起皮	248	qi pi
+难伺候	248	nan ci hou
+无人驾驶	247	wu ren jia shi
+翻过来	247	fan guo lai
+说话算话	247	shuo hua suan hua
+不好说	246	bu hao shuo
+危机感	246	wei ji gan
+清晰度	246	qing xi du
+钢铁直男	246	gang tie zhi nan
+强身健体	244	qiang shen jian ti
+散伙饭	244	san huo fan
+锥子脸	244	zhui zi lian
+鼠标垫	243	shu biao dian
+大坏蛋	243	da huai dan
+夹娃娃	243	jia wa wa
+伤心欲绝	242	shang xin yu jue
+无力感	242	wu li gan
+矿物质	242	kuang wu zhi
+心肌梗塞	241	xin ji geng se
+真香	240	zhen xiang
+不相干	240	bu xiang gan
+千里之外	239	qian li zhi wai
+现做	239	xian zuo
+面试官	239	mian shi guan
+加满	238	jia man
+打扑克	237	da pu ke
+满意度	237	man yi du
+代班	236	dai ban
+倍儿棒	236	bei er bang
+密室逃脱	236	mi shi tao tuo
+白萝卜	236	bai luo bo
+纯音乐	235	chun yin yue
+乱写	234	luan xie
+治愈系	233	zhi yu xi
+金黄色	233	jin huang se
+鬼天气	233	gui tian qi
+不凑巧	232	bu cou qiao
+出片	232	chu pian
+松开	232	song kai
+国风	231	guo feng
+次方	231	ci fang
+白眼狼	230	bai yan lang
+踩刹车	230	cai sha che
+已读	229	yi du
+伙食费	229	huo shi fei
+勤俭持家	229	qin jian chi jia
+当季	229	dang ji
+闪人	229	shan ren
+随处可见	229	sui chu ke jian
+刷手机	228	shua shou ji
+包菜	228	bao cai
+号码牌	228	hao ma pai
+提车	228	ti che
+最大化	228	zui da hua
+酒醒	228	jiu xing
+不是东西	227	bu shi dong xi
+方向感	227	fang xiang gan
+虚拟机	227	xu ni ji
+身心俱疲	227	shen xin ju pi
+回血	226	hui xue
+电话卡	226	dian hua ka
+精气神	226	jing qi shen
+自助游	226	zi zhu you
+不受欢迎	225	bu shou huan ying
+幕后黑手	225	mu hou hei shou
+毕业证书	225	bi ye zheng shu
+面儿	225	mian er
+内存卡	224	nei cun ka
+交通卡	224	jiao tong ka
+听清	224	ting qing
+堂哥	224	tang ge
+换行	224	huan hang
+紧随其后	224	jin sui qi hou
+自动扶梯	224	zi dong fu ti
+虚惊一场	224	xu jing yi chang
+青春永驻	224	qing chun yong zhu
+公主抱	223	gong zhu bao
+大容量	223	da rong liang
+皮儿	223	pi er
+荡秋千	223	dang qiu qian
+加粗	222	jia cu
+圆点	222	yuan dian
+据统计	222	ju tong ji
+锁上	222	suo shang
+十一月份	221	shi yi yue fen
+心里有数	221	xin li you shu
+非必要	221	fei bi yao
+和牛	220	he niu
+有氧运动	220	you yang yun dong
+明儿个	219	ming er ge
+恰恰相反	218	qia qia xiang fan
+请坐	218	qing zuo
+还清	218	huan qing
+闹矛盾	218	nao mao dun
+从零开始	217	cong ling kai shi
+比拼	217	bi pin
+年少无知	216	nian shao wu zhi
+拿手菜	216	na shou cai
+浮出水面	216	fu chu shui mian
+哭声	215	ku sheng
+差一点	215	cha yi dian
+睡回笼觉	215	shui hui long jiao
+突发奇想	215	tu fa qi xiang
+贸易战	215	mao yi zhan
+力道	214	li dao
+小票	214	xiao piao
+长队	214	chang dui
+实体书	213	shi ti shu
+找不着	213	zhao bu zhao
+海洋馆	213	hai yang guan
+弄明白	212	nong ming bai
+掏心掏肺	212	tao xin tao fei
+爆炸头	212	bao zha tou
+长眼	212	zhang yan
+麻花辫	211	ma hua bian
+交通意外	210	jiao tong yi wai
+尽人事	210	jin ren shi
+找上门	210	zhao shang men
+系统更新	208	xi tong geng xin
+中产	208	zhong chan
+凤梨酥	208	feng li su
+天地良心	208	tian di liang xin
+如假包换	208	ru jia bao huan
+短视频	208	duan shi pin
+拍卖会	207	pai mai hui
+昏过去	207	hun guo qu
+服务生	207	fu wu sheng
+天赋异禀	206	tian fu yi bing
+开药	206	kai yao
+录音棚	206	lu yin peng
+虚度光阴	205	xu du guang yin
+不是滋味	204	bu shi zi wei
+喝高	204	he gao
+母胎单身	203	mu tai dan shen
+摸黑	202	mo hei
+无论何时	202	wu lun he shi
+小程序	201	xiao cheng xu
+瑜伽垫	201	yu jia dian
+绿皮车	201	lv pi che
+读书会	201	du shu hui
+转换器	201	zhuan huan qi
+喜极而泣	200	xi ji er qi
+掉链子	200	diao lian zi
+约等于	200	yue deng yu
+负心汉	200	fu xin han
+蓝牙耳机	198	lan ya er ji
+点赞	194	dian zan
+网课	192	wang ke
+躺平	191	tang ping
+代驾	189	dai jia
+日活	186	ri huo
+收件人	184	shou jian ren
+连麦	181	lian mai
+台式机	172	tai shi ji
+钉钉	154	ding ding
+一十	144	yi shi
+饿了么	143	e le me
+通知栏	141	tong zhi lan
+图库	138	tu ku
+尾款	137	wei kuan
+上滑	136	shang hua
+满减	135	man jian
+排期	127	pai qi
+存储卡	125	cun chu ka
+耳麦	124	er mai
+充电线	120	chong dian xian
+运存	120	yun cun
+配送费	119	pei song fei
+颜文字	117	yan wen zi
+带货	105	dai huo
+寄件	103	ji jian
+耳机孔	101	er ji kong
+多选	98	duo xuan
+小窗	93	xiao chuang
+个性签名	91	ge xing qian ming
+音量键	91	yin liang jian
+外卖员	89	wai mai yuan
+联调	86	lian diao
+勾选	83	gou xuan
+内卷	80	nei juan
+彩信	80	cai xin
+充电头	79	chong dian tou
+快递单号	79	kuai di dan hao
+弹窗	78	tan chuang
+拖动	78	tuo dong
+未读	78	wei du
+取件	76	qu jian
+报错	75	bao cuo
+复盘	71	fu pan
+快递柜	67	kuai di gui
+复选	65	fu xuan
+息屏	63	xi ping
+上划	61	shang hua
+优惠券	60	you hui quan
+竞品	57	jing pin
+倍速	55	bei su
+快退	53	kuai tui
+评论区	51	ping lun qu
+空格键	51	kong ge jian
+免打扰	47	mian da rao
+低电量	46	di dian liang
+数据流量	44	shu ju liu liang
+菜鸟驿站	43	cai niao yi zhan
+投屏	39	tou ping
+充电口	37	chong dian kou
+更新包	37	geng xin bao
+私信	36	si xin
+种草	32	zhong cao
+语音通话	32	yu yin tong hua
+清缓存	32	qing huan cun
+长截图	29	chang jie tu
+宕机	28	dang ji
+取餐	27	qu can
+反选	26	fan xuan
+左键	26	zuo jian
+拉新	26	la xin
+运单号	25	yun dan hao
+右滑	24	you hua
+社畜	24	she chu
+数字键	24	shu zi jian
+通讯录	24	tong xun lu
+白屏	20	bai ping
+破防	20	po fang
+左滑	20	zuo hua
+播放键	20	bo fang jian
+下划	20	xia hua
+暂停键	20	zan ting jian
+语音消息	20	yu yin xiao xi
+光猫	20	guang mao
+弹框	20	tan kuang
+付款码	20	fu kuan ma
+滚动条	20	gun dong tiao
+登录框	20	deng lu kuang
+埋点	20	mai dian
+冷启动	20	leng qi dong
+工单	20	gong dan
+小红书	20	xiao hong shu
+删除键	20	shan chu jian
+提醒事项	20	ti xing shi xiang
+热榜	20	re bang
+候选词	20	hou xuan ci
+转化率	20	zhuan hua lv
+赋能	20	fu neng
+涨粉	20	zhang fen
+月活	20	yue huo
+飞书	20	fei shu
+联想词	20	lian xiang ci
+云服务器	20	yun fu wu qi
+发版	20	fa ban
+省电模式	20	sheng dian mo shi

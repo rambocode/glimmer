@@ -27,6 +27,7 @@ README.md 只介绍项目，所有技术内容放在这里，分四类：前三�
 | [notes/performance.md](notes/performance.md) | 历次性能优化：起因、定位方法、改法、数字前后对比与经验 |
 | [notes/release.md](notes/release.md) | 发版流程：CHANGELOG、标签触发的 CI 打包、产品数据包、签名公证的 Secrets、官网用的 `releases.json` |
 | [notes/phrase-layer.md](notes/phrase-layer.md) | 短语层（2026-09-12）：常用词表收不到的 我的 / 不知道 怎么从语料挖、怎么进语言模型而不伤整句、两把尺子的前后数字 |
+| [notes/common-words.md](notes/common-words.md) | 补充常用词（2026-09-17）：取餐 / 弹出 / 播放器 这类为什么挖词漏掉、CC-CEDICT 与 jieba 白名单 × lm.qj 合成次数找缺口、人工审 1,357 条、不用语料的增量补词与回归数字 |
 | [notes/constant-sweep.md](notes/constant-sweep.md) | 排序常数扫描（2026-09-12）：插值与敲错代价在冻结日志上扫网格，全在平台区不改；没命中的构成与复现步骤 |
 | [notes/windows-win10.md](notes/windows-win10.md) | Windows 10 与设置程序（2026-09-13）：Reactor 早期绑定 Windows 11 才有的 AppModel API 导致加载期失败，改自包含部署 + 延迟加载 |
 | [notes/chromium-imk.md](notes/chromium-imk.md) | Chromium 系浏览器（2026-09-15）：flagsChanged 送两遍让 Shift 单击失效、换焦点先 activate 后 deactivate 让旧会话拆掉全局状态 |

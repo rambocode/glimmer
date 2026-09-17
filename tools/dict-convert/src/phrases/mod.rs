@@ -229,7 +229,7 @@ fn count(
 }
 
 /// 词 → 读音（同一个词多个读音取词频最高的那条），读 `dict` 与同目录 `dicts/`。
-fn load_readings(dict: &Path) -> Result<HashMap<String, String>, ConvertError> {
+pub(crate) fn load_readings(dict: &Path) -> Result<HashMap<String, String>, ConvertError> {
     let mut best: HashMap<String, (u64, String)> = HashMap::new();
     for path in Vocabulary::files(dict) {
         for line in BufReader::new(File::open(&path)?).lines() {
