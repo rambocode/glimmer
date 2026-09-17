@@ -1,3 +1,5 @@
+//! 英文词表：精确查询、前缀补全及领域词库中的英文名称。
+
 use std::collections::HashMap;
 use std::path::Path;
 
@@ -59,6 +61,38 @@ impl WordList {
         }
         tracing::debug!(words = entries.len(), "英文词表加载完成");
         Ok(Self { by_code, entries })
+    }
+
+    /// 从附加词库提取英文名称。编码须为名称去掉空格和标点后的 ASCII 小写字母数字，
+    /// 词库键须以 `@` 标记，如 `Claude Opus 5` → `@claudeopus5`；
+    /// 普通拼音键、中英混合词与没有标记的导入条目不进入英文表。
+    /// 同一编码保留最先加载的词库，关闭或移除词库后重新构建即可撤销补全。
+    pub fn from_dictionaries(dictionaries: &[crate::Dictionary]) -> Self {
+        let mut list = Self::default();
+        for entry in dictionaries.iter().flat_map(crate::Dictionary::entries) {
+            if !entry.text.is_ascii() || !entry.text.bytes().any(|b| b.is_ascii_alphabetic()) {
+                continue;
+            }
+            let code: String = entry
+                .text
+                .bytes()
+                .filter(u8::is_ascii_alphanumeric)
+                .map(|b| (b as char).to_ascii_lowercase())
+                .collect();
+            if entry.pinyin.strip_prefix('@') != Some(code.as_str())
+                || list.by_code.contains_key(&code)
+            {
+                continue;
+            }
+            list.by_code.insert(code.clone(), list.entries.len());
+            list.entries
+                .push((code, entry.text.to_owned(), entry.frequency));
+        }
+        list.entries.sort_by(|a, b| a.0.cmp(&b.0));
+        for (index, (code, _, _)) in list.entries.iter().enumerate() {
+            list.by_code.insert(code.clone(), index);
+        }
+        list
     }
 
     pub fn from_path(path: impl AsRef<Path>) -> Result<Self, DictionaryError> {

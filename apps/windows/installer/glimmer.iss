@@ -78,6 +78,10 @@ Source: "{#Repo}\data\generated\glossary-zh.qj"; DestDir: "{app}\data\generated"
 Source: "{#Repo}\data\generated\glossary-es.qj"; DestDir: "{app}\data\generated";       Flags: ignoreversion
 Source: "{#Repo}\data\generated\english.tsv";    DestDir: "{app}\data\generated";       Flags: ignoreversion
 Source: "{#Repo}\data\generated\dicts\*.qj";     DestDir: "{app}\data\generated\dicts";  Flags: ignoreversion
+; AI 领域词库的署名、来源和许可证。
+Source: "{#Repo}\assets\lexicon\ai\LICENSE.*"; DestDir: "{app}\assets\lexicon\ai"; Flags: ignoreversion
+Source: "{#Repo}\assets\lexicon\ai\sources.json"; DestDir: "{app}\assets\lexicon\ai"; Flags: ignoreversion
+Source: "{#Repo}\assets\lexicon\ai\README.md"; DestDir: "{app}\assets\lexicon\ai"; Flags: ignoreversion
 ; 五笔码表三版（dict-convert 打成的 .qj，各自的许可与署名随包）；缺哪版就不装哪版，[general] wubi 指到缺的版本时 Server 记 warn 当没开
 Source: "{#Repo}\data\generated\wubi86.qj";               DestDir: "{app}\data\generated";     Flags: ignoreversion skipifsourcedoesntexist
 Source: "{#Repo}\assets\wubi\wubi86\LICENSE.LGPL-3.0";    DestDir: "{app}\assets\wubi\wubi86";  Flags: ignoreversion skipifsourcedoesntexist

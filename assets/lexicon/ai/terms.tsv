@@ -1,0 +1,2724 @@
+# 词	编码	人工权重	分类	类型	实体	来源	核对日期
+一元语法	yi yuan yu fa	20	教材术语	term	一元语法	d2l	2026-09-17
+一次通过率	yi ci tong guo lv	20	评估	term	一次通过率	curated	2026-09-17
+一维卷积	yi wei juan ji	20	架构	term	一维卷积	curated	2026-09-17
+一致估计	yi zhi gu ji	20	数学	term	一致估计	curated	2026-09-17
+一致性	yi zhi xing	20	评估	term	一致性	curated	2026-09-17
+一致性模型	yi zhi xing mo xing	20	架构	term	一致性模型	curated	2026-09-17
+一阶马尔可夫模型	yi jie ma er ke fu mo xing	20	教材术语	term	一阶马尔可夫模型	d2l	2026-09-17
+三元组损失	san yuan zu sun shi	20	训练	term	三元组损失	curated	2026-09-17
+三元语法	san yuan yu fa	20	教材术语	term	三元语法	d2l	2026-09-17
+三维卷积	san wei juan ji	20	架构	term	三维卷积	curated	2026-09-17
+三维并行	san wei bing xing	20	训练	term	三维并行	curated	2026-09-17
+三维理解	san wei li jie	20	视觉	term	三维理解	curated	2026-09-17
+三维生成	san wei sheng cheng	20	视觉	term	三维生成	curated	2026-09-17
+三维重建	san wei chong jian	20	视觉	term	三维重建	curated	2026-09-17
+三维高斯泼溅	san wei gao si po jian	20	视觉	term	三维高斯泼溅	curated	2026-09-17
+上下文	shang xia wen	20	教材术语	term	上下文	d2l	2026-09-17
+上下文劫持	shang xia wen jie chi	20	安全	term	上下文劫持	curated	2026-09-17
+上下文压缩	shang xia wen ya suo	20	检索	term	上下文压缩	curated	2026-09-17
+上下文去重	shang xia wen qu chong	20	检索	term	上下文去重	curated	2026-09-17
+上下文增强	shang xia wen zeng qiang	20	检索	term	上下文增强	curated	2026-09-17
+上下文并行	shang xia wen bing xing	20	训练	term	上下文并行	curated	2026-09-17
+上下文截断	shang xia wen jie duan	20	智能体	term	上下文截断	curated	2026-09-17
+上下文拼接	shang xia wen pin jie	20	检索	term	上下文拼接	curated	2026-09-17
+上下文提示	shang xia wen ti shi	20	提示	term	上下文提示	curated	2026-09-17
+上下文摘要	shang xia wen zhai yao	20	智能体	term	上下文摘要	curated	2026-09-17
+上下文检索	shang xia wen jian suo	20	检索	term	上下文检索	curated	2026-09-17
+上下文窗口	shang xia wen chuang kou	20	智能体	term	上下文窗口	curated	2026-09-17
+上下文管理	shang xia wen guan li	20	智能体	term	上下文管理	curated	2026-09-17
+上下文裁剪	shang xia wen cai jian	20	智能体	term	上下文裁剪	curated	2026-09-17
+上下文词	shang xia wen ci	20	教材术语	term	上下文词	d2l	2026-09-17
+上下文赌博机	shang xia wen du bo ji	20	算法	term	上下文赌博机	curated	2026-09-17
+上下文重排	shang xia wen chong pai	20	检索	term	上下文重排	curated	2026-09-17
+上下文隔离	shang xia wen ge li	20	智能体	term	上下文隔离	curated	2026-09-17
+上下文预算	shang xia wen yu suan	20	智能体	term	上下文预算	curated	2026-09-17
+上置信界	shang zhi xin jie	20	算法	term	上置信界	curated	2026-09-17
+上采样	shang cai yang	20	教材术语	term	上采样	d2l	2026-09-17
+下一句预测	xia yi ju yu ce	20	训练	term	下一句预测	curated	2026-09-17
+下一词预测	xia yi ci yu ce	20	训练	term	下一词预测	curated	2026-09-17
+下水平集	xia shui ping ji	20	教材术语	term	下水平集	d2l	2026-09-17
+下采样	xia cai yang	20	教材术语	term	下采样	d2l	2026-09-17
+不确定性估计	bu que ding xing gu ji	20	评估	term	不确定性估计	curated	2026-09-17
+专家容量	zhuan jia rong liang	20	架构	term	专家容量	curated	2026-09-17
+专家并行	zhuan jia bing xing	20	架构	term	专家并行	curated	2026-09-17
+专家网络	zhuan jia wang luo	20	架构	term	专家网络	curated	2026-09-17
+专家路由	zhuan jia lu you	20	架构	term	专家路由	curated	2026-09-17
+世界建模	shi jie jian mo	20	强化	term	世界建模	curated	2026-09-17
+世界模型	shi jie mo xing	20	架构	term	世界模型	curated	2026-09-17
+个人信息识别	ge ren xin xi shi bie	20	数据	term	个人信息识别	curated	2026-09-17
+个人知识库	ge ren zhi shi ku	20	检索	term	个人知识库	curated	2026-09-17
+个体公平	ge ti gong ping	20	安全	term	个体公平	curated	2026-09-17
+中心极限定理	zhong xin ji xian ding li	20	数学	term	中心极限定理	curated	2026-09-17
+中心词	zhong xin ci	20	教材术语	term	中心词	d2l	2026-09-17
+中文评测	zhong wen ping ce	20	评估	term	中文评测	curated	2026-09-17
+中文语料	zhong wen yu liao	20	数据	term	中文语料	curated	2026-09-17
+中间融合	zhong jian rong he	20	视觉	term	中间融合	curated	2026-09-17
+串行工具调用	chuan xing gong ju diao yong	20	智能体	term	串行工具调用	curated	2026-09-17
+主动学习	zhu dong xue xi	20	基础	term	主动学习	curated	2026-09-17
+主成分分析	zhu cheng fen fen xi	20	算法	term	主成分分析	curated	2026-09-17
+主观性分析	zhu guan xing fen xi	20	专项任务	term	主观性分析	glossary	2026-09-17
+主题模型	zhu ti mo xing	20	算法	term	主题模型	curated	2026-09-17
+乘法法则	cheng fa fa ze	20	教材术语	term	乘法法则	d2l	2026-09-17
+乘积量化	cheng ji liang hua	20	检索	term	乘积量化	curated	2026-09-17
+乳房肿瘤分类	ru fang zhong liu fen lei	20	专项任务	term	乳房肿瘤分类	glossary	2026-09-17
+事件数据分类	shi jian shu ju fen lei	20	专项任务	term	事件数据分类	glossary	2026-09-17
+事件检测	shi jian jian ce	20	专项任务	term	事件检测	glossary	2026-09-17
+事实一致性	shi shi yi zhi xing	20	评估	term	事实一致性	curated	2026-09-17
+事实准确率	shi shi zhun que lv	20	评估	term	事实准确率	curated	2026-09-17
+事实幻觉	shi shi huan jue	20	评估	term	事实幻觉	curated	2026-09-17
+事实核查	shi shi he cha	20	检索	term	事实核查	curated	2026-09-17
+事实问答	shi shi wen da	20	提示	term	事实问答	curated	2026-09-17
+事实验证	shi shi yan zheng	20	专项任务	term	事实验证	glossary	2026-09-17
+事故报告	shi gu bao gao	20	安全	term	事故报告	curated	2026-09-17
+二值量化	er zhi liang hua	20	检索	term	二值量化	curated	2026-09-17
+二元语法	er yuan yu fa	20	教材术语	term	二元语法	d2l	2026-09-17
+二次判别分析	er ci pan bie fen xi	20	算法	term	二次判别分析	curated	2026-09-17
+二维卷积	er wei juan ji	20	架构	term	二维卷积	curated	2026-09-17
+二项分布	er xiang fen bu	20	数学	term	二项分布	curated	2026-09-17
+二项分类	er xiang fen lei	20	教材术语	term	二项分类	d2l	2026-09-17
+云端推理	yun duan tui li	20	推理	term	云端推理	curated	2026-09-17
+云端模式	yun duan mo shi	20	工程	term	云端模式	curated	2026-09-17
+互信息	hu xin xi	20	数学	term	互信息	curated	2026-09-17
+互相关	hu xiang guan	20	教材术语	term	互相关	d2l	2026-09-17
+互相关运算	hu xiang guan yun suan	20	教材术语	term	互相关运算	d2l	2026-09-17
+亚马逊	ya ma xun	20	教材术语	term	亚马逊	d2l	2026-09-17
+交互环境	jiao hu huan jing	20	智能体	term	交互环境	curated	2026-09-17
+交叉注意力	jiao cha zhu yi li	20	架构	term	交叉注意力	curated	2026-09-17
+交叉熵	jiao cha shang	20	数学	term	交叉熵	curated	2026-09-17
+交叉熵损失	jiao cha shang sun shi	20	教材术语	term	交叉熵损失	d2l	2026-09-17
+交叉编码器	jiao cha bian ma qi	20	检索	term	交叉编码器	curated	2026-09-17
+交叉验证	jiao cha yan zheng	20	数据	term	交叉验证	curated	2026-09-17
+交并比	jiao bing bi	20	教材术语	term	交并比	d2l	2026-09-17
+交换归约	jiao huan gui yue	20	教材术语	term	交换归约	d2l	2026-09-17
+交通标志检测	jiao tong biao zhi jian ce	20	专项任务	term	交通标志检测	glossary	2026-09-17
+交通标志识别	jiao tong biao zhi shi bie	20	专项任务	term	交通标志识别	glossary	2026-09-17
+交通流量预测	jiao tong liu liang yu ce	20	专项任务	term	交通流量预测	glossary	2026-09-17
+产品量化	chan pin liang hua	20	检索	term	产品量化	curated	2026-09-17
+人体姿态	ren ti zi tai	20	视觉	term	人体姿态	curated	2026-09-17
+人体姿态估计	ren ti zi tai gu ji	20	专项任务	term	人体姿态估计	glossary	2026-09-17
+人口统计均等	ren kou tong ji jun deng	20	安全	term	人口统计均等	curated	2026-09-17
+人在回路	ren zai hui lu	20	智能体	term	人在回路	curated	2026-09-17
+人工介入	ren gong jie ru	20	智能体	term	人工介入	curated	2026-09-17
+人工智能	ren gong zhi neng	20	基础	term	人工智能	curated	2026-09-17
+人工智能伦理	ren gong zhi neng lun li	20	基础	term	人工智能伦理	curated	2026-09-17
+人工智能反馈强化学习	ren gong zhi neng fan kui qiang hua xue xi	20	训练	term	人工智能反馈强化学习	curated	2026-09-17
+人工智能安全	ren gong zhi neng an quan	20	基础	term	人工智能安全	curated	2026-09-17
+人工智能工程	ren gong zhi neng gong cheng	20	工程	term	人工智能工程	curated	2026-09-17
+人工智能治理	ren gong zhi neng zhi li	20	基础	term	人工智能治理	curated	2026-09-17
+人工标注	ren gong biao zhu	20	数据	term	人工标注	curated	2026-09-17
+人工确认	ren gong que ren	20	智能体	term	人工确认	curated	2026-09-17
+人工神经元	ren gong shen jing yuan	20	架构	term	人工神经元	curated	2026-09-17
+人工评测	ren gong ping ce	20	评估	term	人工评测	curated	2026-09-17
+人机交互	ren ji jiao hu	20	基础	term	人机交互	curated	2026-09-17
+人机协同	ren ji xie tong	20	基础	term	人机协同	curated	2026-09-17
+人类反馈强化学习	ren lei fan kui qiang hua xue xi	20	训练	term	人类反馈强化学习	curated	2026-09-17
+人类对齐	ren lei dui qi	20	安全	term	人类对齐	curated	2026-09-17
+人类监督	ren lei jian du	20	智能体	term	人类监督	curated	2026-09-17
+人群计数	ren qun ji shu	20	专项任务	term	人群计数	glossary	2026-09-17
+人脸呈现攻击检测	ren lian cheng xian gong ji jian ce	20	专项任务	term	人脸呈现攻击检测	glossary	2026-09-17
+人脸对齐	ren lian dui qi	20	视觉	term	人脸对齐	curated	2026-09-17
+人脸检测	ren lian jian ce	20	视觉	term	人脸检测	curated	2026-09-17
+人脸生成	ren lian sheng cheng	20	视觉	term	人脸生成	curated	2026-09-17
+人脸编辑	ren lian bian ji	20	视觉	term	人脸编辑	curated	2026-09-17
+人脸识别	ren lian shi bie	20	视觉	term	人脸识别	curated	2026-09-17
+人脸防伪	ren lian fang wei	20	专项任务	term	人脸防伪	glossary	2026-09-17
+人脸验证	ren lian yan zheng	20	视觉	term	人脸验证	curated	2026-09-17
+仇恨言论检测	chou hen yan lun jian ce	20	专项任务	term	仇恨言论检测	glossary	2026-09-17
+从零训练	cong ling xun lian	20	训练	term	从零训练	curated	2026-09-17
+代价函数	dai jia han shu	20	数学	term	代价函数	curated	2026-09-17
+代码修复	dai ma xiu fu	20	提示	term	代码修复	curated	2026-09-17
+代码审查	dai ma shen cha	20	提示	term	代码审查	curated	2026-09-17
+代码幻觉	dai ma huan jue	20	评估	term	代码幻觉	curated	2026-09-17
+代码智能体	dai ma zhi neng ti	20	智能体	term	代码智能体	curated	2026-09-17
+代码生成	dai ma sheng cheng	20	提示	term	代码生成	curated	2026-09-17
+代码补全	dai ma bu quan	20	提示	term	代码补全	curated	2026-09-17
+代码解释	dai ma jie shi	20	提示	term	代码解释	curated	2026-09-17
+代码评测	dai ma ping ce	20	评估	term	代码评测	curated	2026-09-17
+代码语料	dai ma yu liao	20	数据	term	代码语料	curated	2026-09-17
+代码通过率	dai ma tong guo lv	20	评估	term	代码通过率	curated	2026-09-17
+令牌桶	ling pai tong	20	工程	term	令牌桶	curated	2026-09-17
+价值函数	jia zhi han shu	20	强化	term	价值函数	curated	2026-09-17
+价值对齐	jia zhi dui qi	20	安全	term	价值对齐	curated	2026-09-17
+价值模型	jia zhi mo xing	20	训练	term	价值模型	curated	2026-09-17
+价值迭代	jia zhi die dai	20	强化	term	价值迭代	curated	2026-09-17
+价值预测	jia zhi yu ce	20	专项任务	term	价值预测	glossary	2026-09-17
+任务优先级	ren wu you xian ji	20	智能体	term	任务优先级	curated	2026-09-17
+任务依赖	ren wu yi lai	20	智能体	term	任务依赖	curated	2026-09-17
+任务分解	ren wu fen jie	20	智能体	term	任务分解	curated	2026-09-17
+任务委派	ren wu wei pai	20	智能体	term	任务委派	curated	2026-09-17
+任务恢复	ren wu hui fu	20	智能体	term	任务恢复	curated	2026-09-17
+任务成功率	ren wu cheng gong lv	20	评估	term	任务成功率	curated	2026-09-17
+任务描述	ren wu miao shu	20	提示	term	任务描述	curated	2026-09-17
+任务智能体	ren wu zhi neng ti	20	智能体	term	任务智能体	curated	2026-09-17
+任务检查点	ren wu jian cha dian	20	智能体	term	任务检查点	curated	2026-09-17
+任务状态	ren wu zhuang tai	20	智能体	term	任务状态	curated	2026-09-17
+任务编排	ren wu bian pai	20	智能体	term	任务编排	curated	2026-09-17
+任务规划	ren wu gui hua	20	智能体	term	任务规划	curated	2026-09-17
+任务调度	ren wu diao du	20	智能体	term	任务调度	curated	2026-09-17
+任务迁移	ren wu qian yi	20	基础	term	任务迁移	curated	2026-09-17
+任务队列	ren wu dui lie	20	智能体	term	任务队列	curated	2026-09-17
+仿射函数	fang she han shu	20	教材术语	term	仿射函数	d2l	2026-09-17
+仿射变换	fang she bian huan	20	教材术语	term	仿射变换	d2l	2026-09-17
+仿真到现实	fang zhen dao xian shi	20	强化	term	仿真到现实	curated	2026-09-17
+仿真环境	fang zhen huan jing	20	强化	term	仿真环境	curated	2026-09-17
+企业知识库	qi ye zhi shi ku	20	检索	term	企业知识库	curated	2026-09-17
+众包标注	zhong bao biao zhu	20	数据	term	众包标注	curated	2026-09-17
+众包评测	zhong bao ping ce	20	评估	term	众包评测	curated	2026-09-17
+优先经验回放	you xian jing yan hui fang	20	强化	term	优先经验回放	curated	2026-09-17
+优势估计	you shi gu ji	20	强化	term	优势估计	curated	2026-09-17
+优势函数	you shi han shu	20	强化	term	优势函数	curated	2026-09-17
+优势演员评论家	you shi yan yuan ping lun jia	20	强化	term	优势演员评论家	curated	2026-09-17
+优化器状态	you hua qi zhuang tai	20	训练	term	优化器状态	curated	2026-09-17
+优化目标	you hua mu biao	20	数学	term	优化目标	curated	2026-09-17
+会话协议	hui hua xie yi	20	工程	term	会话协议	curated	2026-09-17
+会话恢复	hui hua hui fu	20	智能体	term	会话恢复	curated	2026-09-17
+会话成本	hui hua cheng ben	20	工程	term	会话成本	curated	2026-09-17
+会话状态	hui hua zhuang tai	20	智能体	term	会话状态	curated	2026-09-17
+会话记忆	hui hua ji yi	20	智能体	term	会话记忆	curated	2026-09-17
+伪造检测	wei zao jian ce	20	安全	term	伪造检测	curated	2026-09-17
+伯努利分布	bo nu li fen bu	20	数学	term	伯努利分布	curated	2026-09-17
+伯努利朴素贝叶斯	bo nu li pu su bei ye si	20	算法	term	伯努利朴素贝叶斯	curated	2026-09-17
+估计值	gu ji zhi	20	教材术语	term	估计值	d2l	2026-09-17
+伴奏生成	ban zou sheng cheng	20	语音	term	伴奏生成	curated	2026-09-17
+似然函数	si ran han shu	20	数学	term	似然函数	curated	2026-09-17
+伽马分布	ga ma fen bu	20	数学	term	伽马分布	curated	2026-09-17
+位置偏差	wei zhi pian cha	20	评估	term	位置偏差	curated	2026-09-17
+位置嵌入	wei zhi qian ru	20	架构	term	位置嵌入	curated	2026-09-17
+位置插值	wei zhi cha zhi	20	架构	term	位置插值	curated	2026-09-17
+位置编码	wei zhi bian ma	20	架构	term	位置编码	curated	2026-09-17
+低光图像增强	di guang tu xiang zeng qiang	20	专项任务	term	低光图像增强	glossary	2026-09-17
+低比特量化	di bi te liang hua	20	推理	term	低比特量化	curated	2026-09-17
+低秩微调	di zhi wei tiao	20	训练	term	低秩微调	curated	2026-09-17
+低秩矩阵	di zhi ju zhen	20	数学	term	低秩矩阵	curated	2026-09-17
+低秩适配	di zhi shi pei	20	训练	term	低秩适配	curated	2026-09-17
+低资源语音	di zi yuan yu yin	20	语音	term	低资源语音	curated	2026-09-17
+体渲染	ti xuan ran	20	视觉	term	体渲染	curated	2026-09-17
+体素	ti su	20	视觉	term	体素	curated	2026-09-17
+体素化	ti su hua	20	视觉	term	体素化	curated	2026-09-17
+余弦相似度	yu xian xiang si du	20	数学	term	余弦相似度	curated	2026-09-17
+余弦退火	yu xian tui huo	20	训练	term	余弦退火	curated	2026-09-17
+供应链安全	gong ying lian an quan	20	安全	term	供应链安全	curated	2026-09-17
+依存句法分析	yi cun ju fa fen xi	20	专项任务	term	依存句法分析	glossary	2026-09-17
+依赖锁定	yi lai suo ding	20	工程	term	依赖锁定	curated	2026-09-17
+信任边界	xin ren bian jie	20	安全	term	信任边界	curated	2026-09-17
+信噪比	xin zao bi	20	语音	term	信噪比	curated	2026-09-17
+信念传播	xin nian chuan bo	20	算法	term	信念传播	curated	2026-09-17
+信息增益	xin xi zeng yi	20	数学	term	信息增益	curated	2026-09-17
+信息抽取	xin xi chou qu	20	提示	term	信息抽取	curated	2026-09-17
+信息提取	xin xi ti qu	20	专项任务	term	信息提取	glossary	2026-09-17
+信息熵	xin xi shang	20	数学	term	信息熵	curated	2026-09-17
+信息瓶颈	xin xi ping jing	20	数学	term	信息瓶颈	curated	2026-09-17
+信息矩阵	xin xi ju zhen	20	数学	term	信息矩阵	curated	2026-09-17
+信息论	xin xi lun	20	教材术语	term	信息论	d2l	2026-09-17
+信赖域策略优化	xin lai yu ce lve you hua	20	强化	term	信赖域策略优化	curated	2026-09-17
+修正线性单元	xiu zheng xian xing dan yuan	20	教材术语	term	修正线性单元	d2l	2026-09-17
+倒排索引	dao pai suo yin	20	检索	term	倒排索引	curated	2026-09-17
+候选召回	hou xuan zhao hui	20	检索	term	候选召回	curated	2026-09-17
+候选概率	hou xuan gai lv	20	提示	term	候选概率	curated	2026-09-17
+候选记忆元	hou xuan ji yi yuan	20	教材术语	term	候选记忆元	d2l	2026-09-17
+候选隐状态	hou xuan yin zhuang tai	20	教材术语	term	候选隐状态	d2l	2026-09-17
+倾向评分	qing xiang ping fen	20	基础	term	倾向评分	curated	2026-09-17
+假新闻检测	jia xin wen jian ce	20	专项任务	term	假新闻检测	glossary	2026-09-17
+假设文档嵌入	jia she wen dang qian ru	20	检索	term	假设文档嵌入	curated	2026-09-17
+假阳性	jia yang xing	20	评估	term	假阳性	curated	2026-09-17
+假阳性率	jia yang xing lv	20	评估	term	假阳性率	curated	2026-09-17
+假阴性	jia yin xing	20	评估	term	假阴性	curated	2026-09-17
+假阴性率	jia yin xing lv	20	评估	term	假阴性率	curated	2026-09-17
+偏好优化	pian hao you hua	20	训练	term	偏好优化	curated	2026-09-17
+偏好对齐	pian hao dui qi	20	安全	term	偏好对齐	curated	2026-09-17
+偏好数据	pian hao shu ju	20	数据	term	偏好数据	curated	2026-09-17
+偏好标注	pian hao biao zhu	20	数据	term	偏好标注	curated	2026-09-17
+偏好模型	pian hao mo xing	20	训练	term	偏好模型	curated	2026-09-17
+偏导数	pian dao shu	20	数学	term	偏导数	curated	2026-09-17
+偏移参数	pian yi can shu	20	教材术语	term	偏移参数	d2l	2026-09-17
+偏移量	pian yi liang	20	教材术语	term	偏移量	d2l	2026-09-17
+偏置初始化	pian zhi chu shi hua	20	架构	term	偏置初始化	curated	2026-09-17
+偏置检测	pian zhi jian ce	20	专项任务	term	偏置检测	glossary	2026-09-17
+偏见检测	pian jian jian ce	20	安全	term	偏见检测	curated	2026-09-17
+偏见缓解	pian jian huan jie	20	安全	term	偏见缓解	curated	2026-09-17
+停止序列	ting zhi xu lie	20	提示	term	停止序列	curated	2026-09-17
+停止条件	ting zhi tiao jian	20	智能体	term	停止条件	curated	2026-09-17
+停止标记	ting zhi biao ji	20	提示	term	停止标记	curated	2026-09-17
+停止词	ting zhi ci	20	提示	term	停止词	curated	2026-09-17
+停留时间预测	ting liu shi jian yu ce	20	专项任务	term	停留时间预测	glossary	2026-09-17
+健康检查	jian kang jian cha	20	工程	term	健康检查	curated	2026-09-17
+元学习	yuan xue xi	20	基础	term	元学习	curated	2026-09-17
+元数据过滤	yuan shu ju guo lv	20	检索	term	元数据过滤	curated	2026-09-17
+充血性心力衰竭检测	chong xue xing xin li shuai jie jian ce	20	专项任务	term	充血性心力衰竭检测	glossary	2026-09-17
+先验分布	xian yan fen bu	20	数学	term	先验分布	curated	2026-09-17
+光学字符识别	guang xue zi fu shi bie	20	视觉	term	光学字符识别	curated	2026-09-17
+光流估计	guang liu gu ji	20	视觉	term	光流估计	curated	2026-09-17
+光滑函数	guang hua han shu	20	数学	term	光滑函数	curated	2026-09-17
+入侵检测	ru qin jian ce	20	专项任务	term	入侵检测	glossary	2026-09-17
+全分片数据并行	quan fen pian shu ju bing xing	20	训练	term	全分片数据并行	curated	2026-09-17
+全卷积网络	quan juan ji wang luo	20	教材术语	term	全卷积网络	d2l	2026-09-17
+全变分去噪	quan bian fen qu zao	20	教材术语	term	全变分去噪	d2l	2026-09-17
+全变分损失	quan bian fen sun shi	20	教材术语	term	全变分损失	d2l	2026-09-17
+全导数	quan dao shu	20	数学	term	全导数	curated	2026-09-17
+全局优化	quan ju you hua	20	数学	term	全局优化	curated	2026-09-17
+全局向量	quan ju xiang liang	20	教材术语	term	全局向量	d2l	2026-09-17
+全局平均汇聚层	quan ju ping jun hui ju ceng	20	教材术语	term	全局平均汇聚层	d2l	2026-09-17
+全局检索	quan ju jian suo	20	检索	term	全局检索	curated	2026-09-17
+全局池化	quan ju chi hua	20	架构	term	全局池化	curated	2026-09-17
+全局注意力	quan ju zhu yi li	20	架构	term	全局注意力	curated	2026-09-17
+全批量训练	quan pi liang xun lian	20	训练	term	全批量训练	curated	2026-09-17
+全文检索	quan wen jian suo	20	检索	term	全文检索	curated	2026-09-17
+全景分割	quan jing fen ge	20	视觉	term	全景分割	curated	2026-09-17
+全概率公式	quan gai lv gong shi	20	数学	term	全概率公式	curated	2026-09-17
+全连接层	quan lian jie ceng	20	架构	term	全连接层	curated	2026-09-17
+全连接网络	quan lian jie wang luo	20	架构	term	全连接网络	curated	2026-09-17
+全量微调	quan liang wei tiao	20	训练	term	全量微调	curated	2026-09-17
+公平性	gong ping xing	20	安全	term	公平性	curated	2026-09-17
+公式识别	gong shi shi bie	20	视觉	term	公式识别	curated	2026-09-17
+共享专家	gong xiang zhuan jia	20	架构	term	共享专家	curated	2026-09-17
+共享记忆	gong xiang ji yi	20	智能体	term	共享记忆	curated	2026-09-17
+关系分类	guan xi fen lei	20	专项任务	term	关系分类	glossary	2026-09-17
+关系抽取	guan xi chou qu	20	检索	term	关系抽取	curated	2026-09-17
+关系抽取任务	guan xi chou qu ren wu	20	专项任务	term	关系抽取任务	glossary	2026-09-17
+关系推理	guan xi tui li	20	专项任务	term	关系推理	glossary	2026-09-17
+关系蒸馏	guan xi zheng liu	20	训练	term	关系蒸馏	curated	2026-09-17
+关系预测	guan xi yu ce	20	检索	term	关系预测	curated	2026-09-17
+关键点检测	guan jian dian jian ce	20	视觉	term	关键点检测	curated	2026-09-17
+关键词唤醒	guan jian ci huan xing	20	语音	term	关键词唤醒	curated	2026-09-17
+关键词检索	guan jian ci jian suo	20	检索	term	关键词检索	curated	2026-09-17
+兴趣区域对齐	xing qu qu yu dui qi	20	教材术语	term	兴趣区域对齐	d2l	2026-09-17
+兴趣区域汇聚层	xing qu qu yu hui ju ceng	20	教材术语	term	兴趣区域汇聚层	d2l	2026-09-17
+具身导航	ju shen dao hang	20	强化	term	具身导航	curated	2026-09-17
+具身推理	ju shen tui li	20	强化	term	具身推理	curated	2026-09-17
+具身操作	ju shen cao zuo	20	强化	term	具身操作	curated	2026-09-17
+具身智能	ju shen zhi neng	20	强化	term	具身智能	curated	2026-09-17
+典型相关分析	dian xing xiang guan fen xi	20	算法	term	典型相关分析	curated	2026-09-17
+内在动机	nei zai dong ji	20	强化	term	内在动机	curated	2026-09-17
+内在奖励	nei zai jiang li	20	强化	term	内在奖励	curated	2026-09-17
+内存卸载	nei cun xie zai	20	推理	term	内存卸载	curated	2026-09-17
+内存带宽	nei cun dai kuan	20	推理	term	内存带宽	curated	2026-09-17
+内容一致性	nei rong yi zhi xing	20	视觉	term	内容一致性	curated	2026-09-17
+内容图像	nei rong tu xiang	20	教材术语	term	内容图像	d2l	2026-09-17
+内容安全	nei rong an quan	20	安全	term	内容安全	curated	2026-09-17
+内容审查	nei rong shen cha	20	安全	term	内容审查	curated	2026-09-17
+内容审核	nei rong shen he	20	安全	term	内容审核	curated	2026-09-17
+内容层	nei rong ceng	20	教材术语	term	内容层	d2l	2026-09-17
+内容拒绝	nei rong ju jue	20	提示	term	内容拒绝	curated	2026-09-17
+内容损失	nei rong sun shi	20	教材术语	term	内容损失	d2l	2026-09-17
+内容推荐	nei rong tui jian	20	算法	term	内容推荐	curated	2026-09-17
+内容溯源	nei rong su yuan	20	安全	term	内容溯源	curated	2026-09-17
+内容生成	nei rong sheng cheng	20	提示	term	内容生成	curated	2026-09-17
+内容过滤	nei rong guo lv	20	数据	term	内容过滤	curated	2026-09-17
+内插法	nei cha fa	20	教材术语	term	内插法	d2l	2026-09-17
+内核优化	nei he you hua	20	推理	term	内核优化	curated	2026-09-17
+内核融合	nei he rong he	20	推理	term	内核融合	curated	2026-09-17
+内置工具	nei zhi gong ju	20	智能体	term	内置工具	curated	2026-09-17
+内部协变量偏移	nei bu xie bian liang pian yi	20	教材术语	term	内部协变量偏移	d2l	2026-09-17
+内部协变量转移	nei bu xie bian liang zhuan yi	20	教材术语	term	内部协变量转移	d2l	2026-09-17
+内部注意力	nei bu zhu yi li	20	教材术语	term	内部注意力	d2l	2026-09-17
+决策树	jue ce shu	20	算法	term	决策树	curated	2026-09-17
+决策策略	jue ce ce lve	20	智能体	term	决策策略	curated	2026-09-17
+准确率	zhun que lv	20	评估	term	准确率	curated	2026-09-17
+凝聚聚类	ning ju ju lei	20	算法	term	凝聚聚类	curated	2026-09-17
+凝视估计	ning shi gu ji	20	专项任务	term	凝视估计	glossary	2026-09-17
+凭证管理	ping zheng guan li	20	工程	term	凭证管理	curated	2026-09-17
+凸优化	tu you hua	20	数学	term	凸优化	curated	2026-09-17
+凸函数	tu han shu	20	数学	term	凸函数	curated	2026-09-17
+凸问题	tu wen ti	20	教材术语	term	凸问题	d2l	2026-09-17
+凸集	tu ji	20	数学	term	凸集	curated	2026-09-17
+函数调用	han shu diao yong	20	智能体	term	函数调用	curated	2026-09-17
+分位数回归	fen wei shu hui gui	20	算法	term	分位数回归	curated	2026-09-17
+分块大小	fen kuai da xiao	20	检索	term	分块大小	curated	2026-09-17
+分块重叠	fen kuai chong die	20	检索	term	分块重叠	curated	2026-09-17
+分层划分	fen ceng hua fen	20	数据	term	分层划分	curated	2026-09-17
+分层强化学习	fen ceng qiang hua xue xi	20	强化	term	分层强化学习	curated	2026-09-17
+分层检索	fen ceng jian suo	20	检索	term	分层检索	curated	2026-09-17
+分层索引	fen ceng suo yin	20	检索	term	分层索引	curated	2026-09-17
+分层采样	fen ceng cai yang	20	数学	term	分层采样	curated	2026-09-17
+分布偏移	fen bu pian yi	20	基础	term	分布偏移	curated	2026-09-17
+分布内数据	fen bu nei shu ju	20	基础	term	分布内数据	curated	2026-09-17
+分布外数据	fen bu wai shu ju	20	基础	term	分布外数据	curated	2026-09-17
+分布外检测	fen bu wai jian ce	20	基础	term	分布外检测	curated	2026-09-17
+分布式学习	fen bu shi xue xi	20	基础	term	分布式学习	curated	2026-09-17
+分布式训练	fen bu shi xun lian	20	训练	term	分布式训练	curated	2026-09-17
+分布式追踪	fen bu shi zhui zong	20	工程	term	分布式追踪	curated	2026-09-17
+分布距离	fen bu ju li	20	数学	term	分布距离	curated	2026-09-17
+分数匹配	fen shu pi pei	20	架构	term	分数匹配	curated	2026-09-17
+分数网络	fen shu wang luo	20	架构	term	分数网络	curated	2026-09-17
+分段常数	fen duan chang shu	20	教材术语	term	分段常数	d2l	2026-09-17
+分片训练	fen pian xun lian	20	训练	term	分片训练	curated	2026-09-17
+分离式推理	fen li shi tui li	20	推理	term	分离式推理	curated	2026-09-17
+分离梯度	fen li ti du	20	教材术语	term	分离梯度	d2l	2026-09-17
+分类一致性	fen lei yi zhi xing	20	专项任务	term	分类一致性	glossary	2026-09-17
+分类器引导	fen lei qi yin dao	20	视觉	term	分类器引导	curated	2026-09-17
+分类树	fen lei shu	20	算法	term	分类树	curated	2026-09-17
+分组卷积	fen zu juan ji	20	架构	term	分组卷积	curated	2026-09-17
+分组查询注意力	fen zu cha xun zhu yi li	20	架构	term	分组查询注意力	curated	2026-09-17
+分组量化	fen zu liang hua	20	推理	term	分组量化	curated	2026-09-17
+分裂聚类	fen lie ju lei	20	算法	term	分裂聚类	curated	2026-09-17
+分解提示	fen jie ti shi	20	提示	term	分解提示	curated	2026-09-17
+分词	fen ci	20	数据	term	分词	curated	2026-09-17
+分词器	fen ci qi	20	数据	term	分词器	curated	2026-09-17
+分页注意力	fen ye zhu yi li	20	推理	term	分页注意力	curated	2026-09-17
+列表排序	lie biao pai xu	20	算法	term	列表排序	curated	2026-09-17
+删除法	shan chu fa	20	教材术语	term	删除法	d2l	2026-09-17
+判别式人工智能	pan bie shi ren gong zhi neng	20	基础	term	判别式人工智能	curated	2026-09-17
+利普希茨连续	li pu xi ci lian xu	20	数学	term	利普希茨连续	curated	2026-09-17
+利用策略	li yong ce lve	20	算法	term	利用策略	curated	2026-09-17
+到达方向估计	dao da fang xiang gu ji	20	专项任务	term	到达方向估计	glossary	2026-09-17
+制品管理	zhi pin guan li	20	工程	term	制品管理	curated	2026-09-17
+前向传播	qian xiang chuan bo	20	教材术语	term	前向传播	d2l	2026-09-17
+前向递归	qian xiang di gui	20	教材术语	term	前向递归	d2l	2026-09-17
+前缀缓存	qian zhui huan cun	20	推理	term	前缀缓存	curated	2026-09-17
+前馈神经网络	qian kui shen jing wang luo	20	架构	term	前馈神经网络	curated	2026-09-17
+功率谱	gong lv pu	20	语音	term	功率谱	curated	2026-09-17
+加性注意力	jia xing zhu yi li	20	架构	term	加性注意力	curated	2026-09-17
+加权平均	jia quan ping jun	20	评估	term	加权平均	curated	2026-09-17
+加权采样	jia quan cai yang	20	数学	term	加权采样	curated	2026-09-17
+加法法则	jia fa fa ze	20	教材术语	term	加法法则	d2l	2026-09-17
+动作价值	dong zuo jia zhi	20	强化	term	动作价值	curated	2026-09-17
+动作掩码	dong zuo yan ma	20	强化	term	动作掩码	curated	2026-09-17
+动作生成	dong zuo sheng cheng	20	强化	term	动作生成	curated	2026-09-17
+动作空间	dong zuo kong jian	20	智能体	term	动作空间	curated	2026-09-17
+动作约束	dong zuo yue shu	20	强化	term	动作约束	curated	2026-09-17
+动作识别	dong zuo shi bie	20	视觉	term	动作识别	curated	2026-09-17
+动作词元	dong zuo ci yuan	20	强化	term	动作词元	curated	2026-09-17
+动作预测	dong zuo yu ce	20	强化	term	动作预测	curated	2026-09-17
+动态分辨率	dong tai fen bian lv	20	视觉	term	动态分辨率	curated	2026-09-17
+动态图	dong tai tu	20	推理	term	动态图	curated	2026-09-17
+动态批处理	dong tai pi chu li	20	推理	term	动态批处理	curated	2026-09-17
+动态规划	dong tai gui hua	20	教材术语	term	动态规划	d2l	2026-09-17
+动态路由	dong tai lu you	20	工程	term	动态路由	curated	2026-09-17
+动态量化	dong tai liang hua	20	推理	term	动态量化	curated	2026-09-17
+动物姿态估计	dong wu zi tai gu ji	20	专项任务	term	动物姿态估计	glossary	2026-09-17
+动量法	dong liang fa	20	训练	term	动量法	curated	2026-09-17
+匹配分数	pi pei fen shu	20	评估	term	匹配分数	curated	2026-09-17
+区域提议网络	qu yu ti yi wang luo	20	教材术语	term	区域提议网络	d2l	2026-09-17
+区间估计	qu jian gu ji	20	数学	term	区间估计	curated	2026-09-17
+医学图像分割	yi xue tu xiang fen ge	20	专项任务	term	医学图像分割	glossary	2026-09-17
+半正定矩阵	ban zheng ding ju zhen	20	数学	term	半正定矩阵	curated	2026-09-17
+半监督图像分类	ban jian du tu xiang fen lei	20	专项任务	term	半监督图像分类	glossary	2026-09-17
+半监督学习	ban jian du xue xi	20	基础	term	半监督学习	curated	2026-09-17
+半监督视频对象分割	ban jian du shi pin dui xiang fen ge	20	专项任务	term	半监督视频对象分割	glossary	2026-09-17
+半精度	ban jing du	20	推理	term	半精度	curated	2026-09-17
+半精度训练	ban jing du xun lian	20	训练	term	半精度训练	curated	2026-09-17
+半自动标注	ban zi dong biao zhu	20	数据	term	半自动标注	curated	2026-09-17
+协作协议	xie zuo xie yi	20	智能体	term	协作协议	curated	2026-09-17
+协作推理	xie zuo tui li	20	智能体	term	协作推理	curated	2026-09-17
+协变量	xie bian liang	20	教材术语	term	协变量	d2l	2026-09-17
+协变量偏移	xie bian liang pian yi	20	教材术语	term	协变量偏移	d2l	2026-09-17
+协同过滤	xie tong guo lv	20	算法	term	协同过滤	curated	2026-09-17
+协方差	xie fang cha	20	数学	term	协方差	curated	2026-09-17
+协方差矩阵	xie fang cha ju zhen	20	数学	term	协方差矩阵	curated	2026-09-17
+协议兼容	xie yi jian rong	20	工程	term	协议兼容	curated	2026-09-17
+单位矩阵	dan wei ju zhen	20	数学	term	单位矩阵	curated	2026-09-17
+单元测试生成	dan yuan ce shi sheng cheng	20	提示	term	单元测试生成	curated	2026-09-17
+单头注意力	dan tou zhu yi li	20	架构	term	单头注意力	curated	2026-09-17
+单样本学习	dan yang ben xue xi	20	基础	term	单样本学习	curated	2026-09-17
+单样本实例分割	dan yang ben shi li fen ge	20	专项任务	term	单样本实例分割	glossary	2026-09-17
+单样本目标检测	dan yang ben mu biao jian ce	20	专项任务	term	单样本目标检测	glossary	2026-09-17
+单步预测	dan bu yu ce	20	教材术语	term	单步预测	d2l	2026-09-17
+单目深度	dan mu shen du	20	视觉	term	单目深度	curated	2026-09-17
+单目深度估计	dan mu shen du gu ji	20	专项任务	term	单目深度估计	glossary	2026-09-17
+单类支持向量机	dan lei zhi chi xiang liang ji	20	算法	term	单类支持向量机	curated	2026-09-17
+单精度训练	dan jing du xun lian	20	训练	term	单精度训练	curated	2026-09-17
+单语语料	dan yu yu liao	20	数据	term	单语语料	curated	2026-09-17
+单项式	dan xiang shi	20	教材术语	term	单项式	d2l	2026-09-17
+卷积填充	juan ji tian chong	20	架构	term	卷积填充	curated	2026-09-17
+卷积层	juan ji ceng	20	架构	term	卷积层	curated	2026-09-17
+卷积核	juan ji he	20	架构	term	卷积核	curated	2026-09-17
+卷积步长	juan ji bu zhang	20	架构	term	卷积步长	curated	2026-09-17
+卷积神经网络	juan ji shen jing wang luo	20	架构	term	卷积神经网络	curated	2026-09-17
+压力测试	ya li ce shi	20	推理	term	压力测试	curated	2026-09-17
+去噪扩散模型	qu zao kuo san mo xing	20	架构	term	去噪扩散模型	curated	2026-09-17
+去噪步骤	qu zao bu zhou	20	视觉	term	去噪步骤	curated	2026-09-17
+去噪自编码器	qu zao zi bian ma qi	20	架构	term	去噪自编码器	curated	2026-09-17
+去噪训练	qu zao xun lian	20	训练	term	去噪训练	curated	2026-09-17
+参数估计	can shu gu ji	20	数学	term	参数估计	curated	2026-09-17
+参数化整流单元	can shu hua zheng liu dan yuan	20	架构	term	参数化整流单元	curated	2026-09-17
+参数服务器	can shu fu wu qi	20	训练	term	参数服务器	curated	2026-09-17
+参数高效微调	can shu gao xiao wei tiao	20	训练	term	参数高效微调	curated	2026-09-17
+参考图生成	can kao tu sheng cheng	20	视觉	term	参考图生成	curated	2026-09-17
+参考模型	can kao mo xing	20	训练	term	参考模型	curated	2026-09-17
+双下降	shuang xia jiang	20	训练	term	双下降	curated	2026-09-17
+双向循环神经网络	shuang xiang xun huan shen jing wang luo	20	教材术语	term	双向循环神经网络	d2l	2026-09-17
+双向循环网络	shuang xiang xun huan wang luo	20	架构	term	双向循环网络	curated	2026-09-17
+双向长短期记忆	shuang xiang chang duan qi ji yi	20	架构	term	双向长短期记忆	curated	2026-09-17
+双曲正切函数	shuang qu zheng qie han shu	20	架构	term	双曲正切函数	curated	2026-09-17
+双目深度	shuang mu shen du	20	视觉	term	双目深度	curated	2026-09-17
+双精度训练	shuang jing du xun lian	20	训练	term	双精度训练	curated	2026-09-17
+双线性插值	shuang xian xing cha zhi	20	教材术语	term	双线性插值	d2l	2026-09-17
+双编码器	shuang bian ma qi	20	检索	term	双编码器	curated	2026-09-17
+双重网络	shuang chong wang luo	20	强化	term	双重网络	curated	2026-09-17
+反事实推理	fan shi shi tui li	20	基础	term	反事实推理	curated	2026-09-17
+反事实解释	fan shi shi jie shi	20	基础	term	反事实解释	curated	2026-09-17
+反向传播	fan xiang chuan bo	20	教材术语	term	反向传播	d2l	2026-09-17
+反思循环	fan si xun huan	20	智能体	term	反思循环	curated	2026-09-17
+反思提示	fan si ti shi	20	提示	term	反思提示	curated	2026-09-17
+发音控制	fa yin kong zhi	20	语音	term	发音控制	curated	2026-09-17
+发音词典	fa yin ci dian	20	语音	term	发音词典	curated	2026-09-17
+取消传播	qu xiao chuan bo	20	工程	term	取消传播	curated	2026-09-17
+变分推断	bian fen tui duan	20	算法	term	变分推断	curated	2026-09-17
+变分期望最大化	bian fen qi wang zui da hua	20	算法	term	变分期望最大化	curated	2026-09-17
+变分自编码器	bian fen zi bian ma qi	20	架构	term	变分自编码器	curated	2026-09-17
+口音语音识别	kou yin yu yin shi bie	20	专项任务	term	口音语音识别	glossary	2026-09-17
+口音适配	kou yin shi pei	20	语音	term	口音适配	curated	2026-09-17
+句子分类	ju zi fen lei	20	专项任务	term	句子分类	glossary	2026-09-17
+句子向量	ju zi xiang liang	20	检索	term	句子向量	curated	2026-09-17
+句子嵌入	ju zi qian ru	20	检索	term	句子嵌入	curated	2026-09-17
+召回率	zhao hui lv	20	检索	term	召回率	curated	2026-09-17
+可信人工智能	ke xin ren gong zhi neng	20	基础	term	可信人工智能	curated	2026-09-17
+可分离卷积	ke fen li juan ji	20	架构	term	可分离卷积	curated	2026-09-17
+可变形卷积	ke bian xing juan ji	20	架构	term	可变形卷积	curated	2026-09-17
+可学习位置编码	ke xue xi wei zhi bian ma	20	架构	term	可学习位置编码	curated	2026-09-17
+可审计性	ke shen ji xing	20	安全	term	可审计性	curated	2026-09-17
+可微渲染	ke wei xuan ran	20	视觉	term	可微渲染	curated	2026-09-17
+可控性	ke kong xing	20	安全	term	可控性	curated	2026-09-17
+可控生成	ke kong sheng cheng	20	视觉	term	可控生成	curated	2026-09-17
+可监督性	ke jian du xing	20	安全	term	可监督性	curated	2026-09-17
+可观测性	ke guan ce xing	20	工程	term	可观测性	curated	2026-09-17
+可解释人工智能	ke jie shi ren gong zhi neng	20	基础	term	可解释人工智能	curated	2026-09-17
+可解释性	ke jie shi xing	20	评估	term	可解释性	curated	2026-09-17
+可读性	ke du xing	20	评估	term	可读性	curated	2026-09-17
+可追溯性	ke zhui su xing	20	安全	term	可追溯性	curated	2026-09-17
+合成内容标识	he cheng nei rong biao shi	20	安全	term	合成内容标识	curated	2026-09-17
+合成数据	he cheng shu ju	20	数据	term	合成数据	curated	2026-09-17
+合成数据生成	he cheng shu ju sheng cheng	20	专项任务	term	合成数据生成	glossary	2026-09-17
+吉布斯采样	ji bu si cai yang	20	数学	term	吉布斯采样	curated	2026-09-17
+同声传译	tong sheng chuan yi	20	提示	term	同声传译	curated	2026-09-17
+同态加密	tong tai jia mi	20	安全	term	同态加密	curated	2026-09-17
+同策略	tong ce lve	20	强化	term	同策略	curated	2026-09-17
+后向递归	hou xiang di gui	20	教材术语	term	后向递归	d2l	2026-09-17
+后期交互	hou qi jiao hu	20	检索	term	后期交互	curated	2026-09-17
+后期融合	hou qi rong he	20	视觉	term	后期融合	curated	2026-09-17
+后门攻击	hou men gong ji	20	安全	term	后门攻击	curated	2026-09-17
+后门检测	hou men jian ce	20	安全	term	后门检测	curated	2026-09-17
+后门防御	hou men fang yu	20	安全	term	后门防御	curated	2026-09-17
+后验分布	hou yan fen bu	20	数学	term	后验分布	curated	2026-09-17
+后验预测	hou yan yu ce	20	数学	term	后验预测	curated	2026-09-17
+向量处理单元	xiang liang chu li dan yuan	20	教材术语	term	向量处理单元	d2l	2026-09-17
+向量字段	xiang liang zi duan	20	检索	term	向量字段	curated	2026-09-17
+向量存储	xiang liang cun chu	20	检索	term	向量存储	curated	2026-09-17
+向量嵌入	xiang liang qian ru	20	检索	term	向量嵌入	curated	2026-09-17
+向量归一化	xiang liang gui yi hua	20	检索	term	向量归一化	curated	2026-09-17
+向量数据库	xiang liang shu ju ku	20	检索	term	向量数据库	curated	2026-09-17
+向量检索	xiang liang jian suo	20	检索	term	向量检索	curated	2026-09-17
+向量空间	xiang liang kong jian	20	检索	term	向量空间	curated	2026-09-17
+向量索引	xiang liang suo yin	20	检索	term	向量索引	curated	2026-09-17
+向量维度	xiang liang wei du	20	检索	term	向量维度	curated	2026-09-17
+向量范数	xiang liang fan shu	20	数学	term	向量范数	curated	2026-09-17
+向量距离	xiang liang ju li	20	检索	term	向量距离	curated	2026-09-17
+向量量化	xiang liang liang hua	20	检索	term	向量量化	curated	2026-09-17
+向量量化自编码器	xiang liang liang hua zi bian ma qi	20	架构	term	向量量化自编码器	curated	2026-09-17
+向量集合	xiang liang ji he	20	检索	term	向量集合	curated	2026-09-17
+吞吐测试	tun tu ce shi	20	推理	term	吞吐测试	curated	2026-09-17
+否定范围解析	fou ding fan wei jie xi	20	专项任务	term	否定范围解析	glossary	2026-09-17
+告警阈值	gao jing yu zhi	20	工程	term	告警阈值	curated	2026-09-17
+命中率	ming zhong lv	20	评估	term	命中率	curated	2026-09-17
+命令式编程	ming ling shi bian cheng	20	教材术语	term	命令式编程	d2l	2026-09-17
+命名实体识别	ming ming shi ti shi bie	20	提示	term	命名实体识别	curated	2026-09-17
+和声生成	he sheng sheng cheng	20	语音	term	和声生成	curated	2026-09-17
+响应格式	xiang ying ge shi	20	工程	term	响应格式	curated	2026-09-17
+响应蒸馏	xiang ying zheng liu	20	训练	term	响应蒸馏	curated	2026-09-17
+唇形同步	chun xing tong bu	20	语音	term	唇形同步	curated	2026-09-17
+唤醒词检测	huan xing ci jian ce	20	语音	term	唤醒词检测	curated	2026-09-17
+嘈杂语音识别	cao za yu yin shi bie	20	专项任务	term	嘈杂语音识别	glossary	2026-09-17
+噪声注入	zao sheng zhu ru	20	数据	term	噪声注入	curated	2026-09-17
+噪声级预测	zao sheng ji yu ce	20	专项任务	term	噪声级预测	glossary	2026-09-17
+噪声词	zao sheng ci	20	教材术语	term	噪声词	d2l	2026-09-17
+噪声调度	zao sheng diao du	20	架构	term	噪声调度	curated	2026-09-17
+噪声预测	zao sheng yu ce	20	视觉	term	噪声预测	curated	2026-09-17
+回声消除	hui sheng xiao chu	20	语音	term	回声消除	curated	2026-09-17
+回归树	hui gui shu	20	算法	term	回归树	curated	2026-09-17
+回报	hui bao	20	强化	term	回报	curated	2026-09-17
+回放缓冲区	hui fang huan chong qu	20	强化	term	回放缓冲区	curated	2026-09-17
+回答一致性	hui da yi zhi xing	20	提示	term	回答一致性	curated	2026-09-17
+回答准确性	hui da zhun que xing	20	提示	term	回答准确性	curated	2026-09-17
+回答可靠性	hui da ke kao xing	20	提示	term	回答可靠性	curated	2026-09-17
+回答风格	hui da feng ge	20	提示	term	回答风格	curated	2026-09-17
+回译	hui yi	20	数据	term	回译	curated	2026-09-17
+回退策略	hui tui ce lve	20	工程	term	回退策略	curated	2026-09-17
+因子分解机	yin zi fen jie ji	20	算法	term	因子分解机	curated	2026-09-17
+因子图	yin zi tu	20	算法	term	因子图	curated	2026-09-17
+因果关系	yin guo guan xi	20	基础	term	因果关系	curated	2026-09-17
+因果卷积	yin guo juan ji	20	架构	term	因果卷积	curated	2026-09-17
+因果发现	yin guo fa xian	20	基础	term	因果发现	curated	2026-09-17
+因果图	yin guo tu	20	基础	term	因果图	curated	2026-09-17
+因果干预	yin guo gan yu	20	基础	term	因果干预	curated	2026-09-17
+因果建模	yin guo jian mo	20	基础	term	因果建模	curated	2026-09-17
+因果推断	yin guo tui duan	20	基础	term	因果推断	curated	2026-09-17
+因果效应	yin guo xiao ying	20	基础	term	因果效应	curated	2026-09-17
+因果注意力	yin guo zhu yi li	20	架构	term	因果注意力	curated	2026-09-17
+因果表示学习	yin guo biao shi xue xi	20	基础	term	因果表示学习	curated	2026-09-17
+因果识别	yin guo shi bie	20	基础	term	因果识别	curated	2026-09-17
+因果语言建模	yin guo yu yan jian mo	20	训练	term	因果语言建模	curated	2026-09-17
+困惑度	kun huo du	20	评估	term	困惑度	curated	2026-09-17
+困难负样本	kun nan fu yang ben	20	训练	term	困难负样本	curated	2026-09-17
+固定分块	gu ding fen kuai	20	检索	term	固定分块	curated	2026-09-17
+图优化	tu you hua	20	推理	term	图优化	curated	2026-09-17
+图像修复	tu xiang xiu fu	20	视觉	term	图像修复	curated	2026-09-17
+图像分割	tu xiang fen ge	20	视觉	term	图像分割	curated	2026-09-17
+图像分类	tu xiang fen lei	20	视觉	term	图像分类	curated	2026-09-17
+图像分辨率	tu xiang fen bian lv	20	视觉	term	图像分辨率	curated	2026-09-17
+图像到图像的转换	tu xiang dao tu xiang de zhuan huan	20	专项任务	term	图像到图像的转换	glossary	2026-09-17
+图像匹配	tu xiang pi pei	20	专项任务	term	图像匹配	glossary	2026-09-17
+图像压缩	tu xiang ya suo	20	专项任务	term	图像压缩	glossary	2026-09-17
+图像去哈希	tu xiang qu ha xi	20	专项任务	term	图像去哈希	glossary	2026-09-17
+图像去噪	tu xiang qu zao	20	视觉	term	图像去噪	curated	2026-09-17
+图像去模糊	tu xiang qu mo hu	20	视觉	term	图像去模糊	curated	2026-09-17
+图像去雾	tu xiang qu wu	20	视觉	term	图像去雾	curated	2026-09-17
+图像块	tu xiang kuai	20	视觉	term	图像块	curated	2026-09-17
+图像增广	tu xiang zeng guang	20	教材术语	term	图像增广	d2l	2026-09-17
+图像增强	tu xiang zeng qiang	20	数据	term	图像增强	curated	2026-09-17
+图像外绘	tu xiang wai hui	20	专项任务	term	图像外绘	glossary	2026-09-17
+图像嵌入	tu xiang qian ru	20	视觉	term	图像嵌入	curated	2026-09-17
+图像描述	tu xiang miao shu	20	视觉	term	图像描述	curated	2026-09-17
+图像检索	tu xiang jian suo	20	视觉	term	图像检索	curated	2026-09-17
+图像检索系统	tu xiang jian suo xi tong	20	专项任务	term	图像检索系统	glossary	2026-09-17
+图像水印	tu xiang shui yin	20	视觉	term	图像水印	curated	2026-09-17
+图像生成	tu xiang sheng cheng	20	视觉	term	图像生成	curated	2026-09-17
+图像编辑	tu xiang bian ji	20	视觉	term	图像编辑	curated	2026-09-17
+图像聚类	tu xiang ju lei	20	专项任务	term	图像聚类	glossary	2026-09-17
+图像补全	tu xiang bu quan	20	视觉	term	图像补全	curated	2026-09-17
+图像裁剪	tu xiang cai jian	20	专项任务	term	图像裁剪	glossary	2026-09-17
+图像识别	tu xiang shi bie	20	专项任务	term	图像识别	glossary	2026-09-17
+图像词元	tu xiang ci yuan	20	视觉	term	图像词元	curated	2026-09-17
+图像超分辨率	tu xiang chao fen bian lv	20	视觉	term	图像超分辨率	curated	2026-09-17
+图像配准	tu xiang pei zhun	20	视觉	term	图像配准	curated	2026-09-17
+图像重建	tu xiang chong jian	20	视觉	term	图像重建	curated	2026-09-17
+图像问答	tu xiang wen da	20	视觉	term	图像问答	curated	2026-09-17
+图分类	tu fen lei	20	专项任务	term	图分类	glossary	2026-09-17
+图卷积网络	tu juan ji wang luo	20	架构	term	图卷积网络	curated	2026-09-17
+图变换器	tu bian huan qi	20	架构	term	图变换器	curated	2026-09-17
+图增强检索	tu zeng qiang jian suo	20	检索	term	图增强检索	curated	2026-09-17
+图形处理器	tu xing chu li qi	20	教材术语	term	图形处理器	d2l	2026-09-17
+图文匹配	tu wen pi pei	20	视觉	term	图文匹配	curated	2026-09-17
+图文对齐	tu wen dui qi	20	视觉	term	图文对齐	curated	2026-09-17
+图文数据	tu wen shu ju	20	数据	term	图文数据	curated	2026-09-17
+图文检索	tu wen jian suo	20	视觉	term	图文检索	curated	2026-09-17
+图文理解	tu wen li jie	20	视觉	term	图文理解	curated	2026-09-17
+图文生成	tu wen sheng cheng	20	视觉	term	图文生成	curated	2026-09-17
+图检索	tu jian suo	20	检索	term	图检索	curated	2026-09-17
+图模型	tu mo xing	20	算法	term	图模型	curated	2026-09-17
+图注意力网络	tu zhu yi li wang luo	20	架构	term	图注意力网络	curated	2026-09-17
+图生图	tu sheng tu	20	视觉	term	图生图	curated	2026-09-17
+图生视频	tu sheng shi pin	20	视觉	term	图生视频	curated	2026-09-17
+图神经网络	tu shen jing wang luo	20	架构	term	图神经网络	curated	2026-09-17
+图索引	tu suo yin	20	检索	term	图索引	curated	2026-09-17
+图编译	tu bian yi	20	推理	term	图编译	curated	2026-09-17
+图谱嵌入	tu pu qian ru	20	检索	term	图谱嵌入	curated	2026-09-17
+图谱推理	tu pu tui li	20	检索	term	图谱推理	curated	2026-09-17
+图谱检索	tu pu jian suo	20	检索	term	图谱检索	curated	2026-09-17
+图谱补全	tu pu bu quan	20	检索	term	图谱补全	curated	2026-09-17
+在线偏好优化	zai xian pian hao you hua	20	训练	term	在线偏好优化	curated	2026-09-17
+在线多对象跟踪	zai xian duo dui xiang gen zong	20	专项任务	term	在线多对象跟踪	glossary	2026-09-17
+在线学习	zai xian xue xi	20	基础	term	在线学习	curated	2026-09-17
+在线强化学习	zai xian qiang hua xue xi	20	强化	term	在线强化学习	curated	2026-09-17
+在线推理	zai xian tui li	20	推理	term	在线推理	curated	2026-09-17
+在线蒸馏	zai xian zheng liu	20	训练	term	在线蒸馏	curated	2026-09-17
+在线评测	zai xian ping ce	20	评估	term	在线评测	curated	2026-09-17
+场感知因子分解机	chang gan zhi yin zi fen jie ji	20	算法	term	场感知因子分解机	curated	2026-09-17
+场景分割	chang jing fen ge	20	视觉	term	场景分割	curated	2026-09-17
+场景分析	chang jing fen xi	20	专项任务	term	场景分析	glossary	2026-09-17
+场景图	chang jing tu	20	视觉	term	场景图	curated	2026-09-17
+场景文本检测	chang jing wen ben jian ce	20	专项任务	term	场景文本检测	glossary	2026-09-17
+场景理解	chang jing li jie	20	视觉	term	场景理解	curated	2026-09-17
+场景生成	chang jing sheng cheng	20	视觉	term	场景生成	curated	2026-09-17
+场景编辑	chang jing bian ji	20	视觉	term	场景编辑	curated	2026-09-17
+场景识别	chang jing shi bie	20	专项任务	term	场景识别	glossary	2026-09-17
+场景重建	chang jing chong jian	20	视觉	term	场景重建	curated	2026-09-17
+均值漂移	jun zhi piao yi	20	算法	term	均值漂移	curated	2026-09-17
+均匀分布	jun yun fen bu	20	数学	term	均匀分布	curated	2026-09-17
+均匀初始化	jun yun chu shi hua	20	架构	term	均匀初始化	curated	2026-09-17
+域泛化	yu fan hua	20	基础	term	域泛化	curated	2026-09-17
+域适应	yu shi ying	20	基础	term	域适应	curated	2026-09-17
+域随机化	yu sui ji hua	20	强化	term	域随机化	curated	2026-09-17
+基于方面的情感分析	ji yu fang mian de qing gan fen xi	20	专项任务	term	基于方面的情感分析	glossary	2026-09-17
+基于模型的强化学习	ji yu mo xing de qiang hua xue xi	20	强化	term	基于模型的强化学习	curated	2026-09-17
+基于稀疏表示的分类	ji yu xi shu biao shi de fen lei	20	专项任务	term	基于稀疏表示的分类	glossary	2026-09-17
+基于草图的图像检索	ji yu cao tu de tu xiang jian suo	20	专项任务	term	基于草图的图像检索	glossary	2026-09-17
+基准测试	ji zhun ce shi	20	评估	term	基准测试	curated	2026-09-17
+基准评测	ji zhun ping ce	20	评估	term	基准评测	curated	2026-09-17
+基因相互作用预测	ji yin xiang hu zuo yong yu ce	20	专项任务	term	基因相互作用预测	glossary	2026-09-17
+基础模型	ji chu mo xing	20	架构	term	基础模型	curated	2026-09-17
+堆叠集成	dui die ji cheng	20	算法	term	堆叠集成	curated	2026-09-17
+填充词元	tian chong ci yuan	20	数据	term	填充词元	curated	2026-09-17
+增量学习	zeng liang xue xi	20	基础	term	增量学习	curated	2026-09-17
+增量索引	zeng liang suo yin	20	检索	term	增量索引	curated	2026-09-17
+增量输出	zeng liang shu chu	20	提示	term	增量输出	curated	2026-09-17
+增量预训练	zeng liang yu xun lian	20	训练	term	增量预训练	curated	2026-09-17
+增长率	zeng zhang lv	20	教材术语	term	增长率	d2l	2026-09-17
+声学单元发现	sheng xue dan yuan fa xian	20	专项任务	term	声学单元发现	glossary	2026-09-17
+声学新颖性检测	sheng xue xin ying xing jian ce	20	专项任务	term	声学新颖性检测	glossary	2026-09-17
+声学模型	sheng xue mo xing	20	语音	term	声学模型	curated	2026-09-17
+声学特征	sheng xue te zheng	20	语音	term	声学特征	curated	2026-09-17
+声源定位	sheng yuan ding wei	20	语音	term	声源定位	curated	2026-09-17
+声码器	sheng ma qi	20	语音	term	声码器	curated	2026-09-17
+声纹识别	sheng wen shi bie	20	语音	term	声纹识别	curated	2026-09-17
+声音事件检测	sheng yin shi jian jian ce	20	语音	term	声音事件检测	curated	2026-09-17
+声音克隆	sheng yin ke long	20	语音	term	声音克隆	curated	2026-09-17
+声音转换	sheng yin zhuan huan	20	语音	term	声音转换	curated	2026-09-17
+处理器核心	chu li qi he xin	20	教材术语	term	处理器核心	d2l	2026-09-17
+复杂推理	fu za tui li	20	提示	term	复杂推理	curated	2026-09-17
+外推法	wai tui fa	20	教材术语	term	外推法	d2l	2026-09-17
+外部工具	wai bu gong ju	20	智能体	term	外部工具	curated	2026-09-17
+多人姿态估计	duo ren zi tai gu ji	20	专项任务	term	多人姿态估计	glossary	2026-09-17
+多人解析	duo ren jie xi	20	专项任务	term	多人解析	glossary	2026-09-17
+多任务学习	duo ren wu xue xi	20	基础	term	多任务学习	curated	2026-09-17
+多任务损失	duo ren wu sun shi	20	训练	term	多任务损失	curated	2026-09-17
+多元函数	duo yuan han shu	20	教材术语	term	多元函数	d2l	2026-09-17
+多卡训练	duo ka xun lian	20	训练	term	多卡训练	curated	2026-09-17
+多头注意力	duo tou zhu yi li	20	架构	term	多头注意力	curated	2026-09-17
+多头潜在注意力	duo tou qian zai zhu yi li	20	架构	term	多头潜在注意力	curated	2026-09-17
+多头自注意力	duo tou zi zhu yi li	20	教材术语	term	多头自注意力	d2l	2026-09-17
+多层感知机	duo ceng gan zhi ji	20	架构	term	多层感知机	curated	2026-09-17
+多智能体	duo zhi neng ti	20	智能体	term	多智能体	curated	2026-09-17
+多智能体协作	duo zhi neng ti xie zuo	20	智能体	term	多智能体协作	curated	2026-09-17
+多智能体强化学习	duo zhi neng ti qiang hua xue xi	20	专项任务	term	多智能体强化学习	glossary	2026-09-17
+多智能体系统	duo zhi neng ti xi tong	20	智能体	term	多智能体系统	curated	2026-09-17
+多智能体编排	duo zhi neng ti bian pai	20	智能体	term	多智能体编排	curated	2026-09-17
+多智能体通信	duo zhi neng ti tong xin	20	智能体	term	多智能体通信	curated	2026-09-17
+多机训练	duo ji xun lian	20	训练	term	多机训练	curated	2026-09-17
+多查询检索	duo cha xun jian suo	20	检索	term	多查询检索	curated	2026-09-17
+多查询注意力	duo cha xun zhu yi li	20	架构	term	多查询注意力	curated	2026-09-17
+多标签分类	duo biao qian fen lei	20	教材术语	term	多标签分类	d2l	2026-09-17
+多标签学习	duo biao qian xue xi	20	基础	term	多标签学习	curated	2026-09-17
+多样性惩罚	duo yang xing cheng fa	20	提示	term	多样性惩罚	curated	2026-09-17
+多样性束搜索	duo yang xing shu sou suo	20	提示	term	多样性束搜索	curated	2026-09-17
+多模型路由	duo mo xing lu you	20	工程	term	多模型路由	curated	2026-09-17
+多模态学习	duo mo tai xue xi	20	基础	term	多模态学习	curated	2026-09-17
+多模态情感识别	duo mo tai qing gan shi bie	20	专项任务	term	多模态情感识别	glossary	2026-09-17
+多模态情绪分析	duo mo tai qing xu fen xi	20	专项任务	term	多模态情绪分析	glossary	2026-09-17
+多模态智能体	duo mo tai zhi neng ti	20	智能体	term	多模态智能体	curated	2026-09-17
+多模态检索	duo mo tai jian suo	20	检索	term	多模态检索	curated	2026-09-17
+多模态模型	duo mo tai mo xing	20	架构	term	多模态模型	curated	2026-09-17
+多模态活动识别	duo mo tai huo dong shi bie	20	专项任务	term	多模态活动识别	glossary	2026-09-17
+多模态消息	duo mo tai xiao xi	20	工程	term	多模态消息	curated	2026-09-17
+多模态睡眠阶段检测	duo mo tai shui mian jie duan jian ce	20	专项任务	term	多模态睡眠阶段检测	glossary	2026-09-17
+多模态融合	duo mo tai rong he	20	视觉	term	多模态融合	curated	2026-09-17
+多模态评测	duo mo tai ping ce	20	评估	term	多模态评测	curated	2026-09-17
+多模态隐喻识别	duo mo tai yin yu shi bie	20	专项任务	term	多模态隐喻识别	glossary	2026-09-17
+多目标优化	duo mu biao you hua	20	数学	term	多目标优化	curated	2026-09-17
+多目标回归	duo mu biao hui gui	20	专项任务	term	多目标回归	glossary	2026-09-17
+多目标跟踪	duo mu biao gen zong	20	视觉	term	多目标跟踪	curated	2026-09-17
+多示例学习	duo shi li xue xi	20	基础	term	多示例学习	curated	2026-09-17
+多租户推理	duo zu hu tui li	20	推理	term	多租户推理	curated	2026-09-17
+多维尺度分析	duo wei chi du fen xi	20	算法	term	多维尺度分析	curated	2026-09-17
+多臂赌博机	duo bi du bo ji	20	算法	term	多臂赌博机	curated	2026-09-17
+多视图子空间聚类	duo shi tu zi kong jian ju lei	20	专项任务	term	多视图子空间聚类	glossary	2026-09-17
+多视图学习	duo shi tu xue xi	20	基础	term	多视图学习	curated	2026-09-17
+多语言合成	duo yu yan he cheng	20	语音	term	多语言合成	curated	2026-09-17
+多语言评测	duo yu yan ping ce	20	评估	term	多语言评测	curated	2026-09-17
+多语言语料	duo yu yan yu liao	20	数据	term	多语言语料	curated	2026-09-17
+多说话人合成	duo shuo hua ren he cheng	20	语音	term	多说话人合成	curated	2026-09-17
+多路召回	duo lu zhao hui	20	检索	term	多路召回	curated	2026-09-17
+多跳检索	duo tiao jian suo	20	检索	term	多跳检索	curated	2026-09-17
+多跳问答	duo tiao wen da	20	提示	term	多跳问答	curated	2026-09-17
+多轮对话	duo lun dui hua	20	提示	term	多轮对话	curated	2026-09-17
+多轮推理	duo lun tui li	20	提示	term	多轮推理	curated	2026-09-17
+多重集	duo chong ji	20	教材术语	term	多重集	d2l	2026-09-17
+多项分布	duo xiang fen bu	20	数学	term	多项分布	curated	2026-09-17
+多项分类	duo xiang fen lei	20	教材术语	term	多项分类	d2l	2026-09-17
+多项式回归	duo xiang shi hui gui	20	算法	term	多项式回归	curated	2026-09-17
+多项式朴素贝叶斯	duo xiang shi pu su bei ye si	20	算法	term	多项式朴素贝叶斯	curated	2026-09-17
+多项式核	duo xiang shi he	20	算法	term	多项式核	curated	2026-09-17
+多项式衰减	duo xiang shi shuai jian	20	教材术语	term	多项式衰减	d2l	2026-09-17
+大型语言模型	da xing yu yan mo xing	20	架构	term	大型语言模型	curated	2026-09-17
+大数定律	da shu ding lv	20	数学	term	大数定律	curated	2026-09-17
+大模型工程	da mo xing gong cheng	20	工程	term	大模型工程	curated	2026-09-17
+大语言模型	da yu yan mo xing	20	架构	term	大语言模型	curated	2026-09-17
+头部姿态估计	tou bu zi tai gu ji	20	专项任务	term	头部姿态估计	glossary	2026-09-17
+奇异值	qi yi zhi	20	数学	term	奇异值	curated	2026-09-17
+奇异值分解	qi yi zhi fen jie	20	数学	term	奇异值分解	curated	2026-09-17
+奇异矩阵	qi yi ju zhen	20	数学	term	奇异矩阵	curated	2026-09-17
+奖励信号	jiang li xin hao	20	强化	term	奖励信号	curated	2026-09-17
+奖励函数	jiang li han shu	20	强化	term	奖励函数	curated	2026-09-17
+奖励分解	jiang li fen jie	20	强化	term	奖励分解	curated	2026-09-17
+奖励劫持	jiang li jie chi	20	强化	term	奖励劫持	curated	2026-09-17
+奖励塑形	jiang li su xing	20	强化	term	奖励塑形	curated	2026-09-17
+奖励对齐	jiang li dui qi	20	安全	term	奖励对齐	curated	2026-09-17
+奖励建模	jiang li jian mo	20	训练	term	奖励建模	curated	2026-09-17
+奖励归一化	jiang li gui yi hua	20	强化	term	奖励归一化	curated	2026-09-17
+奖励模型	jiang li mo xing	20	训练	term	奖励模型	curated	2026-09-17
+奖励稀疏	jiang li xi shu	20	强化	term	奖励稀疏	curated	2026-09-17
+奖励裁剪	jiang li cai jian	20	强化	term	奖励裁剪	curated	2026-09-17
+奖励过拟合	jiang li guo ni he	20	强化	term	奖励过拟合	curated	2026-09-17
+奖励黑客	jiang li hei ke	20	强化	term	奖励黑客	curated	2026-09-17
+套索回归	tao suo hui gui	20	算法	term	套索回归	curated	2026-09-17
+好奇心驱动	hao qi xin qu dong	20	强化	term	好奇心驱动	curated	2026-09-17
+姿态估计	zi tai gu ji	20	视觉	term	姿态估计	curated	2026-09-17
+姿态检测	zi tai jian ce	20	专项任务	term	姿态检测	glossary	2026-09-17
+威胁建模	wei xie jian mo	20	安全	term	威胁建模	curated	2026-09-17
+子任务	zi ren wu	20	智能体	term	子任务	curated	2026-09-17
+子智能体	zi zhi neng ti	20	智能体	term	子智能体	curated	2026-09-17
+子空间聚类	zi kong jian ju lei	20	专项任务	term	子空间聚类	glossary	2026-09-17
+子空间表示	zi kong jian biao shi	20	教材术语	term	子空间表示	d2l	2026-09-17
+子词分词	zi ci fen ci	20	数据	term	子词分词	curated	2026-09-17
+字对齐	zi dui qi	20	专项任务	term	字对齐	glossary	2026-09-17
+字幕对齐	zi mu dui qi	20	语音	term	字幕对齐	curated	2026-09-17
+字幕生成	zi mu sheng cheng	20	语音	term	字幕生成	curated	2026-09-17
+字幕翻译	zi mu fan yi	20	语音	term	字幕翻译	curated	2026-09-17
+字符串转换	zi fu chuan zhuan huan	20	专项任务	term	字符串转换	glossary	2026-09-17
+字符级分词	zi fu ji fen ci	20	数据	term	字符级分词	curated	2026-09-17
+字符级语言模型	zi fu ji yu yan mo xing	20	教材术语	term	字符级语言模型	d2l	2026-09-17
+字符错误率	zi fu cuo wu lv	20	评估	term	字符错误率	curated	2026-09-17
+字素	zi su	20	语音	term	字素	curated	2026-09-17
+字节对编码	zi jie dui bian ma	20	教材术语	term	字节对编码	d2l	2026-09-17
+字节级分词	zi jie ji fen ci	20	数据	term	字节级分词	curated	2026-09-17
+字错误率	zi cuo wu lv	20	评估	term	字错误率	curated	2026-09-17
+存在惩罚	cun zai cheng fa	20	提示	term	存在惩罚	curated	2026-09-17
+季节性	ji jie xing	20	教材术语	term	季节性	d2l	2026-09-17
+孤立森林	gu li sen lin	20	算法	term	孤立森林	curated	2026-09-17
+学习效率	xue xi xiao lv	20	基础	term	学习效率	curated	2026-09-17
+学习率	xue xi lv	20	训练	term	学习率	curated	2026-09-17
+学习率衰减	xue xi lv shuai jian	20	训练	term	学习率衰减	curated	2026-09-17
+学习率调度	xue xi lv diao du	20	训练	term	学习率调度	curated	2026-09-17
+学习率调度器	xue xi lv diao du qi	20	教材术语	term	学习率调度器	d2l	2026-09-17
+学习率预热	xue xi lv yu re	20	训练	term	学习率预热	curated	2026-09-17
+学习策略	xue xi ce lve	20	基础	term	学习策略	curated	2026-09-17
+学习算法	xue xi suan fa	20	教材术语	term	学习算法	d2l	2026-09-17
+学习范式	xue xi fan shi	20	基础	term	学习范式	curated	2026-09-17
+学生模型	xue sheng mo xing	20	训练	term	学生模型	curated	2026-09-17
+安全分类器	an quan fen lei qi	20	安全	term	安全分类器	curated	2026-09-17
+安全多方计算	an quan duo fang ji suan	20	安全	term	安全多方计算	curated	2026-09-17
+安全对齐	an quan dui qi	20	安全	term	安全对齐	curated	2026-09-17
+安全强化学习	an quan qiang hua xue xi	20	强化	term	安全强化学习	curated	2026-09-17
+安全护栏	an quan hu lan	20	安全	term	安全护栏	curated	2026-09-17
+安全拒答	an quan ju da	20	提示	term	安全拒答	curated	2026-09-17
+安全策略	an quan ce lve	20	安全	term	安全策略	curated	2026-09-17
+安全评测	an quan ping ce	20	评估	term	安全评测	curated	2026-09-17
+安全边界	an quan bian jie	20	安全	term	安全边界	curated	2026-09-17
+安全过滤	an quan guo lv	20	数据	term	安全过滤	curated	2026-09-17
+安全退化	an quan tui hua	20	安全	term	安全退化	curated	2026-09-17
+完全卷积网络	wan quan juan ji wang luo	20	教材术语	term	完全卷积网络	d2l	2026-09-17
+完成原因	wan cheng yuan yin	20	提示	term	完成原因	curated	2026-09-17
+完整性	wan zheng xing	20	评估	term	完整性	curated	2026-09-17
+宏平均	hong ping jun	20	评估	term	宏平均	curated	2026-09-17
+实体对齐	shi ti dui qi	20	检索	term	实体对齐	curated	2026-09-17
+实体抽取	shi ti chou qu	20	检索	term	实体抽取	curated	2026-09-17
+实体消歧	shi ti xiao qi	20	检索	term	实体消歧	curated	2026-09-17
+实体类型	shi ti lei xing	20	专项任务	term	实体类型	glossary	2026-09-17
+实体解析	shi ti jie xi	20	专项任务	term	实体解析	glossary	2026-09-17
+实体链接	shi ti lian jie	20	检索	term	实体链接	curated	2026-09-17
+实例分割	shi li fen ge	20	视觉	term	实例分割	curated	2026-09-17
+实时实例分割	shi shi shi li fen ge	20	专项任务	term	实时实例分割	glossary	2026-09-17
+实时推理	shi shi tui li	20	推理	term	实时推理	curated	2026-09-17
+实时语音对话	shi shi yu yin dui hua	20	语音	term	实时语音对话	curated	2026-09-17
+实验复现	shi yan fu xian	20	训练	term	实验复现	curated	2026-09-17
+实验对比	shi yan dui bi	20	工程	term	实验对比	curated	2026-09-17
+实验看板	shi yan kan ban	20	工程	term	实验看板	curated	2026-09-17
+实验管理	shi yan guan li	20	工程	term	实验管理	curated	2026-09-17
+实验记录	shi yan ji lu	20	工程	term	实验记录	curated	2026-09-17
+实验追踪	shi yan zhui zong	20	工程	term	实验追踪	curated	2026-09-17
+实验配置	shi yan pei zhi	20	工程	term	实验配置	curated	2026-09-17
+审计日志	shen ji ri zhi	20	安全	term	审计日志	curated	2026-09-17
+室外光源估计	shi wai guang yuan gu ji	20	专项任务	term	室外光源估计	glossary	2026-09-17
+容器化部署	rong qi hua bu shu	20	推理	term	容器化部署	curated	2026-09-17
+容错机制	rong cuo ji zhi	20	工程	term	容错机制	curated	2026-09-17
+宽高比	kuan gao bi	20	教材术语	term	宽高比	d2l	2026-09-17
+密度聚类	mi du ju lei	20	算法	term	密度聚类	curated	2026-09-17
+密钥管理	mi yao guan li	20	工程	term	密钥管理	curated	2026-09-17
+密集网络	mi ji wang luo	20	架构	term	密集网络	curated	2026-09-17
+密集连接	mi ji lian jie	20	架构	term	密集连接	curated	2026-09-17
+对偶问题	dui ou wen ti	20	数学	term	对偶问题	curated	2026-09-17
+对抗判别器	dui kang pan bie qi	20	架构	term	对抗判别器	curated	2026-09-17
+对抗学习	dui kang xue xi	20	基础	term	对抗学习	curated	2026-09-17
+对抗扰动	dui kang rao dong	20	安全	term	对抗扰动	curated	2026-09-17
+对抗攻击	dui kang gong ji	20	安全	term	对抗攻击	curated	2026-09-17
+对抗样本	dui kang yang ben	20	安全	term	对抗样本	curated	2026-09-17
+对抗生成器	dui kang sheng cheng qi	20	架构	term	对抗生成器	curated	2026-09-17
+对抗训练	dui kang xun lian	20	训练	term	对抗训练	curated	2026-09-17
+对抗评测	dui kang ping ce	20	评估	term	对抗评测	curated	2026-09-17
+对抗防御	dui kang fang yu	20	安全	term	对抗防御	curated	2026-09-17
+对抗鲁棒性	dui kang lu bang xing	20	安全	term	对抗鲁棒性	curated	2026-09-17
+对数似然	dui shu si ran	20	数学	term	对数似然	curated	2026-09-17
+对数几率回归	dui shu ji lv hui gui	20	教材术语	term	对数几率回归	d2l	2026-09-17
+对数概率	dui shu gai lv	20	提示	term	对数概率	curated	2026-09-17
+对比学习	dui bi xue xi	20	基础	term	对比学习	curated	2026-09-17
+对比损失	dui bi sun shi	20	训练	term	对比损失	curated	2026-09-17
+对比提示	dui bi ti shi	20	提示	term	对比提示	curated	2026-09-17
+对比解码	dui bi jie ma	20	提示	term	对比解码	curated	2026-09-17
+对称量化	dui chen liang hua	20	推理	term	对称量化	curated	2026-09-17
+对角矩阵	dui jiao ju zhen	20	数学	term	对角矩阵	curated	2026-09-17
+对话上下文	dui hua shang xia wen	20	提示	term	对话上下文	curated	2026-09-17
+对话中的情感识别	dui hua zhong de qing gan shi bie	20	专项任务	term	对话中的情感识别	glossary	2026-09-17
+对话历史	dui hua li shi	20	提示	term	对话历史	curated	2026-09-17
+对话压缩	dui hua ya suo	20	提示	term	对话压缩	curated	2026-09-17
+对话响应选择	dui hua xiang ying xuan ze	20	专项任务	term	对话响应选择	glossary	2026-09-17
+对话摘要	dui hua zhai yao	20	提示	term	对话摘要	curated	2026-09-17
+对话数据	dui hua shu ju	20	数据	term	对话数据	curated	2026-09-17
+对话智能体	dui hua zhi neng ti	20	智能体	term	对话智能体	curated	2026-09-17
+对话模型	dui hua mo xing	20	架构	term	对话模型	curated	2026-09-17
+对话状态	dui hua zhuang tai	20	提示	term	对话状态	curated	2026-09-17
+对话状态跟踪	dui hua zhuang tai gen zong	20	专项任务	term	对话状态跟踪	glossary	2026-09-17
+对话生成	dui hua sheng cheng	20	专项任务	term	对话生成	glossary	2026-09-17
+对话策略	dui hua ce lve	20	提示	term	对话策略	curated	2026-09-17
+对话管理	dui hua guan li	20	提示	term	对话管理	curated	2026-09-17
+对话语料	dui hua yu liao	20	数据	term	对话语料	curated	2026-09-17
+对话轮次	dui hua lun ci	20	提示	term	对话轮次	curated	2026-09-17
+对齐漂移	dui qi piao yi	20	安全	term	对齐漂移	curated	2026-09-17
+对齐税	dui qi shui	20	安全	term	对齐税	curated	2026-09-17
+对齐训练	dui qi xun lian	20	训练	term	对齐训练	curated	2026-09-17
+封闭域问答	feng bi yu wen da	20	提示	term	封闭域问答	curated	2026-09-17
+封闭式评测	feng bi shi ping ce	20	评估	term	封闭式评测	curated	2026-09-17
+小批量	xiao pi liang	20	教材术语	term	小批量	d2l	2026-09-17
+小批量梯度下降	xiao pi liang ti du xia jiang	20	训练	term	小批量梯度下降	curated	2026-09-17
+小批量训练	xiao pi liang xun lian	20	训练	term	小批量训练	curated	2026-09-17
+小批量随机梯度下降	xiao pi liang sui ji ti du xia jiang	20	教材术语	term	小批量随机梯度下降	d2l	2026-09-17
+小样本学习	xiao yang ben xue xi	20	基础	term	小样本学习	curated	2026-09-17
+小语言模型	xiao yu yan mo xing	20	架构	term	小语言模型	curated	2026-09-17
+少样本学习	shao yang ben xue xi	20	基础	term	少样本学习	curated	2026-09-17
+少样本提示	shao yang ben ti shi	20	提示	term	少样本提示	curated	2026-09-17
+少样本语音合成	shao yang ben yu yin he cheng	20	语音	term	少样本语音合成	curated	2026-09-17
+尾部延迟	wei bu yan chi	20	推理	term	尾部延迟	curated	2026-09-17
+局部优化	ju bu you hua	20	数学	term	局部优化	curated	2026-09-17
+局部性	ju bu xing	20	教材术语	term	局部性	d2l	2026-09-17
+局部检索	ju bu jian suo	20	检索	term	局部检索	curated	2026-09-17
+局部注意力	ju bu zhu yi li	20	架构	term	局部注意力	curated	2026-09-17
+局部离群因子	ju bu li qun yin zi	20	算法	term	局部离群因子	curated	2026-09-17
+局部线性嵌入	ju bu xian xing qian ru	20	算法	term	局部线性嵌入	curated	2026-09-17
+层次分块	ceng ci fen kuai	20	检索	term	层次分块	curated	2026-09-17
+层次分类	ceng ci fen lei	20	教材术语	term	层次分类	d2l	2026-09-17
+层次聚类	ceng ci ju lei	20	算法	term	层次聚类	curated	2026-09-17
+层级变换器	ceng ji bian huan qi	20	架构	term	层级变换器	curated	2026-09-17
+层规范化	ceng gui fan hua	20	教材术语	term	层规范化	d2l	2026-09-17
+屏障操作	ping zhang cao zuo	20	教材术语	term	屏障操作	d2l	2026-09-17
+岭回归	ling hui gui	20	算法	term	岭回归	curated	2026-09-17
+嵌入层	qian ru ceng	20	教材术语	term	嵌入层	d2l	2026-09-17
+嵌入模型	qian ru mo xing	20	架构	term	嵌入模型	curated	2026-09-17
+嵌入空间	qian ru kong jian	20	检索	term	嵌入空间	curated	2026-09-17
+嵌入维度	qian ru wei du	20	检索	term	嵌入维度	curated	2026-09-17
+工作流	gong zuo liu	20	智能体	term	工作流	curated	2026-09-17
+工作记忆	gong zuo ji yi	20	智能体	term	工作记忆	curated	2026-09-17
+工具劫持	gong ju jie chi	20	安全	term	工具劫持	curated	2026-09-17
+工具协议	gong ju xie yi	20	智能体	term	工具协议	curated	2026-09-17
+工具参数	gong ju can shu	20	智能体	term	工具参数	curated	2026-09-17
+工具反馈	gong ju fan kui	20	智能体	term	工具反馈	curated	2026-09-17
+工具发现	gong ju fa xian	20	智能体	term	工具发现	curated	2026-09-17
+工具取消	gong ju qu xiao	20	智能体	term	工具取消	curated	2026-09-17
+工具变量	gong ju bian liang	20	基础	term	工具变量	curated	2026-09-17
+工具安全	gong ju an quan	20	安全	term	工具安全	curated	2026-09-17
+工具审批	gong ju shen pi	20	智能体	term	工具审批	curated	2026-09-17
+工具成功率	gong ju cheng gong lv	20	评估	term	工具成功率	curated	2026-09-17
+工具执行	gong ju zhi xing	20	智能体	term	工具执行	curated	2026-09-17
+工具护栏	gong ju hu lan	20	安全	term	工具护栏	curated	2026-09-17
+工具描述	gong ju miao shu	20	智能体	term	工具描述	curated	2026-09-17
+工具智能体	gong ju zhi neng ti	20	智能体	term	工具智能体	curated	2026-09-17
+工具权限	gong ju quan xian	20	智能体	term	工具权限	curated	2026-09-17
+工具注册	gong ju zhu ce	20	智能体	term	工具注册	curated	2026-09-17
+工具约束	gong ju yue shu	20	提示	term	工具约束	curated	2026-09-17
+工具结果	gong ju jie guo	20	智能体	term	工具结果	curated	2026-09-17
+工具调用	gong ju diao yong	20	智能体	term	工具调用	curated	2026-09-17
+工具调用评测	gong ju diao yong ping ce	20	评估	term	工具调用评测	curated	2026-09-17
+工具超时	gong ju chao shi	20	智能体	term	工具超时	curated	2026-09-17
+工具路由	gong ju lu you	20	智能体	term	工具路由	curated	2026-09-17
+工具适配器	gong ju shi pei qi	20	智能体	term	工具适配器	curated	2026-09-17
+工具选择	gong ju xuan ze	20	智能体	term	工具选择	curated	2026-09-17
+工具重试	gong ju chong shi	20	智能体	term	工具重试	curated	2026-09-17
+工具错误	gong ju cuo wu	20	智能体	term	工具错误	curated	2026-09-17
+差分隐私	cha fen yin si	20	安全	term	差分隐私	curated	2026-09-17
+布局到图像的生成	bu ju dao tu xiang de sheng cheng	20	专项任务	term	布局到图像的生成	glossary	2026-09-17
+帧间一致性	zhen jian yi zhi xing	20	视觉	term	帧间一致性	curated	2026-09-17
+常数参数	chang shu can shu	20	教材术语	term	常数参数	d2l	2026-09-17
+常识推理	chang shi tui li	20	基础	term	常识推理	curated	2026-09-17
+常识问答	chang shi wen da	20	提示	term	常识问答	curated	2026-09-17
+幂等执行	mi deng zhi xing	20	智能体	term	幂等执行	curated	2026-09-17
+平均倒数排名	ping jun dao shu pai ming	20	评估	term	平均倒数排名	curated	2026-09-17
+平均值	ping jun zhi	20	教材术语	term	平均值	d2l	2026-09-17
+平均汇聚层	ping jun hui ju ceng	20	教材术语	term	平均汇聚层	d2l	2026-09-17
+平均池化	ping jun chi hua	20	架构	term	平均池化	curated	2026-09-17
+平均精度	ping jun jing du	20	评估	term	平均精度	curated	2026-09-17
+平均绝对误差	ping jun jue dui wu cha	20	教材术语	term	平均绝对误差	d2l	2026-09-17
+平局率	ping ju lv	20	评估	term	平局率	curated	2026-09-17
+平方误差	ping fang wu cha	20	教材术语	term	平方误差	d2l	2026-09-17
+平移不变性	ping yi bu bian xing	20	教材术语	term	平移不变性	d2l	2026-09-17
+平行语料	ping xing yu liao	20	数据	term	平行语料	curated	2026-09-17
+平衡准确率	ping heng zhun que lv	20	评估	term	平衡准确率	curated	2026-09-17
+年龄不变人脸识别	nian ling bu bian ren lian shi bie	20	专项任务	term	年龄不变人脸识别	glossary	2026-09-17
+年龄和性别分类	nian ling he xing bie fen lei	20	专项任务	term	年龄和性别分类	glossary	2026-09-17
+并发测试	bing fa ce shi	20	推理	term	并发测试	curated	2026-09-17
+并发限制	bing fa xian zhi	20	工程	term	并发限制	curated	2026-09-17
+并行工具调用	bing xing gong ju diao yong	20	智能体	term	并行工具调用	curated	2026-09-17
+并行节点	bing xing jie dian	20	智能体	term	并行节点	curated	2026-09-17
+幸存者偏差	xing cun zhe pian cha	20	数据	term	幸存者偏差	curated	2026-09-17
+幻觉抑制	huan jue yi zhi	20	评估	term	幻觉抑制	curated	2026-09-17
+幻觉检测	huan jue jian ce	20	检索	term	幻觉检测	curated	2026-09-17
+幻觉率	huan jue lv	20	评估	term	幻觉率	curated	2026-09-17
+幻觉缓解	huan jue huan jie	20	评估	term	幻觉缓解	curated	2026-09-17
+幽默检测	you mo jian ce	20	专项任务	term	幽默检测	glossary	2026-09-17
+广义优势估计	guang yi you shi gu ji	20	强化	term	广义优势估计	curated	2026-09-17
+广义线性模型	guang yi xian xing mo xing	20	算法	term	广义线性模型	curated	2026-09-17
+广播机制	guang bo ji zhi	20	教材术语	term	广播机制	d2l	2026-09-17
+序列到序列	xu lie dao xu lie	20	教材术语	term	序列到序列	d2l	2026-09-17
+序列到序列模型	xu lie dao xu lie mo xing	20	教材术语	term	序列到序列模型	d2l	2026-09-17
+序列并行	xu lie bing xing	20	训练	term	序列并行	curated	2026-09-17
+序列开始词元	xu lie kai shi ci yuan	20	教材术语	term	序列开始词元	d2l	2026-09-17
+序列转换模型	xu lie zhuan huan mo xing	20	教材术语	term	序列转换模型	d2l	2026-09-17
+应急响应	ying ji xiang ying	20	安全	term	应急响应	curated	2026-09-17
+度量学习	du liang xue xi	20	基础	term	度量学习	curated	2026-09-17
+延后初始化	yan hou chu shi hua	20	教材术语	term	延后初始化	d2l	2026-09-17
+延迟分位数	yan chi fen wei shu	20	推理	term	延迟分位数	curated	2026-09-17
+延迟奖励	yan chi jiang li	20	强化	term	延迟奖励	curated	2026-09-17
+开发者提示	kai fa zhe ti shi	20	提示	term	开发者提示	curated	2026-09-17
+开发集	kai fa ji	20	数据	term	开发集	curated	2026-09-17
+开放世界学习	kai fang shi jie xue xi	20	基础	term	开放世界学习	curated	2026-09-17
+开放域问答	kai fang yu wen da	20	提示	term	开放域问答	curated	2026-09-17
+开放式评测	kai fang shi ping ce	20	评估	term	开放式评测	curated	2026-09-17
+开放集识别	kai fang ji shi bie	20	基础	term	开放集识别	curated	2026-09-17
+异常值处理	yi chang zhi chu li	20	数据	term	异常值处理	curated	2026-09-17
+异常检测	yi chang jian ce	20	算法	term	异常检测	curated	2026-09-17
+异构推理	yi gou tui li	20	推理	term	异构推理	curated	2026-09-17
+异构计算	yi gou ji suan	20	推理	term	异构计算	curated	2026-09-17
+异步编程	yi bu bian cheng	20	教材术语	term	异步编程	d2l	2026-09-17
+异策略	yi ce lve	20	强化	term	异策略	curated	2026-09-17
+引导尺度	yin dao chi du	20	视觉	term	引导尺度	curated	2026-09-17
+引文意图分类	yin wen yi tu fen lei	20	专项任务	term	引文意图分类	glossary	2026-09-17
+引用准确率	yin yong zhun que lv	20	评估	term	引用准确率	curated	2026-09-17
+引用幻觉	yin yong huan jue	20	评估	term	引用幻觉	curated	2026-09-17
+引用校验	yin yong jiao yan	20	检索	term	引用校验	curated	2026-09-17
+引用溯源	yin yong su yuan	20	检索	term	引用溯源	curated	2026-09-17
+引用生成	yin yong sheng cheng	20	检索	term	引用生成	curated	2026-09-17
+弗罗贝尼乌斯范数	fu luo bei ni wu si fan shu	20	数学	term	弗罗贝尼乌斯范数	curated	2026-09-17
+张量分片	zhang liang fen pian	20	推理	term	张量分片	curated	2026-09-17
+张量分解	zhang liang fen jie	20	数学	term	张量分解	curated	2026-09-17
+张量切分	zhang liang qie fen	20	推理	term	张量切分	curated	2026-09-17
+张量布局	zhang liang bu ju	20	推理	term	张量布局	curated	2026-09-17
+张量并行	zhang liang bing xing	20	训练	term	张量并行	curated	2026-09-17
+张量核	zhang liang he	20	教材术语	term	张量核	d2l	2026-09-17
+张量核心	zhang liang he xin	20	推理	term	张量核心	curated	2026-09-17
+张量类	zhang liang lei	20	教材术语	term	张量类	d2l	2026-09-17
+张量运算	zhang liang yun suan	20	数学	term	张量运算	curated	2026-09-17
+张量通信	zhang liang tong xin	20	推理	term	张量通信	curated	2026-09-17
+弱人工智能	ruo ren gong zhi neng	20	基础	term	弱人工智能	curated	2026-09-17
+弱对偶	ruo dui ou	20	数学	term	弱对偶	curated	2026-09-17
+弱标注	ruo biao zhu	20	数据	term	弱标注	curated	2026-09-17
+弱监督学习	ruo jian du xue xi	20	基础	term	弱监督学习	curated	2026-09-17
+弱监督语义分割	ruo jian du yu yi fen ge	20	专项任务	term	弱监督语义分割	glossary	2026-09-17
+弹性扩缩容	tan xing kuo suo rong	20	推理	term	弹性扩缩容	curated	2026-09-17
+弹性网络	tan xing wang luo	20	算法	term	弹性网络	curated	2026-09-17
+弹性训练	tan xing xun lian	20	训练	term	弹性训练	curated	2026-09-17
+强人工智能	qiang ren gong zhi neng	20	基础	term	强人工智能	curated	2026-09-17
+强凸函数	qiang tu han shu	20	数学	term	强凸函数	curated	2026-09-17
+强制对齐	qiang zhi dui qi	20	语音	term	强制对齐	curated	2026-09-17
+强制教学	qiang zhi jiao xue	20	教材术语	term	强制教学	d2l	2026-09-17
+强化学习	qiang hua xue xi	20	强化	term	强化学习	curated	2026-09-17
+强对偶	qiang dui ou	20	数学	term	强对偶	curated	2026-09-17
+归一化流	gui yi hua liu	20	架构	term	归一化流	curated	2026-09-17
+归纳偏置	gui na pian zhi	20	基础	term	归纳偏置	curated	2026-09-17
+归纳推理	gui na tui li	20	基础	term	归纳推理	curated	2026-09-17
+循环单元	xun huan dan yuan	20	架构	term	循环单元	curated	2026-09-17
+循环学习率	xun huan xue xi lv	20	训练	term	循环学习率	curated	2026-09-17
+循环层	xun huan ceng	20	架构	term	循环层	curated	2026-09-17
+循环神经网络	xun huan shen jing wang luo	20	架构	term	循环神经网络	curated	2026-09-17
+循环节点	xun huan jie dian	20	智能体	term	循环节点	curated	2026-09-17
+微分运算符	wei fen yun suan fu	20	教材术语	term	微分运算符	d2l	2026-09-17
+微平均	wei ping jun	20	评估	term	微平均	curated	2026-09-17
+微笑识别	wei xiao shi bie	20	专项任务	term	微笑识别	glossary	2026-09-17
+微调	wei tiao	20	训练	term	微调	curated	2026-09-17
+心律失常检测	xin lv shi chang jian ce	20	专项任务	term	心律失常检测	glossary	2026-09-17
+心房颤动检测	xin fang chan dong jian ce	20	专项任务	term	心房颤动检测	glossary	2026-09-17
+心率估计	xin lv gu ji	20	专项任务	term	心率估计	glossary	2026-09-17
+心肌梗塞检测	xin ji geng se jian ce	20	专项任务	term	心肌梗塞检测	glossary	2026-09-17
+心跳分类	xin tiao fen lei	20	专项任务	term	心跳分类	glossary	2026-09-17
+忠实度	zhong shi du	20	评估	term	忠实度	curated	2026-09-17
+思维图	si wei tu	20	智能体	term	思维图	curated	2026-09-17
+思维树	si wei shu	20	智能体	term	思维树	curated	2026-09-17
+思维链	si wei lian	20	智能体	term	思维链	curated	2026-09-17
+思维链提示	si wei lian ti shi	20	提示	term	思维链提示	curated	2026-09-17
+性别预测	xing bie yu ce	20	专项任务	term	性别预测	glossary	2026-09-17
+性能基准	xing neng ji zhun	20	推理	term	性能基准	curated	2026-09-17
+性能监控	xing neng jian kong	20	工程	term	性能监控	curated	2026-09-17
+恒等映射	heng deng ying she	20	教材术语	term	恒等映射	d2l	2026-09-17
+恶意软件检测	e yi ruan jian jian ce	20	专项任务	term	恶意软件检测	glossary	2026-09-17
+情感分析	qing gan fen xi	20	提示	term	情感分析	curated	2026-09-17
+情感分类	qing gan fen lei	20	专项任务	term	情感分类	glossary	2026-09-17
+情感原因对提取	qing gan yuan yin dui ti qu	20	专项任务	term	情感原因对提取	glossary	2026-09-17
+情感原因提取	qing gan yuan yin ti qu	20	专项任务	term	情感原因提取	glossary	2026-09-17
+情感合成	qing gan he cheng	20	语音	term	情感合成	curated	2026-09-17
+情感识别	qing gan shi bie	20	语音	term	情感识别	curated	2026-09-17
+情感语音	qing gan yu yin	20	语音	term	情感语音	curated	2026-09-17
+情景记忆	qing jing ji yi	20	智能体	term	情景记忆	curated	2026-09-17
+情绪识别	qing xu shi bie	20	语音	term	情绪识别	curated	2026-09-17
+意图检测	yi tu jian ce	20	专项任务	term	意图检测	glossary	2026-09-17
+意图识别	yi tu shi bie	20	提示	term	意图识别	curated	2026-09-17
+意图路由	yi tu lu you	20	工程	term	意图路由	curated	2026-09-17
+感受野	gan shou ye	20	架构	term	感受野	curated	2026-09-17
+感知机	gan zhi ji	20	架构	term	感知机	curated	2026-09-17
+成员推断	cheng yuan tui duan	20	安全	term	成员推断	curated	2026-09-17
+成对偏好	cheng dui pian hao	20	数据	term	成对偏好	curated	2026-09-17
+成对排序	cheng dui pai xu	20	算法	term	成对排序	curated	2026-09-17
+成对评测	cheng dui ping ce	20	评估	term	成对评测	curated	2026-09-17
+成本优化	cheng ben you hua	20	工程	term	成本优化	curated	2026-09-17
+成本归因	cheng ben gui yin	20	工程	term	成本归因	curated	2026-09-17
+成本监控	cheng ben jian kong	20	工程	term	成本监控	curated	2026-09-17
+成本路由	cheng ben lu you	20	工程	term	成本路由	curated	2026-09-17
+成本预算	cheng ben yu suan	20	工程	term	成本预算	curated	2026-09-17
+截断采样	jie duan cai yang	20	提示	term	截断采样	curated	2026-09-17
+手写数字识别	shou xie shu zi shi bie	20	专项任务	term	手写数字识别	glossary	2026-09-17
+手写识别	shou xie shi bie	20	视觉	term	手写识别	curated	2026-09-17
+手势识别	shou shi shi bie	20	视觉	term	手势识别	curated	2026-09-17
+手术技术评估	shou shu ji shu ping gu	20	专项任务	term	手术技术评估	glossary	2026-09-17
+手语翻译	shou yu fan yi	20	专项任务	term	手语翻译	glossary	2026-09-17
+手语识别	shou yu shi bie	20	专项任务	term	手语识别	glossary	2026-09-17
+手部姿态估计	shou bu zi tai gu ji	20	专项任务	term	手部姿态估计	glossary	2026-09-17
+执行审批	zhi xing shen pi	20	安全	term	执行审批	curated	2026-09-17
+执行成功率	zhi xing cheng gong lv	20	评估	term	执行成功率	curated	2026-09-17
+扩张卷积	kuo zhang juan ji	20	架构	term	扩张卷积	curated	2026-09-17
+扩散模型	kuo san mo xing	20	架构	term	扩散模型	curated	2026-09-17
+扫描路径预测	sao miao lu jing yu ce	20	专项任务	term	扫描路径预测	glossary	2026-09-17
+批大小	pi da xiao	20	训练	term	批大小	curated	2026-09-17
+批量大小	pi liang da xiao	20	教材术语	term	批量大小	d2l	2026-09-17
+批量学习	pi liang xue xi	20	教材术语	term	批量学习	d2l	2026-09-17
+批量推理	pi liang tui li	20	推理	term	批量推理	curated	2026-09-17
+批量规范化	pi liang gui fan hua	20	教材术语	term	批量规范化	d2l	2026-09-17
+投机解码	tou ji jie ma	20	提示	term	投机解码	curated	2026-09-17
+投票集成	tou piao ji cheng	20	算法	term	投票集成	curated	2026-09-17
+折扣因子	zhe kou yin zi	20	强化	term	折扣因子	curated	2026-09-17
+折扣奖励	zhe kou jiang li	20	强化	term	折扣奖励	curated	2026-09-17
+报警规则	bao jing gui ze	20	工程	term	报警规则	curated	2026-09-17
+抽象策略游戏	chou xiang ce lve you xi	20	专项任务	term	抽象策略游戏	glossary	2026-09-17
+抽象语义表示	chou xiang yu yi biao shi	20	专项任务	term	抽象语义表示	glossary	2026-09-17
+拉伸参数	la shen can shu	20	教材术语	term	拉伸参数	d2l	2026-09-17
+拉普拉斯分布	la pu la si fen bu	20	数学	term	拉普拉斯分布	curated	2026-09-17
+拉普拉斯平滑	la pu la si ping hua	20	教材术语	term	拉普拉斯平滑	d2l	2026-09-17
+拉格朗日乘子	la ge lang ri cheng zi	20	数学	term	拉格朗日乘子	curated	2026-09-17
+拉格朗日乘数	la ge lang ri cheng shu	20	教材术语	term	拉格朗日乘数	d2l	2026-09-17
+拒答原因	ju da yuan yin	20	提示	term	拒答原因	curated	2026-09-17
+拒答率	ju da lv	20	评估	term	拒答率	curated	2026-09-17
+拒答策略	ju da ce lve	20	提示	term	拒答策略	curated	2026-09-17
+拒绝采样	ju jue cai yang	20	数学	term	拒绝采样	curated	2026-09-17
+拟合能力	ni he neng li	20	训练	term	拟合能力	curated	2026-09-17
+拼接增强	pin jie zeng qiang	20	数据	term	拼接增强	curated	2026-09-17
+持久记忆	chi jiu ji yi	20	智能体	term	持久记忆	curated	2026-09-17
+持续交付	chi xu jiao fu	20	工程	term	持续交付	curated	2026-09-17
+持续学习	chi xu xue xi	20	基础	term	持续学习	curated	2026-09-17
+持续训练	chi xu xun lian	20	工程	term	持续训练	curated	2026-09-17
+持续评测	chi xu ping ce	20	工程	term	持续评测	curated	2026-09-17
+持续集成	chi xu ji cheng	20	工程	term	持续集成	curated	2026-09-17
+持续预训练	chi xu yu xun lian	20	训练	term	持续预训练	curated	2026-09-17
+指令优先级	zhi ling you xian ji	20	提示	term	指令优先级	curated	2026-09-17
+指令冲突	zhi ling chong tu	20	提示	term	指令冲突	curated	2026-09-17
+指令劫持	zhi ling jie chi	20	安全	term	指令劫持	curated	2026-09-17
+指令导航	zhi ling dao hang	20	强化	term	指令导航	curated	2026-09-17
+指令层级	zhi ling ceng ji	20	提示	term	指令层级	curated	2026-09-17
+指令微调	zhi ling wei tiao	20	训练	term	指令微调	curated	2026-09-17
+指令提示	zhi ling ti shi	20	提示	term	指令提示	curated	2026-09-17
+指令数据	zhi ling shu ju	20	数据	term	指令数据	curated	2026-09-17
+指令模型	zhi ling mo xing	20	架构	term	指令模型	curated	2026-09-17
+指令语料	zhi ling yu liao	20	数据	term	指令语料	curated	2026-09-17
+指令遵循	zhi ling zun xun	20	提示	term	指令遵循	curated	2026-09-17
+指令遵循评测	zhi ling zun xun ping ce	20	评估	term	指令遵循评测	curated	2026-09-17
+指数分布	zhi shu fen bu	20	数学	term	指数分布	curated	2026-09-17
+指数移动平均	zhi shu yi dong ping jun	20	训练	term	指数移动平均	curated	2026-09-17
+指数衰减	zhi shu shuai jian	20	教材术语	term	指数衰减	d2l	2026-09-17
+指数退避	zhi shu tui bi	20	工程	term	指数退避	curated	2026-09-17
+指标看板	zhi biao kan ban	20	工程	term	指标看板	curated	2026-09-17
+指标聚合	zhi biao ju he	20	工程	term	指标聚合	curated	2026-09-17
+指标采集	zhi biao cai ji	20	工程	term	指标采集	curated	2026-09-17
+按元素	an yuan su	20	教材术语	term	按元素	d2l	2026-09-17
+按张量量化	an zhang liang liang hua	20	推理	term	按张量量化	curated	2026-09-17
+按通道量化	an tong dao liang hua	20	推理	term	按通道量化	curated	2026-09-17
+挤压函数	ji ya han shu	20	教材术语	term	挤压函数	d2l	2026-09-17
+损失函数	sun shi han shu	20	数学	term	损失函数	curated	2026-09-17
+损失曲线	sun shi qu xian	20	训练	term	损失曲线	curated	2026-09-17
+排名分数	pai ming fen shu	20	评估	term	排名分数	curated	2026-09-17
+排序学习	pai xu xue xi	20	算法	term	排序学习	curated	2026-09-17
+排序损失	pai xu sun shi	20	训练	term	排序损失	curated	2026-09-17
+排序标注	pai xu biao zhu	20	数据	term	排序标注	curated	2026-09-17
+探索利用	tan suo li yong	20	算法	term	探索利用	curated	2026-09-17
+探索噪声	tan suo zao sheng	20	强化	term	探索噪声	curated	2026-09-17
+探索策略	tan suo ce lve	20	算法	term	探索策略	curated	2026-09-17
+接口兼容	jie kou jian rong	20	工程	term	接口兼容	curated	2026-09-17
+推测解码	tui ce jie ma	20	提示	term	推测解码	curated	2026-09-17
+推特机器人检测	tui te ji qi ren jian ce	20	专项任务	term	推特机器人检测	glossary	2026-09-17
+推理优化	tui li you hua	20	推理	term	推理优化	curated	2026-09-17
+推理加速	tui li jia su	20	推理	term	推理加速	curated	2026-09-17
+推理后端	tui li hou duan	20	推理	term	推理后端	curated	2026-09-17
+推理吞吐	tui li tun tu	20	推理	term	推理吞吐	curated	2026-09-17
+推理吞吐量	tui li tun tu liang	20	推理	term	推理吞吐量	curated	2026-09-17
+推理响应	tui li xiang ying	20	推理	term	推理响应	curated	2026-09-17
+推理安全	tui li an quan	20	安全	term	推理安全	curated	2026-09-17
+推理并发	tui li bing fa	20	推理	term	推理并发	curated	2026-09-17
+推理延迟	tui li yan chi	20	推理	term	推理延迟	curated	2026-09-17
+推理引擎	tui li yin qing	20	推理	term	推理引擎	curated	2026-09-17
+推理性能	tui li xing neng	20	推理	term	推理性能	curated	2026-09-17
+推理成本	tui li cheng ben	20	推理	term	推理成本	curated	2026-09-17
+推理接口	tui li jie kou	20	推理	term	推理接口	curated	2026-09-17
+推理摘要	tui li zhai yao	20	智能体	term	推理摘要	curated	2026-09-17
+推理数据	tui li shu ju	20	数据	term	推理数据	curated	2026-09-17
+推理服务	tui li fu wu	20	推理	term	推理服务	curated	2026-09-17
+推理标注	tui li biao zhu	20	数据	term	推理标注	curated	2026-09-17
+推理框架	tui li kuang jia	20	推理	term	推理框架	curated	2026-09-17
+推理模型	tui li mo xing	20	架构	term	推理模型	curated	2026-09-17
+推理步骤	tui li bu zhou	20	智能体	term	推理步骤	curated	2026-09-17
+推理深度	tui li shen du	20	智能体	term	推理深度	curated	2026-09-17
+推理稳定性	tui li wen ding xing	20	推理	term	推理稳定性	curated	2026-09-17
+推理算力	tui li suan li	20	推理	term	推理算力	curated	2026-09-17
+推理管道	tui li guan dao	20	工程	term	推理管道	curated	2026-09-17
+推理精度	tui li jing du	20	推理	term	推理精度	curated	2026-09-17
+推理缓存	tui li huan cun	20	推理	term	推理缓存	curated	2026-09-17
+推理蒸馏	tui li zheng liu	20	训练	term	推理蒸馏	curated	2026-09-17
+推理评测	tui li ping ce	20	评估	term	推理评测	curated	2026-09-17
+推理请求	tui li qing qiu	20	推理	term	推理请求	curated	2026-09-17
+推理调度	tui li diao du	20	推理	term	推理调度	curated	2026-09-17
+推理轨迹	tui li gui ji	20	智能体	term	推理轨迹	curated	2026-09-17
+推理链	tui li lian	20	智能体	term	推理链	curated	2026-09-17
+推理队列	tui li dui lie	20	推理	term	推理队列	curated	2026-09-17
+推理预算	tui li yu suan	20	智能体	term	推理预算	curated	2026-09-17
+推荐系统	tui jian xi tong	20	教材术语	term	推荐系统	d2l	2026-09-17
+掩码词元	yan ma ci yuan	20	数据	term	掩码词元	curated	2026-09-17
+掩码语言建模	yan ma yu yan jian mo	20	训练	term	掩码语言建模	curated	2026-09-17
+掩码重建	yan ma chong jian	20	训练	term	掩码重建	curated	2026-09-17
+掩蔽语言模型	yan bi yu yan mo xing	20	教材术语	term	掩蔽语言模型	d2l	2026-09-17
+描述不变对象识别	miao shu bu bian dui xiang shi bie	20	专项任务	term	描述不变对象识别	glossary	2026-09-17
+提前停止	ti qian ting zhi	20	训练	term	提前停止	curated	2026-09-17
+提升法	ti sheng fa	20	算法	term	提升法	curated	2026-09-17
+提示优化	ti shi you hua	20	提示	term	提示优化	curated	2026-09-17
+提示压缩	ti shi ya suo	20	提示	term	提示压缩	curated	2026-09-17
+提示工程	ti shi gong cheng	20	提示	term	提示工程	curated	2026-09-17
+提示搜索	ti shi sou suo	20	提示	term	提示搜索	curated	2026-09-17
+提示模板	ti shi mu ban	20	提示	term	提示模板	curated	2026-09-17
+提示泄漏	ti shi xie lou	20	提示	term	提示泄漏	curated	2026-09-17
+提示注入	ti shi zhu ru	20	提示	term	提示注入	curated	2026-09-17
+提示注入攻击	ti shi zhu ru gong ji	20	安全	term	提示注入攻击	curated	2026-09-17
+提示版本	ti shi ban ben	20	提示	term	提示版本	curated	2026-09-17
+提示管理	ti shi guan li	20	提示	term	提示管理	curated	2026-09-17
+提示缓存	ti shi huan cun	20	提示	term	提示缓存	curated	2026-09-17
+提示评估	ti shi ping gu	20	提示	term	提示评估	curated	2026-09-17
+提示词	ti shi ci	20	提示	term	提示词	curated	2026-09-17
+提示调试	ti shi tiao shi	20	提示	term	提示调试	curated	2026-09-17
+提示边界	ti shi bian jie	20	提示	term	提示边界	curated	2026-09-17
+提议区域	ti yi qu yu	20	教材术语	term	提议区域	d2l	2026-09-17
+插值法	cha zhi fa	20	教材术语	term	插值法	d2l	2026-09-17
+搜索式推理	sou suo shi tui li	20	智能体	term	搜索式推理	curated	2026-09-17
+摘要生成	zhai yao sheng cheng	20	提示	term	摘要生成	curated	2026-09-17
+操作审计	cao zuo shen ji	20	安全	term	操作审计	curated	2026-09-17
+支持向量回归	zhi chi xiang liang hui gui	20	算法	term	支持向量回归	curated	2026-09-17
+支持向量机	zhi chi xiang liang ji	20	算法	term	支持向量机	curated	2026-09-17
+收敛条件	shou lian tiao jian	20	训练	term	收敛条件	curated	2026-09-17
+收敛速度	shou lian su du	20	训练	term	收敛速度	curated	2026-09-17
+攻击链	gong ji lian	20	安全	term	攻击链	curated	2026-09-17
+攻击面	gong ji mian	20	安全	term	攻击面	curated	2026-09-17
+故障恢复	gu zhang hui fu	20	工程	term	故障恢复	curated	2026-09-17
+故障注入	gu zhang zhu ru	20	工程	term	故障注入	curated	2026-09-17
+效应量	xiao ying liang	20	评估	term	效应量	curated	2026-09-17
+敏感信息泄漏	min gan xin xi xie lou	20	安全	term	敏感信息泄漏	curated	2026-09-17
+敏感数据过滤	min gan shu ju guo lv	20	安全	term	敏感数据过滤	curated	2026-09-17
+教师模型	jiao shi mo xing	20	训练	term	教师模型	curated	2026-09-17
+散度	san du	20	数学	term	散度	curated	2026-09-17
+散焦估计	san jiao gu ji	20	专项任务	term	散焦估计	glossary	2026-09-17
+数值优化	shu zhi you hua	20	数学	term	数值优化	curated	2026-09-17
+数值分析	shu zhi fen xi	20	数学	term	数值分析	curated	2026-09-17
+数值稳定性	shu zhi wen ding xing	20	数学	term	数值稳定性	curated	2026-09-17
+数值精度	shu zhi jing du	20	数学	term	数值精度	curated	2026-09-17
+数值误差	shu zhi wu cha	20	数学	term	数值误差	curated	2026-09-17
+数字孪生	shu zi luan sheng	20	强化	term	数字孪生	curated	2026-09-17
+数字水印	shu zi shui yin	20	安全	term	数字水印	curated	2026-09-17
+数学推理	shu xue tui li	20	提示	term	数学推理	curated	2026-09-17
+数学评测	shu xue ping ce	20	评估	term	数学评测	curated	2026-09-17
+数据偏倚	shu ju pian yi	20	数据	term	数据偏倚	curated	2026-09-17
+数据偏差	shu ju pian cha	20	数据	term	数据偏差	curated	2026-09-17
+数据分区	shu ju fen qu	20	工程	term	数据分区	curated	2026-09-17
+数据分布	shu ju fen bu	20	数据	term	数据分布	curated	2026-09-17
+数据分片	shu ju fen pian	20	工程	term	数据分片	curated	2026-09-17
+数据划分	shu ju hua fen	20	数据	term	数据划分	curated	2026-09-17
+数据到文本的生成	shu ju dao wen ben de sheng cheng	20	专项任务	term	数据到文本的生成	glossary	2026-09-17
+数据制品	shu ju zhi pin	20	工程	term	数据制品	curated	2026-09-17
+数据加载	shu ju jia zai	20	工程	term	数据加载	curated	2026-09-17
+数据卡	shu ju ka	20	数据	term	数据卡	curated	2026-09-17
+数据去重	shu ju qu chong	20	数据	term	数据去重	curated	2026-09-17
+数据合规	shu ju he gui	20	数据	term	数据合规	curated	2026-09-17
+数据噪声	shu ju zao sheng	20	数据	term	数据噪声	curated	2026-09-17
+数据增强	shu ju zeng qiang	20	数据	term	数据增强	curated	2026-09-17
+数据安全	shu ju an quan	20	安全	term	数据安全	curated	2026-09-17
+数据实例	shu ju shi li	20	教材术语	term	数据实例	d2l	2026-09-17
+数据并行	shu ju bing xing	20	训练	term	数据并行	curated	2026-09-17
+数据序列化	shu ju xu lie hua	20	工程	term	数据序列化	curated	2026-09-17
+数据投毒	shu ju tou du	20	安全	term	数据投毒	curated	2026-09-17
+数据挖掘	shu ju wa jue	20	专项任务	term	数据挖掘	glossary	2026-09-17
+数据授权	shu ju shou quan	20	数据	term	数据授权	curated	2026-09-17
+数据效率	shu ju xiao lv	20	基础	term	数据效率	curated	2026-09-17
+数据最小化	shu ju zui xiao hua	20	安全	term	数据最小化	curated	2026-09-17
+数据标注	shu ju biao zhu	20	数据	term	数据标注	curated	2026-09-17
+数据校验	shu ju jiao yan	20	工程	term	数据校验	curated	2026-09-17
+数据样本	shu ju yang ben	20	教材术语	term	数据样本	d2l	2026-09-17
+数据污染	shu ju wu ran	20	数据	term	数据污染	curated	2026-09-17
+数据治理	shu ju zhi li	20	数据	term	数据治理	curated	2026-09-17
+数据泄漏	shu ju xie lou	20	数据	term	数据泄漏	curated	2026-09-17
+数据泄露	shu ju xie lou	20	安全	term	数据泄露	curated	2026-09-17
+数据流	shu ju liu	20	工程	term	数据流	curated	2026-09-17
+数据混合	shu ju hun he	20	数据	term	数据混合	curated	2026-09-17
+数据清洗	shu ju qing xi	20	数据	term	数据清洗	curated	2026-09-17
+数据溯源	shu ju su yuan	20	数据	term	数据溯源	curated	2026-09-17
+数据漂移	shu ju piao yi	20	工程	term	数据漂移	curated	2026-09-17
+数据点	shu ju dian	20	教材术语	term	数据点	d2l	2026-09-17
+数据版本	shu ju ban ben	20	数据	term	数据版本	curated	2026-09-17
+数据监控	shu ju jian kong	20	工程	term	数据监控	curated	2026-09-17
+数据稀疏	shu ju xi shu	20	数据	term	数据稀疏	curated	2026-09-17
+数据管理	shu ju guan li	20	数据	term	数据管理	curated	2026-09-17
+数据管道	shu ju guan dao	20	工程	term	数据管道	curated	2026-09-17
+数据缓存	shu ju huan cun	20	工程	term	数据缓存	curated	2026-09-17
+数据编排	shu ju bian pai	20	工程	term	数据编排	curated	2026-09-17
+数据缺失	shu ju que shi	20	数据	term	数据缺失	curated	2026-09-17
+数据脱敏	shu ju tuo min	20	数据	term	数据脱敏	curated	2026-09-17
+数据蒸馏	shu ju zheng liu	20	训练	term	数据蒸馏	curated	2026-09-17
+数据血缘	shu ju xue yuan	20	数据	term	数据血缘	curated	2026-09-17
+数据覆盖	shu ju fu gai	20	数据	term	数据覆盖	curated	2026-09-17
+数据许可	shu ju xu ke	20	数据	term	数据许可	curated	2026-09-17
+数据调度	shu ju diao du	20	数据	term	数据调度	curated	2026-09-17
+数据质量	shu ju zhi liang	20	数据	term	数据质量	curated	2026-09-17
+数据转换	shu ju zhuan huan	20	工程	term	数据转换	curated	2026-09-17
+数据过滤	shu ju guo lv	20	数据	term	数据过滤	curated	2026-09-17
+数据配比	shu ju pei bi	20	数据	term	数据配比	curated	2026-09-17
+数据问答	shu ju wen da	20	提示	term	数据问答	curated	2026-09-17
+数据集	shu ju ji	20	教材术语	term	数据集	d2l	2026-09-17
+数据集卡	shu ju ji ka	20	数据	term	数据集卡	curated	2026-09-17
+数据集发布	shu ju ji fa bu	20	数据	term	数据集发布	curated	2026-09-17
+数据集构建	shu ju ji gou jian	20	数据	term	数据集构建	curated	2026-09-17
+数据预取	shu ju yu qu	20	工程	term	数据预取	curated	2026-09-17
+数理统计	shu li tong ji	20	数学	term	数理统计	curated	2026-09-17
+整流流	zheng liu liu	20	架构	term	整流流	curated	2026-09-17
+整流线性单元	zheng liu xian xing dan yuan	20	架构	term	整流线性单元	curated	2026-09-17
+文件隔离	wen jian ge li	20	安全	term	文件隔离	curated	2026-09-17
+文本分块	wen ben fen kuai	20	检索	term	文本分块	curated	2026-09-17
+文本到图像生成	wen ben dao tu xiang sheng cheng	20	专项任务	term	文本到图像生成	glossary	2026-09-17
+文本到语音合成	wen ben dao yu yin he cheng	20	专项任务	term	文本到语音合成	glossary	2026-09-17
+文本匹配	wen ben pi pei	20	提示	term	文本匹配	curated	2026-09-17
+文本压缩	wen ben ya suo	20	专项任务	term	文本压缩	glossary	2026-09-17
+文本增强	wen ben zeng qiang	20	数据	term	文本增强	curated	2026-09-17
+文本对分类	wen ben dui fen lei	20	教材术语	term	文本对分类	d2l	2026-09-17
+文本归一化	wen ben gui yi hua	20	数据	term	文本归一化	curated	2026-09-17
+文本提取	wen ben ti qu	20	数据	term	文本提取	curated	2026-09-17
+文本摘要	wen ben zhai yao	20	提示	term	文本摘要	curated	2026-09-17
+文本改写	wen ben gai xie	20	提示	term	文本改写	curated	2026-09-17
+文本标注	wen ben biao zhu	20	教材术语	term	文本标注	d2l	2026-09-17
+文本润色	wen ben run se	20	提示	term	文本润色	curated	2026-09-17
+文本生成	wen ben sheng cheng	20	提示	term	文本生成	curated	2026-09-17
+文本纠错	wen ben jiu cuo	20	提示	term	文本纠错	curated	2026-09-17
+文本聚类	wen ben ju lei	20	专项任务	term	文本聚类	glossary	2026-09-17
+文本规范化	wen ben gui fan hua	20	数据	term	文本规范化	curated	2026-09-17
+文本识别	wen ben shi bie	20	视觉	term	文本识别	curated	2026-09-17
+文本转语音	wen ben zhuan yu yin	20	语音	term	文本转语音	curated	2026-09-17
+文本重叠	wen ben chong die	20	评估	term	文本重叠	curated	2026-09-17
+文本风格迁移	wen ben feng ge qian yi	20	专项任务	term	文本风格迁移	glossary	2026-09-17
+文档元数据	wen dang yuan shu ju	20	数据	term	文档元数据	curated	2026-09-17
+文档分块	wen dang fen kuai	20	检索	term	文档分块	curated	2026-09-17
+文档去重	wen dang qu chong	20	数据	term	文档去重	curated	2026-09-17
+文档向量	wen dang xiang liang	20	检索	term	文档向量	curated	2026-09-17
+文档图像分类	wen dang tu xiang fen lei	20	专项任务	term	文档图像分类	glossary	2026-09-17
+文档嵌入	wen dang qian ru	20	检索	term	文档嵌入	curated	2026-09-17
+文档布局分析	wen dang bu ju fen xi	20	专项任务	term	文档布局分析	glossary	2026-09-17
+文档生成	wen dang sheng cheng	20	提示	term	文档生成	curated	2026-09-17
+文档结构	wen dang jie gou	20	数据	term	文档结构	curated	2026-09-17
+文档解析	wen dang jie xi	20	数据	term	文档解析	curated	2026-09-17
+文档识别	wen dang shi bie	20	视觉	term	文档识别	curated	2026-09-17
+文档问答	wen dang wen da	20	提示	term	文档问答	curated	2026-09-17
+文生图	wen sheng tu	20	视觉	term	文生图	curated	2026-09-17
+文生视频	wen sheng shi pin	20	视觉	term	文生视频	curated	2026-09-17
+断点续训	duan dian xu xun	20	训练	term	断点续训	curated	2026-09-17
+断路器	duan lu qi	20	工程	term	断路器	curated	2026-09-17
+新视图合成	xin shi tu he cheng	20	专项任务	term	新视图合成	glossary	2026-09-17
+方向导数	fang xiang dao shu	20	数学	term	方向导数	curated	2026-09-17
+方言合成	fang yan he cheng	20	语音	term	方言合成	curated	2026-09-17
+方言识别	fang yan shi bie	20	语音	term	方言识别	curated	2026-09-17
+方面提取	fang mian ti qu	20	专项任务	term	方面提取	glossary	2026-09-17
+旋律生成	xuan lv sheng cheng	20	语音	term	旋律生成	curated	2026-09-17
+旋转位置编码	xuan zhuan wei zhi bian ma	20	架构	term	旋转位置编码	curated	2026-09-17
+无人机导航	wu ren ji dao hang	20	专项任务	term	无人机导航	glossary	2026-09-17
+无偏估计	wu pian gu ji	20	数学	term	无偏估计	curated	2026-09-17
+无分类器引导	wu fen lei qi yin dao	20	视觉	term	无分类器引导	curated	2026-09-17
+无服务器推理	wu fu wu qi tui li	20	推理	term	无服务器推理	curated	2026-09-17
+无标签数据	wu biao qian shu ju	20	数据	term	无标签数据	curated	2026-09-17
+无模型强化学习	wu mo xing qiang hua xue xi	20	强化	term	无模型强化学习	curated	2026-09-17
+无监督人脸关键点检测	wu jian du ren lian guan jian dian jian ce	20	专项任务	term	无监督人脸关键点检测	glossary	2026-09-17
+无监督图像分类	wu jian du tu xiang fen lei	20	专项任务	term	无监督图像分类	glossary	2026-09-17
+无监督域适应	wu jian du yu shi ying	20	专项任务	term	无监督域适应	glossary	2026-09-17
+无监督学习	wu jian du xue xi	20	基础	term	无监督学习	curated	2026-09-17
+无监督异常检测	wu jian du yi chang jian ce	20	专项任务	term	无监督异常检测	glossary	2026-09-17
+无监督行人重识别	wu jian du xing ren chong shi bie	20	专项任务	term	无监督行人重识别	glossary	2026-09-17
+无监督视频对象分割	wu jian du shi pin dui xiang fen ge	20	专项任务	term	无监督视频对象分割	glossary	2026-09-17
+无监督语义分割	wu jian du yu yi fen ge	20	专项任务	term	无监督语义分割	glossary	2026-09-17
+无答案拒答	wu da an ju da	20	检索	term	无答案拒答	curated	2026-09-17
+无约束优化	wu yue shu you hua	20	数学	term	无约束优化	curated	2026-09-17
+日志追踪	ri zhi zhui zong	20	工程	term	日志追踪	curated	2026-09-17
+早停	zao ting	20	训练	term	早停	curated	2026-09-17
+早期融合	zao qi rong he	20	视觉	term	早期融合	curated	2026-09-17
+时序差分	shi xu cha fen	20	强化	term	时序差分	curated	2026-09-17
+时序建模	shi xu jian mo	20	视觉	term	时序建模	curated	2026-09-17
+时空注意力	shi kong zhu yi li	20	视觉	term	时空注意力	curated	2026-09-17
+时空特征	shi kong te zheng	20	视觉	term	时空特征	curated	2026-09-17
+时长预测	shi chang yu ce	20	语音	term	时长预测	curated	2026-09-17
+时间一致性	shi jian yi zhi xing	20	视觉	term	时间一致性	curated	2026-09-17
+时间序列分类	shi jian xu lie fen lei	20	专项任务	term	时间序列分类	glossary	2026-09-17
+时间序列划分	shi jian xu lie hua fen	20	数据	term	时间序列划分	curated	2026-09-17
+时间序列聚类	shi jian xu lie ju lei	20	专项任务	term	时间序列聚类	glossary	2026-09-17
+时间序列预测	shi jian xu lie yu ce	20	专项任务	term	时间序列预测	glossary	2026-09-17
+时间步	shi jian bu	20	教材术语	term	时间步	d2l	2026-09-17
+时间表达式规范化	shi jian biao da shi gui fan hua	20	专项任务	term	时间表达式规范化	glossary	2026-09-17
+时间过滤	shi jian guo lv	20	检索	term	时间过滤	curated	2026-09-17
+时频特征	shi pin te zheng	20	语音	term	时频特征	curated	2026-09-17
+显存占用	xian cun zhan yong	20	推理	term	显存占用	curated	2026-09-17
+显存卸载	xian cun xie zai	20	推理	term	显存卸载	curated	2026-09-17
+显存带宽	xian cun dai kuan	20	推理	term	显存带宽	curated	2026-09-17
+显存碎片	xian cun sui pian	20	推理	term	显存碎片	curated	2026-09-17
+显存管理	xian cun guan li	20	推理	term	显存管理	curated	2026-09-17
+显式推理	xian shi tui li	20	智能体	term	显式推理	curated	2026-09-17
+智能体	zhi neng ti	20	智能体	term	智能体	curated	2026-09-17
+智能体协议	zhi neng ti xie yi	20	智能体	term	智能体协议	curated	2026-09-17
+智能体安全	zhi neng ti an quan	20	安全	term	智能体安全	curated	2026-09-17
+智能体工作流	zhi neng ti gong zuo liu	20	智能体	term	智能体工作流	curated	2026-09-17
+智能体工具	zhi neng ti gong ju	20	智能体	term	智能体工具	curated	2026-09-17
+智能体循环	zhi neng ti xun huan	20	智能体	term	智能体循环	curated	2026-09-17
+智能体恢复	zhi neng ti hui fu	20	智能体	term	智能体恢复	curated	2026-09-17
+智能体技能	zhi neng ti ji neng	20	智能体	term	智能体技能	curated	2026-09-17
+智能体权限	zhi neng ti quan xian	20	智能体	term	智能体权限	curated	2026-09-17
+智能体框架	zhi neng ti kuang jia	20	智能体	term	智能体框架	curated	2026-09-17
+智能体沙箱	zhi neng ti sha xiang	20	智能体	term	智能体沙箱	curated	2026-09-17
+智能体状态	zhi neng ti zhuang tai	20	智能体	term	智能体状态	curated	2026-09-17
+智能体规划	zhi neng ti gui hua	20	智能体	term	智能体规划	curated	2026-09-17
+智能体记忆	zhi neng ti ji yi	20	智能体	term	智能体记忆	curated	2026-09-17
+智能体评估	zhi neng ti ping gu	20	智能体	term	智能体评估	curated	2026-09-17
+智能体评测	zhi neng ti ping ce	20	评估	term	智能体评测	curated	2026-09-17
+智能体调度	zhi neng ti diao du	20	智能体	term	智能体调度	curated	2026-09-17
+智能体路由	zhi neng ti lu you	20	智能体	term	智能体路由	curated	2026-09-17
+智能体身份	zhi neng ti shen fen	20	智能体	term	智能体身份	curated	2026-09-17
+智能体轨迹	zhi neng ti gui ji	20	智能体	term	智能体轨迹	curated	2026-09-17
+智能体运行时	zhi neng ti yun xing shi	20	智能体	term	智能体运行时	curated	2026-09-17
+智能体通信协议	zhi neng ti tong xin xie yi	20	工程	term	智能体通信协议	curated	2026-09-17
+智能问答	zhi neng wen da	20	提示	term	智能问答	curated	2026-09-17
+暂退概率	zan tui gai lv	20	教材术语	term	暂退概率	d2l	2026-09-17
+暂退法	zan tui fa	20	教材术语	term	暂退法	d2l	2026-09-17
+曲线文本检测	qu xian wen ben jian ce	20	专项任务	term	曲线文本检测	glossary	2026-09-17
+曲面法线估计	qu mian fa xian gu ji	20	专项任务	term	曲面法线估计	glossary	2026-09-17
+更新门	geng xin men	20	教材术语	term	更新门	d2l	2026-09-17
+曼哈顿距离	man ha dun ju li	20	数学	term	曼哈顿距离	curated	2026-09-17
+替代目标	ti dai mu biao	20	教材术语	term	替代目标	d2l	2026-09-17
+最优序列	zui you xu lie	20	教材术语	term	最优序列	d2l	2026-09-17
+最大似然估计	zui da si ran gu ji	20	数学	term	最大似然估计	curated	2026-09-17
+最大化	zui da hua	20	教材术语	term	最大化	d2l	2026-09-17
+最大后验估计	zui da hou yan gu ji	20	数学	term	最大后验估计	curated	2026-09-17
+最大时间汇聚层	zui da shi jian hui ju ceng	20	教材术语	term	最大时间汇聚层	d2l	2026-09-17
+最大汇聚层	zui da hui ju ceng	20	教材术语	term	最大汇聚层	d2l	2026-09-17
+最大池化	zui da chi hua	20	架构	term	最大池化	curated	2026-09-17
+最小化	zui xiao hua	20	教材术语	term	最小化	d2l	2026-09-17
+最小权限	zui xiao quan xian	20	安全	term	最小权限	curated	2026-09-17
+最近邻搜索	zui jin lin sou suo	20	算法	term	最近邻搜索	curated	2026-09-17
+最近邻检索	zui jin lin jian suo	20	检索	term	最近邻检索	curated	2026-09-17
+有向无环图	you xiang wu huan tu	20	智能体	term	有向无环图	curated	2026-09-17
+有害内容检测	you hai nei rong jian ce	20	安全	term	有害内容检测	curated	2026-09-17
+有害输出过滤	you hai shu chu guo lv	20	安全	term	有害输出过滤	curated	2026-09-17
+有效感受野	you xiao gan shou ye	20	架构	term	有效感受野	curated	2026-09-17
+有标签数据	you biao qian shu ju	20	数据	term	有标签数据	curated	2026-09-17
+服务健康检查	fu wu jian kang jian cha	20	推理	term	服务健康检查	curated	2026-09-17
+服务可用性	fu wu ke yong xing	20	推理	term	服务可用性	curated	2026-09-17
+服务可靠性	fu wu ke kao xing	20	推理	term	服务可靠性	curated	2026-09-17
+服务水平目标	fu wu shui ping mu biao	20	推理	term	服务水平目标	curated	2026-09-17
+服务降级	fu wu jiang ji	20	推理	term	服务降级	curated	2026-09-17
+期望回报	qi wang hui bao	20	强化	term	期望回报	curated	2026-09-17
+期望最大化	qi wang zui da hua	20	算法	term	期望最大化	curated	2026-09-17
+期望校准误差	qi wang jiao zhun wu cha	20	评估	term	期望校准误差	curated	2026-09-17
+未知词元	wei zhi ci yuan	20	数据	term	未知词元	curated	2026-09-17
+本体	ben ti	20	检索	term	本体	curated	2026-09-17
+本体对齐	ben ti dui qi	20	检索	term	本体对齐	curated	2026-09-17
+本体构建	ben ti gou jian	20	检索	term	本体构建	curated	2026-09-17
+本地推理	ben di tui li	20	推理	term	本地推理	curated	2026-09-17
+本地模式	ben di mo shi	20	工程	term	本地模式	curated	2026-09-17
+朴素贝叶斯	pu su bei ye si	20	算法	term	朴素贝叶斯	curated	2026-09-17
+机会均等	ji hui jun deng	20	安全	term	机会均等	curated	2026-09-17
+机器人学习	ji qi ren xue xi	20	强化	term	机器人学习	curated	2026-09-17
+机器人抓取	ji qi ren zhua qu	20	强化	term	机器人抓取	curated	2026-09-17
+机器人控制	ji qi ren kong zhi	20	强化	term	机器人控制	curated	2026-09-17
+机器人操作	ji qi ren cao zuo	20	强化	term	机器人操作	curated	2026-09-17
+机器学习	ji qi xue xi	20	基础	term	机器学习	curated	2026-09-17
+机器学习工程	ji qi xue xi gong cheng	20	工程	term	机器学习工程	curated	2026-09-17
+机器翻译	ji qi fan yi	20	提示	term	机器翻译	curated	2026-09-17
+机器阅读理解	ji qi yue du li jie	20	专项任务	term	机器阅读理解	glossary	2026-09-17
+权重初始化	quan zhong chu shi hua	20	架构	term	权重初始化	curated	2026-09-17
+权重剪枝	quan zhong jian zhi	20	推理	term	权重剪枝	curated	2026-09-17
+权重卸载	quan zhong xie zai	20	推理	term	权重卸载	curated	2026-09-17
+权重平均	quan zhong ping jun	20	训练	term	权重平均	curated	2026-09-17
+权重衰减	quan zhong shuai jian	20	训练	term	权重衰减	curated	2026-09-17
+权重量化	quan zhong liang hua	20	推理	term	权重量化	curated	2026-09-17
+权限边界	quan xian bian jie	20	安全	term	权限边界	curated	2026-09-17
+权限过滤	quan xian guo lv	20	检索	term	权限过滤	curated	2026-09-17
+权限隔离	quan xian ge li	20	安全	term	权限隔离	curated	2026-09-17
+材料筛选	cai liao shai xuan	20	专项任务	term	材料筛选	glossary	2026-09-17
+束搜索	shu sou suo	20	提示	term	束搜索	curated	2026-09-17
+条件互信息	tiao jian hu xin xi	20	数学	term	条件互信息	curated	2026-09-17
+条件似然	tiao jian si ran	20	数学	term	条件似然	curated	2026-09-17
+条件分布	tiao jian fen bu	20	数学	term	条件分布	curated	2026-09-17
+条件分支	tiao jian fen zhi	20	智能体	term	条件分支	curated	2026-09-17
+条件变分自编码器	tiao jian bian fen zi bian ma qi	20	架构	term	条件变分自编码器	curated	2026-09-17
+条件扩散模型	tiao jian kuo san mo xing	20	架构	term	条件扩散模型	curated	2026-09-17
+条件数	tiao jian shu	20	教材术语	term	条件数	d2l	2026-09-17
+条件概率	tiao jian gai lv	20	数学	term	条件概率	curated	2026-09-17
+条件熵	tiao jian shang	20	数学	term	条件熵	curated	2026-09-17
+条件独立的	tiao jian du li de	20	教材术语	term	条件独立的	d2l	2026-09-17
+条件生成	tiao jian sheng cheng	20	视觉	term	条件生成	curated	2026-09-17
+条件生成对抗网络	tiao jian sheng cheng dui kang wang luo	20	架构	term	条件生成对抗网络	curated	2026-09-17
+条件程序生成	tiao jian cheng xu sheng cheng	20	专项任务	term	条件程序生成	glossary	2026-09-17
+条件随机场	tiao jian sui ji chang	20	算法	term	条件随机场	curated	2026-09-17
+来源归因	lai yuan gui yin	20	检索	term	来源归因	curated	2026-09-17
+来源标记	lai yuan biao ji	20	安全	term	来源标记	curated	2026-09-17
+杰卡德相似度	jie ka de xiang si du	20	数学	term	杰卡德相似度	curated	2026-09-17
+杰卡德系数	jie ka de xi shu	20	教材术语	term	杰卡德系数	d2l	2026-09-17
+极大似然估计量	ji da si ran gu ji liang	20	教材术语	term	极大似然估计量	d2l	2026-09-17
+极端随机树	ji duan sui ji shu	20	算法	term	极端随机树	curated	2026-09-17
+查全率	cha quan lv	20	评估	term	查全率	curated	2026-09-17
+查准率	cha zhun lv	20	检索	term	查准率	curated	2026-09-17
+查询分解	cha xun fen jie	20	检索	term	查询分解	curated	2026-09-17
+查询向量	cha xun xiang liang	20	检索	term	查询向量	curated	2026-09-17
+查询增强	cha xun zeng qiang	20	检索	term	查询增强	curated	2026-09-17
+查询扩展	cha xun kuo zhan	20	检索	term	查询扩展	curated	2026-09-17
+查询改写	cha xun gai xie	20	检索	term	查询改写	curated	2026-09-17
+查询理解	cha xun li jie	20	检索	term	查询理解	curated	2026-09-17
+查询生成	cha xun sheng cheng	20	检索	term	查询生成	curated	2026-09-17
+查询路由	cha xun lu you	20	检索	term	查询路由	curated	2026-09-17
+标准化	biao zhun hua	20	教材术语	term	标准化	d2l	2026-09-17
+标准差	biao zhun cha	20	教材术语	term	标准差	d2l	2026-09-17
+标注一致性	biao zhu yi zhi xing	20	数据	term	标注一致性	curated	2026-09-17
+标注偏差	biao zhu pian cha	20	数据	term	标注偏差	curated	2026-09-17
+标注协议	biao zhu xie yi	20	数据	term	标注协议	curated	2026-09-17
+标注指南	biao zhu zhi nan	20	数据	term	标注指南	curated	2026-09-17
+标注质量	biao zhu zhi liang	20	数据	term	标注质量	curated	2026-09-17
+标签体系	biao qian ti xi	20	数据	term	标签体系	curated	2026-09-17
+标签偏移	biao qian pian yi	20	教材术语	term	标签偏移	d2l	2026-09-17
+标签噪声	biao qian zao sheng	20	数据	term	标签噪声	curated	2026-09-17
+标签审计	biao qian shen ji	20	数据	term	标签审计	curated	2026-09-17
+标签平滑	biao qian ping hua	20	训练	term	标签平滑	curated	2026-09-17
+标签归一化	biao qian gui yi hua	20	数据	term	标签归一化	curated	2026-09-17
+标签映射	biao qian ying she	20	数据	term	标签映射	curated	2026-09-17
+标签校验	biao qian jiao yan	20	数据	term	标签校验	curated	2026-09-17
+标签泄漏	biao qian xie lou	20	数据	term	标签泄漏	curated	2026-09-17
+标量量化	biao liang liang hua	20	检索	term	标量量化	curated	2026-09-17
+校准数据	jiao zhun shu ju	20	推理	term	校准数据	curated	2026-09-17
+校准误差	jiao zhun wu cha	20	推理	term	校准误差	curated	2026-09-17
+校准集	jiao zhun ji	20	推理	term	校准集	curated	2026-09-17
+样式迁移	yang shi qian yi	20	教材术语	term	样式迁移	d2l	2026-09-17
+样本复杂度	yang ben fu za du	20	基础	term	样本复杂度	curated	2026-09-17
+样本效率	yang ben xiao lv	20	基础	term	样本效率	curated	2026-09-17
+样本空间	yang ben kong jian	20	教材术语	term	样本空间	d2l	2026-09-17
+样本筛选	yang ben shai xuan	20	数据	term	样本筛选	curated	2026-09-17
+样本重加权	yang ben chong jia quan	20	数据	term	样本重加权	curated	2026-09-17
+样本重采样	yang ben chong cai yang	20	数据	term	样本重采样	curated	2026-09-17
+核主成分分析	he zhu cheng fen fen xi	20	算法	term	核主成分分析	curated	2026-09-17
+核函数	he han shu	20	算法	term	核函数	curated	2026-09-17
+核回归	he hui gui	20	算法	term	核回归	curated	2026-09-17
+核岭回归	he ling hui gui	20	算法	term	核岭回归	curated	2026-09-17
+核技巧	he ji qiao	20	算法	term	核技巧	curated	2026-09-17
+核方法	he fang fa	20	算法	term	核方法	curated	2026-09-17
+核范数	he fan shu	20	数学	term	核范数	curated	2026-09-17
+核采样	he cai yang	20	提示	term	核采样	curated	2026-09-17
+格式正确率	ge shi zheng que lv	20	评估	term	格式正确率	curated	2026-09-17
+格式约束	ge shi yue shu	20	提示	term	格式约束	curated	2026-09-17
+格拉姆矩阵	ge la mu ju zhen	20	教材术语	term	格拉姆矩阵	d2l	2026-09-17
+梅尔倒谱	mei er dao pu	20	语音	term	梅尔倒谱	curated	2026-09-17
+梅尔频谱	mei er pin pu	20	语音	term	梅尔频谱	curated	2026-09-17
+梯度	ti du	20	数学	term	梯度	curated	2026-09-17
+梯度下降	ti du xia jiang	20	训练	term	梯度下降	curated	2026-09-17
+梯度估计	ti du gu ji	20	数学	term	梯度估计	curated	2026-09-17
+梯度全归约	ti du quan gui yue	20	训练	term	梯度全归约	curated	2026-09-17
+梯度冲突	ti du chong tu	20	训练	term	梯度冲突	curated	2026-09-17
+梯度压缩	ti du ya suo	20	训练	term	梯度压缩	curated	2026-09-17
+梯度反转	ti du fan zhuan	20	训练	term	梯度反转	curated	2026-09-17
+梯度同步	ti du tong bu	20	训练	term	梯度同步	curated	2026-09-17
+梯度噪声	ti du zao sheng	20	训练	term	梯度噪声	curated	2026-09-17
+梯度归一化	ti du gui yi hua	20	训练	term	梯度归一化	curated	2026-09-17
+梯度惩罚	ti du cheng fa	20	训练	term	梯度惩罚	curated	2026-09-17
+梯度提升	ti du ti sheng	20	算法	term	梯度提升	curated	2026-09-17
+梯度提升决策树	ti du ti sheng jue ce shu	20	算法	term	梯度提升决策树	curated	2026-09-17
+梯度提升树	ti du ti sheng shu	20	算法	term	梯度提升树	curated	2026-09-17
+梯度检查点	ti du jian cha dian	20	训练	term	梯度检查点	curated	2026-09-17
+梯度消失	ti du xiao shi	20	训练	term	梯度消失	curated	2026-09-17
+梯度溢出	ti du yi chu	20	训练	term	梯度溢出	curated	2026-09-17
+梯度爆炸	ti du bao zha	20	训练	term	梯度爆炸	curated	2026-09-17
+梯度累积	ti du lei ji	20	训练	term	梯度累积	curated	2026-09-17
+梯度累积步数	ti du lei ji bu shu	20	训练	term	梯度累积步数	curated	2026-09-17
+梯度缩放	ti du suo fang	20	训练	term	梯度缩放	curated	2026-09-17
+梯度范数	ti du fan shu	20	数学	term	梯度范数	curated	2026-09-17
+梯度裁剪	ti du cai jian	20	训练	term	梯度裁剪	curated	2026-09-17
+检查点	jian cha dian	20	训练	term	检查点	curated	2026-09-17
+检查点合并	jian cha dian he bing	20	训练	term	检查点合并	curated	2026-09-17
+检查点转换	jian cha dian zhuan huan	20	训练	term	检查点转换	curated	2026-09-17
+检查节点	jian cha jie dian	20	智能体	term	检查节点	curated	2026-09-17
+检索吞吐	jian suo tun tu	20	检索	term	检索吞吐	curated	2026-09-17
+检索增强	jian suo zeng qiang	20	检索	term	检索增强	curated	2026-09-17
+检索增强生成	jian suo zeng qiang sheng cheng	20	检索	term	检索增强生成	curated	2026-09-17
+检索延迟	jian suo yan chi	20	检索	term	检索延迟	curated	2026-09-17
+检索投毒	jian suo tou du	20	安全	term	检索投毒	curated	2026-09-17
+检索生成融合	jian suo sheng cheng rong he	20	检索	term	检索生成融合	curated	2026-09-17
+检索精度	jian suo jing du	20	检索	term	检索精度	curated	2026-09-17
+检索缓存	jian suo huan cun	20	检索	term	检索缓存	curated	2026-09-17
+检索评估	jian suo ping gu	20	检索	term	检索评估	curated	2026-09-17
+概念偏移	gai nian pian yi	20	教材术语	term	概念偏移	d2l	2026-09-17
+概念漂移	gai nian piao yi	20	工程	term	概念漂移	curated	2026-09-17
+概率图模型	gai lv tu mo xing	20	算法	term	概率图模型	curated	2026-09-17
+概率密度	gai lv mi du	20	数学	term	概率密度	curated	2026-09-17
+概率论	gai lv lun	20	数学	term	概率论	curated	2026-09-17
+概率质量	gai lv zhi liang	20	数学	term	概率质量	curated	2026-09-17
+槽位填充	cao wei tian chong	20	提示	term	槽位填充	curated	2026-09-17
+模仿学习	mo fang xue xi	20	强化	term	模仿学习	curated	2026-09-17
+模型上下文协议	mo xing shang xia wen xie yi	20	工程	term	模型上下文协议	curated	2026-09-17
+模型仓库	mo xing cang ku	20	推理	term	模型仓库	curated	2026-09-17
+模型依赖	mo xing yi lai	20	工程	term	模型依赖	curated	2026-09-17
+模型保存	mo xing bao cun	20	训练	term	模型保存	curated	2026-09-17
+模型假设	mo xing jia she	20	基础	term	模型假设	curated	2026-09-17
+模型切换	mo xing qie huan	20	推理	term	模型切换	curated	2026-09-17
+模型制品	mo xing zhi pin	20	工程	term	模型制品	curated	2026-09-17
+模型剪枝	mo xing jian zhi	20	推理	term	模型剪枝	curated	2026-09-17
+模型加载	mo xing jia zai	20	推理	term	模型加载	curated	2026-09-17
+模型卡	mo xing ka	20	数据	term	模型卡	curated	2026-09-17
+模型卸载	mo xing xie zai	20	推理	term	模型卸载	curated	2026-09-17
+模型压缩	mo xing ya suo	20	推理	term	模型压缩	curated	2026-09-17
+模型参数	mo xing can shu	20	教材术语	term	模型参数	d2l	2026-09-17
+模型反演	mo xing fan yan	20	安全	term	模型反演	curated	2026-09-17
+模型回滚	mo xing hui gun	20	推理	term	模型回滚	curated	2026-09-17
+模型回退	mo xing hui tui	20	工程	term	模型回退	curated	2026-09-17
+模型复杂度	mo xing fu za du	20	基础	term	模型复杂度	curated	2026-09-17
+模型安全	mo xing an quan	20	安全	term	模型安全	curated	2026-09-17
+模型容量	mo xing rong liang	20	基础	term	模型容量	curated	2026-09-17
+模型导出	mo xing dao chu	20	推理	term	模型导出	curated	2026-09-17
+模型平均	mo xing ping jun	20	训练	term	模型平均	curated	2026-09-17
+模型幻觉	mo xing huan jue	20	评估	term	模型幻觉	curated	2026-09-17
+模型强化学习	mo xing qiang hua xue xi	20	强化	term	模型强化学习	curated	2026-09-17
+模型恢复	mo xing hui fu	20	训练	term	模型恢复	curated	2026-09-17
+模型打包	mo xing da bao	20	推理	term	模型打包	curated	2026-09-17
+模型托管	mo xing tuo guan	20	推理	term	模型托管	curated	2026-09-17
+模型推理	mo xing tui li	20	推理	term	模型推理	curated	2026-09-17
+模型提取	mo xing ti qu	20	安全	term	模型提取	curated	2026-09-17
+模型服务	mo xing fu wu	20	推理	term	模型服务	curated	2026-09-17
+模型检查点	mo xing jian cha dian	20	训练	term	模型检查点	curated	2026-09-17
+模型泄漏	mo xing xie lou	20	安全	term	模型泄漏	curated	2026-09-17
+模型泛化	mo xing fan hua	20	基础	term	模型泛化	curated	2026-09-17
+模型注册	mo xing zhu ce	20	推理	term	模型注册	curated	2026-09-17
+模型注册表	mo xing zhu ce biao	20	工程	term	模型注册表	curated	2026-09-17
+模型滥用	mo xing lan yong	20	安全	term	模型滥用	curated	2026-09-17
+模型漂移	mo xing piao yi	20	工程	term	模型漂移	curated	2026-09-17
+模型版本	mo xing ban ben	20	推理	term	模型版本	curated	2026-09-17
+模型生命周期	mo xing sheng ming zhou qi	20	工程	term	模型生命周期	curated	2026-09-17
+模型监控	mo xing jian kong	20	推理	term	模型监控	curated	2026-09-17
+模型窃取	mo xing qie qu	20	安全	term	模型窃取	curated	2026-09-17
+模型端点	mo xing duan dian	20	推理	term	模型端点	curated	2026-09-17
+模型签名	mo xing qian ming	20	工程	term	模型签名	curated	2026-09-17
+模型级联	mo xing ji lian	20	工程	term	模型级联	curated	2026-09-17
+模型组合	mo xing zu he	20	工程	term	模型组合	curated	2026-09-17
+模型编排	mo xing bian pai	20	工程	term	模型编排	curated	2026-09-17
+模型网关	mo xing wang guan	20	推理	term	模型网关	curated	2026-09-17
+模型蒸馏	mo xing zheng liu	20	训练	term	模型蒸馏	curated	2026-09-17
+模型融合	mo xing rong he	20	算法	term	模型融合	curated	2026-09-17
+模型裁判	mo xing cai pan	20	评估	term	模型裁判	curated	2026-09-17
+模型评估	mo xing ping gu	20	评估	term	模型评估	curated	2026-09-17
+模型评测	mo xing ping ce	20	评估	term	模型评测	curated	2026-09-17
+模型路由	mo xing lu you	20	推理	term	模型路由	curated	2026-09-17
+模型转换	mo xing zhuan huan	20	推理	term	模型转换	curated	2026-09-17
+模型连接器	mo xing lian jie qi	20	工程	term	模型连接器	curated	2026-09-17
+模型适配	mo xing shi pei	20	工程	term	模型适配	curated	2026-09-17
+模型选择	mo xing xuan ze	20	教材术语	term	模型选择	d2l	2026-09-17
+模型部署	mo xing bu shu	20	推理	term	模型部署	curated	2026-09-17
+模型配置	mo xing pei zhi	20	推理	term	模型配置	curated	2026-09-17
+模型量化	mo xing liang hua	20	推理	term	模型量化	curated	2026-09-17
+模型预热	mo xing yu re	20	推理	term	模型预热	curated	2026-09-17
+模式约束	mo shi yue shu	20	提示	term	模式约束	curated	2026-09-17
+模糊去重	mo hu qu chong	20	数据	term	模糊去重	curated	2026-09-17
+模糊聚类	mo hu ju lei	20	算法	term	模糊聚类	curated	2026-09-17
+欠拟合	qian ni he	20	训练	term	欠拟合	curated	2026-09-17
+欠采样	qian cai yang	20	数据	term	欠采样	curated	2026-09-17
+次梯度	ci ti du	20	数学	term	次梯度	curated	2026-09-17
+欧氏距离	ou shi ju li	20	数学	term	欧氏距离	curated	2026-09-17
+欺诈检测	qi zha jian ce	20	专项任务	term	欺诈检测	glossary	2026-09-17
+歌声合成	ge sheng he cheng	20	语音	term	歌声合成	curated	2026-09-17
+歌声转换	ge sheng zhuan huan	20	语音	term	歌声转换	curated	2026-09-17
+正交初始化	zheng jiao chu shi hua	20	架构	term	正交初始化	curated	2026-09-17
+正交矩阵	zheng jiao ju zhen	20	数学	term	正交矩阵	curated	2026-09-17
+正则化	zheng ze hua	20	训练	term	正则化	curated	2026-09-17
+正则化常数	zheng ze hua chang shu	20	教材术语	term	正则化常数	d2l	2026-09-17
+正定矩阵	zheng ding ju zhen	20	数学	term	正定矩阵	curated	2026-09-17
+正弦位置编码	zheng xian wei zhi bian ma	20	架构	term	正弦位置编码	curated	2026-09-17
+正态分布	zheng tai fen bu	20	数学	term	正态分布	curated	2026-09-17
+正态初始化	zheng tai chu shi hua	20	架构	term	正态初始化	curated	2026-09-17
+正投影视图目标检测	zheng tou ying shi tu mu biao jian ce	20	专项任务	term	正投影视图目标检测	glossary	2026-09-17
+正迁移	zheng qian yi	20	基础	term	正迁移	curated	2026-09-17
+正面提示	zheng mian ti shi	20	视觉	term	正面提示	curated	2026-09-17
+步预测	bu yu ce	20	教材术语	term	步预测	d2l	2026-09-17
+死亡率预测	si wang lv yu ce	20	专项任务	term	死亡率预测	glossary	2026-09-17
+死亡神经元	si wang shen jing yuan	20	架构	term	死亡神经元	curated	2026-09-17
+残差块	can cha kuai	20	教材术语	term	残差块	d2l	2026-09-17
+残差网络	can cha wang luo	20	架构	term	残差网络	curated	2026-09-17
+残差连接	can cha lian jie	20	架构	term	残差连接	curated	2026-09-17
+残差量化	can cha liang hua	20	检索	term	残差量化	curated	2026-09-17
+段落去重	duan luo qu chong	20	数据	term	段落去重	curated	2026-09-17
+段落重排序	duan luo chong pai xu	20	专项任务	term	段落重排序	glossary	2026-09-17
+每词元延迟	mei ci yuan yan chi	20	提示	term	每词元延迟	curated	2026-09-17
+求和法则	qiu he fa ze	20	教材术语	term	求和法则	d2l	2026-09-17
+汇聚窗口	hui ju chuang kou	20	教材术语	term	汇聚窗口	d2l	2026-09-17
+汇聚节点	hui ju jie dian	20	智能体	term	汇聚节点	curated	2026-09-17
+汉明距离	han ming ju li	20	数学	term	汉明距离	curated	2026-09-17
+池化层	chi hua ceng	20	架构	term	池化层	curated	2026-09-17
+汤普森采样	tang pu sen cai yang	20	算法	term	汤普森采样	curated	2026-09-17
+沙箱执行	sha xiang zhi xing	20	安全	term	沙箱执行	curated	2026-09-17
+沙箱隔离	sha xiang ge li	20	安全	term	沙箱隔离	curated	2026-09-17
+泊松分布	bo song fen bu	20	数学	term	泊松分布	curated	2026-09-17
+泊松回归	bo song hui gui	20	算法	term	泊松回归	curated	2026-09-17
+泛化界	fan hua jie	20	基础	term	泛化界	curated	2026-09-17
+泛化能力	fan hua neng li	20	基础	term	泛化能力	curated	2026-09-17
+泛化误差	fan hua wu cha	20	基础	term	泛化误差	curated	2026-09-17
+波形	bo xing	20	语音	term	波形	curated	2026-09-17
+波形生成	bo xing sheng cheng	20	语音	term	波形生成	curated	2026-09-17
+注意力偏置	zhu yi li pian zhi	20	架构	term	注意力偏置	curated	2026-09-17
+注意力分数	zhu yi li fen shu	20	架构	term	注意力分数	curated	2026-09-17
+注意力掩码	zhu yi li yan ma	20	架构	term	注意力掩码	curated	2026-09-17
+注意力提示	zhu yi li ti shi	20	教材术语	term	注意力提示	d2l	2026-09-17
+注意力机制	zhu yi li ji zhi	20	架构	term	注意力机制	curated	2026-09-17
+注意力权重	zhu yi li quan zhong	20	架构	term	注意力权重	curated	2026-09-17
+注意力汇聚	zhu yi li hui ju	20	教材术语	term	注意力汇聚	d2l	2026-09-17
+注意力矩阵	zhu yi li ju zhen	20	架构	term	注意力矩阵	curated	2026-09-17
+注意力评分函数	zhu yi li ping fen han shu	20	教材术语	term	注意力评分函数	d2l	2026-09-17
+泰勒展开	tai lei zhan kai	20	数学	term	泰勒展开	curated	2026-09-17
+活动识别	huo dong shi bie	20	专项任务	term	活动识别	glossary	2026-09-17
+活动预测	huo dong yu ce	20	专项任务	term	活动预测	glossary	2026-09-17
+活性值	huo xing zhi	20	教材术语	term	活性值	d2l	2026-09-17
+流匹配	liu pi pei	20	架构	term	流匹配	curated	2026-09-17
+流式推理	liu shi tui li	20	推理	term	流式推理	curated	2026-09-17
+流式语音合成	liu shi yu yin he cheng	20	语音	term	流式语音合成	curated	2026-09-17
+流式语音识别	liu shi yu yin shi bie	20	语音	term	流式语音识别	curated	2026-09-17
+流式输出	liu shi shu chu	20	提示	term	流式输出	curated	2026-09-17
+流形学习	liu xing xue xi	20	基础	term	流形学习	curated	2026-09-17
+流水线并行	liu shui xian bing xing	20	训练	term	流水线并行	curated	2026-09-17
+流畅性	liu chang xing	20	评估	term	流畅性	curated	2026-09-17
+测试数据集	ce shi shu ju ji	20	教材术语	term	测试数据集	d2l	2026-09-17
+测试时扩展	ce shi shi kuo zhan	20	智能体	term	测试时扩展	curated	2026-09-17
+测试时计算	ce shi shi ji suan	20	智能体	term	测试时计算	curated	2026-09-17
+测试集	ce shi ji	20	数据	term	测试集	curated	2026-09-17
+测试集污染	ce shi ji wu ran	20	数据	term	测试集污染	curated	2026-09-17
+浏览器智能体	liu lan qi zhi neng ti	20	智能体	term	浏览器智能体	curated	2026-09-17
+浮点误差	fu dian wu cha	20	数学	term	浮点误差	curated	2026-09-17
+海森矩阵	hai sen ju zhen	20	数学	term	海森矩阵	curated	2026-09-17
+消息传递	xiao xi chuan di	20	智能体	term	消息传递	curated	2026-09-17
+消息传递网络	xiao xi chuan di wang luo	20	架构	term	消息传递网络	curated	2026-09-17
+消息协议	xiao xi xie yi	20	工程	term	消息协议	curated	2026-09-17
+消息格式	xiao xi ge shi	20	工程	term	消息格式	curated	2026-09-17
+消融实验	xiao rong shi yan	20	训练	term	消融实验	curated	2026-09-17
+深度伪造	shen du wei zao	20	安全	term	深度伪造	curated	2026-09-17
+深度估计	shen du gu ji	20	视觉	term	深度估计	curated	2026-09-17
+深度可分离卷积	shen du ke fen li juan ji	20	架构	term	深度可分离卷积	curated	2026-09-17
+深度学习	shen du xue xi	20	基础	term	深度学习	curated	2026-09-17
+深度强化学习	shen du qiang hua xue xi	20	强化	term	深度强化学习	curated	2026-09-17
+深度故障检测	shen du gu zhang jian ce	20	专项任务	term	深度故障检测	glossary	2026-09-17
+混合专家	hun he zhuan jia	20	架构	term	混合专家	curated	2026-09-17
+混合云部署	hun he yun bu shu	20	工程	term	混合云部署	curated	2026-09-17
+混合向量	hun he xiang liang	20	检索	term	混合向量	curated	2026-09-17
+混合增强	hun he zeng qiang	20	数据	term	混合增强	curated	2026-09-17
+混合并行	hun he bing xing	20	训练	term	混合并行	curated	2026-09-17
+混合式编程	hun he shi bian cheng	20	教材术语	term	混合式编程	d2l	2026-09-17
+混合推理	hun he tui li	20	推理	term	混合推理	curated	2026-09-17
+混合检索	hun he jian suo	20	检索	term	混合检索	curated	2026-09-17
+混合模型	hun he mo xing	20	算法	term	混合模型	curated	2026-09-17
+混合精度	hun he jing du	20	推理	term	混合精度	curated	2026-09-17
+混合精度训练	hun he jing du xun lian	20	训练	term	混合精度训练	curated	2026-09-17
+混合精度量化	hun he jing du liang hua	20	推理	term	混合精度量化	curated	2026-09-17
+混合集成	hun he ji cheng	20	算法	term	混合集成	curated	2026-09-17
+混杂变量	hun za bian liang	20	基础	term	混杂变量	curated	2026-09-17
+混淆矩阵	hun xiao ju zhen	20	评估	term	混淆矩阵	curated	2026-09-17
+温度参数	wen du can shu	20	提示	term	温度参数	curated	2026-09-17
+温度缩放	wen du suo fang	20	训练	term	温度缩放	curated	2026-09-17
+源分布	yuan fen bu	20	教材术语	term	源分布	d2l	2026-09-17
+源数据集	yuan shu ju ji	20	教材术语	term	源数据集	d2l	2026-09-17
+源模型	yuan mo xing	20	教材术语	term	源模型	d2l	2026-09-17
+源语言	yuan yu yan	20	教材术语	term	源语言	d2l	2026-09-17
+溯因推理	su yin tui li	20	基础	term	溯因推理	curated	2026-09-17
+滑动窗口分块	hua dong chuang kou fen kuai	20	检索	term	滑动窗口分块	curated	2026-09-17
+滑动窗口注意力	hua dong chuang kou zhu yi li	20	架构	term	滑动窗口注意力	curated	2026-09-17
+滤波器	lv bo qi	20	教材术语	term	滤波器	d2l	2026-09-17
+漂移检测	piao yi jian ce	20	工程	term	漂移检测	curated	2026-09-17
+漂移监控	piao yi jian kong	20	工程	term	漂移监控	curated	2026-09-17
+演员评论家	yan yuan ping lun jia	20	强化	term	演员评论家	curated	2026-09-17
+演绎推理	yan yi tui li	20	基础	term	演绎推理	curated	2026-09-17
+潜在变量	qian zai bian liang	20	视觉	term	潜在变量	curated	2026-09-17
+潜在向量	qian zai xiang liang	20	视觉	term	潜在向量	curated	2026-09-17
+潜在扩散模型	qian zai kuo san mo xing	20	架构	term	潜在扩散模型	curated	2026-09-17
+潜在注意力	qian zai zhu yi li	20	架构	term	潜在注意力	curated	2026-09-17
+潜在狄利克雷分配	qian zai di li ke lei fen pei	20	算法	term	潜在狄利克雷分配	curated	2026-09-17
+潜在空间	qian zai kong jian	20	视觉	term	潜在空间	curated	2026-09-17
+潜在结果	qian zai jie guo	20	基础	term	潜在结果	curated	2026-09-17
+潜在编码	qian zai bian ma	20	视觉	term	潜在编码	curated	2026-09-17
+潜在表示	qian zai biao shi	20	视觉	term	潜在表示	curated	2026-09-17
+潜在语义分析	qian zai yu yi fen xi	20	算法	term	潜在语义分析	curated	2026-09-17
+潜在语义索引	qian zai yu yi suo yin	20	算法	term	潜在语义索引	curated	2026-09-17
+激活专家	ji huo zhuan jia	20	架构	term	激活专家	curated	2026-09-17
+激活函数	ji huo han shu	20	架构	term	激活函数	curated	2026-09-17
+激活检查点	ji huo jian cha dian	20	训练	term	激活检查点	curated	2026-09-17
+激活重计算	ji huo chong ji suan	20	训练	term	激活重计算	curated	2026-09-17
+激活量化	ji huo liang hua	20	推理	term	激活量化	curated	2026-09-17
+灰度发布	hui du fa bu	20	推理	term	灰度发布	curated	2026-09-17
+灾难性干扰	zai nan xing gan rao	20	训练	term	灾难性干扰	curated	2026-09-17
+灾难性遗忘	zai nan xing yi wang	20	训练	term	灾难性遗忘	curated	2026-09-17
+点云	dian yun	20	视觉	term	点云	curated	2026-09-17
+点云分割	dian yun fen ge	20	视觉	term	点云分割	curated	2026-09-17
+点云分类	dian yun fen lei	20	视觉	term	点云分类	curated	2026-09-17
+点云生成	dian yun sheng cheng	20	专项任务	term	点云生成	glossary	2026-09-17
+点云超分辨率	dian yun chao fen bian lv	20	专项任务	term	点云超分辨率	glossary	2026-09-17
+点云配准	dian yun pei zhun	20	视觉	term	点云配准	curated	2026-09-17
+点估计	dian gu ji	20	数学	term	点估计	curated	2026-09-17
+点击率预测	dian ji lv yu ce	20	算法	term	点击率预测	curated	2026-09-17
+点式排序	dian shi pai xu	20	算法	term	点式排序	curated	2026-09-17
+点目标导航	dian mu biao dao hang	20	专项任务	term	点目标导航	glossary	2026-09-17
+熵	shang	20	数学	term	熵	curated	2026-09-17
+熵正则化	shang zheng ze hua	20	强化	term	熵正则化	curated	2026-09-17
+爱因斯坦求和	ai yin si tan qiu he	20	数学	term	爱因斯坦求和	curated	2026-09-17
+父子分块	fu zi fen kuai	20	检索	term	父子分块	curated	2026-09-17
+父文档检索	fu wen dang jian suo	20	检索	term	父文档检索	curated	2026-09-17
+版面分析	ban mian fen xi	20	数据	term	版面分析	curated	2026-09-17
+版面识别	ban mian shi bie	20	视觉	term	版面识别	curated	2026-09-17
+物理仿真	wu li fang zhen	20	强化	term	物理仿真	curated	2026-09-17
+物理推理	wu li tui li	20	强化	term	物理推理	curated	2026-09-17
+特征一致性	te zheng yi zhi xing	20	工程	term	特征一致性	curated	2026-09-17
+特征交互	te zheng jiao hu	20	工程	term	特征交互	curated	2026-09-17
+特征值	te zheng zhi	20	数学	term	特征值	curated	2026-09-17
+特征值分解	te zheng zhi fen jie	20	数学	term	特征值分解	curated	2026-09-17
+特征向量	te zheng xiang liang	20	数学	term	特征向量	curated	2026-09-17
+特征存储	te zheng cun chu	20	工程	term	特征存储	curated	2026-09-17
+特征学习	te zheng xue xi	20	基础	term	特征学习	curated	2026-09-17
+特征工程	te zheng gong cheng	20	工程	term	特征工程	curated	2026-09-17
+特征平台	te zheng ping tai	20	工程	term	特征平台	curated	2026-09-17
+特征归一化	te zheng gui yi hua	20	工程	term	特征归一化	curated	2026-09-17
+特征提取	te zheng ti qu	20	工程	term	特征提取	curated	2026-09-17
+特征映射	te zheng ying she	20	教材术语	term	特征映射	d2l	2026-09-17
+特征构造	te zheng gou zao	20	工程	term	特征构造	curated	2026-09-17
+特征标准化	te zheng biao zhun hua	20	工程	term	特征标准化	curated	2026-09-17
+特征漂移	te zheng piao yi	20	工程	term	特征漂移	curated	2026-09-17
+特征组合	te zheng zu he	20	工程	term	特征组合	curated	2026-09-17
+特征维度	te zheng wei du	20	教材术语	term	特征维度	d2l	2026-09-17
+特征编码	te zheng bian ma	20	工程	term	特征编码	curated	2026-09-17
+特征缩放	te zheng suo fang	20	工程	term	特征缩放	curated	2026-09-17
+特征蒸馏	te zheng zheng liu	20	训练	term	特征蒸馏	curated	2026-09-17
+特征选择	te zheng xuan ze	20	工程	term	特征选择	curated	2026-09-17
+特征降维	te zheng jiang wei	20	算法	term	特征降维	curated	2026-09-17
+特殊词元	te shu ci yuan	20	数据	term	特殊词元	curated	2026-09-17
+状态价值	zhuang tai jia zhi	20	强化	term	状态价值	curated	2026-09-17
+状态空间	zhuang tai kong jian	20	智能体	term	状态空间	curated	2026-09-17
+状态空间模型	zhuang tai kong jian mo xing	20	架构	term	状态空间模型	curated	2026-09-17
+状态表示	zhuang tai biao shi	20	强化	term	状态表示	curated	2026-09-17
+狄利克雷分布	di li ke lei fen bu	20	数学	term	狄利克雷分布	curated	2026-09-17
+独热编码	du re bian ma	20	教材术语	term	独热编码	d2l	2026-09-17
+独立同分布假设	du li tong fen bu jia she	20	教材术语	term	独立同分布假设	d2l	2026-09-17
+独立成分分析	du li cheng fen fen xi	20	算法	term	独立成分分析	curated	2026-09-17
+狭义人工智能	xia yi ren gong zhi neng	20	基础	term	狭义人工智能	curated	2026-09-17
+环境交互	huan jing jiao hu	20	强化	term	环境交互	curated	2026-09-17
+环境依赖	huan jing yi lai	20	工程	term	环境依赖	curated	2026-09-17
+环境反馈	huan jing fan kui	20	智能体	term	环境反馈	curated	2026-09-17
+环境声识别	huan jing sheng shi bie	20	语音	term	环境声识别	curated	2026-09-17
+环境复现	huan jing fu xian	20	工程	term	环境复现	curated	2026-09-17
+环境建模	huan jing jian mo	20	强化	term	环境建模	curated	2026-09-17
+环境模拟	huan jing mo ni	20	强化	term	环境模拟	curated	2026-09-17
+环境状态	huan jing zhuang tai	20	智能体	term	环境状态	curated	2026-09-17
+现实到仿真	xian shi dao fang zhen	20	强化	term	现实到仿真	curated	2026-09-17
+瓦瑟斯坦距离	wa se si tan ju li	20	数学	term	瓦瑟斯坦距离	curated	2026-09-17
+生成内容检测	sheng cheng nei rong jian ce	20	安全	term	生成内容检测	curated	2026-09-17
+生成对抗性网络	sheng cheng dui kang xing wang luo	20	教材术语	term	生成对抗性网络	d2l	2026-09-17
+生成对抗网络	sheng cheng dui kang wang luo	20	架构	term	生成对抗网络	curated	2026-09-17
+生成式人工智能	sheng cheng shi ren gong zhi neng	20	基础	term	生成式人工智能	curated	2026-09-17
+生成水印	sheng cheng shui yin	20	视觉	term	生成水印	curated	2026-09-17
+生成质量	sheng cheng zhi liang	20	提示	term	生成质量	curated	2026-09-17
+生成速度	sheng cheng su du	20	提示	term	生成速度	curated	2026-09-17
+生成长度	sheng cheng zhang du	20	提示	term	生成长度	curated	2026-09-17
+用户提示	yong hu ti shi	20	提示	term	用户提示	curated	2026-09-17
+用量统计	yong liang tong ji	20	工程	term	用量统计	curated	2026-09-17
+用量限额	yong liang xian e	20	工程	term	用量限额	curated	2026-09-17
+电子显微镜图像分割	dian zi xian wei jing tu xiang fen ge	20	专项任务	term	电子显微镜图像分割	glossary	2026-09-17
+留一验证	liu yi yan zheng	20	数据	term	留一验证	curated	2026-09-17
+留出集	liu chu ji	20	数据	term	留出集	curated	2026-09-17
+疼痛强度回归预测	teng tong qiang du hui gui yu ce	20	专项任务	term	疼痛强度回归预测	glossary	2026-09-17
+疾病检测	ji bing jian ce	20	专项任务	term	疾病检测	glossary	2026-09-17
+疾病轨迹预测	ji bing gui ji yu ce	20	专项任务	term	疾病轨迹预测	glossary	2026-09-17
+病变分割	bing bian fen ge	20	专项任务	term	病变分割	glossary	2026-09-17
+皮肤癌分割	pi fu ai fen ge	20	专项任务	term	皮肤癌分割	glossary	2026-09-17
+监督学习	jian du xue xi	20	基础	term	监督学习	curated	2026-09-17
+监督微调	jian du wei tiao	20	训练	term	监督微调	curated	2026-09-17
+目标函数	mu biao han shu	20	数学	term	目标函数	curated	2026-09-17
+目标分布	mu biao fen bu	20	教材术语	term	目标分布	d2l	2026-09-17
+目标定位	mu biao ding wei	20	视觉	term	目标定位	curated	2026-09-17
+目标对齐	mu biao dui qi	20	安全	term	目标对齐	curated	2026-09-17
+目标数据集	mu biao shu ju ji	20	教材术语	term	目标数据集	d2l	2026-09-17
+目标检测	mu biao jian ce	20	视觉	term	目标检测	curated	2026-09-17
+目标模型	mu biao mo xing	20	教材术语	term	目标模型	d2l	2026-09-17
+目标策略	mu biao ce lve	20	强化	term	目标策略	curated	2026-09-17
+目标网络	mu biao wang luo	20	强化	term	目标网络	curated	2026-09-17
+目标识别	mu biao shi bie	20	教材术语	term	目标识别	d2l	2026-09-17
+目标语言	mu biao yu yan	20	教材术语	term	目标语言	d2l	2026-09-17
+目标跟踪	mu biao gen zong	20	视觉	term	目标跟踪	curated	2026-09-17
+盲评	mang ping	20	评估	term	盲评	curated	2026-09-17
+直接偏好优化	zhi jie pian hao you hua	20	训练	term	直接偏好优化	curated	2026-09-17
+直接提示注入	zhi jie ti shi zhu ru	20	安全	term	直接提示注入	curated	2026-09-17
+相似度搜索	xiang si du sou suo	20	检索	term	相似度搜索	curated	2026-09-17
+相关性	xiang guan xing	20	评估	term	相关性	curated	2026-09-17
+相关性判断	xiang guan xing pan duan	20	检索	term	相关性判断	curated	2026-09-17
+相关性评分	xiang guan xing ping fen	20	检索	term	相关性评分	curated	2026-09-17
+相关矩阵	xiang guan ju zhen	20	数学	term	相关矩阵	curated	2026-09-17
+相关系数	xiang guan xi shu	20	数学	term	相关系数	curated	2026-09-17
+相对位置编码	xiang dui wei zhi bian ma	20	架构	term	相对位置编码	curated	2026-09-17
+相对熵	xiang dui shang	20	数学	term	相对熵	curated	2026-09-17
+真实数据	zhen shi shu ju	20	数据	term	真实数据	curated	2026-09-17
+真实风险	zhen shi feng xian	20	教材术语	term	真实风险	d2l	2026-09-17
+真阳性	zhen yang xing	20	评估	term	真阳性	curated	2026-09-17
+真阴性	zhen yin xing	20	评估	term	真阴性	curated	2026-09-17
+睡眠呼吸暂停检测	shui mian hu xi zan ting jian ce	20	专项任务	term	睡眠呼吸暂停检测	glossary	2026-09-17
+睡眠唤醒检测	shui mian huan xing jian ce	20	专项任务	term	睡眠唤醒检测	glossary	2026-09-17
+睡眠质量预测	shui mian zhi liang yu ce	20	专项任务	term	睡眠质量预测	glossary	2026-09-17
+睡眠阶段检测	shui mian jie duan jian ce	20	专项任务	term	睡眠阶段检测	glossary	2026-09-17
+矢量图形动画	shi liang tu xing dong hua	20	专项任务	term	矢量图形动画	glossary	2026-09-17
+知识冲突	zhi shi chong tu	20	检索	term	知识冲突	curated	2026-09-17
+知识图谱	zhi shi tu pu	20	检索	term	知识图谱	curated	2026-09-17
+知识图谱嵌入	zhi shi tu pu qian ru	20	专项任务	term	知识图谱嵌入	glossary	2026-09-17
+知识图谱补全	zhi shi tu pu bu quan	20	专项任务	term	知识图谱补全	glossary	2026-09-17
+知识幻觉	zhi shi huan jue	20	评估	term	知识幻觉	curated	2026-09-17
+知识库	zhi shi ku	20	检索	term	知识库	curated	2026-09-17
+知识库投毒	zhi shi ku tou du	20	安全	term	知识库投毒	curated	2026-09-17
+知识库更新	zhi shi ku geng xin	20	检索	term	知识库更新	curated	2026-09-17
+知识库构建	zhi shi ku gou jian	20	检索	term	知识库构建	curated	2026-09-17
+知识库问答	zhi shi ku wen da	20	检索	term	知识库问答	curated	2026-09-17
+知识推理	zhi shi tui li	20	基础	term	知识推理	curated	2026-09-17
+知识更新	zhi shi geng xin	20	检索	term	知识更新	curated	2026-09-17
+知识注入	zhi shi zhu ru	20	检索	term	知识注入	curated	2026-09-17
+知识编辑	zhi shi bian ji	20	检索	term	知识编辑	curated	2026-09-17
+知识蒸馏	zhi shi zheng liu	20	训练	term	知识蒸馏	curated	2026-09-17
+知识融合	zhi shi rong he	20	检索	term	知识融合	curated	2026-09-17
+知识边界	zhi shi bian jie	20	评估	term	知识边界	curated	2026-09-17
+矩阵分解	ju zhen fen jie	20	数学	term	矩阵分解	curated	2026-09-17
+矩阵分解推荐	ju zhen fen jie tui jian	20	算法	term	矩阵分解推荐	curated	2026-09-17
+矩阵求导	ju zhen qiu dao	20	数学	term	矩阵求导	curated	2026-09-17
+矩阵秩	ju zhen zhi	20	数学	term	矩阵秩	curated	2026-09-17
+矩阵范数	ju zhen fan shu	20	数学	term	矩阵范数	curated	2026-09-17
+矩阵补全	ju zhen bu quan	20	算法	term	矩阵补全	curated	2026-09-17
+矩阵迹	ju zhen ji	20	数学	term	矩阵迹	curated	2026-09-17
+短时傅里叶变换	duan shi fu li ye bian huan	20	语音	term	短时傅里叶变换	curated	2026-09-17
+短期记忆	duan qi ji yi	20	智能体	term	短期记忆	curated	2026-09-17
+研究智能体	yan jiu zhi neng ti	20	智能体	term	研究智能体	curated	2026-09-17
+硬投票	ying tou piao	20	算法	term	硬投票	curated	2026-09-17
+硬盘驱动器	ying pan qu dong qi	20	教材术语	term	硬盘驱动器	d2l	2026-09-17
+确定性策略	que ding xing ce lve	20	强化	term	确定性策略	curated	2026-09-17
+社区检测	she qu jian ce	20	专项任务	term	社区检测	glossary	2026-09-17
+神经元	shen jing yuan	20	架构	term	神经元	curated	2026-09-17
+神经声码器	shen jing sheng ma qi	20	语音	term	神经声码器	curated	2026-09-17
+神经机器翻译	shen jing ji qi fan yi	20	教材术语	term	神经机器翻译	d2l	2026-09-17
+神经架构搜索	shen jing jia gou sou suo	20	专项任务	term	神经架构搜索	glossary	2026-09-17
+神经渲染	shen jing xuan ran	20	视觉	term	神经渲染	curated	2026-09-17
+神经符号推理	shen jing fu hao tui li	20	基础	term	神经符号推理	curated	2026-09-17
+神经符号计算	shen jing fu hao ji suan	20	基础	term	神经符号计算	curated	2026-09-17
+神经网络	shen jing wang luo	20	教材术语	term	神经网络	d2l	2026-09-17
+神经网络初始化	shen jing wang luo chu shi hua	20	架构	term	神经网络初始化	curated	2026-09-17
+神经网络压缩	shen jing wang luo ya suo	20	专项任务	term	神经网络压缩	glossary	2026-09-17
+神经辐射场	shen jing fu she chang	20	视觉	term	神经辐射场	curated	2026-09-17
+离线学习	li xian xue xi	20	教材术语	term	离线学习	d2l	2026-09-17
+离线强化学习	li xian qiang hua xue xi	20	强化	term	离线强化学习	curated	2026-09-17
+离线推理	li xian tui li	20	推理	term	离线推理	curated	2026-09-17
+离线模式	li xian mo shi	20	工程	term	离线模式	curated	2026-09-17
+离线蒸馏	li xian zheng liu	20	训练	term	离线蒸馏	curated	2026-09-17
+离线评测	li xian ping ce	20	评估	term	离线评测	curated	2026-09-17
+离群点检测	li qun dian jian ce	20	算法	term	离群点检测	curated	2026-09-17
+私有化部署	si you hua bu shu	20	工程	term	私有化部署	curated	2026-09-17
+科学概念提取	ke xue gai nian ti qu	20	专项任务	term	科学概念提取	glossary	2026-09-17
+科学结果提取	ke xue jie guo ti qu	20	专项任务	term	科学结果提取	glossary	2026-09-17
+稀疏加速	xi shu jia su	20	推理	term	稀疏加速	curated	2026-09-17
+稀疏向量	xi shu xiang liang	20	检索	term	稀疏向量	curated	2026-09-17
+稀疏奖励	xi shu jiang li	20	强化	term	稀疏奖励	curated	2026-09-17
+稀疏学习	xi shu xue xi	20	专项任务	term	稀疏学习	glossary	2026-09-17
+稀疏推理	xi shu tui li	20	推理	term	稀疏推理	curated	2026-09-17
+稀疏检索	xi shu jian suo	20	检索	term	稀疏检索	curated	2026-09-17
+稀疏模型	xi shu mo xing	20	架构	term	稀疏模型	curated	2026-09-17
+稀疏正则化	xi shu zheng ze hua	20	训练	term	稀疏正则化	curated	2026-09-17
+稀疏注意力	xi shu zhu yi li	20	架构	term	稀疏注意力	curated	2026-09-17
+稀疏混合专家	xi shu hun he zhuan jia	20	架构	term	稀疏混合专家	curated	2026-09-17
+稀疏矩阵	xi shu ju zhen	20	数学	term	稀疏矩阵	curated	2026-09-17
+稀疏索引	xi shu suo yin	20	检索	term	稀疏索引	curated	2026-09-17
+稀疏自编码器	xi shu zi bian ma qi	20	架构	term	稀疏自编码器	curated	2026-09-17
+程序性记忆	cheng xu xing ji yi	20	智能体	term	程序性记忆	curated	2026-09-17
+稠密向量	chou mi xiang liang	20	检索	term	稠密向量	curated	2026-09-17
+稠密块	chou mi kuai	20	教材术语	term	稠密块	d2l	2026-09-17
+稠密奖励	chou mi jiang li	20	强化	term	稠密奖励	curated	2026-09-17
+稠密层	chou mi ceng	20	教材术语	term	稠密层	d2l	2026-09-17
+稠密检索	chou mi jian suo	20	检索	term	稠密检索	curated	2026-09-17
+稠密模型	chou mi mo xing	20	架构	term	稠密模型	curated	2026-09-17
+稠密索引	chou mi suo yin	20	检索	term	稠密索引	curated	2026-09-17
+稠密连接网络	chou mi lian jie wang luo	20	教材术语	term	稠密连接网络	d2l	2026-09-17
+稳健估计	wen jian gu ji	20	数学	term	稳健估计	curated	2026-09-17
+稳健性	wen jian xing	20	评估	term	稳健性	curated	2026-09-17
+穷举搜索	qiong ju sou suo	20	教材术语	term	穷举搜索	d2l	2026-09-17
+空洞卷积	kong dong juan ji	20	架构	term	空洞卷积	curated	2026-09-17
+空间不变性	kong jian bu bian xing	20	教材术语	term	空间不变性	d2l	2026-09-17
+空间推理	kong jian tui li	20	强化	term	空间推理	curated	2026-09-17
+空间智能	kong jian zhi neng	20	强化	term	空间智能	curated	2026-09-17
+突发读取	tu fa du qu	20	教材术语	term	突发读取	d2l	2026-09-17
+突触权重	tu chu quan zhong	20	教材术语	term	突触权重	d2l	2026-09-17
+立体深度估计	li ti shen du gu ji	20	专项任务	term	立体深度估计	glossary	2026-09-17
+竞争推理	jing zheng tui li	20	智能体	term	竞争推理	curated	2026-09-17
+端侧推理	duan ce tui li	20	推理	term	端侧推理	curated	2026-09-17
+端侧部署	duan ce bu shu	20	工程	term	端侧部署	curated	2026-09-17
+端到端	duan dao duan	20	教材术语	term	端到端	d2l	2026-09-17
+端到端延迟	duan dao duan yan chi	20	推理	term	端到端延迟	curated	2026-09-17
+端到端语音	duan dao duan yu yin	20	语音	term	端到端语音	curated	2026-09-17
+端到端语音识别	duan dao duan yu yin shi bie	20	语音	term	端到端语音识别	curated	2026-09-17
+端点检测	duan dian jian ce	20	语音	term	端点检测	curated	2026-09-17
+笔划分类	bi hua fen lei	20	专项任务	term	笔划分类	glossary	2026-09-17
+符号主义	fu hao zhu yi	20	基础	term	符号主义	curated	2026-09-17
+符号式编程	fu hao shi bian cheng	20	教材术语	term	符号式编程	d2l	2026-09-17
+符号推理	fu hao tui li	20	基础	term	符号推理	curated	2026-09-17
+等距映射	deng ju ying she	20	算法	term	等距映射	curated	2026-09-17
+答案完整性	da an wan zheng xing	20	检索	term	答案完整性	curated	2026-09-17
+答案忠实度	da an zhong shi du	20	检索	term	答案忠实度	curated	2026-09-17
+答案相关性	da an xiang guan xing	20	检索	term	答案相关性	curated	2026-09-17
+答案选择	da an xuan ze	20	专项任务	term	答案选择	glossary	2026-09-17
+策略改进	ce lve gai jin	20	强化	term	策略改进	curated	2026-09-17
+策略梯度	ce lve ti du	20	强化	term	策略梯度	curated	2026-09-17
+策略模型	ce lve mo xing	20	训练	term	策略模型	curated	2026-09-17
+策略熵	ce lve shang	20	强化	term	策略熵	curated	2026-09-17
+策略评估	ce lve ping gu	20	强化	term	策略评估	curated	2026-09-17
+策略迭代	ce lve die dai	20	强化	term	策略迭代	curated	2026-09-17
+算力调度	suan li diao du	20	推理	term	算力调度	curated	2026-09-17
+算子优化	suan zi you hua	20	推理	term	算子优化	curated	2026-09-17
+算子融合	suan zi rong he	20	推理	term	算子融合	curated	2026-09-17
+算法歧视	suan fa qi shi	20	安全	term	算法歧视	curated	2026-09-17
+簇内距离	cu nei ju li	20	算法	term	簇内距离	curated	2026-09-17
+簇间距离	cu jian ju li	20	算法	term	簇间距离	curated	2026-09-17
+类别不平衡	lei bie bu ping heng	20	数据	term	类别不平衡	curated	2026-09-17
+类型预测	lei xing yu ce	20	专项任务	term	类型预测	glossary	2026-09-17
+类比推理	lei bi tui li	20	基础	term	类比推理	curated	2026-09-17
+粗排	cu pai	20	检索	term	粗排	curated	2026-09-17
+精度损失	jing du sun shi	20	推理	term	精度损失	curated	2026-09-17
+精度矩阵	jing du ju zhen	20	数学	term	精度矩阵	curated	2026-09-17
+精度转换	jing du zhuan huan	20	推理	term	精度转换	curated	2026-09-17
+精排	jing pai	20	检索	term	精排	curated	2026-09-17
+精确去重	jing que qu chong	20	数据	term	精确去重	curated	2026-09-17
+精确推断	jing que tui duan	20	算法	term	精确推断	curated	2026-09-17
+精确率	jing que lv	20	评估	term	精确率	curated	2026-09-17
+系统提示	xi tong ti shi	20	提示	term	系统提示	curated	2026-09-17
+系统提示泄漏	xi tong ti shi xie lou	20	安全	term	系统提示泄漏	curated	2026-09-17
+索引分片	suo yin fen pian	20	检索	term	索引分片	curated	2026-09-17
+索引压缩	suo yin ya suo	20	检索	term	索引压缩	curated	2026-09-17
+索引更新	suo yin geng xin	20	检索	term	索引更新	curated	2026-09-17
+索引构建	suo yin gou jian	20	检索	term	索引构建	curated	2026-09-17
+累积奖励	lei ji jiang li	20	强化	term	累积奖励	curated	2026-09-17
+红队攻击	hong dui gong ji	20	评估	term	红队攻击	curated	2026-09-17
+红队测试	hong dui ce shi	20	评估	term	红队测试	curated	2026-09-17
+红队评估	hong dui ping gu	20	评估	term	红队评估	curated	2026-09-17
+约束优化	yue shu you hua	20	数学	term	约束优化	curated	2026-09-17
+约束强化学习	yue shu qiang hua xue xi	20	强化	term	约束强化学习	curated	2026-09-17
+约束生成	yue shu sheng cheng	20	提示	term	约束生成	curated	2026-09-17
+约束解码	yue shu jie ma	20	提示	term	约束解码	curated	2026-09-17
+线性代数	xian xing dai shu	20	数学	term	线性代数	curated	2026-09-17
+线性判别分析	xian xing pan bie fen xi	20	算法	term	线性判别分析	curated	2026-09-17
+线性动力系统识别	xian xing dong li xi tong shi bie	20	专项任务	term	线性动力系统识别	glossary	2026-09-17
+线性变换	xian xing bian huan	20	教材术语	term	线性变换	d2l	2026-09-17
+线性回归	xian xing hui gui	20	算法	term	线性回归	curated	2026-09-17
+线性层	xian xing ceng	20	架构	term	线性层	curated	2026-09-17
+线性投影	xian xing tou ying	20	教材术语	term	线性投影	d2l	2026-09-17
+线性核	xian xing he	20	算法	term	线性核	curated	2026-09-17
+线性模型	xian xing mo xing	20	教材术语	term	线性模型	d2l	2026-09-17
+线性注意力	xian xing zhu yi li	20	架构	term	线性注意力	curated	2026-09-17
+线性预热	xian xing yu re	20	训练	term	线性预热	curated	2026-09-17
+线段检测	xian duan jian ce	20	专项任务	term	线段检测	glossary	2026-09-17
+组合优化	zu he you hua	20	数学	term	组合优化	curated	2026-09-17
+组活动识别	zu huo dong shi bie	20	专项任务	term	组活动识别	glossary	2026-09-17
+细粒度图像分类	xi li du tu xiang fen lei	20	专项任务	term	细粒度图像分类	glossary	2026-09-17
+细胞分割	xi bao fen ge	20	专项任务	term	细胞分割	glossary	2026-09-17
+终止条件	zhong zhi tiao jian	20	智能体	term	终止条件	curated	2026-09-17
+终身学习	zhong shen xue xi	20	基础	term	终身学习	curated	2026-09-17
+经验分布	jing yan fen bu	20	数学	term	经验分布	curated	2026-09-17
+经验回放	jing yan hui fang	20	强化	term	经验回放	curated	2026-09-17
+经验风险	jing yan feng xian	20	教材术语	term	经验风险	d2l	2026-09-17
+经验风险最小化	jing yan feng xian zui xiao hua	20	教材术语	term	经验风险最小化	d2l	2026-09-17
+结束词元	jie shu ci yuan	20	数据	term	结束词元	curated	2026-09-17
+结构化剪枝	jie gou hua jian zhi	20	推理	term	结构化剪枝	curated	2026-09-17
+结构化日志	jie gou hua ri zhi	20	工程	term	结构化日志	curated	2026-09-17
+结构化生成	jie gou hua sheng cheng	20	提示	term	结构化生成	curated	2026-09-17
+结构化输出	jie gou hua shu chu	20	提示	term	结构化输出	curated	2026-09-17
+结构化过滤	jie gou hua guo lv	20	检索	term	结构化过滤	curated	2026-09-17
+结构因果模型	jie gou yin guo mo xing	20	基础	term	结构因果模型	curated	2026-09-17
+结果奖励模型	jie guo jiang li mo xing	20	训练	term	结果奖励模型	curated	2026-09-17
+结果监督	jie guo jian du	20	训练	term	结果监督	curated	2026-09-17
+结果空间	jie guo kong jian	20	教材术语	term	结果空间	d2l	2026-09-17
+绝对位置编码	jue dui wei zhi bian ma	20	架构	term	绝对位置编码	curated	2026-09-17
+绝对值	jue dui zhi	20	教材术语	term	绝对值	d2l	2026-09-17
+统计学习	tong ji xue xi	20	基础	term	统计学习	curated	2026-09-17
+统计效率	tong ji xiao lv	20	基础	term	统计效率	curated	2026-09-17
+统计显著性	tong ji xian zhu xing	20	评估	term	统计显著性	curated	2026-09-17
+统计机器翻译	tong ji ji qi fan yi	20	教材术语	term	统计机器翻译	d2l	2026-09-17
+统计的	tong ji de	20	教材术语	term	统计的	d2l	2026-09-17
+继续训练	ji xu xun lian	20	训练	term	继续训练	curated	2026-09-17
+续写	xu xie	20	提示	term	续写	curated	2026-09-17
+缓存共享	huan cun gong xiang	20	推理	term	缓存共享	curated	2026-09-17
+缓存分页	huan cun fen ye	20	推理	term	缓存分页	curated	2026-09-17
+缓存卸载	huan cun xie zai	20	推理	term	缓存卸载	curated	2026-09-17
+缓存压缩	huan cun ya suo	20	推理	term	缓存压缩	curated	2026-09-17
+缓存命中率	huan cun ming zhong lv	20	推理	term	缓存命中率	curated	2026-09-17
+缓存复用	huan cun fu yong	20	推理	term	缓存复用	curated	2026-09-17
+缓存未命中	huan cun wei ming zhong	20	教材术语	term	缓存未命中	d2l	2026-09-17
+缓存量化	huan cun liang hua	20	推理	term	缓存量化	curated	2026-09-17
+缓存驱逐	huan cun qu zhu	20	推理	term	缓存驱逐	curated	2026-09-17
+编码器	bian ma qi	20	架构	term	编码器	curated	2026-09-17
+编码器解码器	bian ma qi jie ma qi	20	架构	term	编码器解码器	curated	2026-09-17
+编程智能体	bian cheng zhi neng ti	20	智能体	term	编程智能体	curated	2026-09-17
+编译成功率	bian yi cheng gong lv	20	评估	term	编译成功率	curated	2026-09-17
+编辑距离	bian ji ju li	20	数学	term	编辑距离	curated	2026-09-17
+缩放比	suo fang bi	20	教材术语	term	缩放比	d2l	2026-09-17
+缩放点积注意力	suo fang dian ji zhu yi li	20	架构	term	缩放点积注意力	curated	2026-09-17
+缺失值处理	que shi zhi chu li	20	数据	term	缺失值处理	curated	2026-09-17
+网格搜索	wang ge sou suo	20	训练	term	网格搜索	curated	2026-09-17
+网络中的网络	wang luo zhong de wang luo	20	教材术语	term	网络中的网络	d2l	2026-09-17
+网络入侵检测	wang luo ru qin jian ce	20	专项任务	term	网络入侵检测	glossary	2026-09-17
+网络隔离	wang luo ge li	20	安全	term	网络隔离	curated	2026-09-17
+置信传播	zhi xin chuan bo	20	算法	term	置信传播	curated	2026-09-17
+置信区间	zhi xin qu jian	20	评估	term	置信区间	curated	2026-09-17
+置信度	zhi xin du	20	教材术语	term	置信度	d2l	2026-09-17
+置信度估计	zhi xin du gu ji	20	评估	term	置信度估计	curated	2026-09-17
+置信度校准	zhi xin du jiao zhun	20	评估	term	置信度校准	curated	2026-09-17
+美学质量评估	mei xue zhi liang ping gu	20	专项任务	term	美学质量评估	glossary	2026-09-17
+群体公平	qun ti gong ping	20	安全	term	群体公平	curated	2026-09-17
+群体智能	qun ti zhi neng	20	智能体	term	群体智能	curated	2026-09-17
+群组相对策略优化	qun zu xiang dui ce lve you hua	20	强化	term	群组相对策略优化	curated	2026-09-17
+老虎机	lao hu ji	20	教材术语	term	老虎机	d2l	2026-09-17
+联合分布	lian he fen bu	20	数学	term	联合分布	curated	2026-09-17
+联合实体和关系提取	lian he shi ti he guan xi ti qu	20	专项任务	term	联合实体和关系提取	glossary	2026-09-17
+联合概率	lian he gai lv	20	教材术语	term	联合概率	d2l	2026-09-17
+联合熵	lian he shang	20	数学	term	联合熵	curated	2026-09-17
+联邦学习	lian bang xue xi	20	基础	term	联邦学习	curated	2026-09-17
+联邦隐私	lian bang yin si	20	安全	term	联邦隐私	curated	2026-09-17
+聚类	ju lei	20	算法	term	聚类	curated	2026-09-17
+聚类中心	ju lei zhong xin	20	算法	term	聚类中心	curated	2026-09-17
+聚类有效性	ju lei you xiao xing	20	算法	term	聚类有效性	curated	2026-09-17
+肌肉力预测	ji rou li yu ce	20	专项任务	term	肌肉力预测	glossary	2026-09-17
+肝脏分割	gan zang fen ge	20	专项任务	term	肝脏分割	glossary	2026-09-17
+股票市场预测	gu piao shi chang yu ce	20	专项任务	term	股票市场预测	glossary	2026-09-17
+股票趋势预测	gu piao qu shi yu ce	20	专项任务	term	股票趋势预测	glossary	2026-09-17
+肺栓塞检测	fei shuan se jian ce	20	专项任务	term	肺栓塞检测	glossary	2026-09-17
+肺炎检测	fei yan jian ce	20	专项任务	term	肺炎检测	glossary	2026-09-17
+肺结核分割	fei jie he fen ge	20	专项任务	term	肺结核分割	glossary	2026-09-17
+肺结核分类	fei jie he fen lei	20	专项任务	term	肺结核分类	glossary	2026-09-17
+肺结核检测	fei jie he jian ce	20	专项任务	term	肺结核检测	glossary	2026-09-17
+胜率	sheng lv	20	评估	term	胜率	curated	2026-09-17
+胰腺分割	yi xian fen ge	20	专项任务	term	胰腺分割	glossary	2026-09-17
+能力评测	neng li ping ce	20	评估	term	能力评测	curated	2026-09-17
+能力路由	neng li lu you	20	工程	term	能力路由	curated	2026-09-17
+能量谱	neng liang pu	20	语音	term	能量谱	curated	2026-09-17
+脑图像分割	nao tu xiang fen ge	20	专项任务	term	脑图像分割	glossary	2026-09-17
+脑浮点	nao fu dian	20	推理	term	脑浮点	curated	2026-09-17
+自主智能体	zi zhu zhi neng ti	20	智能体	term	自主智能体	curated	2026-09-17
+自动字幕	zi dong zi mu	20	语音	term	自动字幕	curated	2026-09-17
+自动定理证明	zi dong ding li zheng ming	20	专项任务	term	自动定理证明	glossary	2026-09-17
+自动微分	zi dong wei fen	20	推理	term	自动微分	curated	2026-09-17
+自动扩缩容	zi dong kuo suo rong	20	推理	term	自动扩缩容	curated	2026-09-17
+自动提示优化	zi dong ti shi you hua	20	提示	term	自动提示优化	curated	2026-09-17
+自动摘要	zi dong zhai yao	20	专项任务	term	自动摘要	glossary	2026-09-17
+自动标注	zi dong biao zhu	20	数据	term	自动标注	curated	2026-09-17
+自动求导	zi dong qiu dao	20	推理	term	自动求导	curated	2026-09-17
+自动红队	zi dong hong dui	20	评估	term	自动红队	curated	2026-09-17
+自动翻译	zi dong fan yi	20	提示	term	自动翻译	curated	2026-09-17
+自动评测	zi dong ping ce	20	评估	term	自动评测	curated	2026-09-17
+自动语音识别	zi dong yu yin shi bie	20	语音	term	自动语音识别	curated	2026-09-17
+自动配音	zi dong pei yin	20	语音	term	自动配音	curated	2026-09-17
+自助采样	zi zhu cai yang	20	数学	term	自助采样	curated	2026-09-17
+自回归	zi hui gui	20	教材术语	term	自回归	d2l	2026-09-17
+自回归模型	zi hui gui mo xing	20	教材术语	term	自回归模型	d2l	2026-09-17
+自定义工具	zi ding yi gong ju	20	智能体	term	自定义工具	curated	2026-09-17
+自我偏好	zi wo pian hao	20	评估	term	自我偏好	curated	2026-09-17
+自我反思	zi wo fan si	20	智能体	term	自我反思	curated	2026-09-17
+自我改进	zi wo gai jin	20	智能体	term	自我改进	curated	2026-09-17
+自我纠正	zi wo jiu zheng	20	智能体	term	自我纠正	curated	2026-09-17
+自我评估	zi wo ping gu	20	智能体	term	自我评估	curated	2026-09-17
+自我验证	zi wo yan zheng	20	智能体	term	自我验证	curated	2026-09-17
+自步学习	zi bu xue xi	20	训练	term	自步学习	curated	2026-09-17
+自注意力	zi zhu yi li	20	架构	term	自注意力	curated	2026-09-17
+自洽性提示	zi qia xing ti shi	20	提示	term	自洽性提示	curated	2026-09-17
+自然语料	zi ran yu liao	20	数据	term	自然语料	curated	2026-09-17
+自然语言处理	zi ran yu yan chu li	20	教材术语	term	自然语言处理	d2l	2026-09-17
+自然语言推断	zi ran yu yan tui duan	20	教材术语	term	自然语言推断	d2l	2026-09-17
+自然语言推理	zi ran yu yan tui li	20	专项任务	term	自然语言推理	glossary	2026-09-17
+自由度	zi you du	20	教材术语	term	自由度	d2l	2026-09-17
+自监督学习	zi jian du xue xi	20	基础	term	自监督学习	curated	2026-09-17
+自编码器	zi bian ma qi	20	架构	term	自编码器	curated	2026-09-17
+自蒸馏	zi zheng liu	20	训练	term	自蒸馏	curated	2026-09-17
+自适应优化器	zi shi ying you hua qi	20	训练	term	自适应优化器	curated	2026-09-17
+自适应低秩适配	zi shi ying di zhi shi pei	20	训练	term	自适应低秩适配	curated	2026-09-17
+自适应提升	zi shi ying ti sheng	20	算法	term	自适应提升	curated	2026-09-17
+自适应检索	zi shi ying jian suo	20	检索	term	自适应检索	curated	2026-09-17
+自适应池化	zi shi ying chi hua	20	架构	term	自适应池化	curated	2026-09-17
+舍入误差	she ru wu cha	20	数学	term	舍入误差	curated	2026-09-17
+节奏生成	jie zou sheng cheng	20	语音	term	节奏生成	curated	2026-09-17
+节点分类	jie dian fen lei	20	专项任务	term	节点分类	glossary	2026-09-17
+药物与药物相互作用提取	yao wu yu yao wu xiang hu zuo yong ti qu	20	专项任务	term	药物与药物相互作用提取	glossary	2026-09-17
+药物发现	yao wu fa xian	20	专项任务	term	药物发现	glossary	2026-09-17
+蒙特卡洛	meng te ka luo	20	数学	term	蒙特卡洛	curated	2026-09-17
+蒙特卡洛控制	meng te ka luo kong zhi	20	强化	term	蒙特卡洛控制	curated	2026-09-17
+蒸馏损失	zheng liu sun shi	20	训练	term	蒸馏损失	curated	2026-09-17
+蒸馏温度	zheng liu wen du	20	训练	term	蒸馏温度	curated	2026-09-17
+蛋白质二级结构预测	dan bai zhi er ji jie gou yu ce	20	专项任务	term	蛋白质二级结构预测	glossary	2026-09-17
+血压估计	xue ya gu ji	20	专项任务	term	血压估计	glossary	2026-09-17
+行为主义	xing wei zhu yi	20	基础	term	行为主义	curated	2026-09-17
+行为克隆	xing wei ke long	20	强化	term	行为克隆	curated	2026-09-17
+行为对齐	xing wei dui qi	20	安全	term	行为对齐	curated	2026-09-17
+行为策略	xing wei ce lve	20	智能体	term	行为策略	curated	2026-09-17
+行为识别	xing wei shi bie	20	视觉	term	行为识别	curated	2026-09-17
+行人属性识别	xing ren shu xing shi bie	20	专项任务	term	行人属性识别	glossary	2026-09-17
+行人检测	xing ren jian ce	20	专项任务	term	行人检测	glossary	2026-09-17
+行动模型	xing dong mo xing	20	强化	term	行动模型	curated	2026-09-17
+行动空间	xing dong kong jian	20	智能体	term	行动空间	curated	2026-09-17
+补偿执行	bu chang zhi xing	20	智能体	term	补偿执行	curated	2026-09-17
+表到文本的生成	biao dao wen ben de sheng cheng	20	专项任务	term	表到文本的生成	glossary	2026-09-17
+表征学习	biao zheng xue xi	20	专项任务	term	表征学习	glossary	2026-09-17
+表情识别	biao qing shi bie	20	视觉	term	表情识别	curated	2026-09-17
+表格提取	biao ge ti qu	20	数据	term	表格提取	curated	2026-09-17
+表格识别	biao ge shi bie	20	视觉	term	表格识别	curated	2026-09-17
+表格问答	biao ge wen da	20	提示	term	表格问答	curated	2026-09-17
+表检测	biao jian ce	20	专项任务	term	表检测	glossary	2026-09-17
+表示学习	biao shi xue xi	20	基础	term	表示学习	curated	2026-09-17
+裁判偏差	cai pan pian cha	20	评估	term	裁判偏差	curated	2026-09-17
+裁判模型	cai pan mo xing	20	评估	term	裁判模型	curated	2026-09-17
+裁剪范围	cai jian fan wei	20	推理	term	裁剪范围	curated	2026-09-17
+装袋法	zhuang dai fa	20	算法	term	装袋法	curated	2026-09-17
+覆盖性	fu gai xing	20	教材术语	term	覆盖性	d2l	2026-09-17
+观察空间	guan cha kong jian	20	智能体	term	观察空间	curated	2026-09-17
+规划反思	gui hua fan si	20	智能体	term	规划反思	curated	2026-09-17
+规划执行	gui hua zhi xing	20	智能体	term	规划执行	curated	2026-09-17
+视听对齐	shi ting dui qi	20	视觉	term	视听对齐	curated	2026-09-17
+视听生成	shi ting sheng cheng	20	语音	term	视听生成	curated	2026-09-17
+视听融合	shi ting rong he	20	语音	term	视听融合	curated	2026-09-17
+视听语音识别	shi ting yu yin shi bie	20	语音	term	视听语音识别	curated	2026-09-17
+视网膜血管分割	shi wang mo xue guan fen ge	20	专项任务	term	视网膜血管分割	glossary	2026-09-17
+视觉变换器	shi jue bian huan qi	20	架构	term	视觉变换器	curated	2026-09-17
+视觉定位	shi jue ding wei	20	视觉	term	视觉定位	curated	2026-09-17
+视觉对话	shi jue dui hua	20	专项任务	term	视觉对话	glossary	2026-09-17
+视觉对象跟踪	shi jue dui xiang gen zong	20	专项任务	term	视觉对象跟踪	glossary	2026-09-17
+视觉导航	shi jue dao hang	20	强化	term	视觉导航	curated	2026-09-17
+视觉嵌入	shi jue qian ru	20	视觉	term	视觉嵌入	curated	2026-09-17
+视觉推理	shi jue tui li	20	视觉	term	视觉推理	curated	2026-09-17
+视觉特征	shi jue te zheng	20	视觉	term	视觉特征	curated	2026-09-17
+视觉理解	shi jue li jie	20	视觉	term	视觉理解	curated	2026-09-17
+视觉编码器	shi jue bian ma qi	20	视觉	term	视觉编码器	curated	2026-09-17
+视觉讲故事	shi jue jiang gu shi	20	专项任务	term	视觉讲故事	glossary	2026-09-17
+视觉语言动作模型	shi jue yu yan dong zuo mo xing	20	架构	term	视觉语言动作模型	curated	2026-09-17
+视觉语言导航	shi jue yu yan dao hang	20	强化	term	视觉语言导航	curated	2026-09-17
+视觉语言模型	shi jue yu yan mo xing	20	架构	term	视觉语言模型	curated	2026-09-17
+视觉跟踪	shi jue gen zong	20	专项任务	term	视觉跟踪	glossary	2026-09-17
+视觉问答	shi jue wen da	20	视觉	term	视觉问答	curated	2026-09-17
+视频分割	shi pin fen ge	20	视觉	term	视频分割	curated	2026-09-17
+视频分类	shi pin fen lei	20	视觉	term	视频分类	curated	2026-09-17
+视频到视频合成	shi pin dao shi pin he cheng	20	专项任务	term	视频到视频合成	glossary	2026-09-17
+视频去噪	shi pin qu zao	20	专项任务	term	视频去噪	glossary	2026-09-17
+视频去隔行扫描	shi pin qu ge hang sao miao	20	专项任务	term	视频去隔行扫描	glossary	2026-09-17
+视频字幕	shi pin zi mu	20	专项任务	term	视频字幕	glossary	2026-09-17
+视频对象分割	shi pin dui xiang fen ge	20	专项任务	term	视频对象分割	glossary	2026-09-17
+视频对象检测	shi pin dui xiang jian ce	20	专项任务	term	视频对象检测	glossary	2026-09-17
+视频帧插值	shi pin zhen cha zhi	20	专项任务	term	视频帧插值	glossary	2026-09-17
+视频描述	shi pin miao shu	20	视觉	term	视频描述	curated	2026-09-17
+视频插帧	shi pin cha zhen	20	视觉	term	视频插帧	curated	2026-09-17
+视频摘要	shi pin zhai yao	20	视觉	term	视频摘要	curated	2026-09-17
+视频检索	shi pin jian suo	20	视觉	term	视频检索	curated	2026-09-17
+视频水印	shi pin shui yin	20	视觉	term	视频水印	curated	2026-09-17
+视频理解	shi pin li jie	20	视觉	term	视频理解	curated	2026-09-17
+视频生成	shi pin sheng cheng	20	视觉	term	视频生成	curated	2026-09-17
+视频生视频	shi pin sheng shi pin	20	视觉	term	视频生视频	curated	2026-09-17
+视频编辑	shi pin bian ji	20	视觉	term	视频编辑	curated	2026-09-17
+视频超分辨率	shi pin chao fen bian lv	20	视觉	term	视频超分辨率	curated	2026-09-17
+视频重建	shi pin chong jian	20	专项任务	term	视频重建	glossary	2026-09-17
+视频问答	shi pin wen da	20	视觉	term	视频问答	curated	2026-09-17
+视频预测	shi pin yu ce	20	视觉	term	视频预测	curated	2026-09-17
+角色一致性	jue se yi zhi xing	20	视觉	term	角色一致性	curated	2026-09-17
+角色分工	jue se fen gong	20	智能体	term	角色分工	curated	2026-09-17
+角色提示	jue se ti shi	20	提示	term	角色提示	curated	2026-09-17
+角色设定	jue se she ding	20	提示	term	角色设定	curated	2026-09-17
+解码	jie ma	20	推理	term	解码	curated	2026-09-17
+解码参数	jie ma can shu	20	提示	term	解码参数	curated	2026-09-17
+解码器	jie ma qi	20	架构	term	解码器	curated	2026-09-17
+解码策略	jie ma ce lve	20	提示	term	解码策略	curated	2026-09-17
+解码阶段	jie ma jie duan	20	推理	term	解码阶段	curated	2026-09-17
+解释型语言	jie shi xing yu yan	20	教材术语	term	解释型语言	d2l	2026-09-17
+詹森不等式	zhan sen bu deng shi	20	教材术语	term	詹森不等式	d2l	2026-09-17
+计划修订	ji hua xiu ding	20	智能体	term	计划修订	curated	2026-09-17
+计算图	ji suan tu	20	推理	term	计算图	curated	2026-09-17
+计算图捕获	ji suan tu bu huo	20	推理	term	计算图捕获	curated	2026-09-17
+计算效率	ji suan xiao lv	20	基础	term	计算效率	curated	2026-09-17
+计算机使用智能体	ji suan ji shi yong zhi neng ti	20	智能体	term	计算机使用智能体	curated	2026-09-17
+计算机视觉	ji suan ji shi jue	20	视觉	term	计算机视觉	curated	2026-09-17
+计算预算	ji suan yu suan	20	训练	term	计算预算	curated	2026-09-17
+认知计算	ren zhi ji suan	20	基础	term	认知计算	curated	2026-09-17
+训练后量化	xun lian hou liang hua	20	推理	term	训练后量化	curated	2026-09-17
+训练安全	xun lian an quan	20	安全	term	训练安全	curated	2026-09-17
+训练成本	xun lian cheng ben	20	训练	term	训练成本	curated	2026-09-17
+训练批次	xun lian pi ci	20	训练	term	训练批次	curated	2026-09-17
+训练投毒	xun lian tou du	20	安全	term	训练投毒	curated	2026-09-17
+训练收敛	xun lian shou lian	20	训练	term	训练收敛	curated	2026-09-17
+训练数据	xun lian shu ju	20	数据	term	训练数据	curated	2026-09-17
+训练数据提取	xun lian shu ju ti qu	20	安全	term	训练数据提取	curated	2026-09-17
+训练数据集	xun lian shu ju ji	20	教材术语	term	训练数据集	d2l	2026-09-17
+训练步骤	xun lian bu zhou	20	训练	term	训练步骤	curated	2026-09-17
+训练目标	xun lian mu biao	20	训练	term	训练目标	curated	2026-09-17
+训练稳定性	xun lian wen ding xing	20	训练	term	训练稳定性	curated	2026-09-17
+训练算力	xun lian suan li	20	训练	term	训练算力	curated	2026-09-17
+训练管道	xun lian guan dao	20	工程	term	训练管道	curated	2026-09-17
+训练误差	xun lian wu cha	20	教材术语	term	训练误差	d2l	2026-09-17
+训练轮次	xun lian lun ci	20	训练	term	训练轮次	curated	2026-09-17
+训练集	xun lian ji	20	数据	term	训练集	curated	2026-09-17
+训练震荡	xun lian zhen dang	20	训练	term	训练震荡	curated	2026-09-17
+训练预算	xun lian yu suan	20	训练	term	训练预算	curated	2026-09-17
+记忆元	ji yi yuan	20	教材术语	term	记忆元	d2l	2026-09-17
+记忆冲突	ji yi chong tu	20	智能体	term	记忆冲突	curated	2026-09-17
+记忆压缩	ji yi ya suo	20	智能体	term	记忆压缩	curated	2026-09-17
+记忆巩固	ji yi gong gu	20	智能体	term	记忆巩固	curated	2026-09-17
+记忆投毒	ji yi tou du	20	安全	term	记忆投毒	curated	2026-09-17
+记忆更新	ji yi geng xin	20	智能体	term	记忆更新	curated	2026-09-17
+记忆检索	ji yi jian suo	20	智能体	term	记忆检索	curated	2026-09-17
+记忆管理	ji yi guan li	20	智能体	term	记忆管理	curated	2026-09-17
+记忆衰减	ji yi shuai jian	20	智能体	term	记忆衰减	curated	2026-09-17
+讽刺检测	feng ci jian ce	20	专项任务	term	讽刺检测	glossary	2026-09-17
+证据检索	zheng ju jian suo	20	检索	term	证据检索	curated	2026-09-17
+证据融合	zheng ju rong he	20	检索	term	证据融合	curated	2026-09-17
+证据链	zheng ju lian	20	检索	term	证据链	curated	2026-09-17
+评分函数	ping fen han shu	20	教材术语	term	评分函数	d2l	2026-09-17
+评测一致性	ping ce yi zhi xing	20	评估	term	评测一致性	curated	2026-09-17
+评测任务	ping ce ren wu	20	评估	term	评测任务	curated	2026-09-17
+评测偏差	ping ce pian cha	20	评估	term	评测偏差	curated	2026-09-17
+评测可复现性	ping ce ke fu xian xing	20	评估	term	评测可复现性	curated	2026-09-17
+评测可靠性	ping ce ke kao xing	20	评估	term	评测可靠性	curated	2026-09-17
+评测基准	ping ce ji zhun	20	评估	term	评测基准	curated	2026-09-17
+评测报告	ping ce bao gao	20	评估	term	评测报告	curated	2026-09-17
+评测指标	ping ce zhi biao	20	评估	term	评测指标	curated	2026-09-17
+评测提示	ping ce ti shi	20	评估	term	评测提示	curated	2026-09-17
+评测数据集	ping ce shu ju ji	20	评估	term	评测数据集	curated	2026-09-17
+评测样本	ping ce yang ben	20	评估	term	评测样本	curated	2026-09-17
+评测框架	ping ce kuang jia	20	评估	term	评测框架	curated	2026-09-17
+评测污染	ping ce wu ran	20	数据	term	评测污染	curated	2026-09-17
+评测管道	ping ce guan dao	20	工程	term	评测管道	curated	2026-09-17
+评测集	ping ce ji	20	数据	term	评测集	curated	2026-09-17
+词义消歧	ci yi xiao qi	20	专项任务	term	词义消歧	glossary	2026-09-17
+词元	ci yuan	20	数据	term	词元	curated	2026-09-17
+词元化	ci yuan hua	20	数据	term	词元化	curated	2026-09-17
+词元嵌入	ci yuan qian ru	20	数据	term	词元嵌入	curated	2026-09-17
+词元序列	ci yuan xu lie	20	数据	term	词元序列	curated	2026-09-17
+词元成本	ci yuan cheng ben	20	工程	term	词元成本	curated	2026-09-17
+词元概率	ci yuan gai lv	20	提示	term	词元概率	curated	2026-09-17
+词元用量	ci yuan yong liang	20	工程	term	词元用量	curated	2026-09-17
+词元计数	ci yuan ji shu	20	数据	term	词元计数	curated	2026-09-17
+词元预算	ci yuan yu suan	20	数据	term	词元预算	curated	2026-09-17
+词分割	ci fen ge	20	专项任务	term	词分割	glossary	2026-09-17
+词向量	ci xiang liang	20	检索	term	词向量	curated	2026-09-17
+词嵌入	ci qian ru	20	检索	term	词嵌入	curated	2026-09-17
+词性标注	ci xing biao zhu	20	教材术语	term	词性标注	d2l	2026-09-17
+词性标记	ci xing biao ji	20	专项任务	term	词性标记	glossary	2026-09-17
+词法规范化	ci fa gui fan hua	20	专项任务	term	词法规范化	glossary	2026-09-17
+词级分词	ci ji fen ci	20	数据	term	词级分词	curated	2026-09-17
+词表	ci biao	20	数据	term	词表	curated	2026-09-17
+词表大小	ci biao da xiao	20	数据	term	词表大小	curated	2026-09-17
+词错误率	ci cuo wu lv	20	评估	term	词错误率	curated	2026-09-17
+语义分割	yu yi fen ge	20	视觉	term	语义分割	curated	2026-09-17
+语义分块	yu yi fen kuai	20	检索	term	语义分块	curated	2026-09-17
+语义分析	yu yi fen xi	20	专项任务	term	语义分析	glossary	2026-09-17
+语义匹配	yu yi pi pei	20	提示	term	语义匹配	curated	2026-09-17
+语义去重	yu yi qu chong	20	数据	term	语义去重	curated	2026-09-17
+语义导航	yu yi dao hang	20	强化	term	语义导航	curated	2026-09-17
+语义文本相似度	yu yi wen ben xiang shi du	20	教材术语	term	语义文本相似度	d2l	2026-09-17
+语义文本相似性	yu yi wen ben xiang shi xing	20	专项任务	term	语义文本相似性	glossary	2026-09-17
+语义检索	yu yi jian suo	20	检索	term	语义检索	curated	2026-09-17
+语义理解	yu yi li jie	20	提示	term	语义理解	curated	2026-09-17
+语义相似度	yu yi xiang si du	20	评估	term	语义相似度	curated	2026-09-17
+语义等价	yu yi deng jia	20	专项任务	term	语义等价	glossary	2026-09-17
+语义角色标记	yu yi jue se biao ji	20	专项任务	term	语义角色标记	glossary	2026-09-17
+语义记忆	yu yi ji yi	20	智能体	term	语义记忆	curated	2026-09-17
+语义路由	yu yi lu you	20	工程	term	语义路由	curated	2026-09-17
+语义预测	yu yi yu ce	20	专项任务	term	语义预测	glossary	2026-09-17
+语料配比	yu liao pei bi	20	数据	term	语料配比	curated	2026-09-17
+语法约束	yu fa yue shu	20	提示	term	语法约束	curated	2026-09-17
+语法错误检测	yu fa cuo wu jian ce	20	专项任务	term	语法错误检测	glossary	2026-09-17
+语法错误纠正	yu fa cuo wu jiu zheng	20	专项任务	term	语法错误纠正	glossary	2026-09-17
+语言习得	yu yan xi de	20	专项任务	term	语言习得	glossary	2026-09-17
+语言可接受性	yu yan ke jie shou xing	20	专项任务	term	语言可接受性	glossary	2026-09-17
+语言模型	yu yan mo xing	20	语音	term	语言模型	curated	2026-09-17
+语言过滤	yu yan guo lv	20	数据	term	语言过滤	curated	2026-09-17
+语速控制	yu su kong zhi	20	语音	term	语速控制	curated	2026-09-17
+语音停顿	yu yin ting dun	20	语音	term	语音停顿	curated	2026-09-17
+语音克隆	yu yin ke long	20	语音	term	语音克隆	curated	2026-09-17
+语音分段	yu yin fen duan	20	语音	term	语音分段	curated	2026-09-17
+语音分离	yu yin fen li	20	语音	term	语音分离	curated	2026-09-17
+语音切分	yu yin qie fen	20	语音	term	语音切分	curated	2026-09-17
+语音合成	yu yin he cheng	20	语音	term	语音合成	curated	2026-09-17
+语音增强	yu yin zeng qiang	20	语音	term	语音增强	curated	2026-09-17
+语音对话	yu yin dui hua	20	语音	term	语音对话	curated	2026-09-17
+语音情感识别	yu yin qing gan shi bie	20	专项任务	term	语音情感识别	glossary	2026-09-17
+语音活动检测	yu yin huo dong jian ce	20	语音	term	语音活动检测	curated	2026-09-17
+语音理解	yu yin li jie	20	语音	term	语音理解	curated	2026-09-17
+语音翻译	yu yin fan yi	20	语音	term	语音翻译	curated	2026-09-17
+语音识别	yu yin shi bie	20	语音	term	语音识别	curated	2026-09-17
+语音转换	yu yin zhuan huan	20	语音	term	语音转换	curated	2026-09-17
+语音转文本	yu yin zhuai wen ben	20	语音	term	语音转文本	curated	2026-09-17
+语音转语音	yu yin zhuan yu yin	20	语音	term	语音转语音	curated	2026-09-17
+语音问答	yu yin wen da	20	语音	term	语音问答	curated	2026-09-17
+语音降噪	yu yin jiang zao	20	语音	term	语音降噪	curated	2026-09-17
+误拒率	wu ju lv	20	评估	term	误拒率	curated	2026-09-17
+误答率	wu da lv	20	评估	term	误答率	curated	2026-09-17
+说话人分离	shuo hua ren fen li	20	专项任务	term	说话人分离	glossary	2026-09-17
+说话人头部生成	shuo hua ren tou bu sheng cheng	20	专项任务	term	说话人头部生成	glossary	2026-09-17
+说话人嵌入	shuo hua ren qian ru	20	语音	term	说话人嵌入	curated	2026-09-17
+说话人日志	shuo hua ren ri zhi	20	语音	term	说话人日志	curated	2026-09-17
+说话人脸生成	shuo hua ren lian sheng cheng	20	专项任务	term	说话人脸生成	glossary	2026-09-17
+说话人识别	shuo hua ren shi bie	20	语音	term	说话人识别	curated	2026-09-17
+说话人验证	shuo hua ren yan zheng	20	语音	term	说话人验证	curated	2026-09-17
+请求取消	qing qiu qu xiao	20	推理	term	请求取消	curated	2026-09-17
+请求合批	qing qiu he pi	20	推理	term	请求合批	curated	2026-09-17
+请求成本	qing qiu cheng ben	20	工程	term	请求成本	curated	2026-09-17
+请求抢占	qing qiu qiang zhan	20	推理	term	请求抢占	curated	2026-09-17
+请求排队	qing qiu pai dui	20	推理	term	请求排队	curated	2026-09-17
+请求熔断	qing qiu rong duan	20	推理	term	请求熔断	curated	2026-09-17
+请求超时	qing qiu chao shi	20	推理	term	请求超时	curated	2026-09-17
+请求配额	qing qiu pei e	20	工程	term	请求配额	curated	2026-09-17
+请求重试	qing qiu chong shi	20	推理	term	请求重试	curated	2026-09-17
+请求限流	qing qiu xian liu	20	推理	term	请求限流	curated	2026-09-17
+课程学习	ke cheng xue xi	20	训练	term	课程学习	curated	2026-09-17
+谓词检测	wei ci jian ce	20	专项任务	term	谓词检测	glossary	2026-09-17
+谱分解	pu fen jie	20	数学	term	谱分解	curated	2026-09-17
+谱嵌入	pu qian ru	20	算法	term	谱嵌入	curated	2026-09-17
+谱聚类	pu ju lei	20	算法	term	谱聚类	curated	2026-09-17
+谱范数	pu fan shu	20	数学	term	谱范数	curated	2026-09-17
+贝叶斯优化	bei ye si you hua	20	数学	term	贝叶斯优化	curated	2026-09-17
+贝叶斯估计	bei ye si gu ji	20	数学	term	贝叶斯估计	curated	2026-09-17
+贝叶斯公式	bei ye si gong shi	20	数学	term	贝叶斯公式	curated	2026-09-17
+贝叶斯网络	bei ye si wang luo	20	算法	term	贝叶斯网络	curated	2026-09-17
+贝塔分布	bei ta fen bu	20	数学	term	贝塔分布	curated	2026-09-17
+贝尔曼方程	bei er man fang cheng	20	强化	term	贝尔曼方程	curated	2026-09-17
+贝尔曼最优方程	bei er man zui you fang cheng	20	强化	term	贝尔曼最优方程	curated	2026-09-17
+负对数似然	fu dui shu si ran	20	评估	term	负对数似然	curated	2026-09-17
+负样本采样	fu yang ben cai yang	20	训练	term	负样本采样	curated	2026-09-17
+负责任人工智能	fu ze ren ren gong zhi neng	20	基础	term	负责任人工智能	curated	2026-09-17
+负载均衡	fu zai jun heng	20	架构	term	负载均衡	curated	2026-09-17
+负迁移	fu qian yi	20	基础	term	负迁移	curated	2026-09-17
+负采样	fu cai yang	20	教材术语	term	负采样	d2l	2026-09-17
+负面提示	fu mian ti shi	20	视觉	term	负面提示	curated	2026-09-17
+质量监控	zhi liang jian kong	20	工程	term	质量监控	curated	2026-09-17
+质量评分	zhi liang ping fen	20	数据	term	质量评分	curated	2026-09-17
+质量过滤	zhi liang guo lv	20	数据	term	质量过滤	curated	2026-09-17
+贪心搜索	tan xin sou suo	20	教材术语	term	贪心搜索	d2l	2026-09-17
+贪心解码	tan xin jie ma	20	提示	term	贪心解码	curated	2026-09-17
+资源调度	zi yuan diao du	20	推理	term	资源调度	curated	2026-09-17
+资源隔离	zi yuan ge li	20	推理	term	资源隔离	curated	2026-09-17
+起始词元	qi shi ci yuan	20	数据	term	起始词元	curated	2026-09-17
+超参数	chao can shu	20	训练	term	超参数	curated	2026-09-17
+超参数搜索	chao can shu sou suo	20	训练	term	超参数搜索	curated	2026-09-17
+超参数调优	chao can shu tiao you	20	训练	term	超参数调优	curated	2026-09-17
+超时控制	chao shi kong zhi	20	工程	term	超时控制	curated	2026-09-17
+超级人工智能	chao ji ren gong zhi neng	20	基础	term	超级人工智能	curated	2026-09-17
+越狱提示	yue yu ti shi	20	安全	term	越狱提示	curated	2026-09-17
+越狱攻击	yue yu gong ji	20	安全	term	越狱攻击	curated	2026-09-17
+越狱检测	yue yu jian ce	20	安全	term	越狱检测	curated	2026-09-17
+越狱防御	yue yu fang yu	20	安全	term	越狱防御	curated	2026-09-17
+跨会话记忆	kua hui hua ji yi	20	智能体	term	跨会话记忆	curated	2026-09-17
+跨域命名实体识别	kua yu ming ming shi ti shi bie	20	专项任务	term	跨域命名实体识别	glossary	2026-09-17
+跨域学习	kua yu xue xi	20	基础	term	跨域学习	curated	2026-09-17
+跨模态学习	kua mo tai xue xi	20	基础	term	跨模态学习	curated	2026-09-17
+跨模态对齐	kua mo tai dui qi	20	视觉	term	跨模态对齐	curated	2026-09-17
+跨模态检索	kua mo tai jian suo	20	专项任务	term	跨模态检索	glossary	2026-09-17
+跨语言合成	kua yu yan he cheng	20	语音	term	跨语言合成	curated	2026-09-17
+跨语言学习	kua yu yan xue xi	20	基础	term	跨语言学习	curated	2026-09-17
+跨语言文档分类	kua yu yan wen dang fen lei	20	专项任务	term	跨语言文档分类	glossary	2026-09-17
+跨语言检索	kua yu yan jian suo	20	检索	term	跨语言检索	curated	2026-09-17
+跨语言自然语言推理	kua yu yan zi ran yu yan tui li	20	专项任务	term	跨语言自然语言推理	glossary	2026-09-17
+路径规划	lu jing gui hua	20	强化	term	路径规划	curated	2026-09-17
+路由器	lu you qi	20	架构	term	路由器	curated	2026-09-17
+路由损失	lu you sun shi	20	架构	term	路由损失	curated	2026-09-17
+路由策略	lu you ce lve	20	工程	term	路由策略	curated	2026-09-17
+路由评估	lu you ping gu	20	工程	term	路由评估	curated	2026-09-17
+跳元模型	tiao yuan mo xing	20	教材术语	term	跳元模型	d2l	2026-09-17
+跳跃连接	tiao yue lian jie	20	架构	term	跳跃连接	curated	2026-09-17
+身份保持	shen fen bao chi	20	视觉	term	身份保持	curated	2026-09-17
+车辆重识别	che liang chong shi bie	20	专项任务	term	车辆重识别	glossary	2026-09-17
+车道检测	che dao jian ce	20	专项任务	term	车道检测	glossary	2026-09-17
+轨迹优化	gui ji you hua	20	强化	term	轨迹优化	curated	2026-09-17
+轨迹回放	gui ji hui fang	20	强化	term	轨迹回放	curated	2026-09-17
+轨迹评分	gui ji ping fen	20	强化	term	轨迹评分	curated	2026-09-17
+轨迹采样	gui ji cai yang	20	强化	term	轨迹采样	curated	2026-09-17
+轨迹预测	gui ji yu ce	20	专项任务	term	轨迹预测	glossary	2026-09-17
+转化率预测	zhuan hua lv yu ce	20	算法	term	转化率预测	curated	2026-09-17
+转向控制	zhuan xiang kong zhi	20	专项任务	term	转向控制	glossary	2026-09-17
+转置卷积	zhuan zhi juan ji	20	架构	term	转置卷积	curated	2026-09-17
+转述生成	zhuan shu sheng cheng	20	专项任务	term	转述生成	glossary	2026-09-17
+轮廓系数	lun kuo xi shu	20	算法	term	轮廓系数	curated	2026-09-17
+软投票	ruan tou piao	20	算法	term	软投票	curated	2026-09-17
+软演员评论家	ruan yan yuan ping lun jia	20	强化	term	软演员评论家	curated	2026-09-17
+辅助损失	fu zhu sun shi	20	训练	term	辅助损失	curated	2026-09-17
+辅助解码	fu zhu jie ma	20	提示	term	辅助解码	curated	2026-09-17
+输入层	shu ru ceng	20	架构	term	输入层	curated	2026-09-17
+输入护栏	shu ru hu lan	20	安全	term	输入护栏	curated	2026-09-17
+输入门	shu ru men	20	教材术语	term	输入门	d2l	2026-09-17
+输出修复	shu chu xiu fu	20	提示	term	输出修复	curated	2026-09-17
+输出层	shu chu ceng	20	架构	term	输出层	curated	2026-09-17
+输出截断	shu chu jie duan	20	提示	term	输出截断	curated	2026-09-17
+输出护栏	shu chu hu lan	20	安全	term	输出护栏	curated	2026-09-17
+输出校验	shu chu jiao yan	20	提示	term	输出校验	curated	2026-09-17
+输出概率	shu chu gai lv	20	提示	term	输出概率	curated	2026-09-17
+输出清洗	shu chu qing xi	20	提示	term	输出清洗	curated	2026-09-17
+输出约束	shu chu yue shu	20	提示	term	输出约束	curated	2026-09-17
+输出解析	shu chu jie xi	20	提示	term	输出解析	curated	2026-09-17
+输出长度	shu chu chang du	20	提示	term	输出长度	curated	2026-09-17
+输出门	shu chu men	20	教材术语	term	输出门	d2l	2026-09-17
+辩论机制	bian lun ji zhi	20	智能体	term	辩论机制	curated	2026-09-17
+边界框	bian jie kuang	20	教材术语	term	边界框	d2l	2026-09-17
+边缘分布	bian yuan fen bu	20	数学	term	边缘分布	curated	2026-09-17
+边缘推理	bian yuan tui li	20	推理	term	边缘推理	curated	2026-09-17
+边缘检测	bian yuan jian ce	20	专项任务	term	边缘检测	glossary	2026-09-17
+边缘部署	bian yuan bu shu	20	工程	term	边缘部署	curated	2026-09-17
+边际分布	bian ji fen bu	20	教材术语	term	边际分布	d2l	2026-09-17
+边际化	bian ji hua	20	教材术语	term	边际化	d2l	2026-09-17
+边际概率	bian ji gai lv	20	教材术语	term	边际概率	d2l	2026-09-17
+迁移学习	qian yi xue xi	20	基础	term	迁移学习	curated	2026-09-17
+过拟合	guo ni he	20	训练	term	过拟合	curated	2026-09-17
+过渡层	guo du ceng	20	教材术语	term	过渡层	d2l	2026-09-17
+过程奖励模型	guo cheng jiang li mo xing	20	训练	term	过程奖励模型	curated	2026-09-17
+过程标注	guo cheng biao zhu	20	数据	term	过程标注	curated	2026-09-17
+过程监督	guo cheng jian du	20	训练	term	过程监督	curated	2026-09-17
+过采样	guo cai yang	20	数据	term	过采样	curated	2026-09-17
+运动估计	yun dong gu ji	20	视觉	term	运动估计	curated	2026-09-17
+运动分割	yun dong fen ge	20	专项任务	term	运动分割	glossary	2026-09-17
+运动规划	yun dong gui hua	20	强化	term	运动规划	curated	2026-09-17
+近似去重	jin si qu chong	20	数据	term	近似去重	curated	2026-09-17
+近似推断	jin si tui duan	20	算法	term	近似推断	curated	2026-09-17
+近似最近邻	jin si zui jin lin	20	算法	term	近似最近邻	curated	2026-09-17
+近似近邻搜索	jin si jin lin sou suo	20	检索	term	近似近邻搜索	curated	2026-09-17
+近端策略优化	jin duan ce lve you hua	20	强化	term	近端策略优化	curated	2026-09-17
+近邻分类	jin lin fen lei	20	算法	term	近邻分类	curated	2026-09-17
+近邻回归	jin lin hui gui	20	算法	term	近邻回归	curated	2026-09-17
+近邻搜索	jin lin sou suo	20	检索	term	近邻搜索	curated	2026-09-17
+近邻算法	jin lin suan fa	20	算法	term	近邻算法	curated	2026-09-17
+远程监督	yuan cheng jian du	20	基础	term	远程监督	curated	2026-09-17
+远程语音识别	yuan cheng yu yin shi bie	20	专项任务	term	远程语音识别	glossary	2026-09-17
+连接主义	lian jie zhu yi	20	基础	term	连接主义	curated	2026-09-17
+连续归一化流	lian xu gui yi hua liu	20	架构	term	连续归一化流	curated	2026-09-17
+连续批处理	lian xu pi chu li	20	推理	term	连续批处理	curated	2026-09-17
+连续词袋	lian xu ci dai	20	教材术语	term	连续词袋	d2l	2026-09-17
+连贯性	lian guan xing	20	评估	term	连贯性	curated	2026-09-17
+迭代偏好优化	die dai pian hao you hua	20	训练	term	迭代偏好优化	curated	2026-09-17
+迭代周期	die dai zhou qi	20	教材术语	term	迭代周期	d2l	2026-09-17
+迭代提示	die dai ti shi	20	提示	term	迭代提示	curated	2026-09-17
+迭代检索	die dai jian suo	20	检索	term	迭代检索	curated	2026-09-17
+退避策略	tui bi ce lve	20	工程	term	退避策略	curated	2026-09-17
+逆向强化学习	ni xiang qiang hua xue xi	20	强化	term	逆向强化学习	curated	2026-09-17
+逆强化学习	ni qiang hua xue xi	20	强化	term	逆强化学习	curated	2026-09-17
+选择偏差	xuan ze pian cha	20	数据	term	选择偏差	curated	2026-09-17
+选择性搜索	xuan ze xing sou suo	20	教材术语	term	选择性搜索	d2l	2026-09-17
+选择性状态空间模型	xuan ze xing zhuang tai kong jian mo xing	20	架构	term	选择性状态空间模型	curated	2026-09-17
+选择性预测	xuan ze xing yu ce	20	评估	term	选择性预测	curated	2026-09-17
+透明性	tou ming xing	20	安全	term	透明性	curated	2026-09-17
+逐点卷积	zhu dian juan ji	20	架构	term	逐点卷积	curated	2026-09-17
+递归分块	di gui fen kuai	20	检索	term	递归分块	curated	2026-09-17
+通信开销	tong xin kai xiao	20	推理	term	通信开销	curated	2026-09-17
+通用人工智能	tong yong ren gong zhi neng	20	基础	term	通用人工智能	curated	2026-09-17
+通过时间反向传播	tong guo shi jian fan xiang chuan bo	20	教材术语	term	通过时间反向传播	d2l	2026-09-17
+通过率	tong guo lv	20	评估	term	通过率	curated	2026-09-17
+通道剪枝	tong dao jian zhi	20	推理	term	通道剪枝	curated	2026-09-17
+速率限制	su lv xian zhi	20	工程	term	速率限制	curated	2026-09-17
+逻辑回归	luo ji hui gui	20	算法	term	逻辑回归	curated	2026-09-17
+逻辑幻觉	luo ji huan jue	20	评估	term	逻辑幻觉	curated	2026-09-17
+逻辑推理	luo ji tui li	20	提示	term	逻辑推理	curated	2026-09-17
+逻辑斯蒂回归	luo ji si di hui gui	20	算法	term	逻辑斯蒂回归	curated	2026-09-17
+逻辑运算符	luo ji yun suan fu	20	教材术语	term	逻辑运算符	d2l	2026-09-17
+逼近法	bi jin fa	20	教材术语	term	逼近法	d2l	2026-09-17
+遗忘门	yi wang men	20	教材术语	term	遗忘门	d2l	2026-09-17
+遮挡人脸检测	zhe dang ren lian jian ce	20	专项任务	term	遮挡人脸检测	glossary	2026-09-17
+部分可观测决策过程	bu fen ke guan ce jue ce guo cheng	20	强化	term	部分可观测决策过程	curated	2026-09-17
+部分域适应	bu fen yu shi ying	20	专项任务	term	部分域适应	glossary	2026-09-17
+部分输出	bu fen shu chu	20	提示	term	部分输出	curated	2026-09-17
+配分函数	pei fen han shu	20	教材术语	term	配分函数	d2l	2026-09-17
+配方生成	pei fang sheng cheng	20	专项任务	term	配方生成	glossary	2026-09-17
+配置管理	pei zhi guan li	20	工程	term	配置管理	curated	2026-09-17
+采样偏差	cai yang pian cha	20	数据	term	采样偏差	curated	2026-09-17
+采样温度	cai yang wen du	20	提示	term	采样温度	curated	2026-09-17
+采样率	cai yang lv	20	语音	term	采样率	curated	2026-09-17
+采样策略	cai yang ce lve	20	提示	term	采样策略	curated	2026-09-17
+采样频率	cai yang pin lv	20	语音	term	采样频率	curated	2026-09-17
+重叠语音	chong die yu yin	20	语音	term	重叠语音	curated	2026-09-17
+重复惩罚	chong fu cheng fa	20	提示	term	重复惩罚	curated	2026-09-17
+重尾分布	zhong wei fen bu	20	数学	term	重尾分布	curated	2026-09-17
+重排	chong pai	20	检索	term	重排	curated	2026-09-17
+重排序	chong pai xu	20	检索	term	重排序	curated	2026-09-17
+重排序模型	chong pai xu mo xing	20	架构	term	重排序模型	curated	2026-09-17
+重置门	chong zhi men	20	教材术语	term	重置门	d2l	2026-09-17
+重要性采样	zhong yao xing cai yang	20	数学	term	重要性采样	curated	2026-09-17
+重试策略	chong shi ce lve	20	工程	term	重试策略	curated	2026-09-17
+重采样	chong cai yang	20	数学	term	重采样	curated	2026-09-17
+量化低秩适配	liang hua di zhi shi pei	20	训练	term	量化低秩适配	curated	2026-09-17
+量化尺度	liang hua chi du	20	推理	term	量化尺度	curated	2026-09-17
+量化感知训练	liang hua gan zhi xun lian	20	推理	term	量化感知训练	curated	2026-09-17
+量化校准	liang hua jiao zhun	20	推理	term	量化校准	curated	2026-09-17
+量化误差	liang hua wu cha	20	推理	term	量化误差	curated	2026-09-17
+链式法则	lian shi fa ze	20	数学	term	链式法则	curated	2026-09-17
+链式规则	lian shi gui ze	20	教材术语	term	链式规则	d2l	2026-09-17
+链接预测	lian jie yu ce	20	检索	term	链接预测	curated	2026-09-17
+链路追踪	lian lu zhui zong	20	工程	term	链路追踪	curated	2026-09-17
+错误恢复	cuo wu hui fu	20	工程	term	错误恢复	curated	2026-09-17
+键值缓存	jian zhi huan cun	20	推理	term	键值缓存	curated	2026-09-17
+长上下文架构	chang shang xia wen jia gou	20	架构	term	长上下文架构	curated	2026-09-17
+长上下文评测	chang shang xia wen ping ce	20	评估	term	长上下文评测	curated	2026-09-17
+长尾分布	chang wei fen bu	20	数学	term	长尾分布	curated	2026-09-17
+长尾类别	chang wei lei bie	20	数据	term	长尾类别	curated	2026-09-17
+长度偏差	chang du pian cha	20	评估	term	长度偏差	curated	2026-09-17
+长度外推	chang du wai tui	20	架构	term	长度外推	curated	2026-09-17
+长度惩罚	chang du cheng fa	20	提示	term	长度惩罚	curated	2026-09-17
+长文生成	chang wen sheng cheng	20	提示	term	长文生成	curated	2026-09-17
+长时程推理	chang shi cheng tui li	20	智能体	term	长时程推理	curated	2026-09-17
+长期记忆	chang qi ji yi	20	智能体	term	长期记忆	curated	2026-09-17
+长短期记忆	chang duan qi ji yi	20	架构	term	长短期记忆	curated	2026-09-17
+长短期记忆网络	chang duan qi ji yi wang luo	20	教材术语	term	长短期记忆网络	d2l	2026-09-17
+长程任务	chang cheng ren wu	20	智能体	term	长程任务	curated	2026-09-17
+长程规划	chang cheng gui hua	20	智能体	term	长程规划	curated	2026-09-17
+门控循环单元	men kong xun huan dan yuan	20	架构	term	门控循环单元	curated	2026-09-17
+门控激活	men kong ji huo	20	架构	term	门控激活	curated	2026-09-17
+门控线性单元	men kong xian xing dan yuan	20	架构	term	门控线性单元	curated	2026-09-17
+闪烁估计	shan shuo gu ji	20	专项任务	term	闪烁估计	glossary	2026-09-17
+问答系统	wen da xi tong	20	专项任务	term	问答系统	glossary	2026-09-17
+问题希望模型能够预测样本属于哪个	wen ti xi wang mo xing neng gou yu ce yang ben shu yu na ge	20	教材术语	term	问题希望模型能够预测样本属于哪个	d2l	2026-09-17
+问题生成	wen ti sheng cheng	20	专项任务	term	问题生成	glossary	2026-09-17
+问题相似性	wen ti xiang si xing	20	专项任务	term	问题相似性	glossary	2026-09-17
+问题质量评估	wen ti zhi liang ping gu	20	专项任务	term	问题质量评估	glossary	2026-09-17
+间接提示注入	jian jie ti shi zhu ru	20	安全	term	间接提示注入	curated	2026-09-17
+队列长度	dui lie chang du	20	工程	term	队列长度	curated	2026-09-17
+防御策略	fang yu ce lve	20	安全	term	防御策略	curated	2026-09-17
+阴影检测	yin ying jian ce	20	专项任务	term	阴影检测	glossary	2026-09-17
+降级策略	jiang ji ce lve	20	工程	term	降级策略	curated	2026-09-17
+降维算法	jiang wei suan fa	20	算法	term	降维算法	curated	2026-09-17
+除法法则	chu fa fa ze	20	教材术语	term	除法法则	d2l	2026-09-17
+随机优化	sui ji you hua	20	数学	term	随机优化	curated	2026-09-17
+随机变量	sui ji bian liang	20	数学	term	随机变量	curated	2026-09-17
+随机失活	sui ji shi huo	20	训练	term	随机失活	curated	2026-09-17
+随机性	sui ji xing	20	教材术语	term	随机性	d2l	2026-09-17
+随机投影	sui ji tou ying	20	算法	term	随机投影	curated	2026-09-17
+随机搜索	sui ji sou suo	20	训练	term	随机搜索	curated	2026-09-17
+随机梯度下降	sui ji ti du xia jiang	20	训练	term	随机梯度下降	curated	2026-09-17
+随机森林	sui ji sen lin	20	算法	term	随机森林	curated	2026-09-17
+随机游走	sui ji you zou	20	数学	term	随机游走	curated	2026-09-17
+随机矩阵	sui ji ju zhen	20	数学	term	随机矩阵	curated	2026-09-17
+随机种子	sui ji zhong zi	20	训练	term	随机种子	curated	2026-09-17
+随机策略	sui ji ce lve	20	强化	term	随机策略	curated	2026-09-17
+随机翻转	sui ji fan zhuan	20	数据	term	随机翻转	curated	2026-09-17
+随机裁剪	sui ji cai jian	20	数据	term	随机裁剪	curated	2026-09-17
+随机过程	sui ji guo cheng	20	数学	term	随机过程	curated	2026-09-17
+随机采样	sui ji cai yang	20	提示	term	随机采样	curated	2026-09-17
+隐变量自回归模型	yin bian liang zi hui gui mo xing	20	教材术语	term	隐变量自回归模型	d2l	2026-09-17
+隐式推理	yin shi tui li	20	智能体	term	隐式推理	curated	2026-09-17
+隐状态	yin zhuang tai	20	教材术语	term	隐状态	d2l	2026-09-17
+隐私保护	yin si bao hu	20	安全	term	隐私保护	curated	2026-09-17
+隐私信息泄漏	yin si xin xi xie lou	20	安全	term	隐私信息泄漏	curated	2026-09-17
+隐私增强技术	yin si zeng qiang ji shu	20	安全	term	隐私增强技术	curated	2026-09-17
+隐私泄漏	yin si xie lou	20	安全	term	隐私泄漏	curated	2026-09-17
+隐私脱敏	yin si tuo min	20	数据	term	隐私脱敏	curated	2026-09-17
+隐私计算	yin si ji suan	20	安全	term	隐私计算	curated	2026-09-17
+隐私预算	yin si yu suan	20	安全	term	隐私预算	curated	2026-09-17
+隐私风险	yin si feng xian	20	安全	term	隐私风险	curated	2026-09-17
+隐藏变量	yin cang bian liang	20	教材术语	term	隐藏变量	d2l	2026-09-17
+隐藏层	yin cang ceng	20	架构	term	隐藏层	curated	2026-09-17
+隐藏层变量	yin cang ceng bian liang	20	教材术语	term	隐藏层变量	d2l	2026-09-17
+隐藏表示	yin cang biao shi	20	教材术语	term	隐藏表示	d2l	2026-09-17
+隐马尔可夫模型	yin ma er ke fu mo xing	20	算法	term	隐马尔可夫模型	curated	2026-09-17
+难例挖掘	nan li wa jue	20	训练	term	难例挖掘	curated	2026-09-17
+难样本筛选	nan yang ben shai xuan	20	数据	term	难样本筛选	curated	2026-09-17
+雅可比矩阵	ya ke bi ju zhen	20	数学	term	雅可比矩阵	curated	2026-09-17
+集合通信	ji he tong xin	20	训练	term	集合通信	curated	2026-09-17
+集成学习	ji cheng xue xi	20	基础	term	集成学习	curated	2026-09-17
+零样本动作识别	ling yang ben dong zuo shi bie	20	专项任务	term	零样本动作识别	glossary	2026-09-17
+零样本学习	ling yang ben xue xi	20	基础	term	零样本学习	curated	2026-09-17
+零样本提示	ling yang ben ti shi	20	提示	term	零样本提示	curated	2026-09-17
+零样本目标检测	ling yang ben mu biao jian ce	20	专项任务	term	零样本目标检测	glossary	2026-09-17
+零样本语音合成	ling yang ben yu yin he cheng	20	语音	term	零样本语音合成	curated	2026-09-17
+零点	ling dian	20	推理	term	零点	curated	2026-09-17
+静态图	jing tai tu	20	推理	term	静态图	curated	2026-09-17
+静态批处理	jing tai pi chu li	20	推理	term	静态批处理	curated	2026-09-17
+静态量化	jing tai liang hua	20	推理	term	静态量化	curated	2026-09-17
+静音检测	jing yin jian ce	20	语音	term	静音检测	curated	2026-09-17
+非凸优化	fei tu you hua	20	数学	term	非凸优化	curated	2026-09-17
+非对称量化	fei dui chen liang hua	20	推理	term	非对称量化	curated	2026-09-17
+非平稳分布	fei ping wen fen bu	20	教材术语	term	非平稳分布	d2l	2026-09-17
+非极大值抑制	fei ji da zhi yi zhi	20	教材术语	term	非极大值抑制	d2l	2026-09-17
+非流式输出	fei liu shi shu chu	20	提示	term	非流式输出	curated	2026-09-17
+非线性激活	fei xian xing ji huo	20	架构	term	非线性激活	curated	2026-09-17
+非结构化剪枝	fei jie gou hua jian zhi	20	推理	term	非结构化剪枝	curated	2026-09-17
+非负矩阵分解	fei fu ju zhen fen jie	20	算法	term	非负矩阵分解	curated	2026-09-17
+面部动作单元检测	mian bu dong zuo dan yuan jian ce	20	专项任务	term	面部动作单元检测	glossary	2026-09-17
+面部草图合成	mian bu cao tu he cheng	20	专项任务	term	面部草图合成	glossary	2026-09-17
+面部表情识别	mian bu biao qing shi bie	20	专项任务	term	面部表情识别	glossary	2026-09-17
+面部验证	mian bu yan zheng	20	专项任务	term	面部验证	glossary	2026-09-17
+音乐分类	yin yue fen lei	20	专项任务	term	音乐分类	glossary	2026-09-17
+音乐建模	yin yue jian mo	20	专项任务	term	音乐建模	glossary	2026-09-17
+音乐源分离	yin yue yuan fen li	20	专项任务	term	音乐源分离	glossary	2026-09-17
+音乐理解	yin yue li jie	20	语音	term	音乐理解	curated	2026-09-17
+音乐生成	yin yue sheng cheng	20	语音	term	音乐生成	curated	2026-09-17
+音乐类型识别	yin yue lei xing shi bie	20	专项任务	term	音乐类型识别	glossary	2026-09-17
+音素	yin su	20	语音	term	音素	curated	2026-09-17
+音素对齐	yin su dui qi	20	语音	term	音素对齐	curated	2026-09-17
+音色克隆	yin se ke long	20	语音	term	音色克隆	curated	2026-09-17
+音色控制	yin se kong zhi	20	语音	term	音色控制	curated	2026-09-17
+音色迁移	yin se qian yi	20	语音	term	音色迁移	curated	2026-09-17
+音节	yin jie	20	语音	term	音节	curated	2026-09-17
+音视频数据	yin shi pin shu ju	20	数据	term	音视频数据	curated	2026-09-17
+音频分离	yin pin fen li	20	语音	term	音频分离	curated	2026-09-17
+音频分类	yin pin fen lei	20	语音	term	音频分类	curated	2026-09-17
+音频分词器	yin pin fen ci qi	20	语音	term	音频分词器	curated	2026-09-17
+音频压缩	yin pin ya suo	20	语音	term	音频压缩	curated	2026-09-17
+音频去噪	yin pin qu zao	20	专项任务	term	音频去噪	glossary	2026-09-17
+音频增强	yin pin zeng qiang	20	数据	term	音频增强	curated	2026-09-17
+音频嵌入	yin pin qian ru	20	语音	term	音频嵌入	curated	2026-09-17
+音频描述	yin pin miao shu	20	语音	term	音频描述	curated	2026-09-17
+音频检索	yin pin jian suo	20	语音	term	音频检索	curated	2026-09-17
+音频水印	yin pin shui yin	20	语音	term	音频水印	curated	2026-09-17
+音频生成	yin pin sheng cheng	20	语音	term	音频生成	curated	2026-09-17
+音频编码器	yin pin bian ma qi	20	语音	term	音频编码器	curated	2026-09-17
+音频解码器	yin pin jie ma qi	20	语音	term	音频解码器	curated	2026-09-17
+音频词元	yin pin ci yuan	20	语音	term	音频词元	curated	2026-09-17
+音频重建	yin pin chong jian	20	语音	term	音频重建	curated	2026-09-17
+音频问答	yin pin wen da	20	语音	term	音频问答	curated	2026-09-17
+音高控制	yin gao kong zhi	20	语音	term	音高控制	curated	2026-09-17
+音高预测	yin gao yu ce	20	语音	term	音高预测	curated	2026-09-17
+韵律控制	yun lv kong zhi	20	语音	term	韵律控制	curated	2026-09-17
+韵律预测	yun lv yu ce	20	语音	term	韵律预测	curated	2026-09-17
+顺序分区	shun xu fen qu	20	教材术语	term	顺序分区	d2l	2026-09-17
+顺序图像分类	shun xu tu xiang fen lei	20	专项任务	term	顺序图像分类	glossary	2026-09-17
+预填充	yu tian chong	20	推理	term	预填充	curated	2026-09-17
+预填充解码分离	yu tian chong jie ma fen li	20	推理	term	预填充解码分离	curated	2026-09-17
+预填充阶段	yu tian chong jie duan	20	推理	term	预填充阶段	curated	2026-09-17
+预处理	yu chu li	20	教材术语	term	预处理	d2l	2026-09-17
+预测患者结果	yu ce huan zhe jie guo	20	专项任务	term	预测患者结果	glossary	2026-09-17
+预训练	yu xun lian	20	训练	term	预训练	curated	2026-09-17
+预训练模型	yu xun lian mo xing	20	架构	term	预训练模型	curated	2026-09-17
+领域知识库	ling yu zhi shi ku	20	检索	term	领域知识库	curated	2026-09-17
+领域评测	ling yu ping ce	20	评估	term	领域评测	curated	2026-09-17
+领域语料	ling yu yu liao	20	数据	term	领域语料	curated	2026-09-17
+领域迁移	ling yu qian yi	20	基础	term	领域迁移	curated	2026-09-17
+领域适配	ling yu shi pei	20	基础	term	领域适配	curated	2026-09-17
+领域配比	ling yu pei bi	20	数据	term	领域配比	curated	2026-09-17
+领域问答	ling yu wen da	20	提示	term	领域问答	curated	2026-09-17
+频率惩罚	pin lv cheng fa	20	提示	term	频率惩罚	curated	2026-09-17
+频谱图	pin pu tu	20	语音	term	频谱图	curated	2026-09-17
+颜色抖动	yan se dou dong	20	数据	term	颜色抖动	curated	2026-09-17
+风格一致性	feng ge yi zhi xing	20	视觉	term	风格一致性	curated	2026-09-17
+风格图像	feng ge tu xiang	20	教材术语	term	风格图像	d2l	2026-09-17
+风格层	feng ge ceng	20	教材术语	term	风格层	d2l	2026-09-17
+风格损失	feng ge sun shi	20	教材术语	term	风格损失	d2l	2026-09-17
+风格迁移	feng ge qian yi	20	视觉	term	风格迁移	curated	2026-09-17
+风险分级	feng xian fen ji	20	安全	term	风险分级	curated	2026-09-17
+风险控制	feng xian kong zhi	20	安全	term	风险控制	curated	2026-09-17
+风险监测	feng xian jian ce	20	安全	term	风险监测	curated	2026-09-17
+风险评估	feng xian ping gu	20	安全	term	风险评估	curated	2026-09-17
+饱和激活	bao he ji huo	20	架构	term	饱和激活	curated	2026-09-17
+首包延迟	shou bao yan chi	20	推理	term	首包延迟	curated	2026-09-17
+首字延迟	shou zi yan chi	20	推理	term	首字延迟	curated	2026-09-17
+首词元延迟	shou ci yuan yan chi	20	提示	term	首词元延迟	curated	2026-09-17
+马尔可夫决策过程	ma er ke fu jue ce guo cheng	20	强化	term	马尔可夫决策过程	curated	2026-09-17
+马尔可夫条件	ma er ke fu tiao jian	20	教材术语	term	马尔可夫条件	d2l	2026-09-17
+马尔可夫链	ma er ke fu lian	20	数学	term	马尔可夫链	curated	2026-09-17
+马尔可夫链蒙特卡洛	ma er ke fu lian meng te ka luo	20	数学	term	马尔可夫链蒙特卡洛	curated	2026-09-17
+马尔可夫随机场	ma er ke fu sui ji chang	20	算法	term	马尔可夫随机场	curated	2026-09-17
+马氏距离	ma shi ju li	20	数学	term	马氏距离	curated	2026-09-17
+验证数据集	yan zheng shu ju ji	20	教材术语	term	验证数据集	d2l	2026-09-17
+验证集	yan zheng ji	20	数据	term	验证集	curated	2026-09-17
+高光谱图像分类	gao guang pu tu xiang fen lei	20	专项任务	term	高光谱图像分类	glossary	2026-09-17
+高分辨率理解	gao fen bian lv li jie	20	视觉	term	高分辨率理解	curated	2026-09-17
+高斯分布	gao si fen bu	20	数学	term	高斯分布	curated	2026-09-17
+高斯朴素贝叶斯	gao si pu su bei ye si	20	算法	term	高斯朴素贝叶斯	curated	2026-09-17
+高斯核	gao si he	20	算法	term	高斯核	curated	2026-09-17
+高斯泼溅	gao si po jian	20	视觉	term	高斯泼溅	curated	2026-09-17
+高斯混合模型	gao si hun he mo xing	20	算法	term	高斯混合模型	curated	2026-09-17
+高斯误差线性单元	gao si wu cha xian xing dan yuan	20	架构	term	高斯误差线性单元	curated	2026-09-17
+鲁棒优化	lu bang you hua	20	数学	term	鲁棒优化	curated	2026-09-17
+鲁棒性	lu bang xing	20	评估	term	鲁棒性	curated	2026-09-17
+鲁棒目标检测	lu bang mu biao jian ce	20	专项任务	term	鲁棒目标检测	glossary	2026-09-17
+黑板系统	hei ban xi tong	20	智能体	term	黑板系统	curated	2026-09-17
+齐普夫定律	qi pu fu ding lv	20	教材术语	term	齐普夫定律	d2l	2026-09-17

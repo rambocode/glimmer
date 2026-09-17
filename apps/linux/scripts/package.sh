@@ -173,6 +173,9 @@ install -D -m 644 assets/levels/levels-en.tsv "$LIB/assets/levels/levels-en.tsv"
 install -D -m 644 assets/levels/levels-ja.tsv "$LIB/assets/levels/levels-ja.tsv"
 install -D -m 644 assets/sample/dict.tsv "$LIB/assets/sample/dict.tsv"
 
+# AI 数据许可与署名随包，正文语料只用于离线生成，不安装。
+install -d -m 755 "$LIB/assets/lexicon/ai"
+install -m 644 assets/lexicon/ai/LICENSE.* assets/lexicon/ai/sources.json assets/lexicon/ai/README.md "$LIB/assets/lexicon/ai/"
 # 产品数据：只装运行时要的 .qj / .tsv，不装 dev 中间产物
 GEN="data/generated"
 if [[ -f "$GEN/dict.qj" ]]; then

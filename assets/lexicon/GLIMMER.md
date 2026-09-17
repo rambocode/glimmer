@@ -50,6 +50,8 @@ cargo run --release -p glimmer-dict-convert -- bigram --phrases assets/lexicon/p
 cargo run --release -p glimmer-dict-convert -- english assets/lexicon/05_english/00_all_words.tsv assets/lexicon/05_english/07_display_forms.tsv
 uv run tools/corpus/english_frequency.py data/generated/english.tsv -o data/generated/english-frequency.tsv
 cargo run --release -p glimmer-dict-convert -- english assets/lexicon/05_english/00_all_words.tsv assets/lexicon/05_english/07_display_forms.tsv --frequency data/generated/english-frequency.tsv
+# 5b. AI 与人工智能独立领域词库：生成主词库之后跑，不能用 --extra-words 并入主词库
+cargo run --release --locked -p glimmer-dict-convert -- ai --exclude data/generated/dict.tsv --corpus assets/lexicon/ai/corpus.txt
 # 6. 打包（bundle.sh 会自动做；领域词库的 .qj 第 4 步已经写好，bundle.sh 直接拷进 Resources/dicts/）
 cargo run --release -p glimmer-dict-convert -- pack dict --name 微明基础词库 --license "MIT AND Unicode-3.0"
 ```

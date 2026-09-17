@@ -29,6 +29,9 @@ LLM_FILES=(gloss-llm.jsonl gloss-en-llm.jsonl pinyin-llm.jsonl)
 for f in "${PRODUCT_FILES[@]}"; do
   [[ -f "data/generated/$f" ]] || { echo "缺少 data/generated/$f，先按 assets/lexicon/GLIMMER.md 生成" >&2; exit 1; }
 done
+# AI 词库来自随仓库维护的数据，发布数据包前校验并生成；按本次主词库排除重复。
+cargo run --release --locked -q -p glimmer-dict-convert -- ai \
+  --exclude data/generated/dict.qj --corpus assets/lexicon/ai/corpus.txt
 DOMAIN_FILES=()
 for f in data/generated/dicts/*.qj; do [[ -f "$f" ]] && DOMAIN_FILES+=("dicts/$(basename "$f")"); done
 [[ ${#DOMAIN_FILES[@]} -gt 0 ]] || { echo "缺少 data/generated/dicts/*.qj" >&2; exit 1; }

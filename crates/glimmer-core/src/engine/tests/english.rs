@@ -385,3 +385,71 @@ fn pinyin_like_english_tail_competes_with_the_plain_reading() {
     assert_eq!(engine.commit(&mixed), "我的database");
     assert!(engine.composition().is_empty());
 }
+
+#[test]
+fn domain_english_names_follow_dictionary_switch_and_keep_main_words() {
+    let mut e = engine().with_english(WordList::parse("Claude\tclaude\n").unwrap());
+    let extra = Dictionary::parse("Claude\t@claude\t40\nClaude Opus 5\t@claudeopus5\t40\n检索增强生成\tjian suo zeng qiang sheng cheng\t20\n").unwrap();
+    e.set_extra_dictionaries(vec![extra]);
+    e.set_english_mode(true);
+    e.set_input("claude");
+    let query = e.query().unwrap();
+    assert!(
+        query
+            .candidates
+            .items
+            .iter()
+            .any(|c| c.text == "Claude Opus 5" && c.kind == CandidateKind::English)
+    );
+    e.set_extra_dictionaries(Vec::new());
+    e.set_input("claude");
+    assert!(
+        !e.query()
+            .unwrap()
+            .candidates
+            .items
+            .iter()
+            .any(|c| c.text == "Claude Opus 5")
+    );
+    assert!(
+        e.query()
+            .unwrap()
+            .candidates
+            .items
+            .iter()
+            .any(|c| c.text == "Claude")
+    );
+    e.set_extra_dictionaries(vec![
+        Dictionary::parse("检索增强生成\tjian suo zeng qiang sheng cheng\t20\n").unwrap(),
+    ]);
+    e.set_english_mode(false);
+    e.set_input("jiansuozengqiangshengcheng");
+    assert!(
+        e.query()
+            .unwrap()
+            .candidates
+            .items
+            .iter()
+            .any(|c| c.text == "检索增强生成")
+    );
+}
+
+#[test]
+fn english_acronyms_do_not_duplicate_chinese_candidates() {
+    let mut e = engine();
+    e.set_extra_dictionaries(vec![
+        Dictionary::parse("AI\t@ai\t20\nGAN\t@gan\t20\nvLLM\t@vllm\t20\n").unwrap(),
+    ]);
+    for (input, word) in [("ai", "AI"), ("gan", "GAN"), ("vllm", "vLLM")] {
+        e.set_input(input);
+        let query = e.query().unwrap();
+        let hits: Vec<_> = query
+            .candidates
+            .items
+            .iter()
+            .filter(|c| c.text == word)
+            .collect();
+        assert_eq!(hits.len(), 1, "{input}");
+        assert_eq!(hits[0].kind, CandidateKind::English);
+    }
+}

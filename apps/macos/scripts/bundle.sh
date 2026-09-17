@@ -72,6 +72,9 @@ cp -R apps/macos/resources/*.lproj "$APP/Contents/Resources/"
 # 词库与释义表打进 Resources。data/generated/ 里有生成好的产品数据（自建词库 + 语言模型 + LLM 释义表）就用它，
 # 否则用 assets/sample/ 的样例。没有数据管道的机器跑 tools/release/data-fetch.sh 按 tools/release/data.lock 下载。
 cp assets/sample/*.tsv "$APP/Contents/Resources/"
+# AI 领域数据的来源、改动说明与许可证随包，不把训练正文带进应用。
+mkdir -p "$APP/Contents/Resources/licenses/ai"
+cp assets/lexicon/ai/LICENSE.* assets/lexicon/ai/sources.json assets/lexicon/ai/README.md "$APP/Contents/Resources/licenses/ai/"
 # emoji 表（Unicode CLDR，可发布）
 cp assets/emoji/*.tsv "$APP/Contents/Resources/"
 # 词汇等级表（CEFR-J / Octanove / JLPT，见 assets/levels/README.md），「统计」页按级数词汇

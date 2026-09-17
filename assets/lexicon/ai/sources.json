@@ -1,0 +1,128 @@
+{
+  "curated": {
+    "name": "Glimmer 按领域整理的术语与固定搭配",
+    "license": "GPL-3.0-or-later",
+    "method": "人工整理，拼音初稿来自 pypinyin，已针对重、长、调、角、校等读音修订；人工权重不是语料次数"
+  },
+  "d2l": {
+    "name": "动手学深度学习（中文）",
+    "url": "https://github.com/d2l-ai/d2l-zh",
+    "revision": "e6b18ccea71451a55fcd861d7b96fddf2587b09a",
+    "license": "Apache-2.0",
+    "authors": "Aston Zhang, Zachary C. Lipton, Mu Li, Alexander J. Smola 与中文社区贡献者",
+    "method": "显式术语筛选；正文去除代码、公式、引用标记后按段落去重，行来源见 corpus-sources.tsv"
+  },
+  "glossary": {
+    "name": "AI Glossary in Mandarin",
+    "url": "https://github.com/eugenesiow/ai-glossary-mandarin",
+    "revision": "019bf8c02661a5aa8af37960eaabcd5435d6c170",
+    "license": "CC-BY-SA-4.0",
+    "authors": "Eugene Siow 与项目贡献者",
+    "method": "只取中文任务名称；排除含括号、数字、符号与部分特定语言名称，不收录解释"
+  },
+  "openai": {
+    "name": "OpenAI 官方模型与品牌名称",
+    "url": "https://developers.openai.com/api/docs/models",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理公开名称事实，不复制产品说明；不声明目录完整或永久有效"
+  },
+  "anthropic": {
+    "name": "Anthropic 官方模型与品牌名称",
+    "url": "https://platform.claude.com/docs/en/models/overview",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理公开名称事实，不复制产品说明；不声明目录完整或永久有效"
+  },
+  "google": {
+    "name": "Google 官方模型与品牌名称",
+    "url": "https://ai.google.dev/gemini-api/docs/models",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理公开名称事实，不复制产品说明；不声明目录完整或永久有效"
+  },
+  "deepseek": {
+    "name": "DeepSeek 官方模型与品牌名称",
+    "url": "https://api-docs.deepseek.com/quick_start/pricing-details-cny/",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理公开名称事实，不复制产品说明；不声明目录完整或永久有效"
+  },
+  "qwen": {
+    "name": "Alibaba 官方模型与品牌名称",
+    "url": "https://modelstudio.alibabacloud.com/",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理公开名称事实，不复制产品说明；不声明目录完整或永久有效"
+  },
+  "zhipu": {
+    "name": "Zhipu 官方模型与品牌名称",
+    "url": "https://docs.bigmodel.cn/api-reference/模型-api/对话补全",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理公开名称事实，不复制产品说明；不声明目录完整或永久有效"
+  },
+  "moonshot": {
+    "name": "Moonshot AI 官方模型与品牌名称",
+    "url": "https://platform.kimi.com/docs/guide/kimi-k3-quickstart",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理公开名称事实，不复制产品说明；不声明目录完整或永久有效"
+  },
+  "meta": {
+    "name": "Meta 官方公开名称",
+    "url": "https://ai.meta.com/llama/get-started/",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "mistral": {
+    "name": "Mistral AI 官方公开名称",
+    "url": "https://docs.mistral.ai/models",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "microsoft": {
+    "name": "Microsoft 官方公开名称",
+    "url": "https://learn.microsoft.com/en-us/azure/ai-foundry/model-inference/concepts/models",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "xai": {
+    "name": "xAI 官方公开名称",
+    "url": "https://docs.x.ai/developers/models",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "baidu": {
+    "name": "Baidu 官方公开名称",
+    "url": "https://qianfan.cloud.baidu.com/qianfandev/topic/267582",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "bytedance": {
+    "name": "ByteDance 官方公开名称",
+    "url": "https://www.volcengine.com/product/doubao/",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "tencent": {
+    "name": "Tencent 官方公开名称",
+    "url": "https://cloud.tencent.cn/product/tclm",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "minimax": {
+    "name": "MiniMax 官方公开名称",
+    "url": "https://platform.minimax.io/docs/token-plan/faq",
+    "license": "name-facts",
+    "checked": "2026-09-17",
+    "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  }
+}

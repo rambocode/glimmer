@@ -13,6 +13,7 @@
 //!
 //! 输出默认写到仓库根目录 `data/generated/`（gitignore）。
 
+mod ai;
 mod args;
 mod bigram;
 mod cedict;
@@ -48,6 +49,11 @@ fn run() -> Result<(), ConvertError> {
     let args = Args::parse();
     std::fs::create_dir_all(&args.out_dir)?;
     match args.command {
+        Command::Ai {
+            source,
+            exclude,
+            corpus,
+        } => ai::convert(&source, &exclude, &corpus, &args.out_dir),
         Command::Lexicon {
             pack,
             unihan,

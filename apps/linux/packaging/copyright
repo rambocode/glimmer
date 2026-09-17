@@ -47,6 +47,13 @@ Copyright: 通用规范汉字表；现代汉语常用词表（liuxilu 校对版�
 License: MIT and Unicode-3.0
  来源与许可声明见 https://github.com/rambocode/glimmer/tree/main/assets/lexicon 。
 
+Files: usr/lib/glimmer/data/generated/dicts/ai.qj usr/lib/glimmer/assets/lexicon/ai/*
+Copyright: Glimmer contributors; Aston Zhang, Zachary C. Lipton, Mu Li, Alexander J. Smola 与中文贡献者; Eugene Siow 与 AI Glossary in Mandarin 贡献者
+License: GPL-3.0-or-later and Apache-2.0 and CC-BY-SA-4.0
+ AI 词库由人工整理、动手学深度学习显式术语与 AI Glossary in Mandarin 中文任务名称改编。
+ 上游固定提交、修改方式与来源见 /usr/lib/glimmer/assets/lexicon/ai/sources.json，
+ 许可证全文见该目录下 LICENSE.d2l 与 LICENSE.glossary。
+
 Files: usr/lib/glimmer/data/generated/lm.qj
 Copyright: 中文维基百科贡献者；LCCC（清华大学 CoAI）
 License: CC-BY-SA-4.0 and MIT

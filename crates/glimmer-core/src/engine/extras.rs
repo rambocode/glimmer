@@ -121,11 +121,12 @@ impl Engine {
         }
     }
 
-    /// 给英文候选用的词表，个人的在前、随包的在后；一张都没有就是空。
+    /// 给英文候选用的词表，个人的在前、领域的其次、随包的在后；一张都没有就是空。
     pub(super) fn english_lists(&self) -> Vec<&WordList> {
         self.learner
             .user_english()
             .into_iter()
+            .chain((!self.extra_english.is_empty()).then_some(&self.extra_english))
             .chain(self.english.as_ref())
             .collect()
     }

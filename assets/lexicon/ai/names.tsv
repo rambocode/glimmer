@@ -1,0 +1,206 @@
+# 词	编码	人工权重	分类	类型	实体	来源	核对日期
+A2A	a2a	20	技术缩写	english	A2A	curated	2026-09-17
+AGI	agi	20	技术缩写	english	AGI	curated	2026-09-17
+AI	ai	20	技术缩写	english	AI	curated	2026-09-17
+AI助手	ai zhu shou	20	混合名称	mixed	AI助手	curated	2026-09-17
+AI工具	ai gong ju	20	混合名称	mixed	AI工具	curated	2026-09-17
+AI应用	ai ying yong	20	混合名称	mixed	AI应用	curated	2026-09-17
+AI推理	ai tui li	20	混合名称	mixed	AI推理	curated	2026-09-17
+AI搜索	ai sou suo	20	混合名称	mixed	AI搜索	curated	2026-09-17
+AI智能体	ai zhi neng ti	20	混合名称	mixed	AI智能体	curated	2026-09-17
+AI模型	ai mo xing	20	混合名称	mixed	AI模型	curated	2026-09-17
+AI生成	ai sheng cheng	20	混合名称	mixed	AI生成	curated	2026-09-17
+AI绘画	ai hui hua	20	混合名称	mixed	AI绘画	curated	2026-09-17
+AI编程	ai bian cheng	20	混合名称	mixed	AI编程	curated	2026-09-17
+AI语音	ai yu yin	20	混合名称	mixed	AI语音	curated	2026-09-17
+ASI	asi	20	技术缩写	english	ASI	curated	2026-09-17
+ASR	asr	20	技术缩写	english	ASR	curated	2026-09-17
+AWQ	awq	20	技术缩写	english	AWQ	curated	2026-09-17
+Alibaba	alibaba	40	厂商与模型	english	Alibaba	qwen	2026-09-17
+Anthropic	anthropic	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+BERT	bert	20	技术缩写	english	BERT	curated	2026-09-17
+BM25	bm25	20	技术缩写	english	BM25	curated	2026-09-17
+Baidu	baidu	40	厂商与模型	english	Baidu	baidu	2026-09-17
+ByteDance	bytedance	40	厂商与模型	english	ByteDance	bytedance	2026-09-17
+CNN	cnn	20	技术缩写	english	CNN	curated	2026-09-17
+CUDA	cuda	20	技术缩写	english	CUDA	curated	2026-09-17
+CV	cv	20	技术缩写	english	CV	curated	2026-09-17
+ChatGPT	chatgpt	40	厂商与模型	english	OpenAI	openai	2026-09-17
+Chroma	chroma	20	技术缩写	english	Chroma	curated	2026-09-17
+Claude	claude	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+Claude Fable 5.1	claudefable51	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+Claude Haiku 4.5	claudehaiku45	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+Claude Opus 5	claudeopus5	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+Claude Sonnet 5	claudesonnet5	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+CoT	cot	20	技术缩写	english	CoT	curated	2026-09-17
+Codex	codex	40	厂商与模型	english	OpenAI	openai	2026-09-17
+Copilot	copilot	40	厂商与模型	english	Microsoft	microsoft	2026-09-17
+DL	dl	20	技术缩写	english	DL	curated	2026-09-17
+DPO	dpo	20	技术缩写	english	DPO	curated	2026-09-17
+DeepSeek	deepseek	40	厂商与模型	english	DeepSeek	deepseek	2026-09-17
+DeepSeek-V4.1-Flash	deepseekv41flash	40	厂商与模型	english	DeepSeek	deepseek	2026-09-17
+Diffusers	diffusers	20	技术缩写	english	Diffusers	curated	2026-09-17
+Doubao	doubao	40	厂商与模型	english	ByteDance	bytedance	2026-09-17
+ERNIE	ernie	40	厂商与模型	english	Baidu	baidu	2026-09-17
+Elasticsearch	elasticsearch	20	技术缩写	english	Elasticsearch	curated	2026-09-17
+FAISS	faiss	20	技术缩写	english	FAISS	curated	2026-09-17
+Fable	fable	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+GAN	gan	20	技术缩写	english	GAN	curated	2026-09-17
+GGUF	gguf	20	技术缩写	english	GGUF	curated	2026-09-17
+GLM	glm	40	厂商与模型	english	Zhipu	zhipu	2026-09-17
+GLM-4.6	glm46	40	厂商与模型	english	Zhipu	zhipu	2026-09-17
+GLM-5.2	glm52	40	厂商与模型	english	Zhipu	zhipu	2026-09-17
+GLM-Image	glmimage	40	厂商与模型	english	Zhipu	zhipu	2026-09-17
+GNN	gnn	20	技术缩写	english	GNN	curated	2026-09-17
+GPT	gpt	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-4o Mini TTS	gpt4ominitts	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-5.6 Luna	gpt56luna	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-5.6 Sol	gpt56sol	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-5.6 Terra	gpt56terra	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-6 Astra	gpt6astra	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-Image-2.5 Flare	gptimage25flare	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-Image-2.5 Sunburst	gptimage25sunburst	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPT-Live 1	gptlive1	40	厂商与模型	english	OpenAI	openai	2026-09-17
+GPTQ	gptq	20	技术缩写	english	GPTQ	curated	2026-09-17
+GRPO	grpo	20	技术缩写	english	GRPO	curated	2026-09-17
+GRU	gru	20	技术缩写	english	GRU	curated	2026-09-17
+Gemini	gemini	40	厂商与模型	english	Google	google	2026-09-17
+Gemini 3.1 Pro	gemini31pro	40	厂商与模型	english	Google	google	2026-09-17
+Gemini 3.6 Flash	gemini36flash	40	厂商与模型	english	Google	google	2026-09-17
+Gemini 3.7 Flash	gemini37flash	40	厂商与模型	english	Google	google	2026-09-17
+Gemini 3.8 Flash	gemini38flash	40	厂商与模型	english	Google	google	2026-09-17
+Gemini 3.8 Live	gemini38live	40	厂商与模型	english	Google	google	2026-09-17
+Gemini Embedding	geminiembedding	40	厂商与模型	english	Google	google	2026-09-17
+Gemini Omni Flash	geminiomniflash	40	厂商与模型	english	Google	google	2026-09-17
+Gemma	gemma	40	厂商与模型	english	Google	google	2026-09-17
+GoT	got	20	技术缩写	english	GoT	curated	2026-09-17
+Google	google	40	厂商与模型	english	Google	google	2026-09-17
+GraphRAG	graphrag	20	技术缩写	english	GraphRAG	curated	2026-09-17
+Grok	grok	40	厂商与模型	english	xAI	xai	2026-09-17
+Grok 4.20	grok420	40	厂商与模型	english	xAI	xai	2026-09-17
+HNSW	hnsw	20	技术缩写	english	HNSW	curated	2026-09-17
+Haiku	haiku	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+HuggingFace	huggingface	20	技术缩写	english	HuggingFace	curated	2026-09-17
+Hunyuan	hunyuan	40	厂商与模型	english	Tencent	tencent	2026-09-17
+IVF	ivf	20	技术缩写	english	IVF	curated	2026-09-17
+Imagen	imagen	40	厂商与模型	english	Google	google	2026-09-17
+JAX	jax	20	技术缩写	english	JAX	curated	2026-09-17
+Kimi	kimi	40	厂商与模型	english	Moonshot AI	moonshot	2026-09-17
+Kimi K2.6	kimik26	40	厂商与模型	english	Moonshot AI	moonshot	2026-09-17
+Kimi K2.7 Code	kimik27code	40	厂商与模型	english	Moonshot AI	moonshot	2026-09-17
+Kimi K3	kimik3	40	厂商与模型	english	Moonshot AI	moonshot	2026-09-17
+LLM	llm	20	技术缩写	english	LLM	curated	2026-09-17
+LSTM	lstm	20	技术缩写	english	LSTM	curated	2026-09-17
+LangChain	langchain	20	技术缩写	english	LangChain	curated	2026-09-17
+Llama	llama	40	厂商与模型	english	Meta	meta	2026-09-17
+Llama 4 Maverick	llama4maverick	40	厂商与模型	english	Meta	meta	2026-09-17
+Llama 4 Scout	llama4scout	40	厂商与模型	english	Meta	meta	2026-09-17
+LlamaIndex	llamaindex	20	技术缩写	english	LlamaIndex	curated	2026-09-17
+LoRA	lora	20	技术缩写	english	LoRA	curated	2026-09-17
+MAI	mai	40	厂商与模型	english	Microsoft	microsoft	2026-09-17
+MCP	mcp	20	技术缩写	english	MCP	curated	2026-09-17
+ML	ml	20	技术缩写	english	ML	curated	2026-09-17
+MMR	mmr	20	技术缩写	english	MMR	curated	2026-09-17
+Meta	meta	40	厂商与模型	english	Meta	meta	2026-09-17
+Microsoft	microsoft	40	厂商与模型	english	Microsoft	microsoft	2026-09-17
+Milvus	milvus	20	技术缩写	english	Milvus	curated	2026-09-17
+MiniMax	minimax	40	厂商与模型	english	MiniMax	minimax	2026-09-17
+MiniMax-M2.5	minimaxm25	40	厂商与模型	english	MiniMax	minimax	2026-09-17
+MiniMax-M2.7	minimaxm27	40	厂商与模型	english	MiniMax	minimax	2026-09-17
+Mistral	mistral	40	厂商与模型	english	Mistral AI	mistral	2026-09-17
+Mistral AI	mistralai	40	厂商与模型	english	Mistral AI	mistral	2026-09-17
+Mistral Medium 3.5	mistralmedium35	40	厂商与模型	english	Mistral AI	mistral	2026-09-17
+Mistral Small 4	mistralsmall4	40	厂商与模型	english	Mistral AI	mistral	2026-09-17
+MoE	moe	20	技术缩写	english	MoE	curated	2026-09-17
+Moonshot	moonshot	40	厂商与模型	english	Moonshot AI	moonshot	2026-09-17
+NER	ner	20	技术缩写	english	NER	curated	2026-09-17
+NLG	nlg	20	技术缩写	english	NLG	curated	2026-09-17
+NLP	nlp	20	技术缩写	english	NLP	curated	2026-09-17
+NLU	nlu	20	技术缩写	english	NLU	curated	2026-09-17
+Nano Banana 2	nanobanana2	40	厂商与模型	english	Google	google	2026-09-17
+Nano Banana Pro	nanobananapro	40	厂商与模型	english	Google	google	2026-09-17
+OCR	ocr	20	技术缩写	english	OCR	curated	2026-09-17
+ONNX	onnx	20	技术缩写	english	ONNX	curated	2026-09-17
+OpenAI	openai	40	厂商与模型	english	OpenAI	openai	2026-09-17
+OpenSearch	opensearch	20	技术缩写	english	OpenSearch	curated	2026-09-17
+Opus	opus	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+PEFT	peft	20	技术缩写	english	PEFT	curated	2026-09-17
+PPO	ppo	20	技术缩写	english	PPO	curated	2026-09-17
+Phi	phi	40	厂商与模型	english	Microsoft	microsoft	2026-09-17
+PyTorch	pytorch	20	技术缩写	english	PyTorch	curated	2026-09-17
+QLoRA	qlora	20	技术缩写	english	QLoRA	curated	2026-09-17
+Qdrant	qdrant	20	技术缩写	english	Qdrant	curated	2026-09-17
+Qwen	qwen	40	厂商与模型	english	Alibaba	qwen	2026-09-17
+Qwen3.7-Max	qwen37max	40	厂商与模型	english	Alibaba	qwen	2026-09-17
+Qwen3.8-Max	qwen38max	40	厂商与模型	english	Alibaba	qwen	2026-09-17
+RAG	rag	20	技术缩写	english	RAG	curated	2026-09-17
+RL	rl	20	技术缩写	english	RL	curated	2026-09-17
+RLAIF	rlaif	20	技术缩写	english	RLAIF	curated	2026-09-17
+RLHF	rlhf	20	技术缩写	english	RLHF	curated	2026-09-17
+RNN	rnn	20	技术缩写	english	RNN	curated	2026-09-17
+SFT	sft	20	技术缩写	english	SFT	curated	2026-09-17
+SGLang	sglang	20	技术缩写	english	SGLang	curated	2026-09-17
+STT	stt	20	技术缩写	english	STT	curated	2026-09-17
+Sonnet	sonnet	40	厂商与模型	english	Anthropic	anthropic	2026-09-17
+Sora	sora	40	厂商与模型	english	OpenAI	openai	2026-09-17
+TRL	trl	20	技术缩写	english	TRL	curated	2026-09-17
+TTS	tts	20	技术缩写	english	TTS	curated	2026-09-17
+Tencent	tencent	40	厂商与模型	english	Tencent	tencent	2026-09-17
+TensorFlow	tensorflow	20	技术缩写	english	TensorFlow	curated	2026-09-17
+TensorRT	tensorrt	20	技术缩写	english	TensorRT	curated	2026-09-17
+ToT	tot	20	技术缩写	english	ToT	curated	2026-09-17
+Transformers	transformers	20	技术缩写	english	Transformers	curated	2026-09-17
+VAE	vae	20	技术缩写	english	VAE	curated	2026-09-17
+VLA	vla	20	技术缩写	english	VLA	curated	2026-09-17
+VLM	vlm	20	技术缩写	english	VLM	curated	2026-09-17
+Veo	veo	40	厂商与模型	english	Google	google	2026-09-17
+ViT	vit	20	技术缩写	english	ViT	curated	2026-09-17
+Voxtral Mini Transcribe 2	voxtralminitranscribe2	40	厂商与模型	english	Mistral AI	mistral	2026-09-17
+Wan3.0	wan30	40	厂商与模型	english	Alibaba	qwen	2026-09-17
+Weaviate	weaviate	20	技术缩写	english	Weaviate	curated	2026-09-17
+Whisper	whisper	40	厂商与模型	english	OpenAI	openai	2026-09-17
+Zhipu	zhipu	40	厂商与模型	english	Zhipu	zhipu	2026-09-17
+cuDNN	cudnn	20	技术缩写	english	cuDNN	curated	2026-09-17
+vLLM	vllm	20	技术缩写	english	vLLM	curated	2026-09-17
+xAI	xai	40	厂商与模型	english	xAI	xai	2026-09-17
+万相	wan xiang	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+千帆	qian fan	40	厂商与模型	chinese	Baidu	baidu	2026-09-17
+千问	qian wen	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+字节跳动	zi jie tiao dong	40	厂商与模型	chinese	ByteDance	bytedance	2026-09-17
+微软	wei ruan	40	厂商与模型	chinese	Microsoft	microsoft	2026-09-17
+微软大模型	wei ruan da mo xing	40	厂商与模型	chinese	Microsoft	microsoft	2026-09-17
+文心	wen xin	40	厂商与模型	chinese	Baidu	baidu	2026-09-17
+文心一言	wen xin yi yan	40	厂商与模型	chinese	Baidu	baidu	2026-09-17
+文心千帆	wen xin qian fan	40	厂商与模型	chinese	Baidu	baidu	2026-09-17
+文心大模型	wen xin da mo xing	40	厂商与模型	chinese	Baidu	baidu	2026-09-17
+智谱	zhi pu	40	厂商与模型	chinese	zhipu	zhipu	2026-09-17
+智谱人工智能	zhi pu ren gong zhi neng	40	厂商与模型	chinese	zhipu	zhipu	2026-09-17
+智谱大模型	zhi pu da mo xing	40	厂商与模型	chinese	zhipu	zhipu	2026-09-17
+智谱清言	zhi pu qing yan	40	厂商与模型	chinese	zhipu	zhipu	2026-09-17
+月之暗面	yue zhi an mian	40	厂商与模型	chinese	moonshot	moonshot	2026-09-17
+月之暗面大模型	yue zhi an mian da mo xing	40	厂商与模型	chinese	moonshot	moonshot	2026-09-17
+海螺	hai luo	40	厂商与模型	chinese	MiniMax	minimax	2026-09-17
+深度求索	shen du qiu suo	40	厂商与模型	chinese	deepseek	deepseek	2026-09-17
+深度求索大模型	shen du qiu suo da mo xing	40	厂商与模型	chinese	deepseek	deepseek	2026-09-17
+混元	hun yuan	40	厂商与模型	chinese	Tencent	tencent	2026-09-17
+混元大模型	hun yuan da mo xing	40	厂商与模型	chinese	Tencent	tencent	2026-09-17
+清言	qing yan	40	厂商与模型	chinese	zhipu	zhipu	2026-09-17
+火山引擎	huo shan yin qing	40	厂商与模型	chinese	ByteDance	bytedance	2026-09-17
+火山方舟	huo shan fang zhou	40	厂商与模型	chinese	ByteDance	bytedance	2026-09-17
+百度	bai du	40	厂商与模型	chinese	Baidu	baidu	2026-09-17
+百度智能云	bai du zhi neng yun	40	厂商与模型	chinese	Baidu	baidu	2026-09-17
+百炼	bai lian	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+腾讯	teng xun	40	厂商与模型	chinese	Tencent	tencent	2026-09-17
+腾讯云	teng xun yun	40	厂商与模型	chinese	Tencent	tencent	2026-09-17
+腾讯混元	teng xun hun yuan	40	厂商与模型	chinese	Tencent	tencent	2026-09-17
+谷歌	gu ge	40	厂商与模型	chinese	google	google	2026-09-17
+谷歌大模型	gu ge da mo xing	40	厂商与模型	chinese	google	google	2026-09-17
+豆包	dou bao	40	厂商与模型	chinese	ByteDance	bytedance	2026-09-17
+豆包大模型	dou bao da mo xing	40	厂商与模型	chinese	ByteDance	bytedance	2026-09-17
+通义	tong yi	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+通义万相	tong yi wan xiang	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+通义千问	tong yi qian wen	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+通义大模型	tong yi da mo xing	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+阿里云	a li yun	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+阿里巴巴	a li ba ba	40	厂商与模型	chinese	qwen	qwen	2026-09-17
+阿里百炼	a li bai lian	40	厂商与模型	chinese	qwen	qwen	2026-09-17

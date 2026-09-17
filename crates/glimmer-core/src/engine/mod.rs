@@ -103,6 +103,9 @@ pub struct Engine {
     /// 英文词表，中英混输用；没有就不出英文候选。
     english: Option<WordList>,
 
+    /// 当前已启用附加词库中的英文品牌、术语和型号，与附加词库一起撤销。
+    extra_english: WordList,
+
     /// 英文模式（壳里 Caps Lock 亮着）：缓冲区里的字母不当拼音，候选来自英文词表的补全与纠正。
     english_mode: bool,
 
@@ -341,6 +344,7 @@ impl Engine {
             learner: learning::MutedLearner::new(Box::new(NoLearner)),
             composition: Composition::default(),
             english: None,
+            extra_english: WordList::default(),
             english_mode: false,
             punctuation: Punctuation::default(),
             full_width_punctuation: true,

@@ -322,7 +322,11 @@ impl Engine {
     /// preedit 原样显示输入。
     pub(super) fn query_expression(&self, scope: &str, rest: String, start: Instant) -> Query {
         let mut items = shortcut::candidates(scope, self.modes().expression, &jiff::Zoned::now());
-        if let Some(word) = self.english.as_ref().and_then(|english| english.get(scope)) {
+        if let Some(word) = self
+            .english_lists()
+            .iter()
+            .find_map(|english| english.get(scope))
+        {
             items.push(Candidate {
                 text: word.to_owned(),
                 kind: CandidateKind::English,

@@ -247,7 +247,7 @@ in_ing = false
     r#"
 [dictionaries]
 # 随包的领域词库（法律 / 医学 / 地名 / 成语 / 诗词 / IT / 财经 / 饮食 / 动物 / 汽车 / 历史人物），列在这里的才加载；
-# 名字是文件名：animals automotive finance food historical_figures idioms it_computing law medicine places poetry_lines。
+# 名字是文件名：animals automotive finance food historical_figures idioms it_computing law medicine places poetry_lines ai。
 # 偏好设置「词库」页可以勾选
 domains = ["idioms"]
 # 自己导入的词库：放在配置同目录 dicts/ 下的 .qj 文件都会加载，这里列出要关掉的（文件名，不含扩展名）

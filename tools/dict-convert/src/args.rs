@@ -18,6 +18,21 @@ pub struct Args {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
+    /// 校验并生成独立 AI 领域词库（dicts/ai.tsv、ai.qj 与 ai-audit.tsv）
+    Ai {
+        /// 已审核的词表目录
+        #[arg(long, default_value = "assets/lexicon/ai")]
+        source: PathBuf,
+
+        /// 排除主词库或其他词库已有的词与读音，可给多个；不提供时保留全部词条
+        #[arg(long)]
+        exclude: Vec<PathBuf>,
+
+        /// 许可明确的中文正文；出现次数与人工权重分开记录，不提供时只使用人工权重
+        #[arg(long)]
+        corpus: Vec<PathBuf>,
+    },
+
     /// 微明基础词库：从「输入法字词库_分类整理版」数据包 + Unihan 读音建 dict.tsv（两遍跑，见模块文档）
     Lexicon {
         /// 数据包目录（含 01_characters / 02_common / 03_domains），随仓库放在 assets/lexicon
