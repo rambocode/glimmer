@@ -178,3 +178,14 @@ fn switching_to_chinese_mid_word_flushes_english_letters() {
     );
     assert_eq!(preedit(&frame), "l");
 }
+
+#[test]
+fn english_digit_without_a_slot_joins_the_word() {
+    let mut router = router();
+    let (_, _, frame) = type_english(&mut router, "hello");
+    let shown = frame.candidates.items.len();
+    assert!((1..9).contains(&shown), "hello 的候选应不满 9 个：{shown}");
+    let (outcome, commit, frame) = press(&mut router, digit_with(9, ENGLISH));
+    assert_eq!((outcome, commit), (KeyOutcome::Consumed, None));
+    assert_eq!(preedit(&frame), "hello9");
+}

@@ -413,20 +413,14 @@ impl GlimmerInputController {
             }
             // 英文候选：字母（以及组词中的 _ ' -）进缓冲区，候选来自英文词表。选词与中文模式一样：
             // 空格选高亮（词上屏后空格照样交给应用，接着打下一个词）、数字选当前页第 N 个、翻页键翻页；
-            // 有候选时数字才选词，没候选（kubectl 这类词表没有的词）时数字是标识符的一部分（foo1）。
+            // 数字对应的格子没有候选（kubectl 这类词表没有的词、候选不足 N 个）时是标识符的一部分（foo1）。
             // 回车、标点先把敲的字母原样上屏再交给应用
-            if composing && let Some(offset) = c.to_digit(10).filter(|d| *d > 0) {
-                let (index, cells) = host::with(|h| {
-                    (
-                        h.session.index_on_page(offset as usize - 1),
-                        h.session.page_cells().len(),
-                    )
-                })
-                .unwrap_or((None, 0));
-                if cells > 0 {
-                    // 空格子按了不算
-                    return index.is_none_or(|index| self.commit_index(index, client));
-                }
+            if composing
+                && let Some(offset) = c.to_digit(10).filter(|d| *d > 0)
+                && let Some(index) =
+                    host::with(|h| h.session.index_on_page(offset as usize - 1)).flatten()
+            {
+                return self.commit_index(index, client);
             }
             if c.is_ascii_alphabetic()
                 || (composing && (c.is_ascii_digit() || matches!(c, '_' | '\'' | '-')))
@@ -507,19 +501,16 @@ impl GlimmerInputController {
                 ' ' => return self.commit_highlighted(client),
                 '1'..='9' => {
                     let offset = usize::from(*byte - b'1');
-                    let (index, cells) = host::with(|h| {
-                        (
-                            h.session.index_on_page(offset),
-                            h.session.page_cells().len(),
-                        )
-                    })
-                    .unwrap_or((None, 0));
-                    return match index {
-                        Some(index) => self.commit_index(index, client),
-                        // 云端词还没到的占位格：数字键按了不算，免得结果一到就选错
-                        None if offset < cells => true,
-                        None => self.commit_raw(client),
-                    };
+                    if let Some(index) = host::with(|h| h.session.index_on_page(offset)).flatten() {
+                        return self.commit_index(index, client);
+                    }
+                    // 这一页没有这一格（`gpt6` 只有三个候选）：数字当内容进缓冲区，成为英文直输段；
+                    // 问字模式里数字不是问题的一部分，不算
+                    if !question {
+                        host::with(|h| h.engine.push(c));
+                        self.refresh(client);
+                    }
+                    return true;
                 }
                 c if c == page_previous => return self.turn_page(-1, client),
                 c if c == page_next => return self.turn_page(1, client),

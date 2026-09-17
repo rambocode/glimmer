@@ -194,7 +194,7 @@ impl Router {
     }
 
     /// 英文模式。开着候选：字母进缓冲区，选词与中文模式一样（空格选高亮、数字选当前页第 N 个、翻页键翻页），
-    /// 词上屏后空格照样交给应用；有候选时数字才选词，没候选（词表没有的词）时数字是标识符的一部分（`foo1`）。
+    /// 词上屏后空格照样交给应用；数字对应的格子没有候选（词表没有的词、候选不足 N 个）时是标识符的一部分（`foo1`）。
     /// 回车 / 标点先把字母原样上屏。关着候选：字母由我们插入（大小写按 Shift）。
     /// 其他键按英文模式那份全角设置转，转不了的交给应用。
     fn apply_english(&mut self, c: char, candidates: bool, event: &KeyEvent) -> Effect {
@@ -210,12 +210,10 @@ impl Router {
             return with_prefix(raw, effect, c);
         }
         if composing
-            && self.candidate_count() > 0
             && let Some(digit) = codes::digit(event)
+            && let Some(index) = self.slot_index(digit)
         {
-            let page_size = self.config.page_size;
-            let page = self.highlight / page_size;
-            return Effect::Changed(self.commit_index(page * page_size + digit - 1));
+            return Effect::Changed(self.commit_index(index));
         }
         if c.is_ascii_alphabetic()
             || (composing && (c.is_ascii_digit() || matches!(c, '_' | '\'' | '-')))
@@ -237,7 +235,7 @@ impl Router {
         with_prefix(committed, effect, c)
     }
 
-    /// 组句中的可打印键：数字选当前页第 N 个，翻页键翻页，空格上屏高亮，其余标点进不进英文直输段由 Core 按
+    /// 组句中的可打印键：数字选当前页第 N 个（没有这一格就进直输段），翻页键翻页，空格上屏高亮，其余标点进不进英文直输段由 Core 按
     /// `[general] punctuation_mode` 定（不进就先上屏高亮候选，再按没在组句处理这个键）；已在直输段里就一律追加。
     /// 表达式模式（`v1+2`）里数字和运算符进算式；问字模式敲的还可能是码点（`u4e00`、`u+1f600`），数字与 `+` 进缓冲区；
     /// 微软 / 搜狗双拼的 `;` 是 ing 键，末尾有落单声母时进缓冲区。
@@ -263,12 +261,15 @@ impl Router {
             }
         }
         if let Some(digit) = codes::digit(event)
-            && self.candidate_count() > 0
             && (!self.engine.is_zhuyin_mode() || self.navigated)
         {
-            let page_size = self.config.page_size;
-            let page = self.highlight / page_size;
-            return Effect::Changed(self.commit_index(page * page_size + digit - 1));
+            if let Some(index) = self.slot_index(digit) {
+                return Effect::Changed(self.commit_index(index));
+            }
+            // 问字模式里数字不是问题的一部分：没有这一格就不算
+            if self.engine.question_mode() {
+                return Effect::Changed(None);
+            }
         }
         if let Some(step) = codes::page_key(event, self.config.page_keys) {
             self.page(step);
@@ -305,6 +306,14 @@ impl Router {
             Some(candidate) => Effect::Changed(Some(self.engine.commit(&candidate))),
             None => Effect::Changed(None),
         }
+    }
+
+    /// 数字键在当前页对应的格子下标；这一页没有这一格（`gpt6` 只有三个候选）返回 `None`，数字当内容进缓冲区。
+    /// 云端词还没到的占位格算有：按了不算，免得结果一到就选错。
+    fn slot_index(&self, digit: usize) -> Option<usize> {
+        let page_size = self.config.page_size;
+        let index = self.highlight / page_size * page_size + digit - 1;
+        (digit <= page_size && index < self.candidate_count()).then_some(index)
     }
 
     /// 上屏高亮候选；没有候选时缓冲原样上屏。
