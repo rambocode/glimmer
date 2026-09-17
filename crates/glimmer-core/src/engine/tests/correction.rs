@@ -216,6 +216,38 @@ fn spelling_correction_fixes_one_edit_and_learns_from_enter() {
 }
 
 #[test]
+fn commit_alignment_backtracks_over_typo_variants() {
+    let engine = engine();
+    let syllables =
+        |list: &[&str]| -> Vec<String> { list.iter().map(|s| (*s).to_owned()).collect() };
+    // pingyin 上屏 拼音：pin 原样只吃三个字母会剩 gyin，退回来按敲错变体 ping → pin 吃四个，整段吃光并记敲错
+    let alignment = engine.align("pingyin", &syllables(&["pin", "yin"]));
+    assert_eq!(alignment.consumed, 7);
+    assert_eq!(alignment.typos, [("ping".to_owned(), "pin".to_owned())]);
+    // 原样、没打完的前缀、前缀词、带 ' 的输入照旧
+    assert_eq!(
+        engine.align("nihao", &syllables(&["ni", "hao"])).consumed,
+        5
+    );
+    assert_eq!(
+        engine
+            .align("mingt", &syllables(&["ming", "tian"]))
+            .consumed,
+        5
+    );
+    assert_eq!(
+        engine.align("nihaoma", &syllables(&["ni", "hao"])).consumed,
+        5
+    );
+    assert_eq!(
+        engine.align("ni'hao", &syllables(&["ni", "hao"])).consumed,
+        6
+    );
+    // 对不上的候选还是贪心对到哪算哪
+    assert_eq!(engine.align("nihao", &syllables(&["ni", "ma"])).consumed, 2);
+}
+
+#[test]
 fn fuzzy_rules_add_homophones_behind_exact_hits() {
     // 词库里只有 kai fa 系列加一个 哈；敲 kaiha 没开 f/h 时只有前缀词 开（开哈 原样读得通，词图的敲错边翻不过它），
     // 开了就出 开发（模糊命中）且覆盖更多字母排第一
