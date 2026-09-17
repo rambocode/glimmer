@@ -1,3 +1,5 @@
 /* 输入源列表与输入法菜单里显示的名字 */
 CFBundleName = "微明";
 CFBundleDisplayName = "微明";
+/* 输入模式的显示名，键是 Info.plist 里的模式 ID */
+"app.glimmer.inputmethod.Hans" = "微明";

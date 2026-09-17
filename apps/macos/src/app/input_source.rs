@@ -1,15 +1,12 @@
-//! 把 `.app` 注册成系统输入源、启用并切成当前输入源：`glimmer-macos --register`。
-//!
-//! 安装器（pkg 的 postinstall）以 root 跑，而输入源的注册与启用是每个用户自己的事，所以 postinstall 切到登录用户
-//! 来调这个子命令；用户装完不用再去「系统设置 → 键盘 → 输入法」里手动添加。走 Carbon 的 Text Input Source Services，
-//! 这套 C 接口至今没有 Cocoa 替代品。
+//! 把 `.app` 注册成系统输入源、启用并切成当前输入源：`glimmer-macos --register`（pkg 的 postinstall 以登录用户身份调）。
+//! 走 Carbon 的 Text Input Source Services，没有 Cocoa 替代品；注册时序与缓存的坑见 docs/design/architecture.md。
 
 use std::ffi::c_void;
 use std::path::Path;
 use std::ptr::NonNull;
 
 use objc2_core_foundation::{CFArray, CFBoolean, CFDictionary, CFRetained, CFString, CFURL};
-use objc2_foundation::{NSBundle, NSString};
+use objc2_foundation::{NSArray, NSBundle, NSDictionary, NSString};
 
 /// TIS 的输入源句柄（不透明）。
 #[repr(C)]
@@ -46,41 +43,6 @@ unsafe extern "C" {
 
     /// 属性键：是否已启用（CFBoolean）。
     static kTISPropertyInputSourceIsEnabled: NonNull<CFString>;
-
-    /// 当前选中的键盘输入源；按 Copy 规则归调用方释放。
-    fn TISCopyCurrentKeyboardInputSource() -> *mut TISInputSource;
-}
-
-#[link(name = "CoreFoundation", kind = "framework")]
-unsafe extern "C" {
-    /// 释放一个 CF 对象（TISInputSourceRef 也是 CF 类型）。
-    fn CFRelease(cf: *const c_void);
-}
-
-/// 本 bundle 的输入源 ID：`Info.plist` 的 `TISInputSourceID`，没写就用缺省标识。
-pub fn main_bundle_source_id() -> String {
-    NSBundle::mainBundle()
-        .objectForInfoDictionaryKey(&NSString::from_str("TISInputSourceID"))
-        .and_then(|value| value.downcast::<NSString>().ok())
-        .map(|s| s.to_string())
-        .unwrap_or_else(|| super::bundle::DEFAULT_IDENTIFIER.to_owned())
-}
-
-/// 系统当前选中的键盘输入源 ID；拿不到返回 `None`。
-/// 状态项靠它判断「用户还在用微明」：IMK 在焦点切换时会给一个 deactivate 而不一定再补 activate，
-/// 不能只信回调（见 `menubar/indicator.rs`）。
-pub fn current_source_id() -> Option<String> {
-    // SAFETY: Copy 规则返回的句柄由我们释放；属性值归系统，只读；空指针都判过。
-    unsafe {
-        let source = TISCopyCurrentKeyboardInputSource();
-        if source.is_null() {
-            return None;
-        }
-        let value = TISGetInputSourceProperty(source, kTISPropertyInputSourceID);
-        let id = value.cast::<CFString>().as_ref().map(CFString::to_string);
-        CFRelease(source.cast::<c_void>());
-        id
-    }
 }
 
 /// 注册当前进程所在的 `.app`、启用并切成当前输入源。启用成功返回 `Ok(是否也切成了当前)`，失败带一句能打到安装日志里的说明。
@@ -90,16 +52,35 @@ pub fn register_main_bundle() -> Result<bool, String> {
     if !path.ends_with(".app") {
         return Err(format!("不是从 .app 里运行的：{path}"));
     }
-    register_and_enable(Path::new(&path), &main_bundle_source_id())
+    let source_id = enabled_source_id(&bundle);
+    register_and_enable(Path::new(&path), &source_id)
 }
 
-/// 注册 `app`，启用 ID 为 `source_id` 的输入源并切成当前。
+/// 要启用的输入源 ID：有输入模式就是第一个可见模式，否则是顶层 `TISInputSourceID`。
+fn enabled_source_id(bundle: &NSBundle) -> String {
+    let first_mode = bundle
+        .objectForInfoDictionaryKey(&NSString::from_str("ComponentInputModeDict"))
+        .and_then(|value| value.downcast::<NSDictionary>().ok())
+        .and_then(|modes| {
+            modes.objectForKey(&*NSString::from_str("tsVisibleInputModeOrderedArrayKey"))
+        })
+        .and_then(|value| value.downcast::<NSArray>().ok())
+        .and_then(|order| order.firstObject())
+        .and_then(|id| id.downcast::<NSString>().ok())
+        .map(|id| id.to_string());
+    first_mode.unwrap_or_else(|| {
+        bundle
+            .objectForInfoDictionaryKey(&NSString::from_str("TISInputSourceID"))
+            .and_then(|value| value.downcast::<NSString>().ok())
+            .map(|s| s.to_string())
+            .unwrap_or_else(|| super::bundle::DEFAULT_IDENTIFIER.to_owned())
+    })
+}
+
+/// 注册 `app`，启用 ID 为 `source_id` 的输入源并切成当前。返回是否也切成了当前（切换失败不算错）。
 ///
-/// 两个坑：刚换过 bundle 的头几秒系统还在重新扫描新包，这时启用的记录会被换掉、状态跟着丢（实测装完 3 秒内都这样）；
-/// TIS 在进程内缓存输入源状态，本进程怎么重列表、跑 run loop 回读都是旧值，只有新起的进程看得到真实状态。
-/// 所以每一轮都：注册 → 启用 → 起一个子进程（本程序带 `--finish-register`）在干净的缓存里回读并切成当前 →
-/// 隔 [`CONFIRM`] 再起一次子进程确认没被重扫顶掉（顶掉了就整轮重来）；子进程说没启用就等 [`RETRY_INTERVAL`] 再来，最多等 [`ENABLE_TIMEOUT`]。
-/// 返回是否也切成了当前输入源（切换失败不算错，用户还能从菜单里挑）。
+/// 每一轮：注册 → 启用 → 子进程（`--finish-register`）回读并切换 → 隔 [`CONFIRM`] 再回读一次确认没被系统重扫顶掉；
+/// 没启用就等 [`RETRY_INTERVAL`] 重来，最多 [`ENABLE_TIMEOUT`]。回读必须在新进程里做，本进程读到的是缓存。
 pub fn register_and_enable(app: &Path, source_id: &str) -> Result<bool, String> {
     let url =
         CFURL::from_file_path(app).ok_or_else(|| format!("路径无法转成 URL：{}", app.display()))?;

@@ -377,6 +377,19 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   逻辑放到 inherent impl 里，宏内只做转发。
 - Info.plist 约定：bundle id 是 `app.glimmer.inputmethod`（其他平台外壳共用 `app.glimmer.` 前缀；官网域名后来改成 glimmerinput.app，bundle id 不跟着改，改了已安装的输入源要删掉重加），`TISInputSourceID` 与它相同，`InputMethodConnectionName` 必须是 `<bundle id>_Connection`；
   `LSBackgroundOnly = true`；ad-hoc `codesign` 之后 Apple Silicon 才会加载。
+  **输入模式**：`ComponentInputModeDict` 里声明单模式 `app.glimmer.inputmethod.Hans`（TextInputSources.h 规定的位置），
+  系统登记、启用、切换的都是模式，顶层 ID 只是父项，所以 `--register` 启用的是 `tsVisibleInputModeOrderedArrayKey` 的第一项；
+  模式显示名在 `InfoPlist.strings` 按模式 ID 给，缺了对话框里显示裸 ID。没有模式时标准文本视图（备忘录等）切不过去、
+  「添加输入法」列表也不出现（#31）。
+  **图标**：顶层 `tsInputMethodIconFileKey` 与模式里的 Menu / AlternateMenu / Palette 三个图标键都指向同一张 22×16pt 模板 PDF
+  （黑色键帽镂空图形，`TISIconIsTemplate` 让系统只取 alpha 按深浅色反色），鼠须管、Fcitx5 同此尺寸与形式，小了整体偏小、
+  非模式路径会被非等比压进 16×16。系统自带输入法下拉菜单里的「拼」「あ」是苹果私有素材（KeyboardLayouts.framework），
+  `TISIconLabels` 第三方写了不生效（鼠须管 #776 自 2023 挂着；goliajp/inputx、nvalleo/nagi 各自真机验过），别再试。
+  改图标后系统有缓存：`kill -9` TextInputMenuAgent / TextInputSwitcher，仍旧就注销。
+- 输入源注册（`app/input_source.rs`，`--register`）：pkg 的 postinstall 以 root 跑，而输入源是每个用户的设置，
+  所以 postinstall 切到登录用户来调它。两个坑决定了它的结构：刚换过 bundle 的头几秒系统还在重扫新包，这时启用的记录会被顶掉
+  （实测装完 3 秒内都这样），所以启用后隔一会儿要再确认一次；TIS 在进程内缓存输入源状态，本进程怎么重列表、跑 run loop
+  回读都是旧值，所以回读与切换放在子进程（`--finish-register`）里做。
 - IMK 无法通过 `cargo run` 验证：需要打包成 `.app`、装到 `~/Library/Input Methods/`、
   注销或重启输入法进程才会生效。Core 的验证靠 CLI 测试工具和单元测试，不依赖跑起真实输入法。
 - 已知需要单独处理的场景：Secure Input 字段、沙盒应用、Electron 与 Terminal 各自的 marked text 行为。
