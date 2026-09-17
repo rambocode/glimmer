@@ -181,10 +181,11 @@ impl Router {
         self.apply_printable(c, event)
     }
 
-    /// 当前模式开着全角就让 Core 转（数字后的 `.` 保持半角）；转不了的原样交给应用并告知 Core。
+    /// 当前模式开着全角就让 Core 转（数字后的 `.` 与小键盘的键保持半角）；转不了的原样交给应用并告知 Core。
     fn apply_punctuation(&mut self, c: char, event: &KeyEvent) -> Effect {
         let english = event.modifiers.caps || event.modifiers.english_mode;
-        if self.full_width_for(english)
+        if !codes::is_keypad(event.virtual_key)
+            && self.full_width_for(english)
             && let Some(text) = self.engine.punctuate(c)
         {
             return Effect::Changed(Some(text.to_owned()));

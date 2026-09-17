@@ -41,3 +41,8 @@ pub(crate) fn digit_key(virtual_key: u32) -> Option<usize> {
         .contains(&virtual_key)
         .then(|| (virtual_key - 0x30) as usize)
 }
+
+/// 小键盘区的键（数字与 `* + - . /`）：敲出来的标点一律半角。
+pub(crate) fn is_keypad(virtual_key: u32) -> bool {
+    (0x60..=0x6F).contains(&virtual_key)
+}
