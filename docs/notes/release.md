@@ -32,6 +32,26 @@ workflow 会核对 `apps/macos/Cargo.toml` 版本号与标签（去掉 `macos-v`
 
 Rust 工具链由 `rust-toolchain.toml` 钉版本（现在 1.96.0），两个 workflow 里 `dtolnay/rust-toolchain@master` 的 `toolchain:` 输入写同一个号；升级 Rust 时三处一起改。
 
+## 一键发版（本机）
+
+Apple 签名 secrets 没配进 CI，macOS 正式包在本机签名公证；Windows 仍由 CI 打。三个脚本把整套流程串起来：
+
+- `tools/release/release.sh [--macos] [--windows] [--yes] [--skip-website]`：缺省两个平台一起发。
+  从 Cargo.toml 的 `-dev` 版本推出发版号 → CHANGELOG 的 `## <版本> · 未发布 · <渠道>` 换成今天（没有该小节或没有条目就停）→
+  `chore(release)` 提交并打 `macos-v*` / `windows-v*` 标签 → 确认后推送 → 取消 CI 的 macOS 无签名构建、跑 `macos-local.sh` →
+  等 Windows CI 发完 → 两个平台都发时按全部 Release 重生成一次 `releases.json` → `deploy-website.sh` → 版本号推到下一个 `-dev` 并推送。
+  推送前取消会撤回发版提交与标签。
+- `tools/release/macos-local.sh [--no-publish] [--fetch-data]`：要求版本不带 `-dev`、工作区干净、标签指向 HEAD。
+  先下载 `data.lock` 锁定的数据包逐文件比对本机 `data/generated/` 与模型（不符就停；`--fetch-data` 用锁定数据覆盖），
+  打 arm64 与 x86_64 两个 pkg（Developer ID 签名），公证钉票据并用 `spctl` 核对，写 `SHA256SUMS` / `build-info.json`，
+  建 Release 并跑 `publish-releases-json.sh`。公证凭据用 `GLIMMER_NOTARY_PROFILE`，没设就读仓库根 `.env` 的 `APPLE_ID` / `APPLE_PASSWORD` / `APPLE_TEAM_ID`。产物在 `target/pkg/macos-v<版本>/`。
+- `tools/release/deploy-website.sh [标签…]`：官网仓库（缺省 `../glimmer-web`，`GLIMMER_WEB_DIR` 可改）记一笔 `upstream.json` 并提交，
+  删掉 `src/content/releases.json` 缓存（一小时内不重拉，不删会部署出旧列表），`GLIMMER_DOCS_SOURCE=git npm run build`，`npx wrangler deploy`，
+  最后逐个探测下载页上的安装包地址，有打不开的就报错。主仓库 HEAD 要已推到 origin/main（文档按提交号拉）。
+
+Release 发出后别改回草稿：草稿的下载地址公开访问是 404，已生成的 `releases.json` 仍指着它（2026-09-17 的 macOS 0.1.5 就是这样挂在官网上的）；
+官网的 `sync-releases.mjs` 现在会去掉 404 的安装包，但该删的草稿还是要删。
+
 ## Windows 发版
 
 1. 改 `apps/windows/{server,tsf,settings}/Cargo.toml` 的 `version`（三个一起改；打包脚本与 workflow 读 `server` 那份）。

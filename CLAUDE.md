@@ -27,7 +27,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `apps/linux`：IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`，D-Bus）；`fcitx5/` 是 Fcitx5 插件（Rust 静态库 `glimmer-fcitx5` 包 C 接口 + CMake 的 C++ 薄壳 `glimmer.so`）；`packaging/` 是 deb 的组件描述 / control / 维护脚本，`scripts/package.sh` 在 Linux 上出 deb，macOS 本机用 `scripts/package-docker.sh`。
 - `tools/dict-convert`、`tools/gloss-gen`、`tools/corpus`：产品数据生成（词库 / 语言模型 / 释义表 / emoji / 英文词表），输出到 `data/generated/`（gitignore）。
 - `tools/eval/sweep.sh`：回放扫参（多组 `--tune` 并行跑 `glimmer-cli --replay` 汇成 TSV），用法见 `docs/notes/constant-sweep.md`。
-- `tools/release/`：发版脚本（数据包上传 `data-bundle.sh`、模型单文件 `pack-model.sh`、`releases.json`、官网触发），流程见 `docs/notes/release.md`。
+- `tools/release/`：发版脚本（一键发版 `release.sh`、macOS 本机签名公证 `macos-local.sh`、官网部署 `deploy-website.sh`、数据包上传 `data-bundle.sh`、模型单文件 `pack-model.sh`、`releases.json`、官网触发），流程见 `docs/notes/release.md`。
 - `data/`：产品数据，整个 gitignore。`data/generated/` 由 tools 生成或从 GitHub 的 `data` Release 下载，`data/model/` 是本地整句模型；没有它引擎跑不起来。
 - `assets/`：随包数据源与样例，各目录有 README 写来源与许可。雾凇拼音（GPL）已彻底移除，不要再引入。
 
