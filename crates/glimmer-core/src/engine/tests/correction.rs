@@ -61,8 +61,8 @@ fn typo_edges_in_the_lattice_correct_legal_but_unlikely_pinyin() {
             .iter()
             .all(|c| c.text != "关系")
     );
-    // 敲的拼音本身正好是一个词（按另一种切分）：不许敲错边压过它。jineng 最优切分是 jin eng，词图里读出 近藤，
-    // 但 技能 的音节正好拼成整段输入
+    // 敲的拼音本身正好是一个词（按另一种切分）：不许敲错边压过它。jineng 切分器排第一的是 jin eng，词图里读出 近藤，
+    // 但 技能 的音节正好拼成整段输入；同形切分按整句得分挑，ji neng 读出的 技能 胜过带敲错代价的 近藤
     let dictionary = Dictionary::parse(
         "技能\tji neng\t300000\n近藤\tjin teng\t900000\n近\tjin\t500000\n\
              机\tji\t400000\n能\tneng\t600000\n",
@@ -71,7 +71,7 @@ fn typo_edges_in_the_lattice_correct_legal_but_unlikely_pinyin() {
     let mut engine = Engine::new(dictionary);
     engine.set_input("jineng");
     let query = engine.query().unwrap();
-    assert_eq!(query.segmentations[0].joined("'"), "jin'eng");
+    assert_eq!(query.segmentations[0].joined("'"), "ji'neng");
     assert_eq!(query.candidates.items[0].text, "技能");
     assert!(query.candidates.items.iter().all(|c| c.text != "近藤"));
     // 退回原样的路径时原样的整句照出：shude 词图里 是的（shu → shi 相邻键）赢，但 树德 正好拼成 shude，

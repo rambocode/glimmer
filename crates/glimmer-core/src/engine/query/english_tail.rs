@@ -103,7 +103,8 @@ impl Engine {
     /// `taida`：太大 赢过 他 + Ida；`huoz`：或者 赢过 和 + Oz。
     pub(super) fn mixed_beats_plain(&self, scope: &str, tail: &EnglishTail) -> bool {
         let convert = |text: &str, whole: bool| {
-            let segmentations = parser::segment(text).ok()?;
+            let mut segmentations = parser::segment(text).ok()?;
+            self.prefer_convertible(&mut segmentations, true);
             self.convert_sentence_with(&segmentations.first()?.patterns(), true, whole)
         };
         let (Some(head), Some(plain)) = (

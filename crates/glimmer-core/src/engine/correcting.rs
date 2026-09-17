@@ -44,6 +44,8 @@ impl Engine {
         // 噪声信道：原串按原样能转出的整句得分 vs 纠正后的整句得分扣掉一次编辑的代价，后者高才纠。
         // 原串切不干净（有尾巴）就没有原样得分，任何能转出整句的纠正都胜出
         let raw_score = if tail.is_empty() {
+            let mut segmentations = segmentations;
+            self.prefer_convertible(&mut segmentations, true);
             segmentations
                 .first()
                 .and_then(|best| self.convert_sentence(&best.patterns(), true))

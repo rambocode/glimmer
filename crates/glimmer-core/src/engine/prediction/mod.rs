@@ -98,11 +98,14 @@ impl Engine {
             return None;
         }
         let (pinyin, syllables, guess) = match segment_longest_prefix(pinyin_source) {
-            Ok((segmentations, tail)) => (
-                query::join_marked(&segmentations, tail),
-                segmentations.first().map_or(0, |s| s.syllables.len()),
-                self.local_guess(&segmentations),
-            ),
+            Ok((mut segmentations, tail)) => {
+                self.prefer_convertible(&mut segmentations, true);
+                (
+                    query::join_marked(&segmentations, tail),
+                    segmentations.first().map_or(0, |s| s.syllables.len()),
+                    self.local_guess(&segmentations),
+                )
+            }
             Err(_) => (pinyin_source.to_owned(), 0, String::new()),
         };
         if question {

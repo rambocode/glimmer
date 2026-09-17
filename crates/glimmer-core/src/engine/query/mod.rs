@@ -4,6 +4,7 @@ use super::*;
 
 mod english_tail;
 mod result;
+mod segmentation;
 mod snapshot;
 mod wubi;
 
@@ -236,6 +237,10 @@ impl Engine {
         let lookup = start.elapsed();
 
         let start = Instant::now();
+        // 整句、拼音行读第一种切分：同形的几种切分里按整句得分挑（`dangao` 读 dan gao 不读 dang ao）。
+        // 放在查词之后，词级候选的收集顺序不受影响
+        let mut segmentations = segmentations;
+        self.prefer_convertible(&mut segmentations, correction.is_none());
         // 再往后翻也翻不到的候选不必再造：单字母简拼能命中两万个词，排完序只留前面这些。
         // 同输入串（候选覆盖的那段字母）下选过的优先；上下文是上一个上屏的词（句首为 None）：
         // `ba` 在「做了」后面出 吧、句首出 把
@@ -477,7 +482,11 @@ impl Engine {
             return;
         };
         let keys = self.composition.scope();
-        let first_segmentation = |text: &str| parser::segment(text).ok()?.into_iter().next();
+        let first_segmentation = |text: &str| {
+            let mut segmentations = parser::segment(text).ok()?;
+            self.prefer_convertible(&mut segmentations, typos);
+            segmentations.into_iter().next()
+        };
         match english_tail {
             Some(tail) if head_wins => {
                 if let Some(mixed) = self.mixed_sentence(best, tail, typos) {

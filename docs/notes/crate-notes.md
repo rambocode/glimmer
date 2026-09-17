@@ -30,6 +30,10 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 - 中英混输的英文词位置：`Engine::set_chinese_first`（配置 `[general] chinese_first`，缺省关）关着时拼音不像话的输入英文排第一（`extras::insert_english`，
   用户老选中文词时仍让中文在前），开着时整句先插、英文词紧随其后排第二（`query_inner` 里两步的先后按开关掉转）；句末英文词并入整句（`EnglishTail`）不受它影响。
   缺省关是回放定的（9241 词 / 269 条英文上屏：缺省开英文首选 82.5% → 7.1%）。
+- 整句读哪种切分：`parser::segment` 只按字母排（音节少、残缺少，再同就前面的音节长），零声母边界上会偏向前字吞 n / g（`dangao` 排出 `dang ao`）。
+  `Engine::prefer_convertible`（`engine/query/segmentation.rs`）在与第一种同形（音节数、残缺数相同）的切分里按整句得分挑最高的挪到最前；
+  查询（在查词之后、插整句之前）、上屏重算 `sentence_words` / `mixed_words`、中英混输比分、纠错的原样得分、云联想的拼音与本地参考都先调它，几处读的是同一种切分。
+  只有一种同形切分时不做转换。
 - `custom_phrase::merge_replacements` 把平台给的「输入码 → 短语」表（macOS 系统文本替换）并进配置里的自定义短语：每条占该码最靠前的空位（1–9），
   输入码不是小写字母、已有同码同文本、九位都满的跳过；Core 不管数据从哪来。
 

@@ -402,7 +402,8 @@ impl Engine {
             }
             (None, Some(c)) => self.convert_sentence(&c.segmentation.patterns(), false)?,
             (None, None) => {
-                let (segmentations, _) = segment_longest_prefix(scope).ok()?;
+                let (mut segmentations, _) = segment_longest_prefix(scope).ok()?;
+                self.prefer_convertible(&mut segmentations, true);
                 self.convert_sentence(&segmentations.first()?.patterns(), true)?
             }
         };
@@ -416,7 +417,8 @@ impl Engine {
         tail: &EnglishTail,
         text: &str,
     ) -> Option<Vec<sentence::SentenceWord>> {
-        let segmentations = parser::segment(&scope[..tail.head_len]).ok()?;
+        let mut segmentations = parser::segment(&scope[..tail.head_len]).ok()?;
+        self.prefer_convertible(&mut segmentations, true);
         let mut conversion = self.convert_sentence(&segmentations.first()?.patterns(), true)?;
         conversion.text.push_str(&tail.word);
         if conversion.text != text {

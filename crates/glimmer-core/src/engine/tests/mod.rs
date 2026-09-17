@@ -9,6 +9,7 @@ mod english;
 mod learning;
 mod lookup;
 mod privacy;
+mod segmentation;
 mod shuangpin;
 mod wubi;
 mod zhuyin;
