@@ -15,6 +15,11 @@
 - `data/generated/gloss-llm.jsonl`：模型原始输出，一行一个词（词性、英文译词、日文译词与假名），可续跑：
   `cargo run --release -p glimmer-gloss-gen -- generate --words assets/lexicon/dict.tsv --min-count 1 --max-chars 8`
 - `glossary-en.tsv` / `glossary-ja.tsv`：输入法加载的表，由 `... export --out-dir assets/glossary` 导出。
+- 英文译词后面的 `|音标` 来自 [ipa-dict](https://github.com/open-dict-data/ipa-dict)（MIT）的美音表 `en_US.txt`（CMUdict 转的 IPA，
+  下载到 `data/ipa/`）。它的写法是机器风格（每个词都标重音、ɹ ɫ ɛ、不写长音），先用 `uv run tools/corpus/ipa_en.py` 换写成课本 / 词典写法
+  `data/ipa/en_US-textbook.txt`（规则见脚本开头），再 `cargo run --release -p glimmer-gloss-gen -- ipa` 给这张表原地补
+  （或 `... export --ipa data/ipa/en_US-textbook.txt` 导出时写）。多词短语逐词查、全命中才拼；人名地名（拼音专名）查不到就不带。
+  2026-09-17 补全：24.2 万条释义里 17.2 万条有音标（71%）。
 
 2026-09-05 对 `assets/lexicon/dict.tsv` 全量生成：23.9 万词（含旧语料词表的 3.8 万），
 词库多字词 91% 有英文释义、98% 有日文释义。

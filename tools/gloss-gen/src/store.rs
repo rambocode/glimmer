@@ -12,6 +12,7 @@ use serde::de::DeserializeOwned;
 
 use crate::entry::{EnglishGlossEntry, GlossEntry, PinyinEntry};
 use crate::error::GlossError;
+use crate::ipa::IpaDict;
 
 /// JSONL 里的一行：按词去重续跑。
 pub trait Keyed: Serialize + DeserializeOwned {
@@ -108,8 +109,9 @@ pub fn read_entries<T: Keyed>(path: &Path) -> Result<Vec<T>, GlossError> {
     Ok(entries)
 }
 
-/// 导出成输入法加载的两张表：`词\t词性 译词\t词性 译词`，日文译词后面接 `|假名`。同一个词以最后一条为准，按词排序。
-pub fn export(input: &Path, out_dir: &Path) -> Result<(), GlossError> {
+/// 导出成输入法加载的两张表：`词\t词性 译词\t词性 译词`，日文译词后面接 `|假名`，给了音标表英文译词后面接 `|音标`。
+/// 同一个词以最后一条为准，按词排序。
+pub fn export(input: &Path, out_dir: &Path, ipa: Option<&IpaDict>) -> Result<(), GlossError> {
     let mut latest: BTreeMap<String, GlossEntry> = BTreeMap::new();
     for entry in read_entries::<GlossEntry>(input)? {
         latest.insert(entry.word.clone(), entry);
@@ -117,10 +119,13 @@ pub fn export(input: &Path, out_dir: &Path) -> Result<(), GlossError> {
     std::fs::create_dir_all(out_dir)?;
     let mut english = BufWriter::new(File::create(out_dir.join("glossary-en.tsv"))?);
     let mut japanese = BufWriter::new(File::create(out_dir.join("glossary-ja.tsv"))?);
-    writeln!(
-        english,
-        "# 由 glimmer-gloss-gen 生成（LLM）。词\t[词性. ]译词\t[词性. ]译词"
-    )?;
+    match ipa {
+        Some(_) => writeln!(english, "{}", crate::ipa::HEADER)?,
+        None => writeln!(
+            english,
+            "# 由 glimmer-gloss-gen 生成（LLM）。词\t[词性. ]译词\t[词性. ]译词"
+        )?,
+    }
     writeln!(
         japanese,
         "# 由 glimmer-gloss-gen 生成（LLM）。词\t[词性. ]译词|假名\t[词性. ]译词|假名"
@@ -135,7 +140,10 @@ pub fn export(input: &Path, out_dir: &Path) -> Result<(), GlossError> {
         if !entry.en.is_empty() {
             write!(english, "{}", entry.word)?;
             for sense in &entry.en {
-                write!(english, "\t{pos}{sense}")?;
+                match ipa.and_then(|dict| dict.lookup(sense)) {
+                    Some(reading) => write!(english, "\t{pos}{sense}|{reading}")?,
+                    None => write!(english, "\t{pos}{sense}")?,
+                }
             }
             writeln!(english)?;
             en_count += 1;

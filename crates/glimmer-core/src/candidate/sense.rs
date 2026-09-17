@@ -11,7 +11,7 @@ pub struct Sense {
     /// 学习语言的译文，短语级别，不是整段解释。
     pub text: String,
 
-    /// 译文的读音（日语假名），给不认识汉字读法的人看；英文等没有。
+    /// 译文的读音：日语是假名（给不认识汉字读法的人看），英语是音标（不带斜线）；西班牙语等没有。
     pub reading: Option<String>,
 
     /// 生词：这条译词用户在候选里还没见过几轮（`Engine::annotate` 按词汇记录填，释义表里恒为 false），壳可以标出来。
@@ -20,7 +20,7 @@ pub struct Sense {
 }
 
 impl Sense {
-    /// 译文按汉字段配上假名（振り仮名）；没有读音时只有译文本身一段。
+    /// 译文按汉字段配上假名（振り仮名），英文译词整体配音标；没有读音时只有译文本身一段。
     pub fn furigana(&self) -> Vec<super::FuriganaSegment> {
         match &self.reading {
             Some(reading) => super::furigana(&self.text, reading),

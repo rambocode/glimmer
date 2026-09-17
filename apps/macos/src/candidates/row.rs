@@ -52,9 +52,15 @@ impl Row {
                     Tone::Gloss
                 };
                 for segment in sense.furigana() {
+                    // 汉字段紧跟假名（開発(かいはつ)），英文词与音标之间留一个空格（develop (dɪˈvɛləp)）
+                    let gap = if segment.text.ends_with(|c: char| c.is_ascii_alphanumeric()) {
+                        " "
+                    } else {
+                        ""
+                    };
                     annotation.push((segment.text, tone));
                     if let Some(reading) = segment.reading {
-                        annotation.push((format!("({reading})"), Tone::Faint));
+                        annotation.push((format!("{gap}({reading})"), Tone::Faint));
                     }
                 }
             }

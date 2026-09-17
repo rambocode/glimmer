@@ -3,7 +3,8 @@
 //! `generate` 从一元词频表挑词、分批问模型，结果逐行追加到 JSONL（中断了再跑会跳过已完成的词）；
 //! `export` 把 JSONL 转成输入法加载的 `glossary-en.tsv` / `glossary-ja.tsv`；
 //! `pinyin` 给词表里的词标拼音（建词库时含多音字的词靠它定读音），结果 `pinyin-llm.jsonl`；
-//! `english` / `export-english` 给英文词写中文释义，导出 `glossary-zh.tsv`（英文候选右侧显示）。
+//! `english` / `export-english` 给英文词写中文释义，导出 `glossary-zh.tsv`（英文候选右侧显示）；
+//! `ipa` 给 `glossary-en.tsv` 的英文译词补音标（查 `tools/corpus/ipa_en.py` 换写好的音标表，`export --ipa` 导出时也能一并写）。
 //! 密钥来自 `--api-key` 或环境变量 `GLIMMER_API_KEY`（也读当前目录的 `.env`）。
 
 mod args;
@@ -13,6 +14,7 @@ mod english;
 mod entry;
 mod error;
 mod generate;
+mod ipa;
 mod pinyin;
 mod prompt;
 mod store;
@@ -46,7 +48,10 @@ fn run() -> Result<(), GlossError> {
                 .build()?;
             runtime.block_on(generate::run(generate))
         }
-        Command::Export(export) => store::export(&export.input, &export.out_dir),
+        Command::Export(export) => {
+            let ipa = export.ipa.as_deref().map(ipa::IpaDict::load).transpose()?;
+            store::export(&export.input, &export.out_dir, ipa.as_ref())
+        }
         Command::English(english) => {
             let runtime = tokio::runtime::Builder::new_multi_thread()
                 .enable_all()
@@ -54,6 +59,18 @@ fn run() -> Result<(), GlossError> {
             runtime.block_on(english::run(english))
         }
         Command::ExportEnglish(export) => store::export_english(&export.input, &export.out_dir),
+        Command::Ipa(args) => {
+            let dict = ipa::IpaDict::load(&args.ipa)?;
+            let (total, hit) = ipa::annotate(&args.glossary, &dict)?;
+            tracing::info!(
+                dict = dict.len(),
+                senses = total,
+                annotated = hit,
+                glossary = %args.glossary.display(),
+                "音标补完"
+            );
+            Ok(())
+        }
         Command::Pinyin(pinyin) => {
             let runtime = tokio::runtime::Builder::new_multi_thread()
                 .enable_all()

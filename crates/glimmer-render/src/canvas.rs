@@ -113,7 +113,7 @@ impl Canvas {
 
     /// 直通 RGBA 位图（彩色 emoji）叠上来。
     pub(crate) fn blend_rgba(&mut self, x: i32, y: i32, width: u32, height: u32, data: &[u8]) {
-        for (i, px) in data.chunks_exact(4).enumerate() {
+        for (i, px) in data.as_chunks::<4>().0.iter().enumerate() {
             if px[3] == 0 {
                 continue;
             }

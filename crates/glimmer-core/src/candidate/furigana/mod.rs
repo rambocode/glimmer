@@ -2,19 +2,25 @@
 //!
 //! 译词里的假名段在读音里原样出现，拿它们当锚点，锚点之间的假名就是相邻汉字段的读音；
 //! 多种对法时取第一种可行的。对不上（读音与写法的假名不一致）就整体注在后面。
+//! 没有汉字的译词（英文词配音标）不切段，读音整体挂在唯一的一段上。
 
 mod segment;
 
 pub use segment::FuriganaSegment;
 
-/// 把 `text` 切成汉字段与非汉字段，汉字段带上从 `reading` 里对出来的假名。读音与写法一样（纯假名词）时只有一段、不带读音。
+/// 把 `text` 切成汉字段与非汉字段，汉字段带上从 `reading` 里对出来的假名。
+/// 没有汉字时只有一段：读音与写法一样（纯假名词，片假名也按平假名比）不带读音，不一样（英文词的音标）整体带上。
 pub fn furigana(text: &str, reading: &str) -> Vec<FuriganaSegment> {
     let runs = split_runs(text);
     let reading_chars: Vec<char> = reading.chars().map(to_hiragana).collect();
     if !runs.iter().any(|(_, kanji)| *kanji) {
+        let same = text
+            .chars()
+            .map(to_hiragana)
+            .eq(reading_chars.iter().copied());
         return vec![FuriganaSegment {
             text: text.to_owned(),
-            reading: None,
+            reading: (!same).then(|| reading.to_owned()),
         }];
     }
     let mut readings = Vec::with_capacity(runs.len());
@@ -134,5 +140,12 @@ mod tests {
         // 读音与写法里的假名对不上：整体注在后面
         assert_eq!(render("開発する", "かいはつ"), "開発する(かいはつ)");
         assert_eq!(render("開発する", "かいはつした"), "開発する(かいはつした)");
+    }
+
+    #[test]
+    fn latin_words_keep_reading_whole() {
+        // 英文译词配音标：没有汉字可切，读音整体挂上
+        assert_eq!(render("develop", "dɪˈvɛləp"), "develop(dɪˈvɛləp)");
+        assert_eq!(render("ice cream", "ˈaɪs ˈkrim"), "ice cream(ˈaɪs ˈkrim)");
     }
 }

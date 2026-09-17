@@ -5,7 +5,7 @@ mod candidates;
 mod preedit;
 mod row;
 
-use glimmer_core::Candidate;
+use glimmer_core::{Candidate, Sense};
 use glimmer_platform::LayoutMode;
 use glimmer_platform::protocol::{Frame, PreeditKind};
 
@@ -72,20 +72,33 @@ pub fn auxiliary_text(frame: &Frame) -> Option<String> {
         .map(|sentence| format!("{sentence}  Tab"))
 }
 
-/// 一个候选：译文的各条释义用「; 」连起来当注解。
+/// 一个候选：译文的各条释义用「; 」连起来当注解，译词带读音时接在后面（開発(かいはつ)する、develop (dɪˈvɛləp)）。
 fn row(candidate: &Candidate) -> CandidateRow {
     let annotation = candidate.translation.as_ref().and_then(|translation| {
-        let senses: Vec<&str> = translation
-            .senses()
-            .iter()
-            .map(|sense| sense.text.as_str())
-            .collect();
+        let senses: Vec<String> = translation.senses().iter().map(sense_text).collect();
         (!senses.is_empty()).then(|| senses.join("; "))
     });
     CandidateRow {
         text: candidate.text.clone(),
         annotation,
     }
+}
+
+/// 一条释义的展示文本：汉字段紧跟假名，英文词与音标之间留一个空格。
+fn sense_text(sense: &Sense) -> String {
+    let mut out = String::new();
+    for segment in sense.furigana() {
+        let gap = if segment.text.ends_with(|c: char| c.is_ascii_alphanumeric()) {
+            " "
+        } else {
+            ""
+        };
+        out.push_str(&segment.text);
+        if let Some(reading) = segment.reading {
+            out.push_str(&format!("{gap}({reading})"));
+        }
+    }
+    out
 }
 
 #[cfg(test)]

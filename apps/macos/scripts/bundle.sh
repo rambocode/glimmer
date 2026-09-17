@@ -117,6 +117,9 @@ if [[ -f data/generated/dict.tsv || -f data/generated/dict.qj ]]; then
     if [[ "$lang" == es ]]; then
       license="GPL-3.0-or-later"
       attribution="Azure Translator 机器翻译（Tofuzhu，tools/corpus/glossary_es.py）"
+    elif [[ "$lang" == en ]]; then
+      license="MIT"
+      attribution="LLM 生成（DeepSeek），glimmer-gloss-gen；音标来自 ipa-dict（MIT）"
     else
       license="MIT"
       attribution="LLM 生成（DeepSeek），glimmer-gloss-gen"

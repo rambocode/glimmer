@@ -25,6 +25,9 @@ pub enum Command {
 
     /// 把英→中 JSONL 导出成 glossary-zh.tsv
     ExportEnglish(ExportEnglishArgs),
+
+    /// 给已导出的 glossary-en.tsv 补英文音标（查 ipa-dict，不用模型）
+    Ipa(IpaArgs),
 }
 
 #[derive(Debug, clap::Args)]
@@ -180,4 +183,19 @@ pub struct ExportArgs {
     /// 输出目录，写 glossary-en.tsv 与 glossary-ja.tsv
     #[arg(long, default_value = "data/generated")]
     pub out_dir: PathBuf,
+
+    /// 英文音标表（`词\t/音标/`，`tools/corpus/ipa_en.py` 生成）；给了就把音标写进 glossary-en.tsv 的 `|读音` 槽
+    #[arg(long)]
+    pub ipa: Option<PathBuf>,
+}
+
+#[derive(Debug, clap::Args)]
+pub struct IpaArgs {
+    /// 要补音标的 glossary-en.tsv，原地改写
+    #[arg(long, default_value = "assets/glossary/glossary-en.tsv")]
+    pub glossary: PathBuf,
+
+    /// 英文音标表（`词\t/音标/`），`tools/corpus/ipa_en.py` 从 ipa-dict 换写成课本写法的那张
+    #[arg(long, default_value = "data/ipa/en_US-textbook.txt")]
+    pub ipa: PathBuf,
 }

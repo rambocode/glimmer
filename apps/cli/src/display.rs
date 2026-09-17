@@ -183,11 +183,16 @@ fn format_candidate(candidate: &Candidate, width: usize) -> String {
             t.senses()
                 .iter()
                 .map(|s| {
-                    // 日文译词按汉字段注平假名：開発(かいはつ)する
+                    // 日文译词按汉字段注平假名：開発(かいはつ)する；英文译词整体带音标，留一个空格：develop (dɪˈvɛləp)
                     let text: String = s
                         .furigana()
                         .iter()
                         .map(|segment| match &segment.reading {
+                            Some(reading)
+                                if segment.text.ends_with(|c: char| c.is_ascii_alphanumeric()) =>
+                            {
+                                format!("{} ({reading})", segment.text)
+                            }
                             Some(reading) => format!("{}({reading})", segment.text),
                             None => segment.text.clone(),
                         })

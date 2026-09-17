@@ -218,7 +218,9 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
 ## tools/gloss-gen
 
 用 LLM 批量生成释义表：`cargo run --release -p glimmer-gloss-gen -- generate`（密钥读 `GLIMMER_API_KEY`，结果 JSONL 在 `data/generated/`，不进 git、可续跑，`--limit 80` 试跑）
-再 `... export`（写 `glossary-{en,ja}.tsv`，产品数据在 `assets/glossary/`，见那里的 README；格式 `词\t词性. 译词[|假名]`）。CLI 与 bundle.sh 用的就是这两个文件。
+再 `... export`（写 `glossary-{en,ja}.tsv`，产品数据在 `assets/glossary/`，见那里的 README；格式 `词\t词性. 译词[|读音]`，日语读音是假名、英语是音标）。CLI 与 bundle.sh 用的就是这两个文件。
+英文音标不用模型：`uv run tools/corpus/ipa_en.py` 把 ipa-dict 的美音表 `data/ipa/en_US.txt`（CMUdict 风格）换写成课本写法 `data/ipa/en_US-textbook.txt`
+（规则全在脚本里，Rust 只查表不改写），再 `... ipa` 给已有的 `glossary-en.tsv` 原地补（或 `export --ipa <表>` 导出时写）；多词短语逐词查全命中才拼。
 
 ## tools/dict-convert
 
