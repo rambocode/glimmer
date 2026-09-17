@@ -31,7 +31,8 @@ for f in "${PRODUCT_FILES[@]}"; do
 done
 # AI 词库来自随仓库维护的数据，发布数据包前校验并生成；按本次主词库排除重复。
 cargo run --release --locked -q -p glimmer-dict-convert -- ai \
-  --exclude data/generated/dict.qj --corpus assets/lexicon/ai/corpus.txt
+  --exclude data/generated/dict.qj --corpus assets/lexicon/ai/corpus.txt \
+  --corpus assets/lexicon/ai/development.txt
 DOMAIN_FILES=()
 for f in data/generated/dicts/*.qj; do [[ -f "$f" ]] && DOMAIN_FILES+=("dicts/$(basename "$f")"); done
 [[ ${#DOMAIN_FILES[@]} -gt 0 ]] || { echo "缺少 data/generated/dicts/*.qj" >&2; exit 1; }

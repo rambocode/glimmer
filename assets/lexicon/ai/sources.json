@@ -2,7 +2,7 @@
   "curated": {
     "name": "Glimmer 按领域整理的术语与固定搭配",
     "license": "GPL-3.0-or-later",
-    "method": "人工整理，拼音初稿来自 pypinyin，已针对重、长、调、角、校等读音修订；人工权重不是语料次数"
+    "method": "按领域编写的词条与固定搭配，AI 辅助整理；拼音初稿来自 pypinyin，再修订重、长、调、角、校等易错读音。人工设定的排序权重不是语料次数，也不代表所有词经过外部专家审核。"
   },
   "d2l": {
     "name": "动手学深度学习（中文）",
@@ -124,5 +124,56 @@
     "license": "name-facts",
     "checked": "2026-09-17",
     "method": "仅整理名称事实；具体型号为核对时快照，不声明最新型号完整覆盖"
+  },
+  "vue": {
+    "name": "vuejs-translations/docs-zh-cn",
+    "url": "https://github.com/vuejs-translations/docs-zh-cn",
+    "revision": "dda601fe33187dfd913641d58b6cefe829bf1a0d",
+    "archive": "https://codeload.github.com/vuejs-translations/docs-zh-cn/tar.gz/dda601fe33187dfd913641d58b6cefe829bf1a0d",
+    "sha256": "837cc6e846f9195578251f8c6d3dbc5c9033f1df903b7f8ca0744e5b73eff06e",
+    "license": "CC-BY-4.0",
+    "authors": "Evan You 与 Vue 文档贡献者",
+    "method": "只保留中文正文；去代码、HTML、链接标记，按段落去重；来源逐行记录于 development-sources.tsv",
+    "checked": "2026-09-17"
+  },
+  "rust-book": {
+    "name": "rust-lang-cn/book-cn",
+    "url": "https://github.com/rust-lang-cn/book-cn",
+    "revision": "cde74c448e301ce8ac7960a0d3dc879efd83635d",
+    "archive": "https://codeload.github.com/rust-lang-cn/book-cn/tar.gz/cde74c448e301ce8ac7960a0d3dc879efd83635d",
+    "sha256": "2b69c67fec25e5e15848d6307a1a6ec8f89ab21aad73df0935f05515141d7b11",
+    "license": "MIT",
+    "authors": "Rust Project Developers、Rust 中文翻译项目组及中文社区",
+    "method": "只保留中文正文；去代码、HTML、链接标记，按段落去重；来源逐行记录于 development-sources.tsv",
+    "checked": "2026-09-17"
+  },
+  "thuocl-it": {
+    "name": "仓库现有 THUOCL IT 领域词库筛选",
+    "url": "https://github.com/thunlp/THUOCL",
+    "repository_file": "assets/lexicon/dicts/it_computing.tsv",
+    "sha256": "b0a65a5ffb39c3042b27224098957a67d6296c5020c27348bff2df81f03e3207",
+    "license": "MIT AND Unicode-3.0",
+    "authors": "清华大学自然语言处理实验室；词形源 THUOCL；规范拼音来自本仓库既有词库",
+    "method": "筛选数据、系统、网络、语言、界面和工程相关词；去除教程标题、广告、碎片，人工权重统一15，独立于原始词频；读音源许可另见 Unicode-3.0",
+    "checked": "2026-09-17"
+  },
+  "development-names": {
+    "name": "软件开发名称与显式别名",
+    "license": "name-facts",
+    "method": "按日常开发分类整理公开名称事实；只收录名称和输入码，不复制说明或模型权重。C++/C#/点号文件等使用显式别名，不暗示工具推荐、官方译名或实时版本清单。来源参考见 references。",
+    "references": [
+      "https://git-scm.com/docs",
+      "https://code.claude.com/docs/en/overview",
+      "https://developers.openai.com/codex/cli",
+      "https://www.typescriptlang.org/docs/",
+      "https://react.dev/",
+      "https://cn.vuejs.org/",
+      "https://docs.docker.com/",
+      "https://kubernetes.io/docs/",
+      "https://docs.rs/",
+      "https://pypi.org/",
+      "https://www.npmjs.com/"
+    ],
+    "checked": "2026-09-17"
   }
 }

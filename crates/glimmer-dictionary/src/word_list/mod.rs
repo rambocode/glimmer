@@ -1,6 +1,6 @@
 //! 英文词表：精确查询、前缀补全及领域词库中的英文名称。
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::Path;
 
 use crate::error::DictionaryError;
@@ -63,27 +63,31 @@ impl WordList {
         Ok(Self { by_code, entries })
     }
 
-    /// 从附加词库提取英文名称。编码须为名称去掉空格和标点后的 ASCII 小写字母数字，
-    /// 词库键须以 `@` 标记，如 `Claude Opus 5` → `@claudeopus5`；
-    /// 普通拼音键、中英混合词与没有标记的导入条目不进入英文表。
+    /// 从附加词库提取显式别名：`@` 后为小写 ASCII 字母数字码，
+    /// 例如 `C++` → `@cpp`、`Git分支` → `@gitfenzhi`。输出保持源词形；
+    /// 未标记的普通拼音词与旧式 AI 混合词不进入英文表。
     /// 同一编码保留最先加载的词库，关闭或移除词库后重新构建即可撤销补全。
     pub fn from_dictionaries(dictionaries: &[crate::Dictionary]) -> Self {
         let mut list = Self::default();
         for entry in dictionaries.iter().flat_map(crate::Dictionary::entries) {
-            if !entry.text.is_ascii() || !entry.text.bytes().any(|b| b.is_ascii_alphabetic()) {
+            let Some(code) = entry.pinyin.strip_prefix('@') else {
                 continue;
-            }
-            let code: String = entry
-                .text
-                .bytes()
-                .filter(u8::is_ascii_alphanumeric)
-                .map(|b| (b as char).to_ascii_lowercase())
-                .collect();
-            if entry.pinyin.strip_prefix('@') != Some(code.as_str())
-                || list.by_code.contains_key(&code)
+            };
+            if !valid_alias_code(code)
+                || entry.text.is_empty()
+                || entry.text.chars().any(char::is_control)
             {
                 continue;
             }
+            if let Some(&index) = list.by_code.get(code) {
+                if list.entries[index].1 != entry.text {
+                    // 导入词库可能没有经过生成器；保留既有加载顺序，同时明确报告冲突。
+                    // 不记录词形或输入码，避免把项目内部名称写入运行日志。
+                    tracing::warn!("领域词库存在冲突的别名编码，保留先加载的词条");
+                }
+                continue;
+            }
+            let code = code.to_owned();
             list.by_code.insert(code.clone(), list.entries.len());
             list.entries
                 .push((code, entry.text.to_owned(), entry.frequency));
@@ -125,9 +129,11 @@ impl WordList {
             .filter(|(code, _, _)| code != prefix)
             .collect();
         hits.sort_by(|a, b| b.2.cmp(&a.2).then_with(|| a.0.cmp(&b.0)));
+        let mut seen = HashSet::new();
         hits.into_iter()
-            .take(limit)
             .map(|(_, word, _)| word.as_str())
+            .filter(|word| seen.insert(*word))
+            .take(limit)
             .collect()
     }
 
@@ -148,30 +154,15 @@ impl WordList {
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
+mod tests;
 
-    #[test]
-    fn looks_up_by_lowercase_code() {
-        let list = WordList::parse("GitHub\tgithub\nhello\thello\niPhone\n").unwrap();
-        assert_eq!(list.get("github"), Some("GitHub"));
-        assert_eq!(list.get("iphone"), Some("iPhone"));
-        assert_eq!(list.get("hello"), Some("hello"));
-        assert_eq!(list.get("nope"), None);
-    }
-
-    #[test]
-    fn completes_prefixes_by_frequency() {
-        let list = WordList::parse(
-            "compass\tcompass\t300\ncompany\tcompany\t900\ncompare\tcompare\t500\ncom\tcom\t100\ncomma\tcomma\n",
-        )
-        .unwrap();
-        assert_eq!(list.complete("comp", 2), ["company", "compare"]);
-        assert_eq!(
-            list.complete("com", 10),
-            ["company", "compare", "compass", "comma"]
-        );
-        assert!(list.complete("zzz", 3).is_empty());
-        assert!(list.complete("", 3).is_empty());
-    }
+/// 领域别名须以字母开头，只含小写 ASCII 字母数字，长度不超过 128 字节。
+/// 不接受标点或空白，以免与选词、命令和普通拼音音节键混淆。
+pub fn valid_alias_code(code: &str) -> bool {
+    !code.is_empty()
+        && code.len() <= 128
+        && code.as_bytes()[0].is_ascii_lowercase()
+        && code
+            .bytes()
+            .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit())
 }

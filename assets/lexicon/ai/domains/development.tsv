@@ -1,0 +1,1524 @@
+# 词	编码	人工权重	分类	类型	实体	来源	核对日期
+CPU限制	cpuxianzhi	30	可靠运维	mixed	CPU限制	curated	2026-09-17
+三方合并	san fang he bing	30	版本协作	term	三方合并	curated	2026-09-17
+上下文交接	shang xia wen jiao jie	30	代理开发	term	上下文交接	curated	2026-09-17
+上下文召回率	shang xia wen zhao hui lv	30	向量检索	term	上下文召回率	curated	2026-09-17
+上下文映射	shang xia wen ying she	30	架构设计	term	上下文映射	curated	2026-09-17
+上下文污染	shang xia wen wu ran	30	代理开发	term	上下文污染	curated	2026-09-17
+上下文泄漏	shang xia wen xie lou	30	代理开发	term	上下文泄漏	curated	2026-09-17
+上下文相关性	shang xia wen xiang guan xing	30	向量检索	term	上下文相关性	curated	2026-09-17
+上下文精确率	shang xia wen jing que lv	30	向量检索	term	上下文精确率	curated	2026-09-17
+上下文菜单	shang xia wen cai dan	30	前端交互	term	上下文菜单	curated	2026-09-17
+上屏	shang ping	30	桌面移动	term	上屏	curated	2026-09-17
+上游分支	shang you fen zhi	30	版本协作	term	上游分支	curated	2026-09-17
+下载失败	xia zai shi bai	30	开发操作	term	下载失败	curated	2026-09-17
+不可重复读	bu ke chong fu du	30	后端数据	term	不可重复读	curated	2026-09-17
+不提交无关文件	bu ti jiao wu guan wen jian	30	代理开发	term	不提交无关文件	curated	2026-09-17
+不稳定测试	bu wen ding ce shi	30	测试验收	term	不稳定测试	curated	2026-09-17
+不覆盖用户改动	bu fu gai yong hu gai dong	30	代理开发	term	不覆盖用户改动	curated	2026-09-17
+业务不变量	ye wu bu bian liang	30	架构设计	term	业务不变量	curated	2026-09-17
+业务场景	ye wu chang jing	30	项目协作	term	业务场景	curated	2026-09-17
+业务实体	ye wu shi ti	30	项目协作	term	业务实体	curated	2026-09-17
+业务对象	ye wu dui xiang	30	项目协作	term	业务对象	curated	2026-09-17
+业务指标	ye wu zhi biao	30	项目协作	term	业务指标	curated	2026-09-17
+业务术语	ye wu shu yu	30	项目协作	term	业务术语	curated	2026-09-17
+业务校验	ye wu jiao yan	30	后端数据	term	业务校验	curated	2026-09-17
+业务流程	ye wu liu cheng	30	项目协作	term	业务流程	curated	2026-09-17
+业务约束	ye wu yue shu	30	项目协作	term	业务约束	curated	2026-09-17
+业务规则	ye wu gui ze	30	项目协作	term	业务规则	curated	2026-09-17
+业务边界	ye wu bian jie	30	项目协作	term	业务边界	curated	2026-09-17
+业务需求	ye wu xu qiu	30	项目协作	term	业务需求	curated	2026-09-17
+业务验证	ye wu yan zheng	30	项目协作	term	业务验证	curated	2026-09-17
+丢弃改动	diu qi gai dong	30	版本协作	term	丢弃改动	curated	2026-09-17
+中文乱码	zhong wen luan ma	30	后端数据	term	中文乱码	curated	2026-09-17
+中文候选	zhong wen hou xuan	30	桌面移动	term	中文候选	curated	2026-09-17
+中间状态	zhong jian zhuang tai	30	架构设计	term	中间状态	curated	2026-09-17
+串行任务	chuan xing ren wu	30	代理开发	term	串行任务	curated	2026-09-17
+串行化隔离	chuan xing hua ge li	30	后端数据	term	串行化隔离	curated	2026-09-17
+串行执行	chuan xing zhi xing	30	代理开发	term	串行执行	curated	2026-09-17
+临时修复	lin shi xiu fu	30	排障修复	term	临时修复	curated	2026-09-17
+临时分支	lin shi fen zhi	30	版本协作	term	临时分支	curated	2026-09-17
+主从复制	zhu cong fu zhi	30	后端数据	term	主从复制	curated	2026-09-17
+主代理	zhu dai li	30	代理开发	term	主代理	curated	2026-09-17
+主分支	zhu fen zhi	30	版本协作	term	主分支	curated	2026-09-17
+主干分支	zhu gan fen zhi	30	版本协作	term	主干分支	curated	2026-09-17
+主执行器	zhu zhi xing qi	30	桌面移动	term	主执行器	curated	2026-09-17
+主线程	zhu xian cheng	30	桌面移动	term	主线程	curated	2026-09-17
+主线程阻塞	zhu xian cheng zu se	30	排障修复	term	主线程阻塞	curated	2026-09-17
+主进程	zhu jin cheng	30	桌面移动	term	主进程	curated	2026-09-17
+主题切换	zhu ti qie huan	30	前端交互	term	主题切换	curated	2026-09-17
+乐观回滚	le guan hui gun	30	前端交互	term	乐观回滚	curated	2026-09-17
+乐观更新	le guan geng xin	30	前端交互	term	乐观更新	curated	2026-09-17
+乐观锁	le guan suo	30	后端数据	term	乐观锁	curated	2026-09-17
+书签权限	shu qian quan xian	30	桌面移动	term	书签权限	curated	2026-09-17
+事件冒泡	shi jian mao pao	30	前端交互	term	事件冒泡	curated	2026-09-17
+事件发布	shi jian fa bu	30	架构设计	term	事件发布	curated	2026-09-17
+事件取消	shi jian qu xiao	30	前端交互	term	事件取消	curated	2026-09-17
+事件处理器	shi jian chu li qi	30	架构设计	term	事件处理器	curated	2026-09-17
+事件委托	shi jian wei tuo	30	前端交互	term	事件委托	curated	2026-09-17
+事件总线	shi jian zong xian	30	架构设计	term	事件总线	curated	2026-09-17
+事件捕获	shi jian bu huo	30	前端交互	term	事件捕获	curated	2026-09-17
+事件溯源	shi jian su yuan	30	架构设计	term	事件溯源	curated	2026-09-17
+事件穿透	shi jian chuan tou	30	前端交互	term	事件穿透	curated	2026-09-17
+事件订阅	shi jian ding yue	30	架构设计	term	事件订阅	curated	2026-09-17
+事件驱动架构	shi jian qu dong jia gou	30	架构设计	term	事件驱动架构	curated	2026-09-17
+事务传播	shi wu chuan bo	30	后端数据	term	事务传播	curated	2026-09-17
+事务回滚	shi wu hui gun	30	后端数据	term	事务回滚	curated	2026-09-17
+事务提交	shi wu ti jiao	30	后端数据	term	事务提交	curated	2026-09-17
+事务超时	shi wu chao shi	30	后端数据	term	事务超时	curated	2026-09-17
+事务边界	shi wu bian jie	30	后端数据	term	事务边界	curated	2026-09-17
+事务隔离	shi wu ge li	30	后端数据	term	事务隔离	curated	2026-09-17
+二进制量化	er jin zhi liang hua	30	向量检索	term	二进制量化	curated	2026-09-17
+交互式变基	jiao hu shi bian ji	30	版本协作	term	交互式变基	curated	2026-09-17
+交互模式	jiao hu mo shi	30	代理开发	term	交互模式	curated	2026-09-17
+交互设计	jiao hu she ji	30	项目协作	term	交互设计	curated	2026-09-17
+交付层	jiao fu ceng	30	架构设计	term	交付层	curated	2026-09-17
+交付时间	jiao fu shi jian	30	项目协作	term	交付时间	curated	2026-09-17
+交付标准	jiao fu biao zhun	30	项目协作	term	交付标准	curated	2026-09-17
+交付清单	jiao fu qing dan	30	项目协作	term	交付清单	curated	2026-09-17
+交付物	jiao fu wu	30	项目协作	term	交付物	curated	2026-09-17
+交付范围	jiao fu fan wei	30	项目协作	term	交付范围	curated	2026-09-17
+交叉编译	jiao cha bian yi	30	开发操作	term	交叉编译	curated	2026-09-17
+产品需求	chan pin xu qiu	30	项目协作	term	产品需求	curated	2026-09-17
+产物目录	chan wu mu lu	30	开发操作	term	产物目录	curated	2026-09-17
+人工验证	ren gong yan zheng	30	测试验收	term	人工验证	curated	2026-09-17
+仓储	cang chu	30	架构设计	term	仓储	curated	2026-09-17
+仓储接口	cang chu jie kou	30	架构设计	term	仓储接口	curated	2026-09-17
+仓库根目录	cang ku gen mu lu	30	开发操作	term	仓库根目录	curated	2026-09-17
+仓库约定	cang ku yue ding	30	代理开发	term	仓库约定	curated	2026-09-17
+仓库说明	cang ku shuo ming	30	代理开发	term	仓库说明	curated	2026-09-17
+代理上下文	dai li shang xia wen	30	代理开发	term	代理上下文	curated	2026-09-17
+代理会话	dai li hui hua	30	代理开发	term	代理会话	curated	2026-09-17
+代理协作	dai li xie zuo	30	代理开发	term	代理协作	curated	2026-09-17
+代理反馈	dai li fan kui	30	代理开发	term	代理反馈	curated	2026-09-17
+代理委派	dai li wei pai	30	代理开发	term	代理委派	curated	2026-09-17
+代理工作流	dai li gong zuo liu	30	代理开发	term	代理工作流	curated	2026-09-17
+代理工具	dai li gong ju	30	代理开发	term	代理工具	curated	2026-09-17
+代理执行	dai li zhi xing	30	代理开发	term	代理执行	curated	2026-09-17
+代理技能	dai li ji neng	30	代理开发	term	代理技能	curated	2026-09-17
+代理权限	dai li quan xian	30	代理开发	term	代理权限	curated	2026-09-17
+代理模式	dai li mo shi	30	架构设计	term	代理模式	curated	2026-09-17
+代理编程	dai li bian cheng	30	代理开发	term	代理编程	curated	2026-09-17
+代理记忆	dai li ji yi	30	代理开发	term	代理记忆	curated	2026-09-17
+代理调度	dai li diao du	30	代理开发	term	代理调度	curated	2026-09-17
+代理配置	dai li pei zhi	30	开发操作	term	代理配置	curated	2026-09-17
+代码仓库	dai ma cang ku	30	开发操作	term	代码仓库	curated	2026-09-17
+代码代理	dai ma dai li	30	代理开发	term	代码代理	curated	2026-09-17
+代码分割	dai ma fen ge	30	前端交互	term	代码分割	curated	2026-09-17
+代码审阅	dai ma shen yue	30	版本协作	term	代码审阅	curated	2026-09-17
+代码导航	dai ma dao hang	30	开发操作	term	代码导航	curated	2026-09-17
+代码差异	dai ma cha yi	30	版本协作	term	代码差异	curated	2026-09-17
+代码检查	dai ma jian cha	30	测试验收	term	代码检查	curated	2026-09-17
+代码签名	dai ma qian ming	30	桌面移动	term	代码签名	curated	2026-09-17
+代码规范检查	dai ma gui fan jian cha	30	测试验收	term	代码规范检查	curated	2026-09-17
+代码评审	dai ma ping shen	30	版本协作	term	代码评审	curated	2026-09-17
+令牌撤销	ling pai che xiao	30	后端数据	term	令牌撤销	curated	2026-09-17
+令牌过期	ling pai guo qi	30	后端数据	term	令牌过期	curated	2026-09-17
+任务交接	ren wu jiao jie	30	代理开发	term	任务交接	curated	2026-09-17
+任务取消	ren wu qu xiao	30	桌面移动	term	任务取消	curated	2026-09-17
+任务拆分	ren wu chai fen	30	项目协作	term	任务拆分	curated	2026-09-17
+任务清单	ren wu qing dan	30	项目协作	term	任务清单	curated	2026-09-17
+优先级	you xian ji	30	项目协作	term	优先级	curated	2026-09-17
+优先级队列	you xian ji dui lie	30	后端数据	term	优先级队列	curated	2026-09-17
+优雅关闭	you ya guan bi	30	可靠运维	term	优雅关闭	curated	2026-09-17
+会话交接	hui hua jiao jie	30	代理开发	term	会话交接	curated	2026-09-17
+会话保持	hui hua bao chi	30	可靠运维	term	会话保持	curated	2026-09-17
+会话分叉	hui hua fen cha	30	代理开发	term	会话分叉	curated	2026-09-17
+会话压缩	hui hua ya suo	30	代理开发	term	会话压缩	curated	2026-09-17
+会话管理	hui hua guan li	30	后端数据	term	会话管理	curated	2026-09-17
+会话续接	hui hua xu jie	30	代理开发	term	会话续接	curated	2026-09-17
+会话续期	hui hua xu qi	30	后端数据	term	会话续期	curated	2026-09-17
+会话过期	hui hua guo qi	30	后端数据	term	会话过期	curated	2026-09-17
+传输对象	chuan shu dui xiang	30	架构设计	term	传输对象	curated	2026-09-17
+传递依赖	chuan di yi lai	30	开发操作	term	传递依赖	curated	2026-09-17
+低耦合	di ou he	30	架构设计	term	低耦合	curated	2026-09-17
+余弦距离	yu xian ju li	30	向量检索	term	余弦距离	curated	2026-09-17
+使用场景	shi yong chang jing	30	项目协作	term	使用场景	curated	2026-09-17
+使用流程	shi yong liu cheng	30	项目协作	term	使用流程	curated	2026-09-17
+依赖倒置	yi lai dao zhi	30	架构设计	term	依赖倒置	curated	2026-09-17
+依赖关系	yi lai guan xi	30	开发操作	term	依赖关系	curated	2026-09-17
+依赖冲突	yi lai chong tu	30	开发操作	term	依赖冲突	curated	2026-09-17
+依赖升级	yi lai sheng ji	30	开发操作	term	依赖升级	curated	2026-09-17
+依赖图	yi lai tu	30	开发操作	term	依赖图	curated	2026-09-17
+依赖安装	yi lai an zhuang	30	开发操作	term	依赖安装	curated	2026-09-17
+依赖审计	yi lai shen ji	30	开发操作	term	依赖审计	curated	2026-09-17
+依赖数组	yi lai shu zu	30	前端交互	term	依赖数组	curated	2026-09-17
+依赖方向	yi lai fang xiang	30	架构设计	term	依赖方向	curated	2026-09-17
+依赖更新	yi lai geng xin	30	开发操作	term	依赖更新	curated	2026-09-17
+依赖检查	yi lai jian cha	30	测试验收	term	依赖检查	curated	2026-09-17
+依赖注入	yi lai zhu ru	30	架构设计	term	依赖注入	curated	2026-09-17
+依赖清理	yi lai qing li	30	开发操作	term	依赖清理	curated	2026-09-17
+依赖目录	yi lai mu lu	30	开发操作	term	依赖目录	curated	2026-09-17
+依赖解析	yi lai jie xi	30	开发操作	term	依赖解析	curated	2026-09-17
+依赖降级	yi lai jiang ji	30	开发操作	term	依赖降级	curated	2026-09-17
+保存改动	bao cun gai dong	30	版本协作	term	保存改动	curated	2026-09-17
+保持兼容	bao chi jian rong	30	排障修复	term	保持兼容	curated	2026-09-17
+保持向后兼容	bao chi xiang hou jian rong	30	排障修复	term	保持向后兼容	curated	2026-09-17
+保持行为	bao chi xing wei	30	排障修复	term	保持行为	curated	2026-09-17
+保留已有改动	bao liu yi you gai dong	30	代理开发	term	保留已有改动	curated	2026-09-17
+保留改动	bao liu gai dong	30	版本协作	term	保留改动	curated	2026-09-17
+保留现有改动	bao liu xian you gai dong	30	版本协作	term	保留现有改动	curated	2026-09-17
+保留现有行为	bao liu xian you xing wei	30	代理开发	term	保留现有行为	curated	2026-09-17
+保留用户改动	bao liu yong hu gai dong	30	排障修复	term	保留用户改动	curated	2026-09-17
+修复全部问题	xiu fu quan bu wen ti	30	代理开发	term	修复全部问题	curated	2026-09-17
+修复冲突	xiu fu chong tu	30	排障修复	term	修复冲突	curated	2026-09-17
+修复分支	xiu fu fen zhi	30	版本协作	term	修复分支	curated	2026-09-17
+修复回归	xiu fu hui gui	30	排障修复	term	修复回归	curated	2026-09-17
+修复审查问题	xiu fu shen cha wen ti	30	版本协作	term	修复审查问题	curated	2026-09-17
+修复测试	xiu fu ce shi	30	测试验收	term	修复测试	curated	2026-09-17
+修复缺陷	xiu fu que xian	30	排障修复	term	修复缺陷	curated	2026-09-17
+修复范围	xiu fu fan wei	30	排障修复	term	修复范围	curated	2026-09-17
+修复记录	xiu fu ji lu	30	排障修复	term	修复记录	curated	2026-09-17
+修复说明	xiu fu shuo ming	30	排障修复	term	修复说明	curated	2026-09-17
+修复问题	xiu fu wen ti	30	排障修复	term	修复问题	curated	2026-09-17
+修复验证	xiu fu yan zheng	30	排障修复	term	修复验证	curated	2026-09-17
+修改提交	xiu gai ti jiao	30	版本协作	term	修改提交	curated	2026-09-17
+倒排文件	dao pai wen jian	30	向量检索	term	倒排文件	curated	2026-09-17
+倒数排名融合	dao shu pai ming rong he	30	向量检索	term	倒数排名融合	curated	2026-09-17
+候选列表	hou xuan lie biao	30	桌面移动	term	候选列表	curated	2026-09-17
+候选排序	hou xuan pai xu	30	桌面移动	term	候选排序	curated	2026-09-17
+候选数量	hou xuan shu liang	30	向量检索	term	候选数量	curated	2026-09-17
+候选窗口	hou xuan chuang kou	30	桌面移动	term	候选窗口	curated	2026-09-17
+候选集	hou xuan ji	30	向量检索	term	候选集	curated	2026-09-17
+候选集合	hou xuan ji he	30	向量检索	term	候选集合	curated	2026-09-17
+值对象	zhi dui xiang	30	架构设计	term	值对象	curated	2026-09-17
+假设答案生成	jia she da an sheng cheng	30	向量检索	term	假设答案生成	curated	2026-09-17
+偏移分页	pian yi fen ye	30	后端数据	term	偏移分页	curated	2026-09-17
+偶发复现	ou fa fu xian	30	排障修复	term	偶发复现	curated	2026-09-17
+偶发失败	ou fa shi bai	30	测试验收	term	偶发失败	curated	2026-09-17
+偶发超时	ou fa chao shi	30	排障修复	term	偶发超时	curated	2026-09-17
+先给方案	xian gei fang an	30	代理开发	term	先给方案	curated	2026-09-17
+入口函数	ru kou han shu	30	开发操作	term	入口函数	curated	2026-09-17
+入口文件	ru kou wen jian	30	开发操作	term	入口文件	curated	2026-09-17
+入口模块	ru kou mo kuai	30	开发操作	term	入口模块	curated	2026-09-17
+入库任务	ru ku ren wu	30	向量检索	term	入库任务	curated	2026-09-17
+入库状态	ru ku zhuang tai	30	向量检索	term	入库状态	curated	2026-09-17
+全局快捷键	quan ju kuai jie jian	30	桌面移动	term	全局快捷键	curated	2026-09-17
+全局状态	quan ju zhuang tai	30	前端交互	term	全局状态	curated	2026-09-17
+全文召回	quan wen zhao hui	30	向量检索	term	全文召回	curated	2026-09-17
+全文搜索	quan wen sou suo	30	开发操作	term	全文搜索	curated	2026-09-17
+全表扫描	quan biao sao miao	30	后端数据	term	全表扫描	curated	2026-09-17
+全连接	quan lian jie	30	后端数据	term	全连接	curated	2026-09-17
+全量备份	quan liang bei fen	30	后端数据	term	全量备份	curated	2026-09-17
+全量构建	quan liang gou jian	30	开发操作	term	全量构建	curated	2026-09-17
+全量测试	quan liang ce shi	30	测试验收	term	全量测试	curated	2026-09-17
+公共包	gong gong bao	30	开发操作	term	公共包	curated	2026-09-17
+公开接口	gong kai jie kou	30	架构设计	term	公开接口	curated	2026-09-17
+公证	gong zheng	30	桌面移动	term	公证	curated	2026-09-17
+六边形架构	liu bian xing jia gou	30	架构设计	term	六边形架构	curated	2026-09-17
+共享上下文	gong xiang shang xia wen	30	代理开发	term	共享上下文	curated	2026-09-17
+关注点分离	guan zhu dian fen li	30	架构设计	term	关注点分离	curated	2026-09-17
+关联查询	guan lian cha xun	30	后端数据	term	关联查询	curated	2026-09-17
+关联标识	guan lian biao shi	30	可靠运维	term	关联标识	curated	2026-09-17
+关键词召回	guan jian ci zhao hui	30	向量检索	term	关键词召回	curated	2026-09-17
+关闭流程	guan bi liu cheng	30	开发操作	term	关闭流程	curated	2026-09-17
+兼容契约	jian rong qi yue	30	架构设计	term	兼容契约	curated	2026-09-17
+兼容性测试	jian rong xing ce shi	30	测试验收	term	兼容性测试	curated	2026-09-17
+兼容方案	jian rong fang an	30	项目协作	term	兼容方案	curated	2026-09-17
+内存损坏	nei cun sun huai	30	排障修复	term	内存损坏	curated	2026-09-17
+内存泄漏	nei cun xie lou	30	排障修复	term	内存泄漏	curated	2026-09-17
+内存警告	nei cun jing gao	30	桌面移动	term	内存警告	curated	2026-09-17
+内存越界	nei cun yue jie	30	排障修复	term	内存越界	curated	2026-09-17
+内存限制	nei cun xian zhi	30	可靠运维	term	内存限制	curated	2026-09-17
+内容去重	nei rong qu chong	30	向量检索	term	内容去重	curated	2026-09-17
+内容哈希	nei rong ha xi	30	向量检索	term	内容哈希	curated	2026-09-17
+内容指纹	nei rong zhi wen	30	向量检索	term	内容指纹	curated	2026-09-17
+内积	nei ji	30	向量检索	term	内积	curated	2026-09-17
+内连接	nei lian jie	30	后端数据	term	内连接	curated	2026-09-17
+冒烟测试	mao yan ce shi	30	测试验收	term	冒烟测试	curated	2026-09-17
+写入权限	xie ru quan xian	30	代理开发	term	写入权限	curated	2026-09-17
+写入超时	xie ru chao shi	30	可靠运维	term	写入超时	curated	2026-09-17
+冲突标记	chong tu biao ji	30	版本协作	term	冲突标记	curated	2026-09-17
+冲突解决	chong tu jie jue	30	版本协作	term	冲突解决	curated	2026-09-17
+决策记录	jue ce ji lu	30	项目协作	term	决策记录	curated	2026-09-17
+冷启动	leng qi dong	30	桌面移动	term	冷启动	curated	2026-09-17
+函数索引	han shu suo yin	30	后端数据	term	函数索引	curated	2026-09-17
+函数组件	han shu zu jian	30	前端交互	term	函数组件	curated	2026-09-17
+函数覆盖率	han shu fu gai lv	30	测试验收	term	函数覆盖率	curated	2026-09-17
+分区表	fen qu biao	30	后端数据	term	分区表	curated	2026-09-17
+分区键	fen qu jian	30	后端数据	term	分区键	curated	2026-09-17
+分块策略	fen kuai ce lve	30	向量检索	term	分块策略	curated	2026-09-17
+分块边界	fen kuai bian jie	30	向量检索	term	分块边界	curated	2026-09-17
+分层架构	fen ceng jia gou	30	架构设计	term	分层架构	curated	2026-09-17
+分布式事务	fen bu shi shi wu	30	后端数据	term	分布式事务	curated	2026-09-17
+分库分表	fen ku fen biao	30	后端数据	term	分库分表	curated	2026-09-17
+分支保护	fen zhi bao hu	30	版本协作	term	分支保护	curated	2026-09-17
+分支偏离	fen zhi pian li	30	版本协作	term	分支偏离	curated	2026-09-17
+分支切换	fen zhi qie huan	30	版本协作	term	分支切换	curated	2026-09-17
+分支创建	fen zhi chuang jian	30	版本协作	term	分支创建	curated	2026-09-17
+分支删除	fen zhi shan chu	30	版本协作	term	分支删除	curated	2026-09-17
+分支合并	fen zhi he bing	30	版本协作	term	分支合并	curated	2026-09-17
+分支同步	fen zhi tong bu	30	版本协作	term	分支同步	curated	2026-09-17
+分支名称	fen zhi ming cheng	30	版本协作	term	分支名称	curated	2026-09-17
+分支策略	fen zhi ce lve	30	版本协作	term	分支策略	curated	2026-09-17
+分支管理	fen zhi guan li	30	版本协作	term	分支管理	curated	2026-09-17
+分支覆盖率	fen zhi fu gai lv	30	测试验收	term	分支覆盖率	curated	2026-09-17
+分数归一化	fen shu gui yi hua	30	向量检索	term	分数归一化	curated	2026-09-17
+分数融合	fen shu rong he	30	向量检索	term	分数融合	curated	2026-09-17
+分片上传	fen pian shang chuan	30	前端交互	term	分片上传	curated	2026-09-17
+分组聚合	fen zu ju he	30	后端数据	term	分组聚合	curated	2026-09-17
+分页器	fen ye qi	30	前端交互	term	分页器	curated	2026-09-17
+分页查询	fen ye cha xun	30	后端数据	term	分页查询	curated	2026-09-17
+切片大小	qie pian da xiao	30	向量检索	term	切片大小	curated	2026-09-17
+切片重叠	qie pian chong die	30	向量检索	term	切片重叠	curated	2026-09-17
+列表渲染	lie biao xuan ran	30	前端交互	term	列表渲染	curated	2026-09-17
+刘海适配	liu hai shi pei	30	桌面移动	term	刘海适配	curated	2026-09-17
+创建标签	chuang jian biao qian	30	版本协作	term	创建标签	curated	2026-09-17
+初始化流程	chu shi hua liu cheng	30	开发操作	term	初始化流程	curated	2026-09-17
+初始状态	chu shi zhuang tai	30	架构设计	term	初始状态	curated	2026-09-17
+刷新令牌	shua xin ling pai	30	后端数据	term	刷新令牌	curated	2026-09-17
+前台恢复	qian tai hui fu	30	桌面移动	term	前台恢复	curated	2026-09-17
+前端工程化	qian duan gong cheng hua	30	前端交互	term	前端工程化	curated	2026-09-17
+前缀索引	qian zhui suo yin	30	后端数据	term	前缀索引	curated	2026-09-17
+前置条件	qian zhi tiao jian	30	项目协作	term	前置条件	curated	2026-09-17
+剪贴板	jian tie ban	30	桌面移动	term	剪贴板	curated	2026-09-17
+副作用	fu zuo yong	30	前端交互	term	副作用	curated	2026-09-17
+副作用清理	fu zuo yong qing li	30	前端交互	term	副作用清理	curated	2026-09-17
+功能分支	gong neng fen zhi	30	版本协作	term	功能分支	curated	2026-09-17
+功能测试	gong neng ce shi	30	测试验收	term	功能测试	curated	2026-09-17
+功能需求	gong neng xu qiu	30	项目协作	term	功能需求	curated	2026-09-17
+加权排名融合	jia quan pai ming rong he	30	向量检索	term	加权排名融合	curated	2026-09-17
+加载指示器	jia zai zhi shi qi	30	前端交互	term	加载指示器	curated	2026-09-17
+加载状态	jia zai zhuang tai	30	前端交互	term	加载状态	curated	2026-09-17
+动态导入	dong tai dao ru	30	前端交互	term	动态导入	curated	2026-09-17
+包发布	bao fa bu	30	开发操作	term	包发布	curated	2026-09-17
+包校验	bao jiao yan	30	开发操作	term	包校验	curated	2026-09-17
+包注册表	bao zhu ce biao	30	开发操作	term	包注册表	curated	2026-09-17
+包版本	bao ban ben	30	开发操作	term	包版本	curated	2026-09-17
+包签名	bao qian ming	30	开发操作	term	包签名	curated	2026-09-17
+包管理	bao guan li	30	开发操作	term	包管理	curated	2026-09-17
+包管理器	bao guan li qi	30	开发操作	term	包管理器	curated	2026-09-17
+升级测试	sheng ji ce shi	30	测试验收	term	升级测试	curated	2026-09-17
+协议处理	xie yi chu li	30	桌面移动	term	协议处理	curated	2026-09-17
+协调算法	xie tiao suan fa	30	前端交互	term	协调算法	curated	2026-09-17
+单一职责	dan yi zhi ze	30	架构设计	term	单一职责	curated	2026-09-17
+单体仓库	dan ti cang ku	30	开发操作	term	单体仓库	curated	2026-09-17
+单体架构	dan ti jia gou	30	架构设计	term	单体架构	curated	2026-09-17
+单例模式	dan li mo shi	30	架构设计	term	单例模式	curated	2026-09-17
+单元测试	dan yuan ce shi	30	测试验收	term	单元测试	curated	2026-09-17
+单向数据流	dan xiang shu ju liu	30	前端交互	term	单向数据流	curated	2026-09-17
+卸载测试	xie zai ce shi	30	测试验收	term	卸载测试	curated	2026-09-17
+压缩合并	ya suo he bing	30	版本协作	term	压缩合并	curated	2026-09-17
+压缩提交	ya suo ti jiao	30	版本协作	term	压缩提交	curated	2026-09-17
+原型模式	yuan xing mo shi	30	架构设计	term	原型模式	curated	2026-09-17
+原型设计	yuan xing she ji	30	项目协作	term	原型设计	curated	2026-09-17
+原子提交	yuan zi ti jiao	30	版本协作	term	原子提交	curated	2026-09-17
+原生应用	yuan sheng ying yong	30	桌面移动	term	原生应用	curated	2026-09-17
+原生桥接	yuan sheng qiao jie	30	桌面移动	term	原生桥接	curated	2026-09-17
+去重键	qu chong jian	30	后端数据	term	去重键	curated	2026-09-17
+参数化测试	can shu hua ce shi	30	测试验收	term	参数化测试	curated	2026-09-17
+参数校验	can shu jiao yan	30	后端数据	term	参数校验	curated	2026-09-17
+参数绑定	can shu bang ding	30	后端数据	term	参数绑定	curated	2026-09-17
+双向绑定	shuang xiang bang ding	30	前端交互	term	双向绑定	curated	2026-09-17
+双拼输入	shuang pin shu ru	30	桌面移动	term	双拼输入	curated	2026-09-17
+双重释放	shuang chong shi fang	30	排障修复	term	双重释放	curated	2026-09-17
+反亲和性	fan qin he xing	30	可靠运维	term	反亲和性	curated	2026-09-17
+反向用例	fan xiang yong li	30	测试验收	term	反向用例	curated	2026-09-17
+反序列化	fan xu lie hua	30	后端数据	term	反序列化	curated	2026-09-17
+反馈处理	fan kui chu li	30	项目协作	term	反馈处理	curated	2026-09-17
+发布冻结	fa bu dong jie	30	可靠运维	term	发布冻结	curated	2026-09-17
+发布分支	fa bu fen zhi	30	版本协作	term	发布分支	curated	2026-09-17
+发布审批	fa bu shen pi	30	可靠运维	term	发布审批	curated	2026-09-17
+发布构建	fa bu gou jian	30	开发操作	term	发布构建	curated	2026-09-17
+发布标签	fa bu biao qian	30	版本协作	term	发布标签	curated	2026-09-17
+发布窗口	fa bu chuang kou	30	可靠运维	term	发布窗口	curated	2026-09-17
+发布计划	fa bu ji hua	30	项目协作	term	发布计划	curated	2026-09-17
+发布记录	fa bu ji lu	30	可靠运维	term	发布记录	curated	2026-09-17
+发布说明	fa bu shuo ming	30	可靠运维	term	发布说明	curated	2026-09-17
+发布门禁	fa bu men jin	30	可靠运维	term	发布门禁	curated	2026-09-17
+取消信号	qu xiao xin hao	30	可靠运维	term	取消信号	curated	2026-09-17
+取消处理	qu xiao chu li	30	排障修复	term	取消处理	curated	2026-09-17
+受控组件	shou kong zu jian	30	前端交互	term	受控组件	curated	2026-09-17
+变基	bian ji	30	版本协作	term	变基	curated	2026-09-17
+变基冲突	bian ji chong tu	30	版本协作	term	变基冲突	curated	2026-09-17
+变异测试	bian yi ce shi	30	测试验收	term	变异测试	curated	2026-09-17
+变更审批	bian geng shen pi	30	项目协作	term	变更审批	curated	2026-09-17
+变更日志	bian geng ri zhi	30	可靠运维	term	变更日志	curated	2026-09-17
+变更管理	bian geng guan li	30	项目协作	term	变更管理	curated	2026-09-17
+变更范围	bian geng fan wei	30	项目协作	term	变更范围	curated	2026-09-17
+变更记录	bian geng ji lu	30	项目协作	term	变更记录	curated	2026-09-17
+变更评审	bian geng ping shen	30	项目协作	term	变更评审	curated	2026-09-17
+变更说明	bian geng shuo ming	30	项目协作	term	变更说明	curated	2026-09-17
+变更请求	bian geng qing qiu	30	项目协作	term	变更请求	curated	2026-09-17
+句柄泄漏	ju bing xie lou	30	排障修复	term	句柄泄漏	curated	2026-09-17
+只读事务	zhi du shi wu	30	后端数据	term	只读事务	curated	2026-09-17
+只读权限	zhi du quan xian	30	代理开发	term	只读权限	curated	2026-09-17
+只读模式	zhi du mo shi	30	代理开发	term	只读模式	curated	2026-09-17
+召回数量	zhao hui shu liang	30	向量检索	term	召回数量	curated	2026-09-17
+召回深度	zhao hui shen du	30	向量检索	term	召回深度	curated	2026-09-17
+召回窗口	zhao hui chuang kou	30	向量检索	term	召回窗口	curated	2026-09-17
+召回策略	zhao hui ce lve	30	向量检索	term	召回策略	curated	2026-09-17
+召回融合	zhao hui rong he	30	向量检索	term	召回融合	curated	2026-09-17
+可发送类型	ke fa song lei xing	30	桌面移动	term	可发送类型	curated	2026-09-17
+可复现构建	ke fu xian gou jian	30	开发操作	term	可复现构建	curated	2026-09-17
+可复现步骤	ke fu xian bu zhou	30	代理开发	term	可复现步骤	curated	2026-09-17
+可审阅结果	ke shen yue jie guo	30	代理开发	term	可审阅结果	curated	2026-09-17
+可恢复性	ke hui fu xing	30	可靠运维	term	可恢复性	curated	2026-09-17
+可用性	ke yong xing	30	可靠运维	term	可用性	curated	2026-09-17
+可用性测试	ke yong xing ce shi	30	测试验收	term	可用性测试	curated	2026-09-17
+可维护性	ke wei hu xing	30	可靠运维	term	可维护性	curated	2026-09-17
+可行性分析	ke xing xing fen xi	30	项目协作	term	可行性分析	curated	2026-09-17
+可行性验证	ke xing xing yan zheng	30	项目协作	term	可行性验证	curated	2026-09-17
+可观察对象	ke guan cha dui xiang	30	桌面移动	term	可观察对象	curated	2026-09-17
+可选依赖	ke xuan yi lai	30	开发操作	term	可选依赖	curated	2026-09-17
+可重复读	ke chong fu du	30	后端数据	term	可重复读	curated	2026-09-17
+可靠性	ke kao xing	30	可靠运维	term	可靠性	curated	2026-09-17
+可验证证据	ke yan zheng zheng ju	30	代理开发	term	可验证证据	curated	2026-09-17
+右连接	you lian jie	30	后端数据	term	右连接	curated	2026-09-17
+合并代码	he bing dai ma	30	版本协作	term	合并代码	curated	2026-09-17
+合并冲突	he bing chong tu	30	版本协作	term	合并冲突	curated	2026-09-17
+合并分支	he bing fen zhi	30	版本协作	term	合并分支	curated	2026-09-17
+合并基点	he bing ji dian	30	版本协作	term	合并基点	curated	2026-09-17
+合并检查	he bing jian cha	30	版本协作	term	合并检查	curated	2026-09-17
+合并请求	he bing qing qiu	30	版本协作	term	合并请求	curated	2026-09-17
+合并门禁	he bing men jin	30	版本协作	term	合并门禁	curated	2026-09-17
+同步代码	tong bu dai ma	30	版本协作	term	同步代码	curated	2026-09-17
+同步文档	tong bu wen dang	30	代理开发	term	同步文档	curated	2026-09-17
+同行评审	tong hang ping shen	30	版本协作	term	同行评审	curated	2026-09-17
+后台任务	hou tai ren wu	30	桌面移动	term	后台任务	curated	2026-09-17
+后台刷新	hou tai shua xin	30	桌面移动	term	后台刷新	curated	2026-09-17
+后台模式	hou tai mo shi	30	代理开发	term	后台模式	curated	2026-09-17
+后台进程	hou tai jin cheng	30	桌面移动	term	后台进程	curated	2026-09-17
+后置条件	hou zhi tiao jian	30	项目协作	term	后置条件	curated	2026-09-17
+后过滤	hou guo lv	30	向量检索	term	后过滤	curated	2026-09-17
+向量	xiang liang	30	向量检索	term	向量	curated	2026-09-17
+向量主键	xiang liang zhu jian	30	向量检索	term	向量主键	curated	2026-09-17
+向量乘积	xiang liang cheng ji	30	向量检索	term	向量乘积	curated	2026-09-17
+向量内积	xiang liang nei ji	30	向量检索	term	向量内积	curated	2026-09-17
+向量删除	xiang liang shan chu	30	向量检索	term	向量删除	curated	2026-09-17
+向量化	xiang liang hua	30	向量检索	term	向量化	curated	2026-09-17
+向量压缩	xiang liang ya suo	30	向量检索	term	向量压缩	curated	2026-09-17
+向量去重	xiang liang qu chong	30	向量检索	term	向量去重	curated	2026-09-17
+向量召回	xiang liang zhao hui	30	向量检索	term	向量召回	curated	2026-09-17
+向量平均	xiang liang ping jun	30	向量检索	term	向量平均	curated	2026-09-17
+向量截断	xiang liang jie duan	30	向量检索	term	向量截断	curated	2026-09-17
+向量扩展	xiang liang kuo zhan	30	向量检索	term	向量扩展	curated	2026-09-17
+向量拼接	xiang liang pin jie	30	向量检索	term	向量拼接	curated	2026-09-17
+向量搜索半径	xiang liang sou suo ban jing	30	向量检索	term	向量搜索半径	curated	2026-09-17
+向量更新	xiang liang geng xin	30	向量检索	term	向量更新	curated	2026-09-17
+向量点积	xiang liang dian ji	30	向量检索	term	向量点积	curated	2026-09-17
+向量编码	xiang liang bian ma	30	向量检索	term	向量编码	curated	2026-09-17
+向量记录	xiang liang ji lu	30	向量检索	term	向量记录	curated	2026-09-17
+向量重建	xiang liang chong jian	30	向量检索	term	向量重建	curated	2026-09-17
+向量长度	xiang liang chang du	30	向量检索	term	向量长度	curated	2026-09-17
+吞吐量	tun tu liang	30	可靠运维	term	吞吐量	curated	2026-09-17
+启动优化	qi dong you hua	30	桌面移动	term	启动优化	curated	2026-09-17
+启动失败	qi dong shi bai	30	开发操作	term	启动失败	curated	2026-09-17
+启动探针	qi dong tan zhen	30	可靠运维	term	启动探针	curated	2026-09-17
+启动流程	qi dong liu cheng	30	开发操作	term	启动流程	curated	2026-09-17
+启动耗时	qi dong hao shi	30	桌面移动	term	启动耗时	curated	2026-09-17
+命令处理器	ming ling chu li qi	30	架构设计	term	命令处理器	curated	2026-09-17
+命令式渲染	ming ling shi xuan ran	30	前端交互	term	命令式渲染	curated	2026-09-17
+命令查询分离	ming ling cha xun fen li	30	架构设计	term	命令查询分离	curated	2026-09-17
+命令模式	ming ling mo shi	30	架构设计	term	命令模式	curated	2026-09-17
+命令行助手	ming ling xing zhu shou	30	代理开发	term	命令行助手	curated	2026-09-17
+命名空间	ming ming kong jian	30	可靠运维	term	命名空间	curated	2026-09-17
+响应体	xiang ying ti	30	后端数据	term	响应体	curated	2026-09-17
+响应头	xiang ying tou	30	后端数据	term	响应头	curated	2026-09-17
+响应式布局	xiang ying shi bu ju	30	前端交互	term	响应式布局	curated	2026-09-17
+响应式状态	xiang ying shi zhuang tai	30	前端交互	term	响应式状态	curated	2026-09-17
+响应时间	xiang ying shi jian	30	可靠运维	term	响应时间	curated	2026-09-17
+响应迟缓	xiang ying chi huan	30	排障修复	term	响应迟缓	curated	2026-09-17
+响应错误	xiang ying cuo wu	30	排障修复	term	响应错误	curated	2026-09-17
+唯一索引	wei yi suo yin	30	后端数据	term	唯一索引	curated	2026-09-17
+回归测试	hui gui ce shi	30	测试验收	term	回归测试	curated	2026-09-17
+回归风险	hui gui feng xian	30	排障修复	term	回归风险	curated	2026-09-17
+回滚计划	hui gun ji hua	30	项目协作	term	回滚计划	curated	2026-09-17
+回退处理	hui tui chu li	30	排障修复	term	回退处理	curated	2026-09-17
+回退提交	hui tui ti jiao	30	版本协作	term	回退提交	curated	2026-09-17
+回退方案	hui tui fang an	30	项目协作	term	回退方案	curated	2026-09-17
+因果一致性	yin guo yi zhi xing	30	后端数据	term	因果一致性	curated	2026-09-17
+固定定位	gu ding ding wei	30	前端交互	term	固定定位	curated	2026-09-17
+国际化	guo ji hua	30	前端交互	term	国际化	curated	2026-09-17
+国际化测试	guo ji hua ce shi	30	测试验收	term	国际化测试	curated	2026-09-17
+图像向量化	tu xiang xiang liang hua	30	向量检索	term	图像向量化	curated	2026-09-17
+图片裁剪	tu pian cai jian	30	前端交互	term	图片裁剪	curated	2026-09-17
+图片预览	tu pian yu lan	30	前端交互	term	图片预览	curated	2026-09-17
+垂直扩容	chui zhi kuo rong	30	可靠运维	term	垂直扩容	curated	2026-09-17
+垂直拆分	chui zhi chai fen	30	后端数据	term	垂直拆分	curated	2026-09-17
+基础设施层	ji chu she shi ceng	30	架构设计	term	基础设施层	curated	2026-09-17
+堆栈信息	dui zhan xin xi	30	排障修复	term	堆栈信息	curated	2026-09-17
+堆栈跟踪	dui zhan gen zong	30	排障修复	term	堆栈跟踪	curated	2026-09-17
+增量入库	zeng liang ru ku	30	向量检索	term	增量入库	curated	2026-09-17
+增量向量化	zeng liang xiang liang hua	30	向量检索	term	增量向量化	curated	2026-09-17
+增量备份	zeng liang bei fen	30	后端数据	term	增量备份	curated	2026-09-17
+增量差异	zeng liang cha yi	30	版本协作	term	增量差异	curated	2026-09-17
+增量更新	zeng liang geng xin	30	桌面移动	term	增量更新	curated	2026-09-17
+增量构建	zeng liang gou jian	30	开发操作	term	增量构建	curated	2026-09-17
+增量测试	zeng liang ce shi	30	测试验收	term	增量测试	curated	2026-09-17
+增量静态生成	zeng liang jing tai sheng cheng	30	前端交互	term	增量静态生成	curated	2026-09-17
+声明式渲染	sheng ming shi xuan ran	30	前端交互	term	声明式渲染	curated	2026-09-17
+复合索引	fu he suo yin	30	后端数据	term	复合索引	curated	2026-09-17
+复合组件	fu he zu jian	30	前端交互	term	复合组件	curated	2026-09-17
+复现条件	fu xian tiao jian	30	排障修复	term	复现条件	curated	2026-09-17
+复现步骤	fu xian bu zhou	30	排障修复	term	复现步骤	curated	2026-09-17
+复现环境	fu xian huan jing	30	排障修复	term	复现环境	curated	2026-09-17
+复现用例	fu xian yong li	30	排障修复	term	复现用例	curated	2026-09-17
+复现脚本	fu xian jiao ben	30	排障修复	term	复现脚本	curated	2026-09-17
+外连接	wai lian jie	30	后端数据	term	外连接	curated	2026-09-17
+外部依赖	wai bu yi lai	30	开发操作	term	外部依赖	curated	2026-09-17
+多仓库	duo cang ku	30	开发操作	term	多仓库	curated	2026-09-17
+多代理	duo dai li	30	代理开发	term	多代理	curated	2026-09-17
+多向量检索	duo xiang liang jian suo	30	向量检索	term	多向量检索	curated	2026-09-17
+多显示器	duo xian shi qi	30	桌面移动	term	多显示器	curated	2026-09-17
+多架构镜像	duo jia gou jing xiang	30	可靠运维	term	多架构镜像	curated	2026-09-17
+多版本并发控制	duo ban ben bing fa kong zhi	30	后端数据	term	多版本并发控制	curated	2026-09-17
+多租户	duo zu hu	30	后端数据	term	多租户	curated	2026-09-17
+多窗口	duo chuang kou	30	桌面移动	term	多窗口	curated	2026-09-17
+多语言	duo yu yan	30	前端交互	term	多语言	curated	2026-09-17
+多阶段构建	duo jie duan gou jian	30	可靠运维	term	多阶段构建	curated	2026-09-17
+失败处理	shi bai chu li	30	排障修复	term	失败处理	curated	2026-09-17
+失败恢复	shi bai hui fu	30	排障修复	term	失败恢复	curated	2026-09-17
+失败流程	shi bai liu cheng	30	项目协作	term	失败流程	curated	2026-09-17
+契约测试	qi yue ce shi	30	测试验收	term	契约测试	curated	2026-09-17
+委派约束	wei pai yue shu	30	代理开发	term	委派约束	curated	2026-09-17
+委派范围	wei pai fan wei	30	代理开发	term	委派范围	curated	2026-09-17
+子仓库	zi cang ku	30	开发操作	term	子仓库	curated	2026-09-17
+子代理	zi dai li	30	代理开发	term	子代理	curated	2026-09-17
+子查询	zi cha xun	30	后端数据	term	子查询	curated	2026-09-17
+子模块	zi mo kuai	30	开发操作	term	子模块	curated	2026-09-17
+子进程	zi jin cheng	30	桌面移动	term	子进程	curated	2026-09-17
+字段权限	zi duan quan xian	30	后端数据	term	字段权限	curated	2026-09-17
+字段校验	zi duan jiao yan	30	后端数据	term	字段校验	curated	2026-09-17
+字符编码	zi fu bian ma	30	后端数据	term	字符编码	curated	2026-09-17
+字符集	zi fu ji	30	后端数据	term	字符集	curated	2026-09-17
+存活探针	cun huo tan zhen	30	可靠运维	term	存活探针	curated	2026-09-17
+安全作用域	an quan zuo yong yu	30	桌面移动	term	安全作用域	curated	2026-09-17
+安全区域	an quan qu yu	30	桌面移动	term	安全区域	curated	2026-09-17
+安全扫描	an quan sao miao	30	测试验收	term	安全扫描	curated	2026-09-17
+安全测试	an quan ce shi	30	测试验收	term	安全测试	curated	2026-09-17
+安装依赖	an zhuang yi lai	30	开发操作	term	安装依赖	curated	2026-09-17
+安装失败	an zhuang shi bai	30	开发操作	term	安装失败	curated	2026-09-17
+安装测试	an zhuang ce shi	30	测试验收	term	安装测试	curated	2026-09-17
+完成定义	wan cheng ding yi	30	项目协作	term	完成定义	curated	2026-09-17
+完成标准	wan cheng biao zhun	30	项目协作	term	完成标准	curated	2026-09-17
+完成验证	wan cheng yan zheng	30	代理开发	term	完成验证	curated	2026-09-17
+定位权限	ding wei quan xian	30	桌面移动	term	定位权限	curated	2026-09-17
+定位根因	ding wei gen yin	30	排障修复	term	定位根因	curated	2026-09-17
+定位问题	ding wei wen ti	30	排障修复	term	定位问题	curated	2026-09-17
+定向测试	ding xiang ce shi	30	测试验收	term	定向测试	curated	2026-09-17
+实体对象	shi ti dui xiang	30	架构设计	term	实体对象	curated	2026-09-17
+实施计划	shi shi ji hua	30	代理开发	term	实施计划	curated	2026-09-17
+实时校验	shi shi jiao yan	30	前端交互	term	实时校验	curated	2026-09-17
+实现方案	shi xian fang an	30	项目协作	term	实现方案	curated	2026-09-17
+实际结果	shi ji jie guo	30	测试验收	term	实际结果	curated	2026-09-17
+审批模式	shen pi mo shi	30	代理开发	term	审批模式	curated	2026-09-17
+审批策略	shen pi ce lve	30	代理开发	term	审批策略	curated	2026-09-17
+审查反馈	shen cha fan kui	30	版本协作	term	审查反馈	curated	2026-09-17
+审查发现	shen cha fa xian	30	版本协作	term	审查发现	curated	2026-09-17
+审查差异	shen cha cha yi	30	版本协作	term	审查差异	curated	2026-09-17
+审查意见	shen cha yi jian	30	项目协作	term	审查意见	curated	2026-09-17
+审查暂存差异	shen cha zan cun cha yi	30	代理开发	term	审查暂存差异	curated	2026-09-17
+审查结论	shen cha jie lun	30	版本协作	term	审查结论	curated	2026-09-17
+审查范围	shen cha fan wei	30	版本协作	term	审查范围	curated	2026-09-17
+客户端渲染	ke hu duan xuan ran	30	前端交互	term	客户端渲染	curated	2026-09-17
+客户端状态	ke hu duan zhuang tai	30	前端交互	term	客户端状态	curated	2026-09-17
+容器卷	rong qi juan	30	可靠运维	term	容器卷	curated	2026-09-17
+容器端口	rong qi duan kou	30	可靠运维	term	容器端口	curated	2026-09-17
+容器编排	rong qi bian pai	30	可靠运维	term	容器编排	curated	2026-09-17
+容器网络	rong qi wang luo	30	可靠运维	term	容器网络	curated	2026-09-17
+容器镜像	rong qi jing xiang	30	可靠运维	term	容器镜像	curated	2026-09-17
+容忍度	rong ren du	30	可靠运维	term	容忍度	curated	2026-09-17
+容量规划	rong liang gui hua	30	可靠运维	term	容量规划	curated	2026-09-17
+容量评估	rong liang ping gu	30	可靠运维	term	容量评估	curated	2026-09-17
+容错性	rong cuo xing	30	可靠运维	term	容错性	curated	2026-09-17
+密钥轮换	mi yao lun huan	30	可靠运维	term	密钥轮换	curated	2026-09-17
+对比结果	dui bi jie guo	30	测试验收	term	对比结果	curated	2026-09-17
+对等依赖	dui deng yi lai	30	开发操作	term	对等依赖	curated	2026-09-17
+对话框	dui hua kuang	30	前端交互	term	对话框	curated	2026-09-17
+对象映射	dui xiang ying she	30	后端数据	term	对象映射	curated	2026-09-17
+对象池	dui xiang chi	30	后端数据	term	对象池	curated	2026-09-17
+导航小世界图	dao hang xiao shi jie tu	30	向量检索	term	导航小世界图	curated	2026-09-17
+导航栏	dao hang lan	30	前端交互	term	导航栏	curated	2026-09-17
+封装边界	feng zhuang bian jie	30	架构设计	term	封装边界	curated	2026-09-17
+就绪定义	jiu xu ding yi	30	项目协作	term	就绪定义	curated	2026-09-17
+就绪探针	jiu xu tan zhen	30	可靠运维	term	就绪探针	curated	2026-09-17
+尾延迟	wei yan chi	30	可靠运维	term	尾延迟	curated	2026-09-17
+局部修复	ju bu xiu fu	30	排障修复	term	局部修复	curated	2026-09-17
+局部测试	ju bu ce shi	30	测试验收	term	局部测试	curated	2026-09-17
+局部状态	ju bu zhuang tai	30	前端交互	term	局部状态	curated	2026-09-17
+层叠上下文	ceng die shang xia wen	30	前端交互	term	层叠上下文	curated	2026-09-17
+层次可导航小世界图	ceng ci ke dao hang xiao shi jie tu	30	向量检索	term	层次可导航小世界图	curated	2026-09-17
+层级遮挡	ceng ji zhe dang	30	前端交互	term	层级遮挡	curated	2026-09-17
+屏幕录制权限	ping mu lu zhi quan xian	30	桌面移动	term	屏幕录制权限	curated	2026-09-17
+屏幕旋转	ping mu xuan zhuan	30	桌面移动	term	屏幕旋转	curated	2026-09-17
+屏幕缩放	ping mu suo fang	30	桌面移动	term	屏幕缩放	curated	2026-09-17
+屏幕阅读器	ping mu yue du qi	30	前端交互	term	屏幕阅读器	curated	2026-09-17
+属性测试	shu xing ce shi	30	测试验收	term	属性测试	curated	2026-09-17
+崩溃堆栈	beng kui dui zhan	30	排障修复	term	崩溃堆栈	curated	2026-09-17
+崩溃报告	beng kui bao gao	30	排障修复	term	崩溃报告	curated	2026-09-17
+崩溃日志	beng kui ri zhi	30	排障修复	term	崩溃日志	curated	2026-09-17
+嵌入	qian ru	30	向量检索	term	嵌入	curated	2026-09-17
+嵌入向量	qian ru xiang liang	30	向量检索	term	嵌入向量	curated	2026-09-17
+嵌入归一化	qian ru gui yi hua	30	向量检索	term	嵌入归一化	curated	2026-09-17
+嵌入批次	qian ru pi ci	30	向量检索	term	嵌入批次	curated	2026-09-17
+嵌入接口	qian ru jie kou	30	向量检索	term	嵌入接口	curated	2026-09-17
+嵌入服务	qian ru fu wu	30	向量检索	term	嵌入服务	curated	2026-09-17
+嵌入模型切换	qian ru mo xing qie huan	30	向量检索	term	嵌入模型切换	curated	2026-09-17
+嵌入模型版本	qian ru mo xing ban ben	30	向量检索	term	嵌入模型版本	curated	2026-09-17
+嵌入相似度	qian ru xiang si du	30	向量检索	term	嵌入相似度	curated	2026-09-17
+嵌入缓存	qian ru huan cun	30	向量检索	term	嵌入缓存	curated	2026-09-17
+嵌入评测	qian ru ping ce	30	向量检索	term	嵌入评测	curated	2026-09-17
+嵌入请求	qian ru qing qiu	30	向量检索	term	嵌入请求	curated	2026-09-17
+嵌套事务	qian tao shi wu	30	后端数据	term	嵌套事务	curated	2026-09-17
+工作区	gong zuo qu	30	开发操作	term	工作区	curated	2026-09-17
+工作区依赖	gong zuo qu yi lai	30	开发操作	term	工作区依赖	curated	2026-09-17
+工作区归属	gong zuo qu gui shu	30	代理开发	term	工作区归属	curated	2026-09-17
+工作区状态	gong zuo qu zhuang tai	30	版本协作	term	工作区状态	curated	2026-09-17
+工作树	gong zuo shu	30	开发操作	term	工作树	curated	2026-09-17
+工作目录	gong zuo mu lu	30	开发操作	term	工作目录	curated	2026-09-17
+工作量估算	gong zuo liang gu suan	30	项目协作	term	工作量估算	curated	2026-09-17
+工具沙箱	gong ju sha xiang	30	代理开发	term	工具沙箱	curated	2026-09-17
+工具输出	gong ju shu chu	30	代理开发	term	工具输出	curated	2026-09-17
+工具链	gong ju lian	30	开发操作	term	工具链	curated	2026-09-17
+工具链版本	gong ju lian ban ben	30	开发操作	term	工具链版本	curated	2026-09-17
+工厂模式	gong chang mo shi	30	架构设计	term	工厂模式	curated	2026-09-17
+工时估算	gong shi gu suan	30	项目协作	term	工时估算	curated	2026-09-17
+左连接	zuo lian jie	30	后端数据	term	左连接	curated	2026-09-17
+差异检查	cha yi jian cha	30	版本协作	term	差异检查	curated	2026-09-17
+差异比较	cha yi bi jiao	30	前端交互	term	差异比较	curated	2026-09-17
+已提交改动	yi ti jiao gai dong	30	版本协作	term	已提交改动	curated	2026-09-17
+已知问题	yi zhi wen ti	30	项目协作	term	已知问题	curated	2026-09-17
+已知限制	yi zhi xian zhi	30	项目协作	term	已知限制	curated	2026-09-17
+已跟踪文件	yi gen zong wen jian	30	版本协作	term	已跟踪文件	curated	2026-09-17
+幂等处理	mi deng chu li	30	后端数据	term	幂等处理	curated	2026-09-17
+幂等校验	mi deng jiao yan	30	后端数据	term	幂等校验	curated	2026-09-17
+幂等消费	mi deng xiao fei	30	后端数据	term	幂等消费	curated	2026-09-17
+幂等请求	mi deng qing qiu	30	后端数据	term	幂等请求	curated	2026-09-17
+幂等键	mi deng jian	30	后端数据	term	幂等键	curated	2026-09-17
+干净工作区	gan jing gong zuo qu	30	版本协作	term	干净工作区	curated	2026-09-17
+平方欧氏距离	ping fang ou shi ju li	30	向量检索	term	平方欧氏距离	curated	2026-09-17
+平滑重启	ping hua chong qi	30	可靠运维	term	平滑重启	curated	2026-09-17
+并发输入	bing fa shu ru	30	测试验收	term	并发输入	curated	2026-09-17
+并行任务	bing xing ren wu	30	代理开发	term	并行任务	curated	2026-09-17
+并行执行	bing xing zhi xing	30	代理开发	term	并行执行	curated	2026-09-17
+并行构建	bing xing gou jian	30	开发操作	term	并行构建	curated	2026-09-17
+幻读	huan du	30	后端数据	term	幻读	curated	2026-09-17
+序列化	xu lie hua	30	后端数据	term	序列化	curated	2026-09-17
+序列化失败	xu lie hua shi bai	30	后端数据	term	序列化失败	curated	2026-09-17
+序列化格式	xu lie hua ge shi	30	后端数据	term	序列化格式	curated	2026-09-17
+应用公证	ying yong gong zheng	30	桌面移动	term	应用公证	curated	2026-09-17
+应用层	ying yong ceng	30	架构设计	term	应用层	curated	2026-09-17
+应用服务	ying yong fu wu	30	架构设计	term	应用服务	curated	2026-09-17
+应用沙箱	ying yong sha xiang	30	桌面移动	term	应用沙箱	curated	2026-09-17
+应用生命周期	ying yong sheng ming zhou qi	30	桌面移动	term	应用生命周期	curated	2026-09-17
+应用补丁	ying yong bu ding	30	版本协作	term	应用补丁	curated	2026-09-17
+延迟队列	yan chi dui lie	30	后端数据	term	延迟队列	curated	2026-09-17
+建造者模式	jian zao zhe mo shi	30	架构设计	term	建造者模式	curated	2026-09-17
+开发依赖	kai fa yi lai	30	开发操作	term	开发依赖	curated	2026-09-17
+开发分支	kai fa fen zhi	30	版本协作	term	开发分支	curated	2026-09-17
+开发助手	kai fa zhu shou	30	代理开发	term	开发助手	curated	2026-09-17
+开发模式	kai fa mo shi	30	开发操作	term	开发模式	curated	2026-09-17
+开发环境	kai fa huan jing	30	可靠运维	term	开发环境	curated	2026-09-17
+开发者指令	kai fa zhe zhi ling	30	代理开发	term	开发者指令	curated	2026-09-17
+开发者证书	kai fa zhe zheng shu	30	桌面移动	term	开发者证书	curated	2026-09-17
+开闭原则	kai bi yuan ze	30	架构设计	term	开闭原则	curated	2026-09-17
+异常传播	yi chang chuan bo	30	排障修复	term	异常传播	curated	2026-09-17
+异常场景	yi chang chang jing	30	项目协作	term	异常场景	curated	2026-09-17
+异常处理	yi chang chu li	30	排障修复	term	异常处理	curated	2026-09-17
+异常恢复	yi chang hui fu	30	排障修复	term	异常恢复	curated	2026-09-17
+异常捕获	yi chang bu huo	30	排障修复	term	异常捕获	curated	2026-09-17
+异常日志	yi chang ri zhi	30	排障修复	term	异常日志	curated	2026-09-17
+异常用例	yi chang yong li	30	测试验收	term	异常用例	curated	2026-09-17
+异常类型	yi chang lei xing	30	排障修复	term	异常类型	curated	2026-09-17
+异常退出	yi chang tui chu	30	排障修复	term	异常退出	curated	2026-09-17
+异步任务	yi bu ren wu	30	桌面移动	term	异步任务	curated	2026-09-17
+异步校验	yi bu jiao yan	30	前端交互	term	异步校验	curated	2026-09-17
+引用搜索	yin yong sou suo	30	开发操作	term	引用搜索	curated	2026-09-17
+引用来源	yin yong lai yuan	30	向量检索	term	引用来源	curated	2026-09-17
+弹出菜单	dan chu cai dan	30	前端交互	term	弹出菜单	curated	2026-09-17
+弹性伸缩	tan xing shen suo	30	可靠运维	term	弹性伸缩	curated	2026-09-17
+弹性布局	tan xing bu ju	30	前端交互	term	弹性布局	curated	2026-09-17
+强一致性	qiang yi zhi xing	30	后端数据	term	强一致性	curated	2026-09-17
+影响范围	ying xiang fan wei	30	项目协作	term	影响范围	curated	2026-09-17
+待办事项	dai ban shi xiang	30	项目协作	term	待办事项	curated	2026-09-17
+待办清单	dai ban qing dan	30	项目协作	term	待办清单	curated	2026-09-17
+待确认项	dai que ren xiang	30	项目协作	term	待确认项	curated	2026-09-17
+待验证项	dai yan zheng xiang	30	项目协作	term	待验证项	curated	2026-09-17
+循环依赖	xun huan yi lai	30	开发操作	term	循环依赖	curated	2026-09-17
+微服务架构	wei fu wu jia gou	30	架构设计	term	微服务架构	curated	2026-09-17
+快捷键冲突	kuai jie jian chong tu	30	桌面移动	term	快捷键冲突	curated	2026-09-17
+快照测试	kuai zhao ce shi	30	测试验收	term	快照测试	curated	2026-09-17
+快进合并	kuai jin he bing	30	版本协作	term	快进合并	curated	2026-09-17
+忽略文件	hu lve wen jian	30	版本协作	term	忽略文件	curated	2026-09-17
+忽略规则	hu lve gui ze	30	版本协作	term	忽略规则	curated	2026-09-17
+性能下降	xing neng xia jiang	30	排障修复	term	性能下降	curated	2026-09-17
+性能回归	xing neng hui gui	30	排障修复	term	性能回归	curated	2026-09-17
+性能测试	xing neng ce shi	30	测试验收	term	性能测试	curated	2026-09-17
+总超时	zong chao shi	30	可靠运维	term	总超时	curated	2026-09-17
+恢复改动	hui fu gai dong	30	版本协作	term	恢复改动	curated	2026-09-17
+恰好一次	qia hao yi ci	30	后端数据	term	恰好一次	curated	2026-09-17
+悬停状态	xuan ting zhuang tai	30	前端交互	term	悬停状态	curated	2026-09-17
+悬空指针	xuan kong zhi zhen	30	排障修复	term	悬空指针	curated	2026-09-17
+悲观更新	bei guan geng xin	30	前端交互	term	悲观更新	curated	2026-09-17
+悲观锁	bei guan suo	30	后端数据	term	悲观锁	curated	2026-09-17
+慢查询	man cha xun	30	后端数据	term	慢查询	curated	2026-09-17
+懒加载	lan jia zai	30	前端交互	term	懒加载	curated	2026-09-17
+成功提示	cheng gong ti shi	30	前端交互	term	成功提示	curated	2026-09-17
+成功状态	cheng gong zhuang tai	30	前端交互	term	成功状态	curated	2026-09-17
+扁平索引	bian ping suo yin	30	向量检索	term	扁平索引	curated	2026-09-17
+手动合并	shou dong he bing	30	版本协作	term	手动合并	curated	2026-09-17
+手动回滚	shou dong hui gun	30	可靠运维	term	手动回滚	curated	2026-09-17
+手动审批	shou dong shen pi	30	代理开发	term	手动审批	curated	2026-09-17
+托盘图标	tuo pan tu biao	30	桌面移动	term	托盘图标	curated	2026-09-17
+执行权限	zhi xing quan xian	30	代理开发	term	执行权限	curated	2026-09-17
+执行模式	zhi xing mo shi	30	代理开发	term	执行模式	curated	2026-09-17
+执行计划	zhi xing ji hua	30	后端数据	term	执行计划	curated	2026-09-17
+扩展点	kuo zhan dian	30	架构设计	term	扩展点	curated	2026-09-17
+批量入库	pi liang ru ku	30	向量检索	term	批量入库	curated	2026-09-17
+批量删除	pi liang shan chu	30	后端数据	term	批量删除	curated	2026-09-17
+批量向量化	pi liang xiang liang hua	30	向量检索	term	批量向量化	curated	2026-09-17
+批量插入	pi liang cha ru	30	后端数据	term	批量插入	curated	2026-09-17
+批量更新	pi liang geng xin	30	后端数据	term	批量更新	curated	2026-09-17
+批量查询	pi liang cha xun	30	后端数据	term	批量查询	curated	2026-09-17
+技术债	ji shu zhai	30	项目协作	term	技术债	curated	2026-09-17
+技术债务	ji shu zhai wu	30	项目协作	term	技术债务	curated	2026-09-17
+技术方案	ji shu fang an	30	项目协作	term	技术方案	curated	2026-09-17
+技术选型	ji shu xuan xing	30	项目协作	term	技术选型	curated	2026-09-17
+技术需求	ji shu xu qiu	30	项目协作	term	技术需求	curated	2026-09-17
+技术验证	ji shu yan zheng	30	项目协作	term	技术验证	curated	2026-09-17
+报告结果	bao gao jie guo	30	代理开发	term	报告结果	curated	2026-09-17
+抽屉	chou ti	30	前端交互	term	抽屉	curated	2026-09-17
+抽象泄漏	chou xiang xie lou	30	架构设计	term	抽象泄漏	curated	2026-09-17
+拆分提交	chai fen ti jiao	30	版本协作	term	拆分提交	curated	2026-09-17
+拉取代码	la qu dai ma	30	版本协作	term	拉取代码	curated	2026-09-17
+拉取请求	la qu qing qiu	30	版本协作	term	拉取请求	curated	2026-09-17
+拖拽上传	tuo zhuai shang chuan	30	前端交互	term	拖拽上传	curated	2026-09-17
+拖放	tuo fang	30	桌面移动	term	拖放	curated	2026-09-17
+拣选提交	jian xuan ti jiao	30	版本协作	term	拣选提交	curated	2026-09-17
+拼音输入	pin yin shu ru	30	桌面移动	term	拼音输入	curated	2026-09-17
+持久卷	chi jiu juan	30	可靠运维	term	持久卷	curated	2026-09-17
+持续集成检查	chi xu ji cheng jian cha	30	版本协作	term	持续集成检查	curated	2026-09-17
+挂载目录	gua zai mu lu	30	可靠运维	term	挂载目录	curated	2026-09-17
+指令注入	zhi ling zhu ru	30	代理开发	term	指令注入	curated	2026-09-17
+按照方案实现	an zhao fang an shi xian	30	代理开发	term	按照方案实现	curated	2026-09-17
+按键事件	an jian shi jian	30	桌面移动	term	按键事件	curated	2026-09-17
+按需加载	an xu jia zai	30	前端交互	term	按需加载	curated	2026-09-17
+排名融合	pai ming rong he	30	向量检索	term	排名融合	curated	2026-09-17
+排期调整	pai qi tiao zheng	30	项目协作	term	排期调整	curated	2026-09-17
+排查日志	pai cha ri zhi	30	排障修复	term	排查日志	curated	2026-09-17
+排查结论	pai cha jie lun	30	排障修复	term	排查结论	curated	2026-09-17
+排查过程	pai cha guo cheng	30	排障修复	term	排查过程	curated	2026-09-17
+排查问题	pai cha wen ti	30	排障修复	term	排查问题	curated	2026-09-17
+接口契约	jie kou qi yue	30	架构设计	term	接口契约	curated	2026-09-17
+接口层	jie kou ceng	30	架构设计	term	接口层	curated	2026-09-17
+接口测试	jie kou ce shi	30	测试验收	term	接口测试	curated	2026-09-17
+接口设计	jie kou she ji	30	项目协作	term	接口设计	curated	2026-09-17
+接口路由	jie kou lu you	30	后端数据	term	接口路由	curated	2026-09-17
+接口隔离	jie kou ge li	30	架构设计	term	接口隔离	curated	2026-09-17
+控制反转	kong zhi fan zhuan	30	架构设计	term	控制反转	curated	2026-09-17
+控制器	kong zhi qi	30	架构设计	term	控制器	curated	2026-09-17
+推送代码	tui song dai ma	30	版本协作	term	推送代码	curated	2026-09-17
+推送分支	tui song fen zhi	30	版本协作	term	推送分支	curated	2026-09-17
+推送标签	tui song biao qian	30	版本协作	term	推送标签	curated	2026-09-17
+提交代码	ti jiao dai ma	30	版本协作	term	提交代码	curated	2026-09-17
+提交信息	ti jiao xin xi	30	版本协作	term	提交信息	curated	2026-09-17
+提交历史	ti jiao li shi	30	版本协作	term	提交历史	curated	2026-09-17
+提交哈希	ti jiao ha xi	30	版本协作	term	提交哈希	curated	2026-09-17
+提交差异	ti jiao cha yi	30	版本协作	term	提交差异	curated	2026-09-17
+提交状态	ti jiao zhuang tai	30	前端交互	term	提交状态	curated	2026-09-17
+提交签名	ti jiao qian ming	30	版本协作	term	提交签名	curated	2026-09-17
+提交范围	ti jiao fan wei	30	版本协作	term	提交范围	curated	2026-09-17
+提交记录	ti jiao ji lu	30	版本协作	term	提交记录	curated	2026-09-17
+提交说明	ti jiao shuo ming	30	版本协作	term	提交说明	curated	2026-09-17
+提示消息	ti shi xiao xi	30	前端交互	term	提示消息	curated	2026-09-17
+插件接口	cha jian jie kou	30	架构设计	term	插件接口	curated	2026-09-17
+插件架构	cha jian jia gou	30	架构设计	term	插件架构	curated	2026-09-17
+搜索候选数	sou suo hou xuan shu	30	向量检索	term	搜索候选数	curated	2026-09-17
+搜索宽度	sou suo kuan du	30	向量检索	term	搜索宽度	curated	2026-09-17
+搜索深度	sou suo shen du	30	向量检索	term	搜索深度	curated	2026-09-17
+摄像头权限	she xiang tou quan xian	30	桌面移动	term	摄像头权限	curated	2026-09-17
+摇树优化	yao shu you hua	30	前端交互	term	摇树优化	curated	2026-09-17
+撤销提交	che xiao ti jiao	30	版本协作	term	撤销提交	curated	2026-09-17
+撤销改动	che xiao gai dong	30	版本协作	term	撤销改动	curated	2026-09-17
+故障定位	gu zhang ding wei	30	可靠运维	term	故障定位	curated	2026-09-17
+故障演练	gu zhang yan lian	30	可靠运维	term	故障演练	curated	2026-09-17
+故障转移	gu zhang zhuan yi	30	可靠运维	term	故障转移	curated	2026-09-17
+数字本地化	shu zi ben di hua	30	前端交互	term	数字本地化	curated	2026-09-17
+数字精度	shu zi jing du	30	后端数据	term	数字精度	curated	2026-09-17
+数据不一致	shu ju bu yi zhi	30	排障修复	term	数据不一致	curated	2026-09-17
+数据丢失	shu ju diu shi	30	排障修复	term	数据丢失	curated	2026-09-17
+数据卷	shu ju juan	30	可靠运维	term	数据卷	curated	2026-09-17
+数据备份	shu ju bei fen	30	后端数据	term	数据备份	curated	2026-09-17
+数据工厂	shu ju gong chang	30	测试验收	term	数据工厂	curated	2026-09-17
+数据归档	shu ju gui dang	30	后端数据	term	数据归档	curated	2026-09-17
+数据恢复	shu ju hui fu	30	后端数据	term	数据恢复	curated	2026-09-17
+数据权限	shu ju quan xian	30	后端数据	term	数据权限	curated	2026-09-17
+数据模型	shu ju mo xing	30	架构设计	term	数据模型	curated	2026-09-17
+数据流向	shu ju liu xiang	30	前端交互	term	数据流向	curated	2026-09-17
+数据竞争	shu ju jing zheng	30	排障修复	term	数据竞争	curated	2026-09-17
+数据竞争检查	shu ju jing zheng jian cha	30	桌面移动	term	数据竞争检查	curated	2026-09-17
+数据绑定	shu ju bang ding	30	后端数据	term	数据绑定	curated	2026-09-17
+数据设计	shu ju she ji	30	项目协作	term	数据设计	curated	2026-09-17
+数据访问层	shu ju fang wen ceng	30	架构设计	term	数据访问层	curated	2026-09-17
+数据迁移测试	shu ju qian yi ce shi	30	测试验收	term	数据迁移测试	curated	2026-09-17
+数据重复	shu ju chong fu	30	排障修复	term	数据重复	curated	2026-09-17
+数据隔离	shu ju ge li	30	后端数据	term	数据隔离	curated	2026-09-17
+数据驱动测试	shu ju qu dong ce shi	30	测试验收	term	数据驱动测试	curated	2026-09-17
+数组越界	shu zu yue jie	30	排障修复	term	数组越界	curated	2026-09-17
+整洁架构	zheng jie jia gou	30	架构设计	term	整洁架构	curated	2026-09-17
+文件上传	wen jian shang chuan	30	前端交互	term	文件上传	curated	2026-09-17
+文件依赖	wen jian yi lai	30	开发操作	term	文件依赖	curated	2026-09-17
+文件关联	wen jian guan lian	30	桌面移动	term	文件关联	curated	2026-09-17
+文件差异	wen jian cha yi	30	版本协作	term	文件差异	curated	2026-09-17
+文件归属	wen jian gui shu	30	代理开发	term	文件归属	curated	2026-09-17
+文件所有权	wen jian suo you quan	30	代理开发	term	文件所有权	curated	2026-09-17
+文件描述符泄漏	wen jian miao shu fu xie lou	30	排障修复	term	文件描述符泄漏	curated	2026-09-17
+文件权限	wen jian quan xian	30	代理开发	term	文件权限	curated	2026-09-17
+文件访问权限	wen jian fang wen quan xian	30	桌面移动	term	文件访问权限	curated	2026-09-17
+文件选择器	wen jian xuan ze qi	30	前端交互	term	文件选择器	curated	2026-09-17
+文本上屏	wen ben shang ping	30	桌面移动	term	文本上屏	curated	2026-09-17
+文本切片	wen ben qie pian	30	向量检索	term	文本切片	curated	2026-09-17
+文本向量化	wen ben xiang liang hua	30	向量检索	term	文本向量化	curated	2026-09-17
+文本选择	wen ben xuan ze	30	桌面移动	term	文本选择	curated	2026-09-17
+文案翻译	wen an fan yi	30	前端交互	term	文案翻译	curated	2026-09-17
+文档入库	wen dang ru ku	30	向量检索	term	文档入库	curated	2026-09-17
+文档切片	wen dang qie pian	30	向量检索	term	文档切片	curated	2026-09-17
+文档同步	wen dang tong bu	30	向量检索	term	文档同步	curated	2026-09-17
+文档向量化	wen dang xiang liang hua	30	向量检索	term	文档向量化	curated	2026-09-17
+文档哈希	wen dang ha xi	30	向量检索	term	文档哈希	curated	2026-09-17
+文档更新	wen dang geng xin	30	向量检索	term	文档更新	curated	2026-09-17
+文档标识	wen dang biao shi	30	向量检索	term	文档标识	curated	2026-09-17
+文档版本	wen dang ban ben	30	向量检索	term	文档版本	curated	2026-09-17
+文档目录	wen dang mu lu	30	开发操作	term	文档目录	curated	2026-09-17
+断点续传	duan dian xu chuan	30	前端交互	term	断点续传	curated	2026-09-17
+断言信息	duan yan xin xi	30	测试验收	term	断言信息	curated	2026-09-17
+断言失败	duan yan shi bai	30	测试验收	term	断言失败	curated	2026-09-17
+方案取舍	fang an qu she	30	项目协作	term	方案取舍	curated	2026-09-17
+方案对比	fang an dui bi	30	项目协作	term	方案对比	curated	2026-09-17
+方案确认	fang an que ren	30	代理开发	term	方案确认	curated	2026-09-17
+方案评审	fang an ping shen	30	项目协作	term	方案评审	curated	2026-09-17
+无法复现	wu fa fu xian	30	排障修复	term	无法复现	curated	2026-09-17
+无障碍测试	wu zhang ai ce shi	30	测试验收	term	无障碍测试	curated	2026-09-17
+无障碍访问	wu zhang ai fang wen	30	前端交互	term	无障碍访问	curated	2026-09-17
+日志保留	ri zhi bao liu	30	可靠运维	term	日志保留	curated	2026-09-17
+日志检索	ri zhi jian suo	30	可靠运维	term	日志检索	curated	2026-09-17
+日志聚合	ri zhi ju he	30	可靠运维	term	日志聚合	curated	2026-09-17
+日志轮转	ri zhi lun zhuan	30	可靠运维	term	日志轮转	curated	2026-09-17
+日志采集	ri zhi cai ji	30	可靠运维	term	日志采集	curated	2026-09-17
+日期本地化	ri qi ben di hua	30	前端交互	term	日期本地化	curated	2026-09-17
+日期格式	ri qi ge shi	30	后端数据	term	日期格式	curated	2026-09-17
+日期选择器	ri qi xuan ze qi	30	前端交互	term	日期选择器	curated	2026-09-17
+时区转换	shi qu zhuan huan	30	后端数据	term	时区转换	curated	2026-09-17
+时间戳	shi jian chuo	30	后端数据	term	时间戳	curated	2026-09-17
+智能编程	zhi neng bian cheng	30	代理开发	term	智能编程	curated	2026-09-17
+暂存区	zan cun qu	30	版本协作	term	暂存区	curated	2026-09-17
+暂存差异	zan cun cha yi	30	版本协作	term	暂存差异	curated	2026-09-17
+暂存改动	zan cun gai dong	30	版本协作	term	暂存改动	curated	2026-09-17
+暂存文件	zan cun wen jian	30	版本协作	term	暂存文件	curated	2026-09-17
+暴力检索	bao li jian suo	30	向量检索	term	暴力检索	curated	2026-09-17
+更新下载	geng xin xia zai	30	桌面移动	term	更新下载	curated	2026-09-17
+更新依赖	geng xin yi lai	30	开发操作	term	更新依赖	curated	2026-09-17
+更新回滚	geng xin hui gun	30	桌面移动	term	更新回滚	curated	2026-09-17
+更新安装	geng xin an zhuang	30	桌面移动	term	更新安装	curated	2026-09-17
+更新文档	geng xin wen dang	30	代理开发	term	更新文档	curated	2026-09-17
+更新检查	geng xin jian cha	30	桌面移动	term	更新检查	curated	2026-09-17
+更新测试	geng xin ce shi	30	测试验收	term	更新测试	curated	2026-09-17
+更新签名	geng xin qian ming	30	桌面移动	term	更新签名	curated	2026-09-17
+最小修复	zui xiao xiu fu	30	排障修复	term	最小修复	curated	2026-09-17
+最小可行产品	zui xiao ke xing chan pin	30	项目协作	term	最小可行产品	curated	2026-09-17
+最小复现	zui xiao fu xian	30	排障修复	term	最小复现	curated	2026-09-17
+最小实现	zui xiao shi xian	30	代理开发	term	最小实现	curated	2026-09-17
+最小接口	zui xiao jie kou	30	架构设计	term	最小接口	curated	2026-09-17
+最小改动	zui xiao gai dong	30	排障修复	term	最小改动	curated	2026-09-17
+最小范围修改	zui xiao fan wei xiu gai	30	排障修复	term	最小范围修改	curated	2026-09-17
+最终一致性	zui zhong yi zhi xing	30	后端数据	term	最终一致性	curated	2026-09-17
+服务化架构	fu wu hua jia gou	30	架构设计	term	服务化架构	curated	2026-09-17
+服务发现	fu wu fa xian	30	可靠运维	term	服务发现	curated	2026-09-17
+服务告警	fu wu gao jing	30	可靠运维	term	服务告警	curated	2026-09-17
+服务层	fu wu ceng	30	架构设计	term	服务层	curated	2026-09-17
+服务注册	fu wu zhu ce	30	可靠运维	term	服务注册	curated	2026-09-17
+服务监控	fu wu jian kong	30	可靠运维	term	服务监控	curated	2026-09-17
+服务端口	fu wu duan kou	30	可靠运维	term	服务端口	curated	2026-09-17
+服务端渲染	fu wu duan xuan ran	30	前端交互	term	服务端渲染	curated	2026-09-17
+服务端状态	fu wu duan zhuang tai	30	前端交互	term	服务端状态	curated	2026-09-17
+服务账户	fu wu zhang hu	30	可靠运维	term	服务账户	curated	2026-09-17
+未完成项	wei wan cheng xiang	30	项目协作	term	未完成项	curated	2026-09-17
+未定义行为	wei ding yi xing wei	30	排障修复	term	未定义行为	curated	2026-09-17
+未捕获异常	wei bu huo yi chang	30	排障修复	term	未捕获异常	curated	2026-09-17
+未提交改动	wei ti jiao gai dong	30	版本协作	term	未提交改动	curated	2026-09-17
+未暂存改动	wei zan cun gai dong	30	版本协作	term	未暂存改动	curated	2026-09-17
+未跟踪文件	wei gen zong wen jian	30	版本协作	term	未跟踪文件	curated	2026-09-17
+本地事务	ben di shi wu	30	后端数据	term	本地事务	curated	2026-09-17
+本地仓库	ben di cang ku	30	开发操作	term	本地仓库	curated	2026-09-17
+本地分支	ben di fen zhi	30	版本协作	term	本地分支	curated	2026-09-17
+本地化	ben di hua	30	前端交互	term	本地化	curated	2026-09-17
+本地化测试	ben di hua ce shi	30	测试验收	term	本地化测试	curated	2026-09-17
+本地构建	ben di gou jian	30	开发操作	term	本地构建	curated	2026-09-17
+本地验证	ben di yan zheng	30	测试验收	term	本地验证	curated	2026-09-17
+权限声明	quan xian sheng ming	30	桌面移动	term	权限声明	curated	2026-09-17
+权限提升	quan xian ti sheng	30	代理开发	term	权限提升	curated	2026-09-17
+权限校验	quan xian jiao yan	30	后端数据	term	权限校验	curated	2026-09-17
+条件渲染	tiao jian xuan ran	30	前端交互	term	条件渲染	curated	2026-09-17
+来源追溯	lai yuan zhui su	30	向量检索	term	来源追溯	curated	2026-09-17
+松耦合	song ou he	30	架构设计	term	松耦合	curated	2026-09-17
+构建产物	gou jian chan wu	30	开发操作	term	构建产物	curated	2026-09-17
+构建参数	gou jian can shu	30	开发操作	term	构建参数	curated	2026-09-17
+构建失败	gou jian shi bai	30	开发操作	term	构建失败	curated	2026-09-17
+构建日志	gou jian ri zhi	30	开发操作	term	构建日志	curated	2026-09-17
+构建时间	gou jian shi jian	30	开发操作	term	构建时间	curated	2026-09-17
+构建检查	gou jian jian cha	30	测试验收	term	构建检查	curated	2026-09-17
+构建环境	gou jian huan jing	30	开发操作	term	构建环境	curated	2026-09-17
+构建目录	gou jian mu lu	30	开发操作	term	构建目录	curated	2026-09-17
+构建目标	gou jian mu biao	30	开发操作	term	构建目标	curated	2026-09-17
+构建缓存	gou jian huan cun	30	开发操作	term	构建缓存	curated	2026-09-17
+构建脚本	gou jian jiao ben	30	开发操作	term	构建脚本	curated	2026-09-17
+架构债	jia gou zhai	30	架构设计	term	架构债	curated	2026-09-17
+架构演进	jia gou yan jin	30	架构设计	term	架构演进	curated	2026-09-17
+架构约束	jia gou yue shu	30	架构设计	term	架构约束	curated	2026-09-17
+架构设计	jia gou she ji	30	项目协作	term	架构设计	curated	2026-09-17
+架构评审	jia gou ping shen	30	项目协作	term	架构评审	curated	2026-09-17
+查找引用	cha zhao yin yong	30	开发操作	term	查找引用	curated	2026-09-17
+查询优化	cha xun you hua	30	后端数据	term	查询优化	curated	2026-09-17
+查询参数	cha xun can shu	30	后端数据	term	查询参数	curated	2026-09-17
+查询向量化	cha xun xiang liang hua	30	向量检索	term	查询向量化	curated	2026-09-17
+查询处理器	cha xun chu li qi	30	架构设计	term	查询处理器	curated	2026-09-17
+查询计划	cha xun ji hua	30	后端数据	term	查询计划	curated	2026-09-17
+查询重写	cha xun chong xie	30	后端数据	term	查询重写	curated	2026-09-17
+标注未完成项	biao zhu wei wan cheng xiang	30	代理开发	term	标注未完成项	curated	2026-09-17
+标签签名	biao qian qian ming	30	版本协作	term	标签签名	curated	2026-09-17
+标签页	biao qian ye	30	前端交互	term	标签页	curated	2026-09-17
+校验失败	jiao yan shi bai	30	后端数据	term	校验失败	curated	2026-09-17
+校验规则	jiao yan gui ze	30	后端数据	term	校验规则	curated	2026-09-17
+校验错误	jiao yan cuo wu	30	后端数据	term	校验错误	curated	2026-09-17
+样式冲突	yang shi chong tu	30	前端交互	term	样式冲突	curated	2026-09-17
+样式覆盖	yang shi fu gai	30	前端交互	term	样式覆盖	curated	2026-09-17
+样式隔离	yang shi ge li	30	前端交互	term	样式隔离	curated	2026-09-17
+核心模块	he xin mo kuai	30	架构设计	term	核心模块	curated	2026-09-17
+根因分析	gen yin fen xi	30	排障修复	term	根因分析	curated	2026-09-17
+根因定位	gen yin ding wei	30	排障修复	term	根因定位	curated	2026-09-17
+格式化检查	ge shi hua jian cha	30	测试验收	term	格式化检查	curated	2026-09-17
+格式检查	ge shi jian cha	30	测试验收	term	格式检查	curated	2026-09-17
+桌面应用	zhuo mian ying yong	30	桌面移动	term	桌面应用	curated	2026-09-17
+桥接接口	qiao jie jie kou	30	桌面移动	term	桥接接口	curated	2026-09-17
+桥接模式	qiao jie mo shi	30	架构设计	term	桥接模式	curated	2026-09-17
+检查调用链	jian cha diao yong lian	30	代理开发	term	检查调用链	curated	2026-09-17
+检索准确率	jian suo zhun que lv	30	向量检索	term	检索准确率	curated	2026-09-17
+检索可解释性	jian suo ke jie shi xing	30	向量检索	term	检索可解释性	curated	2026-09-17
+检索命中	jian suo ming zhong	30	向量检索	term	检索命中	curated	2026-09-17
+检索相关性	jian suo xiang guan xing	30	向量检索	term	检索相关性	curated	2026-09-17
+检索覆盖	jian suo fu gai	30	向量检索	term	检索覆盖	curated	2026-09-17
+检索评测	jian suo ping ce	30	向量检索	term	检索评测	curated	2026-09-17
+检索调试	jian suo tiao shi	30	向量检索	term	检索调试	curated	2026-09-17
+概念模型	gai nian mo xing	30	项目协作	term	概念模型	curated	2026-09-17
+概念验证	gai nian yan zheng	30	项目协作	term	概念验证	curated	2026-09-17
+概要设计	gai yao she ji	30	项目协作	term	概要设计	curated	2026-09-17
+模块依赖	mo kuai yi lai	30	开发操作	term	模块依赖	curated	2026-09-17
+模块化单体	mo kuai hua dan ti	30	架构设计	term	模块化单体	curated	2026-09-17
+模块打包	mo kuai da bao	30	前端交互	term	模块打包	curated	2026-09-17
+模块接口	mo kuai jie kou	30	架构设计	term	模块接口	curated	2026-09-17
+模块边界	mo kuai bian jie	30	架构设计	term	模块边界	curated	2026-09-17
+模拟对象	mo ni dui xiang	30	测试验收	term	模拟对象	curated	2026-09-17
+模板方法	mo ban fang fa	30	架构设计	term	模板方法	curated	2026-09-17
+模糊测试	mo hu ce shi	30	测试验收	term	模糊测试	curated	2026-09-17
+横竖屏切换	heng shu ping qie huan	30	桌面移动	term	横竖屏切换	curated	2026-09-17
+正向用例	zheng xiang yong li	30	测试验收	term	正向用例	curated	2026-09-17
+正常流程	zheng chang liu cheng	30	项目协作	term	正常流程	curated	2026-09-17
+死信队列	si xin dui lie	30	后端数据	term	死信队列	curated	2026-09-17
+死锁	si suo	30	排障修复	term	死锁	curated	2026-09-17
+死锁检测	si suo jian ce	30	后端数据	term	死锁检测	curated	2026-09-17
+氛围编程	fen wei bian cheng	30	代理开发	term	氛围编程	curated	2026-09-17
+水合	shui he	30	前端交互	term	水合	curated	2026-09-17
+水合不匹配	shui he bu pi pei	30	前端交互	term	水合不匹配	curated	2026-09-17
+水合错误	shui he cuo wu	30	前端交互	term	水合错误	curated	2026-09-17
+水平分片	shui ping fen pian	30	后端数据	term	水平分片	curated	2026-09-17
+水平扩容	shui ping kuo rong	30	可靠运维	term	水平扩容	curated	2026-09-17
+永久修复	yong jiu xiu fu	30	排障修复	term	永久修复	curated	2026-09-17
+池化	chi hua	30	后端数据	term	池化	curated	2026-09-17
+污点	wu dian	30	可靠运维	term	污点	curated	2026-09-17
+沙箱权限	sha xiang quan xian	30	代理开发	term	沙箱权限	curated	2026-09-17
+洋葱架构	yang cong jia gou	30	架构设计	term	洋葱架构	curated	2026-09-17
+活锁	huo suo	30	排障修复	term	活锁	curated	2026-09-17
+流式渲染	liu shi xuan ran	30	前端交互	term	流式渲染	curated	2026-09-17
+流量切换	liu liang qie huan	30	可靠运维	term	流量切换	curated	2026-09-17
+流量回放	liu liang hui fang	30	可靠运维	term	流量回放	curated	2026-09-17
+流量镜像	liu liang jing xiang	30	可靠运维	term	流量镜像	curated	2026-09-17
+浅色模式	qian se mo shi	30	前端交互	term	浅色模式	curated	2026-09-17
+测试先行	ce shi xian xing	30	测试验收	term	测试先行	curated	2026-09-17
+测试初始化	ce shi chu shi hua	30	测试验收	term	测试初始化	curated	2026-09-17
+测试失败	ce shi shi bai	30	开发操作	term	测试失败	curated	2026-09-17
+测试夹具	ce shi jia ju	30	测试验收	term	测试夹具	curated	2026-09-17
+测试套件	ce shi tao jian	30	测试验收	term	测试套件	curated	2026-09-17
+测试报告	ce shi bao gao	30	测试验收	term	测试报告	curated	2026-09-17
+测试数据	ce shi shu ju	30	测试验收	term	测试数据	curated	2026-09-17
+测试断言	ce shi duan yan	30	测试验收	term	测试断言	curated	2026-09-17
+测试替身	ce shi ti shen	30	测试验收	term	测试替身	curated	2026-09-17
+测试未运行	ce shi wei yun xing	30	测试验收	term	测试未运行	curated	2026-09-17
+测试未通过	ce shi wei tong guo	30	测试验收	term	测试未通过	curated	2026-09-17
+测试桩	ce shi zhuang	30	测试验收	term	测试桩	curated	2026-09-17
+测试模式	ce shi mo shi	30	开发操作	term	测试模式	curated	2026-09-17
+测试清理	ce shi qing li	30	测试验收	term	测试清理	curated	2026-09-17
+测试环境	ce shi huan jing	30	测试验收	term	测试环境	curated	2026-09-17
+测试生命周期	ce shi sheng ming zhou qi	30	测试验收	term	测试生命周期	curated	2026-09-17
+测试用例	ce shi yong li	30	测试验收	term	测试用例	curated	2026-09-17
+测试目录	ce shi mu lu	30	开发操作	term	测试目录	curated	2026-09-17
+测试结果	ce shi jie guo	30	测试验收	term	测试结果	curated	2026-09-17
+测试覆盖率	ce shi fu gai lv	30	测试验收	term	测试覆盖率	curated	2026-09-17
+测试证据	ce shi zheng ju	30	测试验收	term	测试证据	curated	2026-09-17
+测试超时	ce shi chao shi	30	测试验收	term	测试超时	curated	2026-09-17
+测试跳过	ce shi tiao guo	30	测试验收	term	测试跳过	curated	2026-09-17
+测试通过	ce shi tong guo	30	测试验收	term	测试通过	curated	2026-09-17
+测试重试	ce shi chong shi	30	测试验收	term	测试重试	curated	2026-09-17
+测试隔离	ce shi ge li	30	测试验收	term	测试隔离	curated	2026-09-17
+测试驱动开发	ce shi qu dong kai fa	30	测试验收	term	测试驱动开发	curated	2026-09-17
+浮层	fu ceng	30	前端交互	term	浮层	curated	2026-09-17
+浮点精度	fu dian jing du	30	后端数据	term	浮点精度	curated	2026-09-17
+消息丢失	xiao xi diu shi	30	排障修复	term	消息丢失	curated	2026-09-17
+消息乱序	xiao xi luan xu	30	排障修复	term	消息乱序	curated	2026-09-17
+消息确认	xiao xi que ren	30	后端数据	term	消息确认	curated	2026-09-17
+消息通道	xiao xi tong dao	30	桌面移动	term	消息通道	curated	2026-09-17
+消息重投	xiao xi chong tou	30	后端数据	term	消息重投	curated	2026-09-17
+消息重试	xiao xi chong shi	30	后端数据	term	消息重试	curated	2026-09-17
+消息顺序	xiao xi shun xu	30	后端数据	term	消息顺序	curated	2026-09-17
+消费位点	xiao fei wei dian	30	后端数据	term	消费位点	curated	2026-09-17
+消费积压	xiao fei ji ya	30	后端数据	term	消费积压	curated	2026-09-17
+深层链接	shen ceng lian jie	30	桌面移动	term	深层链接	curated	2026-09-17
+深色模式	shen se mo shi	30	前端交互	term	深色模式	curated	2026-09-17
+混合召回	hun he zhao hui	30	向量检索	term	混合召回	curated	2026-09-17
+混合应用	hun he ying yong	30	桌面移动	term	混合应用	curated	2026-09-17
+混合输入	hun he shu ru	30	桌面移动	term	混合输入	curated	2026-09-17
+混合过滤	hun he guo lv	30	向量检索	term	混合过滤	curated	2026-09-17
+混沌测试	hun dun ce shi	30	可靠运维	term	混沌测试	curated	2026-09-17
+清理依赖	qing li yi lai	30	开发操作	term	清理依赖	curated	2026-09-17
+清理构建缓存	qing li gou jian huan cun	30	开发操作	term	清理构建缓存	curated	2026-09-17
+清理缓存	qing li huan cun	30	开发操作	term	清理缓存	curated	2026-09-17
+清理计划	qing li ji hua	30	项目协作	term	清理计划	curated	2026-09-17
+渐进式迁移	jian jin shi qian yi	30	架构设计	term	渐进式迁移	curated	2026-09-17
+渐进式重构	jian jin shi chong gou	30	架构设计	term	渐进式重构	curated	2026-09-17
+渲染进程	xuan ran jin cheng	30	桌面移动	term	渲染进程	curated	2026-09-17
+游标分页	you biao fen ye	30	后端数据	term	游标分页	curated	2026-09-17
+源码目录	yuan ma mu lu	30	开发操作	term	源码目录	curated	2026-09-17
+滚动发布	gun dong fa bu	30	可靠运维	term	滚动发布	curated	2026-09-17
+滚动更新	gun dong geng xin	30	可靠运维	term	滚动更新	curated	2026-09-17
+漏洞扫描	lou dong sao miao	30	测试验收	term	漏洞扫描	curated	2026-09-17
+演进计划	yan jin ji hua	30	项目协作	term	演进计划	curated	2026-09-17
+灰度流量	hui du liu liang	30	可靠运维	term	灰度流量	curated	2026-09-17
+灰度验证	hui du yan zheng	30	测试验收	term	灰度验证	curated	2026-09-17
+点击节流	dian ji jie liu	30	前端交互	term	点击节流	curated	2026-09-17
+点积相似度	dian ji xiang si du	30	向量检索	term	点积相似度	curated	2026-09-17
+热修复	re xiu fu	30	排障修复	term	热修复	curated	2026-09-17
+热启动	re qi dong	30	桌面移动	term	热启动	curated	2026-09-17
+焦点管理	jiao dian guan li	30	前端交互	term	焦点管理	curated	2026-09-17
+焦点陷阱	jiao dian xian jing	30	前端交互	term	焦点陷阱	curated	2026-09-17
+照片权限	zhao pian quan xian	30	桌面移动	term	照片权限	curated	2026-09-17
+熔断机制	rong duan ji zhi	30	可靠运维	term	熔断机制	curated	2026-09-17
+版本回退	ban ben hui tui	30	可靠运维	term	版本回退	curated	2026-09-17
+版本控制	ban ben kong zhi	30	版本协作	term	版本控制	curated	2026-09-17
+版本标签	ban ben biao qian	30	版本协作	term	版本标签	curated	2026-09-17
+版本管理	ban ben guan li	30	版本协作	term	版本管理	curated	2026-09-17
+版本约束	ban ben yue shu	30	开发操作	term	版本约束	curated	2026-09-17
+版本范围	ban ben fan wei	30	开发操作	term	版本范围	curated	2026-09-17
+物理删除	wu li shan chu	30	后端数据	term	物理删除	curated	2026-09-17
+状态一致性	zhuang tai yi zhi xing	30	架构设计	term	状态一致性	curated	2026-09-17
+状态下沉	zhuang tai xia chen	30	前端交互	term	状态下沉	curated	2026-09-17
+状态丢失	zhuang tai diu shi	30	排障修复	term	状态丢失	curated	2026-09-17
+状态同步	zhuang tai tong bu	30	项目协作	term	状态同步	curated	2026-09-17
+状态图	zhuang tai tu	30	架构设计	term	状态图	curated	2026-09-17
+状态异常	zhuang tai yi chang	30	排障修复	term	状态异常	curated	2026-09-17
+状态恢复	zhuang tai hui fu	30	架构设计	term	状态恢复	curated	2026-09-17
+状态持久化	zhuang tai chi jiu hua	30	架构设计	term	状态持久化	curated	2026-09-17
+状态提升	zhuang tai ti sheng	30	前端交互	term	状态提升	curated	2026-09-17
+状态机	zhuang tai ji	30	架构设计	term	状态机	curated	2026-09-17
+状态栏	zhuang tai lan	30	桌面移动	term	状态栏	curated	2026-09-17
+状态派生	zhuang tai pai sheng	30	前端交互	term	状态派生	curated	2026-09-17
+状态码	zhuang tai ma	30	后端数据	term	状态码	curated	2026-09-17
+状态订阅	zhuang tai ding yue	30	前端交互	term	状态订阅	curated	2026-09-17
+状态转换	zhuang tai zhuan huan	30	架构设计	term	状态转换	curated	2026-09-17
+状态转移	zhuang tai zhuan yi	30	架构设计	term	状态转移	curated	2026-09-17
+状态错乱	zhuang tai cuo luan	30	排障修复	term	状态错乱	curated	2026-09-17
+独立子任务	du li zi ren wu	30	代理开发	term	独立子任务	curated	2026-09-17
+独立工作区	du li gong zuo qu	30	开发操作	term	独立工作区	curated	2026-09-17
+环境准备	huan jing zhun bei	30	开发操作	term	环境准备	curated	2026-09-17
+环境初始化	huan jing chu shi hua	30	开发操作	term	环境初始化	curated	2026-09-17
+环境变量	huan jing bian liang	30	可靠运维	term	环境变量	curated	2026-09-17
+环境差异	huan jing cha yi	30	开发操作	term	环境差异	curated	2026-09-17
+环境检查	huan jing jian cha	30	开发操作	term	环境检查	curated	2026-09-17
+环境配置	huan jing pei zhi	30	开发操作	term	环境配置	curated	2026-09-17
+环境隔离	huan jing ge li	30	开发操作	term	环境隔离	curated	2026-09-17
+生产模式	sheng chan mo shi	30	开发操作	term	生产模式	curated	2026-09-17
+生产环境	sheng chan huan jing	30	可靠运维	term	生产环境	curated	2026-09-17
+生成补丁	sheng cheng bu ding	30	版本协作	term	生成补丁	curated	2026-09-17
+用户偏好	yong hu pian hao	30	代理开发	term	用户偏好	curated	2026-09-17
+用户场景	yong hu chang jing	30	项目协作	term	用户场景	curated	2026-09-17
+用户指令	yong hu zhi ling	30	代理开发	term	用户指令	curated	2026-09-17
+用户故事	yong hu gu shi	30	项目协作	term	用户故事	curated	2026-09-17
+用户旅程	yong hu lv cheng	30	项目协作	term	用户旅程	curated	2026-09-17
+用户认证	yong hu ren zheng	30	后端数据	term	用户认证	curated	2026-09-17
+用户需求	yong hu xu qiu	30	项目协作	term	用户需求	curated	2026-09-17
+电量优化	dian liang you hua	30	桌面移动	term	电量优化	curated	2026-09-17
+界面卡顿	jie mian ka dun	30	排障修复	term	界面卡顿	curated	2026-09-17
+登录态	deng lu tai	30	后端数据	term	登录态	curated	2026-09-17
+登录状态	deng lu zhuang tai	30	后端数据	term	登录状态	curated	2026-09-17
+直接依赖	zhi jie yi lai	30	开发操作	term	直接依赖	curated	2026-09-17
+直接实现	zhi jie shi xian	30	代理开发	term	直接实现	curated	2026-09-17
+相似度分数	xiang si du fen shu	30	向量检索	term	相似度分数	curated	2026-09-17
+相似度阈值	xiang si du yu zhi	30	向量检索	term	相似度阈值	curated	2026-09-17
+相对定位	xiang dui ding wei	30	前端交互	term	相对定位	curated	2026-09-17
+真机验证	zhen ji yan zheng	30	测试验收	term	真机验证	curated	2026-09-17
+知识切片	zhi shi qie pian	30	向量检索	term	知识切片	curated	2026-09-17
+知识库同步	zhi shi ku tong bu	30	向量检索	term	知识库同步	curated	2026-09-17
+确定性构建	que ding xing gou jian	30	开发操作	term	确定性构建	curated	2026-09-17
+确认弹窗	que ren dan chuang	30	前端交互	term	确认弹窗	curated	2026-09-17
+确认根因	que ren gen yin	30	代理开发	term	确认根因	curated	2026-09-17
+禁用状态	jin yong zhuang tai	30	前端交互	term	禁用状态	curated	2026-09-17
+离线安装	li xian an zhuang	30	开发操作	term	离线安装	curated	2026-09-17
+离线验证	li xian yan zheng	30	测试验收	term	离线验证	curated	2026-09-17
+私有包	si you bao	30	开发操作	term	私有包	curated	2026-09-17
+私有接口	si you jie kou	30	架构设计	term	私有接口	curated	2026-09-17
+租户标识	zu hu biao shi	30	后端数据	term	租户标识	curated	2026-09-17
+租户路由	zu hu lu you	30	后端数据	term	租户路由	curated	2026-09-17
+租户隔离	zu hu ge li	30	后端数据	term	租户隔离	curated	2026-09-17
+移动应用	yi dong ying yong	30	桌面移动	term	移动应用	curated	2026-09-17
+稀疏召回	xi shu zhao hui	30	向量检索	term	稀疏召回	curated	2026-09-17
+稠密召回	chou mi zhao hui	30	向量检索	term	稠密召回	curated	2026-09-17
+稳定复现	wen ding fu xian	30	排障修复	term	稳定复现	curated	2026-09-17
+稳定性测试	wen ding xing ce shi	30	测试验收	term	稳定性测试	curated	2026-09-17
+稳定接口	wen ding jie kou	30	架构设计	term	稳定接口	curated	2026-09-17
+空值处理	kong zhi chu li	30	排障修复	term	空值处理	curated	2026-09-17
+空引用	kong yin yong	30	排障修复	term	空引用	curated	2026-09-17
+空指针异常	kong zhi zhen yi chang	30	排障修复	term	空指针异常	curated	2026-09-17
+空状态	kong zhuang tai	30	前端交互	term	空状态	curated	2026-09-17
+空输入	kong shu ru	30	测试验收	term	空输入	curated	2026-09-17
+窗口关闭	chuang kou guan bi	30	桌面移动	term	窗口关闭	curated	2026-09-17
+窗口函数	chuang kou han shu	30	后端数据	term	窗口函数	curated	2026-09-17
+窗口恢复	chuang kou hui fu	30	桌面移动	term	窗口恢复	curated	2026-09-17
+窗口焦点	chuang kou jiao dian	30	桌面移动	term	窗口焦点	curated	2026-09-17
+窗口状态	chuang kou zhuang tai	30	桌面移动	term	窗口状态	curated	2026-09-17
+窗口管理	chuang kou guan li	30	桌面移动	term	窗口管理	curated	2026-09-17
+窗口缩放	chuang kou suo fang	30	桌面移动	term	窗口缩放	curated	2026-09-17
+窗口置顶	chuang kou zhi ding	30	桌面移动	term	窗口置顶	curated	2026-09-17
+竞态条件	jing tai tiao jian	30	排障修复	term	竞态条件	curated	2026-09-17
+竞态问题	jing tai wen ti	30	排障修复	term	竞态问题	curated	2026-09-17
+端到端测试	duan dao duan ce shi	30	测试验收	term	端到端测试	curated	2026-09-17
+端口映射	duan kou ying she	30	可靠运维	term	端口映射	curated	2026-09-17
+端口暴露	duan kou bao lu	30	可靠运维	term	端口暴露	curated	2026-09-17
+符号搜索	fu hao sou suo	30	开发操作	term	符号搜索	curated	2026-09-17
+策略模式	ce lve mo shi	30	架构设计	term	策略模式	curated	2026-09-17
+签名证书	qian ming zheng shu	30	桌面移动	term	签名证书	curated	2026-09-17
+简拼输入	jian pin shu ru	30	桌面移动	term	简拼输入	curated	2026-09-17
+类型检查	lei xing jian cha	30	测试验收	term	类型检查	curated	2026-09-17
+类组件	lei zu jian	30	前端交互	term	类组件	curated	2026-09-17
+粘性定位	zhan xing ding wei	30	前端交互	term	粘性定位	curated	2026-09-17
+精度丢失	jing du diu shi	30	后端数据	term	精度丢失	curated	2026-09-17
+精确近邻	jing que jin lin	30	向量检索	term	精确近邻	curated	2026-09-17
+系统托盘	xi tong tuo pan	30	桌面移动	term	系统托盘	curated	2026-09-17
+系统指令	xi tong zhi ling	30	代理开发	term	系统指令	curated	2026-09-17
+索引下推	suo yin xia tui	30	后端数据	term	索引下推	curated	2026-09-17
+索引入库	suo yin ru ku	30	向量检索	term	索引入库	curated	2026-09-17
+索引内存	suo yin nei cun	30	向量检索	term	索引内存	curated	2026-09-17
+索引分区	suo yin fen qu	30	向量检索	term	索引分区	curated	2026-09-17
+索引加载	suo yin jia zai	30	向量检索	term	索引加载	curated	2026-09-17
+索引参数	suo yin can shu	30	向量检索	term	索引参数	curated	2026-09-17
+索引召回率	suo yin zhao hui lv	30	向量检索	term	索引召回率	curated	2026-09-17
+索引合并	suo yin he bing	30	向量检索	term	索引合并	curated	2026-09-17
+索引失效	suo yin shi xiao	30	后端数据	term	索引失效	curated	2026-09-17
+索引扫描	suo yin sao miao	30	后端数据	term	索引扫描	curated	2026-09-17
+索引持久化	suo yin chi jiu hua	30	向量检索	term	索引持久化	curated	2026-09-17
+索引空间	suo yin kong jian	30	向量检索	term	索引空间	curated	2026-09-17
+索引类型	suo yin lei xing	30	向量检索	term	索引类型	curated	2026-09-17
+索引覆盖	suo yin fu gai	30	后端数据	term	索引覆盖	curated	2026-09-17
+索引选择性	suo yin xuan ze xing	30	后端数据	term	索引选择性	curated	2026-09-17
+索引重建	suo yin chong jian	30	向量检索	term	索引重建	curated	2026-09-17
+紧急修复	jin ji xiu fu	30	排障修复	term	紧急修复	curated	2026-09-17
+紧耦合	jin ou he	30	架构设计	term	紧耦合	curated	2026-09-17
+红绿重构	hong lv chong gou	30	测试验收	term	红绿重构	curated	2026-09-17
+线上验证	xian shang yan zheng	30	测试验收	term	线上验证	curated	2026-09-17
+线程池	xian cheng chi	30	后端数据	term	线程池	curated	2026-09-17
+线程阻塞	xian cheng zu se	30	排障修复	term	线程阻塞	curated	2026-09-17
+组件化开发	zu jian hua kai fa	30	前端交互	term	组件化开发	curated	2026-09-17
+组件卸载	zu jian xie zai	30	前端交互	term	组件卸载	curated	2026-09-17
+组件复用	zu jian fu yong	30	前端交互	term	组件复用	curated	2026-09-17
+组件封装	zu jian feng zhuang	30	前端交互	term	组件封装	curated	2026-09-17
+组件属性	zu jian shu xing	30	前端交互	term	组件属性	curated	2026-09-17
+组件库	zu jian ku	30	前端交互	term	组件库	curated	2026-09-17
+组件挂载	zu jian gua zai	30	前端交互	term	组件挂载	curated	2026-09-17
+组件插槽	zu jian cha cao	30	前端交互	term	组件插槽	curated	2026-09-17
+组件更新	zu jian geng xin	30	前端交互	term	组件更新	curated	2026-09-17
+组件测试	zu jian ce shi	30	测试验收	term	组件测试	curated	2026-09-17
+组件状态	zu jian zhuang tai	30	前端交互	term	组件状态	curated	2026-09-17
+组件生命周期	zu jian sheng ming zhou qi	30	前端交互	term	组件生命周期	curated	2026-09-17
+组件通信	zu jian tong xin	30	前端交互	term	组件通信	curated	2026-09-17
+组合优于继承	zu he you yu ji cheng	30	架构设计	term	组合优于继承	curated	2026-09-17
+组合式函数	zu he shi han shu	30	前端交互	term	组合式函数	curated	2026-09-17
+组合式接口	zu he shi jie kou	30	前端交互	term	组合式接口	curated	2026-09-17
+组合模式	zu he mo shi	30	架构设计	term	组合模式	curated	2026-09-17
+组合输入	zu he shu ru	30	桌面移动	term	组合输入	curated	2026-09-17
+终止状态	zhong zhi zhuang tai	30	架构设计	term	终止状态	curated	2026-09-17
+绑定挂载	bang ding gua zai	30	可靠运维	term	绑定挂载	curated	2026-09-17
+结对编程	jie dui bian cheng	30	代理开发	term	结对编程	curated	2026-09-17
+结构化并发	jie gou hua bing fa	30	桌面移动	term	结构化并发	curated	2026-09-17
+绝对定位	jue dui ding wei	30	前端交互	term	绝对定位	curated	2026-09-17
+统一语言	tong yi yu yan	30	项目协作	term	统一语言	curated	2026-09-17
+继续实现	ji xu shi xian	30	代理开发	term	继续实现	curated	2026-09-17
+继续审查	ji xu shen cha	30	代理开发	term	继续审查	curated	2026-09-17
+继续执行	ji xu zhi xing	30	代理开发	term	继续执行	curated	2026-09-17
+继续排查	ji xu pai cha	30	排障修复	term	继续排查	curated	2026-09-17
+缓存击穿	huan cun ji chuan	30	排障修复	term	缓存击穿	curated	2026-09-17
+缓存命中	huan cun ming zhong	30	开发操作	term	缓存命中	curated	2026-09-17
+缓存失效	huan cun shi xiao	30	排障修复	term	缓存失效	curated	2026-09-17
+缓存污染	huan cun wu ran	30	排障修复	term	缓存污染	curated	2026-09-17
+缓存穿透	huan cun chuan tou	30	排障修复	term	缓存穿透	curated	2026-09-17
+缓存过期	huan cun guo qi	30	排障修复	term	缓存过期	curated	2026-09-17
+缓存雪崩	huan cun xue beng	30	排障修复	term	缓存雪崩	curated	2026-09-17
+编码约定	bian ma yue ding	30	代理开发	term	编码约定	curated	2026-09-17
+编码转换	bian ma zhuan huan	30	后端数据	term	编码转换	curated	2026-09-17
+编程助手	bian cheng zhu shou	30	代理开发	term	编程助手	curated	2026-09-17
+编译器版本	bian yi qi ban ben	30	开发操作	term	编译器版本	curated	2026-09-17
+编译失败	bian yi shi bai	30	开发操作	term	编译失败	curated	2026-09-17
+编译检查	bian yi jian cha	30	测试验收	term	编译检查	curated	2026-09-17
+网格布局	wang ge bu ju	30	前端交互	term	网格布局	curated	2026-09-17
+网络权限	wang luo quan xian	30	代理开发	term	网络权限	curated	2026-09-17
+网络超时	wang luo chao shi	30	开发操作	term	网络超时	curated	2026-09-17
+联合索引	lian he suo yin	30	后端数据	term	联合索引	curated	2026-09-17
+联表查询	lian biao cha xun	30	后端数据	term	联表查询	curated	2026-09-17
+聚合	ju he	30	架构设计	term	聚合	curated	2026-09-17
+聚合根	ju he gen	30	架构设计	term	聚合根	curated	2026-09-17
+聚合边界	ju he bian jie	30	架构设计	term	聚合边界	curated	2026-09-17
+聚焦状态	ju jiao zhuang tai	30	前端交互	term	聚焦状态	curated	2026-09-17
+聚簇索引	ju cu suo yin	30	后端数据	term	聚簇索引	curated	2026-09-17
+脏工作区	zang gong zuo qu	30	版本协作	term	脏工作区	curated	2026-09-17
+脏读	zang du	30	后端数据	term	脏读	curated	2026-09-17
+自主推进	zi zhu tui jin	30	代理开发	term	自主推进	curated	2026-09-17
+自主编程	zi zhu bian cheng	30	代理开发	term	自主编程	curated	2026-09-17
+自动化验证	zi dong hua yan zheng	30	测试验收	term	自动化验证	curated	2026-09-17
+自动合并	zi dong he bing	30	版本协作	term	自动合并	curated	2026-09-17
+自动回滚	zi dong hui gun	30	可靠运维	term	自动回滚	curated	2026-09-17
+自动审批	zi dong shen pi	30	代理开发	term	自动审批	curated	2026-09-17
+自动扩容	zi dong kuo rong	30	可靠运维	term	自动扩容	curated	2026-09-17
+自动更新	zi dong geng xin	30	桌面移动	term	自动更新	curated	2026-09-17
+自动检查	zi dong jian cha	30	版本协作	term	自动检查	curated	2026-09-17
+自动模式	zi dong mo shi	30	代理开发	term	自动模式	curated	2026-09-17
+自动缩容	zi dong suo rong	30	可靠运维	term	自动缩容	curated	2026-09-17
+自定义指令	zi ding yi zhi ling	30	前端交互	term	自定义指令	curated	2026-09-17
+自定义钩子	zi ding yi gou zi	30	前端交互	term	自定义钩子	curated	2026-09-17
+自适应布局	zi shi ying bu ju	30	前端交互	term	自适应布局	curated	2026-09-17
+至多一次	zhi duo yi ci	30	后端数据	term	至多一次	curated	2026-09-17
+至少一次	zhi shao yi ci	30	后端数据	term	至少一次	curated	2026-09-17
+节流	jie liu	30	前端交互	term	节流	curated	2026-09-17
+节点亲和	jie dian qin he	30	可靠运维	term	节点亲和	curated	2026-09-17
+节点调度	jie dian diao du	30	可靠运维	term	节点调度	curated	2026-09-17
+英文补全	ying wen bu quan	30	桌面移动	term	英文补全	curated	2026-09-17
+菜单	cai dan	30	前端交互	term	菜单	curated	2026-09-17
+菜单栏	cai dan lan	30	桌面移动	term	菜单栏	curated	2026-09-17
+蓝牙权限	lan ya quan xian	30	桌面移动	term	蓝牙权限	curated	2026-09-17
+蓝绿发布	lan lv fa bu	30	可靠运维	term	蓝绿发布	curated	2026-09-17
+虚拟列表	xu ni lie biao	30	前端交互	term	虚拟列表	curated	2026-09-17
+虚拟文档树	xu ni wen dang shu	30	前端交互	term	虚拟文档树	curated	2026-09-17
+虚拟滚动	xu ni gun dong	30	前端交互	term	虚拟滚动	curated	2026-09-17
+虚拟节点	xu ni jie dian	30	前端交互	term	虚拟节点	curated	2026-09-17
+虚拟视图	xu ni shi tu	30	前端交互	term	虚拟视图	curated	2026-09-17
+行为驱动开发	xing wei qu dong kai fa	30	测试验收	term	行为驱动开发	curated	2026-09-17
+行级权限	xing ji quan xian	30	后端数据	term	行级权限	curated	2026-09-17
+行覆盖率	xing fu gai lv	30	测试验收	term	行覆盖率	curated	2026-09-17
+行锁	xing suo	30	后端数据	term	行锁	curated	2026-09-17
+补丁冲突	bu ding chong tu	30	版本协作	term	补丁冲突	curated	2026-09-17
+补丁审查	bu ding shen cha	30	版本协作	term	补丁审查	curated	2026-09-17
+补丁文件	bu ding wen jian	30	版本协作	term	补丁文件	curated	2026-09-17
+补充测试	bu chong ce shi	30	测试验收	term	补充测试	curated	2026-09-17
+补充验证	bu chong yan zheng	30	代理开发	term	补充验证	curated	2026-09-17
+表单提交	biao dan ti jiao	30	前端交互	term	表单提交	curated	2026-09-17
+表单校验	biao dan jiao yan	30	前端交互	term	表单校验	curated	2026-09-17
+表单状态	biao dan zhuang tai	30	前端交互	term	表单状态	curated	2026-09-17
+表单重置	biao dan chong zhi	30	前端交互	term	表单重置	curated	2026-09-17
+表现层	biao xian ceng	30	架构设计	term	表现层	curated	2026-09-17
+表锁	biao suo	30	后端数据	term	表锁	curated	2026-09-17
+表驱动测试	biao qu dong ce shi	30	测试验收	term	表驱动测试	curated	2026-09-17
+装饰器模式	zhuang shi qi mo shi	30	架构设计	term	装饰器模式	curated	2026-09-17
+覆盖失败路径	fu gai shi bai lu jing	30	测试验收	term	覆盖失败路径	curated	2026-09-17
+覆盖核心流程	fu gai he xin liu cheng	30	测试验收	term	覆盖核心流程	curated	2026-09-17
+覆盖索引	fu gai suo yin	30	后端数据	term	覆盖索引	curated	2026-09-17
+覆盖边界条件	fu gai bian jie tiao jian	30	测试验收	term	覆盖边界条件	curated	2026-09-17
+观察对象	guan cha dui xiang	30	桌面移动	term	观察对象	curated	2026-09-17
+观察者模式	guan cha zhe mo shi	30	架构设计	term	观察者模式	curated	2026-09-17
+视图模型	shi tu mo xing	30	架构设计	term	视图模型	curated	2026-09-17
+视图生命周期	shi tu sheng ming zhou qi	30	桌面移动	term	视图生命周期	curated	2026-09-17
+角色权限	jue se quan xian	30	后端数据	term	角色权限	curated	2026-09-17
+解决冲突	jie jue chong tu	30	版本协作	term	解决冲突	curated	2026-09-17
+解决合并冲突	jie jue he bing chong tu	30	版本协作	term	解决合并冲突	curated	2026-09-17
+触控事件	chu kong shi jian	30	桌面移动	term	触控事件	curated	2026-09-17
+触觉反馈	chu jue fan kui	30	桌面移动	term	触觉反馈	curated	2026-09-17
+计划审批	ji hua shen pi	30	代理开发	term	计划审批	curated	2026-09-17
+计划模式	ji hua mo shi	30	代理开发	term	计划模式	curated	2026-09-17
+计划步骤	ji hua bu zhou	30	代理开发	term	计划步骤	curated	2026-09-17
+计划调整	ji hua tiao zheng	30	代理开发	term	计划调整	curated	2026-09-17
+计划验证	ji hua yan zheng	30	代理开发	term	计划验证	curated	2026-09-17
+许可证检查	xu ke zheng jian cha	30	测试验收	term	许可证检查	curated	2026-09-17
+设计令牌	she ji ling pai	30	前端交互	term	设计令牌	curated	2026-09-17
+设计决策	she ji jue ce	30	项目协作	term	设计决策	curated	2026-09-17
+设计文档	she ji wen dang	30	项目协作	term	设计文档	curated	2026-09-17
+设计方案	she ji fang an	30	项目协作	term	设计方案	curated	2026-09-17
+设计权衡	she ji quan heng	30	架构设计	term	设计权衡	curated	2026-09-17
+设计系统	she ji xi tong	30	前端交互	term	设计系统	curated	2026-09-17
+设计约束	she ji yue shu	30	项目协作	term	设计约束	curated	2026-09-17
+访问令牌	fang wen ling pai	30	后端数据	term	访问令牌	curated	2026-09-17
+访问者模式	fang wen zhe mo shi	30	架构设计	term	访问者模式	curated	2026-09-17
+证书续期	zheng shu xu qi	30	可靠运维	term	证书续期	curated	2026-09-17
+证书轮换	zheng shu lun huan	30	可靠运维	term	证书轮换	curated	2026-09-17
+评审意见	ping shen yi jian	30	项目协作	term	评审意见	curated	2026-09-17
+评审通过	ping shen tong guo	30	版本协作	term	评审通过	curated	2026-09-17
+详细设计	xiang xi she ji	30	项目协作	term	详细设计	curated	2026-09-17
+语义化版本	yu yi hua ban ben	30	开发操作	term	语义化版本	curated	2026-09-17
+语义召回	yu yi zhao hui	30	向量检索	term	语义召回	curated	2026-09-17
+语义搜索	yu yi sou suo	30	开发操作	term	语义搜索	curated	2026-09-17
+语义标签	yu yi biao qian	30	前端交互	term	语义标签	curated	2026-09-17
+语句覆盖率	yu ju fu gai lv	30	测试验收	term	语句覆盖率	curated	2026-09-17
+语法检查	yu fa jian cha	30	测试验收	term	语法检查	curated	2026-09-17
+说明限制	shuo ming xian zhi	30	代理开发	term	说明限制	curated	2026-09-17
+请求上下文	qing qiu shang xia wen	30	后端数据	term	请求上下文	curated	2026-09-17
+请求体	qing qiu ti	30	后端数据	term	请求体	curated	2026-09-17
+请求修改	qing qiu xiu gai	30	版本协作	term	请求修改	curated	2026-09-17
+请求参数	qing qiu can shu	30	后端数据	term	请求参数	curated	2026-09-17
+请求失败	qing qiu shi bai	30	排障修复	term	请求失败	curated	2026-09-17
+请求头	qing qiu tou	30	后端数据	term	请求头	curated	2026-09-17
+请求方法	qing qiu fang fa	30	后端数据	term	请求方法	curated	2026-09-17
+请求追踪	qing qiu zhui zong	30	可靠运维	term	请求追踪	curated	2026-09-17
+请求量	qing qiu liang	30	可靠运维	term	请求量	curated	2026-09-17
+读写一致性	du xie yi zhi xing	30	后端数据	term	读写一致性	curated	2026-09-17
+读写分离	du xie fen li	30	后端数据	term	读写分离	curated	2026-09-17
+读取超时	du qu chao shi	30	可靠运维	term	读取超时	curated	2026-09-17
+读已提交	du yi ti jiao	30	后端数据	term	读已提交	curated	2026-09-17
+读未提交	du wei ti jiao	30	后端数据	term	读未提交	curated	2026-09-17
+调用关系	diao yong guan xi	30	开发操作	term	调用关系	curated	2026-09-17
+调用堆栈	diao yong dui zhan	30	排障修复	term	调用堆栈	curated	2026-09-17
+调用链	diao yong lian	30	开发操作	term	调用链	curated	2026-09-17
+调试日志	tiao shi ri zhi	30	排障修复	term	调试日志	curated	2026-09-17
+调试构建	tiao shi gou jian	30	开发操作	term	调试构建	curated	2026-09-17
+负样本挖掘	fu yang ben wa jue	30	向量检索	term	负样本挖掘	curated	2026-09-17
+负载测试	fu zai ce shi	30	测试验收	term	负载测试	curated	2026-09-17
+责任链模式	ze ren lian mo shi	30	架构设计	term	责任链模式	curated	2026-09-17
+资源池	zi yuan chi	30	后端数据	term	资源池	curated	2026-09-17
+资源泄漏	zi yuan xie lou	30	排障修复	term	资源泄漏	curated	2026-09-17
+资源配额	zi yuan pei e	30	可靠运维	term	资源配额	curated	2026-09-17
+资源限制	zi yuan xian zhi	30	可靠运维	term	资源限制	curated	2026-09-17
+超时处理	chao shi chu li	30	排障修复	term	超时处理	curated	2026-09-17
+超时预算	chao shi yu suan	30	可靠运维	term	超时预算	curated	2026-09-17
+超长输入	chao chang shu ru	30	测试验收	term	超长输入	curated	2026-09-17
+越界访问	yue jie fang wen	30	排障修复	term	越界访问	curated	2026-09-17
+距离阈值	ju li yu zhi	30	向量检索	term	距离阈值	curated	2026-09-17
+跟踪分支	gen zong fen zhi	30	版本协作	term	跟踪分支	curated	2026-09-17
+跨平台应用	kua ping tai ying yong	30	桌面移动	term	跨平台应用	curated	2026-09-17
+路径参数	lu jing can shu	30	后端数据	term	路径参数	curated	2026-09-17
+路径覆盖率	lu jing fu gai lv	30	测试验收	term	路径覆盖率	curated	2026-09-17
+路由分割	lu you fen ge	30	前端交互	term	路由分割	curated	2026-09-17
+路由切换	lu you qie huan	30	前端交互	term	路由切换	curated	2026-09-17
+路由匹配	lu you pi pei	30	后端数据	term	路由匹配	curated	2026-09-17
+路由参数	lu you can shu	30	后端数据	term	路由参数	curated	2026-09-17
+路由守卫	lu you shou wei	30	后端数据	term	路由守卫	curated	2026-09-17
+路由嵌套	lu you qian tao	30	前端交互	term	路由嵌套	curated	2026-09-17
+路由懒加载	lu you lan jia zai	30	前端交互	term	路由懒加载	curated	2026-09-17
+路由注册	lu you zhu ce	30	后端数据	term	路由注册	curated	2026-09-17
+路由跳转	lu you tiao zhuan	30	前端交互	term	路由跳转	curated	2026-09-17
+路由重定向	lu you chong ding xiang	30	前端交互	term	路由重定向	curated	2026-09-17
+路由鉴权	lu you jian quan	30	前端交互	term	路由鉴权	curated	2026-09-17
+跳转定义	tiao zhuan ding yi	30	开发操作	term	跳转定义	curated	2026-09-17
+身份认证	shen fen ren zheng	30	后端数据	term	身份认证	curated	2026-09-17
+软删除	ruan shan chu	30	后端数据	term	软删除	curated	2026-09-17
+辅助功能权限	fu zhu gong neng quan xian	30	桌面移动	term	辅助功能权限	curated	2026-09-17
+辅助编程	fu zhu bian cheng	30	代理开发	term	辅助编程	curated	2026-09-17
+输入契约	shu ru qi yue	30	架构设计	term	输入契约	curated	2026-09-17
+输入校验	shu ru jiao yan	30	后端数据	term	输入校验	curated	2026-09-17
+输入法事件	shu ru fa shi jian	30	桌面移动	term	输入法事件	curated	2026-09-17
+输入法候选	shu ru fa hou xuan	30	桌面移动	term	输入法候选	curated	2026-09-17
+输入源	shu ru yuan	30	桌面移动	term	输入源	curated	2026-09-17
+输入防抖	shu ru fang dou	30	前端交互	term	输入防抖	curated	2026-09-17
+输出契约	shu chu qi yue	30	架构设计	term	输出契约	curated	2026-09-17
+输出目录	shu chu mu lu	30	开发操作	term	输出目录	curated	2026-09-17
+边界处理	bian jie chu li	30	排障修复	term	边界处理	curated	2026-09-17
+边界条件	bian jie tiao jian	30	项目协作	term	边界条件	curated	2026-09-17
+边界用例	bian jie yong li	30	测试验收	term	边界用例	curated	2026-09-17
+迁移方案	qian yi fang an	30	项目协作	term	迁移方案	curated	2026-09-17
+过度抽象	guo du chou xiang	30	架构设计	term	过度抽象	curated	2026-09-17
+过度设计	guo du she ji	30	架构设计	term	过度设计	curated	2026-09-17
+过期闭包	guo qi bi bao	30	前端交互	term	过期闭包	curated	2026-09-17
+过滤下推	guo lv xia tui	30	向量检索	term	过滤下推	curated	2026-09-17
+过滤召回	guo lv zhao hui	30	向量检索	term	过滤召回	curated	2026-09-17
+运行依赖	yun xing yi lai	30	开发操作	term	运行依赖	curated	2026-09-17
+运行失败	yun xing shi bai	30	开发操作	term	运行失败	curated	2026-09-17
+运行定向测试	yun xing ding xiang ce shi	30	代理开发	term	运行定向测试	curated	2026-09-17
+运行日志	yun xing ri zhi	30	排障修复	term	运行日志	curated	2026-09-17
+运行测试	yun xing ce shi	30	测试验收	term	运行测试	curated	2026-09-17
+近似近邻	jin si jin lin	30	向量检索	term	近似近邻	curated	2026-09-17
+还原提交	huan yuan ti jiao	30	版本协作	term	还原提交	curated	2026-09-17
+进度同步	jin du tong bu	30	项目协作	term	进度同步	curated	2026-09-17
+进度条	jin du tiao	30	前端交互	term	进度条	curated	2026-09-17
+进程保活	jin cheng bao huo	30	桌面移动	term	进程保活	curated	2026-09-17
+进程间通信	jin cheng jian tong xin	30	桌面移动	term	进程间通信	curated	2026-09-17
+进程隔离	jin cheng ge li	30	桌面移动	term	进程隔离	curated	2026-09-17
+远程仓库	yuan cheng cang ku	30	开发操作	term	远程仓库	curated	2026-09-17
+远程分支	yuan cheng fen zhi	30	版本协作	term	远程分支	curated	2026-09-17
+远程地址	yuan cheng di zhi	30	版本协作	term	远程地址	curated	2026-09-17
+远程构建	yuan cheng gou jian	30	开发操作	term	远程构建	curated	2026-09-17
+连接复用	lian jie fu yong	30	后端数据	term	连接复用	curated	2026-09-17
+连接池	lian jie chi	30	后端数据	term	连接池	curated	2026-09-17
+连接泄漏	lian jie xie lou	30	后端数据	term	连接泄漏	curated	2026-09-17
+连接超时	lian jie chao shi	30	后端数据	term	连接超时	curated	2026-09-17
+迭代器模式	die dai qi mo shi	30	架构设计	term	迭代器模式	curated	2026-09-17
+迭代回顾	die dai hui gu	30	项目协作	term	迭代回顾	curated	2026-09-17
+迭代目标	die dai mu biao	30	项目协作	term	迭代目标	curated	2026-09-17
+迭代计划	die dai ji hua	30	项目协作	term	迭代计划	curated	2026-09-17
+迭代评审	die dai ping shen	30	项目协作	term	迭代评审	curated	2026-09-17
+追踪标识	zhui zong biao shi	30	可靠运维	term	追踪标识	curated	2026-09-17
+退出流程	tui chu liu cheng	30	开发操作	term	退出流程	curated	2026-09-17
+适配器	shi pei qi	30	架构设计	term	适配器	curated	2026-09-17
+适配层	shi pei ceng	30	架构设计	term	适配层	curated	2026-09-17
+选中状态	xuan zhong zhuang tai	30	前端交互	term	选中状态	curated	2026-09-17
+选择器	xuan ze qi	30	前端交互	term	选择器	curated	2026-09-17
+逻辑删除	luo ji shan chu	30	后端数据	term	逻辑删除	curated	2026-09-17
+避免无关修改	bi mian wu guan xiu gai	30	代理开发	term	避免无关修改	curated	2026-09-17
+避免无关重构	bi mian wu guan chong gou	30	排障修复	term	避免无关重构	curated	2026-09-17
+部分索引	bu fen suo yin	30	后端数据	term	部分索引	curated	2026-09-17
+部署环境	bu shu huan jing	30	可靠运维	term	部署环境	curated	2026-09-17
+配置中心	pei zhi zhong xin	30	可靠运维	term	配置中心	curated	2026-09-17
+配置优先级	pei zhi you xian ji	30	可靠运维	term	配置优先级	curated	2026-09-17
+配置文件	pei zhi wen jian	30	可靠运维	term	配置文件	curated	2026-09-17
+配置校验	pei zhi jiao yan	30	可靠运维	term	配置校验	curated	2026-09-17
+配置热加载	pei zhi re jia zai	30	可靠运维	term	配置热加载	curated	2026-09-17
+配置目录	pei zhi mu lu	30	开发操作	term	配置目录	curated	2026-09-17
+配置覆盖	pei zhi fu gai	30	可靠运维	term	配置覆盖	curated	2026-09-17
+配置项	pei zhi xiang	30	可靠运维	term	配置项	curated	2026-09-17
+释放后使用	shi fang hou shi yong	30	排障修复	term	释放后使用	curated	2026-09-17
+里氏替换	li shi ti huan	30	架构设计	term	里氏替换	curated	2026-09-17
+里程碑	li cheng bei	30	项目协作	term	里程碑	curated	2026-09-17
+重复执行	chong fu zhi xing	30	排障修复	term	重复执行	curated	2026-09-17
+重复投递	chong fu tou di	30	后端数据	term	重复投递	curated	2026-09-17
+重复提交	chong fu ti jiao	30	排障修复	term	重复提交	curated	2026-09-17
+重复消费	chong fu xiao fei	30	排障修复	term	重复消费	curated	2026-09-17
+重复请求	chong fu qing qiu	30	排障修复	term	重复请求	curated	2026-09-17
+重复输入	chong fu shu ru	30	测试验收	term	重复输入	curated	2026-09-17
+重建知识库	chong jian zhi shi ku	30	向量检索	term	重建知识库	curated	2026-09-17
+重排分数	chong pai fen shu	30	向量检索	term	重排分数	curated	2026-09-17
+重排接口	chong pai jie kou	30	向量检索	term	重排接口	curated	2026-09-17
+重排数量	chong pai shu liang	30	向量检索	term	重排数量	curated	2026-09-17
+重排服务	chong pai fu wu	30	向量检索	term	重排服务	curated	2026-09-17
+重排窗口	chong pai chuang kou	30	向量检索	term	重排窗口	curated	2026-09-17
+重排阈值	chong pai yu zhi	30	向量检索	term	重排阈值	curated	2026-09-17
+重试处理	chong shi chu li	30	排障修复	term	重试处理	curated	2026-09-17
+重试预算	chong shi yu suan	30	可靠运维	term	重试预算	curated	2026-09-17
+野指针	ye zhi zhen	30	排障修复	term	野指针	curated	2026-09-17
+量化索引	liang hua suo yin	30	向量检索	term	量化索引	curated	2026-09-17
+金丝雀发布	jin si que fa bu	30	可靠运维	term	金丝雀发布	curated	2026-09-17
+链接失败	lian jie shi bai	30	开发操作	term	链接失败	curated	2026-09-17
+锁定版本	suo ding ban ben	30	开发操作	term	锁定版本	curated	2026-09-17
+锁文件	suo wen jian	30	开发操作	term	锁文件	curated	2026-09-17
+错误上下文	cuo wu shang xia wen	30	排障修复	term	错误上下文	curated	2026-09-17
+错误信息	cuo wu xin xi	30	排障修复	term	错误信息	curated	2026-09-17
+错误契约	cuo wu qi yue	30	架构设计	term	错误契约	curated	2026-09-17
+错误提示	cuo wu ti shi	30	前端交互	term	错误提示	curated	2026-09-17
+错误日志	cuo wu ri zhi	30	排障修复	term	错误日志	curated	2026-09-17
+错误状态	cuo wu zhuang tai	30	前端交互	term	错误状态	curated	2026-09-17
+错误率	cuo wu lv	30	可靠运维	term	错误率	curated	2026-09-17
+错误码	cuo wu ma	30	排障修复	term	错误码	curated	2026-09-17
+错误类型	cuo wu lei xing	30	排障修复	term	错误类型	curated	2026-09-17
+键盘导航	jian pan dao hang	30	前端交互	term	键盘导航	curated	2026-09-17
+镜像仓库	jing xiang cang ku	30	可靠运维	term	镜像仓库	curated	2026-09-17
+镜像摘要	jing xiang zhai yao	30	可靠运维	term	镜像摘要	curated	2026-09-17
+镜像构建	jing xiang gou jian	30	可靠运维	term	镜像构建	curated	2026-09-17
+镜像标签	jing xiang biao qian	30	可靠运维	term	镜像标签	curated	2026-09-17
+镜像源	jing xiang yuan	30	开发操作	term	镜像源	curated	2026-09-17
+镜像签名	jing xiang qian ming	30	可靠运维	term	镜像签名	curated	2026-09-17
+镜像缓存	jing xiang huan cun	30	可靠运维	term	镜像缓存	curated	2026-09-17
+门面模式	men mian mo shi	30	架构设计	term	门面模式	curated	2026-09-17
+闭包陷阱	bi bao xian jing	30	前端交互	term	闭包陷阱	curated	2026-09-17
+问题修复	wen ti xiu fu	30	排障修复	term	问题修复	curated	2026-09-17
+问题复现	wen ti fu xian	30	排障修复	term	问题复现	curated	2026-09-17
+问题清单	wen ti qing dan	30	项目协作	term	问题清单	curated	2026-09-17
+问题跟踪	wen ti gen zong	30	项目协作	term	问题跟踪	curated	2026-09-17
+问题闭环	wen ti bi huan	30	项目协作	term	问题闭环	curated	2026-09-17
+间谍对象	jian die dui xiang	30	测试验收	term	间谍对象	curated	2026-09-17
+间隙锁	jian xi suo	30	后端数据	term	间隙锁	curated	2026-09-17
+防抖	fang dou	30	前端交互	term	防抖	curated	2026-09-17
+防腐层	fang fu ceng	30	架构设计	term	防腐层	curated	2026-09-17
+防重提交	fang chong ti jiao	30	后端数据	term	防重提交	curated	2026-09-17
+阻塞事项	zu se shi xiang	30	项目协作	term	阻塞事项	curated	2026-09-17
+阻塞原因	zu se yuan yin	30	项目协作	term	阻塞原因	curated	2026-09-17
+阻止默认行为	zu zhi mo ren xing wei	30	前端交互	term	阻止默认行为	curated	2026-09-17
+限流策略	xian liu ce lve	30	可靠运维	term	限流策略	curated	2026-09-17
+限界上下文	xian jie shang xia wen	30	架构设计	term	限界上下文	curated	2026-09-17
+随机失败	sui ji shi bai	30	测试验收	term	随机失败	curated	2026-09-17
+随机抖动	sui ji dou dong	30	可靠运维	term	随机抖动	curated	2026-09-17
+隐式依赖	yin shi yi lai	30	开发操作	term	隐式依赖	curated	2026-09-17
+隐私声明	yin si sheng ming	30	桌面移动	term	隐私声明	curated	2026-09-17
+隔离工作区	ge li gong zuo qu	30	开发操作	term	隔离工作区	curated	2026-09-17
+集成事件	ji cheng shi jian	30	架构设计	term	集成事件	curated	2026-09-17
+集成测试	ji cheng ce shi	30	测试验收	term	集成测试	curated	2026-09-17
+需求优先级	xu qiu you xian ji	30	项目协作	term	需求优先级	curated	2026-09-17
+需求冻结	xu qiu dong jie	30	项目协作	term	需求冻结	curated	2026-09-17
+需求分析	xu qiu fen xi	30	项目协作	term	需求分析	curated	2026-09-17
+需求变更	xu qiu bian geng	30	项目协作	term	需求变更	curated	2026-09-17
+需求拆分	xu qiu chai fen	30	项目协作	term	需求拆分	curated	2026-09-17
+需求收集	xu qiu shou ji	30	项目协作	term	需求收集	curated	2026-09-17
+需求文档	xu qiu wen dang	30	项目协作	term	需求文档	curated	2026-09-17
+需求澄清	xu qiu cheng qing	30	项目协作	term	需求澄清	curated	2026-09-17
+需求确认	xu qiu que ren	30	项目协作	term	需求确认	curated	2026-09-17
+需求背景	xu qiu bei jing	30	项目协作	term	需求背景	curated	2026-09-17
+需求范围	xu qiu fan wei	30	项目协作	term	需求范围	curated	2026-09-17
+需求评审	xu qiu ping shen	30	项目协作	term	需求评审	curated	2026-09-17
+需求追踪	xu qiu zhui zong	30	项目协作	term	需求追踪	curated	2026-09-17
+静态分析	jing tai fen xi	30	测试验收	term	静态分析	curated	2026-09-17
+静态导入	jing tai dao ru	30	前端交互	term	静态导入	curated	2026-09-17
+静态检查	jing tai jian cha	30	测试验收	term	静态检查	curated	2026-09-17
+静态生成	jing tai sheng cheng	30	前端交互	term	静态生成	curated	2026-09-17
+非功能测试	fei gong neng ce shi	30	测试验收	term	非功能测试	curated	2026-09-17
+非功能需求	fei gong neng xu qiu	30	项目协作	term	非功能需求	curated	2026-09-17
+非受控组件	fei shou kong zu jian	30	前端交互	term	非受控组件	curated	2026-09-17
+非法状态	fei fa zhuang tai	30	架构设计	term	非法状态	curated	2026-09-17
+非法输入	fei fa shu ru	30	测试验收	term	非法输入	curated	2026-09-17
+非聚簇索引	fei ju cu suo yin	30	后端数据	term	非聚簇索引	curated	2026-09-17
+面包屑	mian bao xie	30	前端交互	term	面包屑	curated	2026-09-17
+页面刷新	ye mian shua xin	30	前端交互	term	页面刷新	curated	2026-09-17
+页面回退	ye mian hui tui	30	前端交互	term	页面回退	curated	2026-09-17
+页面恢复	ye mian hui fu	30	前端交互	term	页面恢复	curated	2026-09-17
+页面状态	ye mian zhuang tai	30	前端交互	term	页面状态	curated	2026-09-17
+页面生命周期	ye mian sheng ming zhou qi	30	桌面移动	term	页面生命周期	curated	2026-09-17
+页面缓存	ye mian huan cun	30	前端交互	term	页面缓存	curated	2026-09-17
+项目交接	xiang mu jiao jie	30	项目协作	term	项目交接	curated	2026-09-17
+项目依赖	xiang mu yi lai	30	项目协作	term	项目依赖	curated	2026-09-17
+项目成员	xiang mu cheng yuan	30	项目协作	term	项目成员	curated	2026-09-17
+项目指令	xiang mu zhi ling	30	代理开发	term	项目指令	curated	2026-09-17
+项目文档	xiang mu wen dang	30	项目协作	term	项目文档	curated	2026-09-17
+项目术语	xiang mu shu yu	30	项目协作	term	项目术语	curated	2026-09-17
+项目目标	xiang mu mu biao	30	项目协作	term	项目目标	curated	2026-09-17
+项目约定	xiang mu yue ding	30	代理开发	term	项目约定	curated	2026-09-17
+项目范围	xiang mu fan wei	30	项目协作	term	项目范围	curated	2026-09-17
+项目计划	xiang mu ji hua	30	项目协作	term	项目计划	curated	2026-09-17
+项目记忆	xiang mu ji yi	30	代理开发	term	项目记忆	curated	2026-09-17
+项目进度	xiang mu jin du	30	项目协作	term	项目进度	curated	2026-09-17
+项目风险	xiang mu feng xian	30	项目协作	term	项目风险	curated	2026-09-17
+预加载	yu jia zai	30	前端交互	term	预加载	curated	2026-09-17
+预加载脚本	yu jia zai jiao ben	30	桌面移动	term	预加载脚本	curated	2026-09-17
+预发布环境	yu fa bu huan jing	30	可靠运维	term	预发布环境	curated	2026-09-17
+预取	yu qu	30	前端交互	term	预取	curated	2026-09-17
+预期结果	yu qi jie guo	30	测试验收	term	预期结果	curated	2026-09-17
+预编辑	yu bian ji	30	桌面移动	term	预编辑	curated	2026-09-17
+预过滤	yu guo lv	30	向量检索	term	预过滤	curated	2026-09-17
+领域不变量	ling yu bu bian liang	30	架构设计	term	领域不变量	curated	2026-09-17
+领域事件	ling yu shi jian	30	架构设计	term	领域事件	curated	2026-09-17
+领域层	ling yu ceng	30	架构设计	term	领域层	curated	2026-09-17
+领域服务	ling yu fu wu	30	架构设计	term	领域服务	curated	2026-09-17
+领域模型	ling yu mo xing	30	架构设计	term	领域模型	curated	2026-09-17
+领域约束	ling yu yue shu	30	架构设计	term	领域约束	curated	2026-09-17
+领域规则	ling yu gui ze	30	架构设计	term	领域规则	curated	2026-09-17
+领域词汇	ling yu ci hui	30	项目协作	term	领域词汇	curated	2026-09-17
+领域驱动设计	ling yu qu dong she ji	30	架构设计	term	领域驱动设计	curated	2026-09-17
+风险清单	feng xian qing dan	30	项目协作	term	风险清单	curated	2026-09-17
+风险缓解	feng xian huan jie	30	项目协作	term	风险缓解	curated	2026-09-17
+饥饿	ji e	30	排障修复	term	饥饿	curated	2026-09-17
+首屏加载	shou ping jia zai	30	前端交互	term	首屏加载	curated	2026-09-17
+首屏渲染	shou ping xuan ran	30	前端交互	term	首屏渲染	curated	2026-09-17
+验收条件	yan shou tiao jian	30	项目协作	term	验收条件	curated	2026-09-17
+验收标准	yan shou biao zhun	30	项目协作	term	验收标准	curated	2026-09-17
+验收流程	yan shou liu cheng	30	项目协作	term	验收流程	curated	2026-09-17
+验收清单	yan shou qing dan	30	项目协作	term	验收清单	curated	2026-09-17
+验收用例	yan shou yong li	30	项目协作	term	验收用例	curated	2026-09-17
+验收结果	yan shou jie guo	30	项目协作	term	验收结果	curated	2026-09-17
+验证修复	yan zheng xiu fu	30	排障修复	term	验证修复	curated	2026-09-17
+验证结果	yan zheng jie guo	30	排障修复	term	验证结果	curated	2026-09-17
+验证证据	yan zheng zheng ju	30	测试验收	term	验证证据	curated	2026-09-17
+骨架屏	gu jia ping	30	前端交互	term	骨架屏	curated	2026-09-17
+高内聚	gao nei ju	30	架构设计	term	高内聚	curated	2026-09-17
+高分辨率	gao fen bian lv	30	桌面移动	term	高分辨率	curated	2026-09-17
+高阶组件	gao jie zu jian	30	前端交互	term	高阶组件	curated	2026-09-17
+麦克风权限	mai ke feng quan xian	30	桌面移动	term	麦克风权限	curated	2026-09-17
+默认行为	mo ren xing wei	30	前端交互	term	默认行为	curated	2026-09-17
+鼠标事件	shu biao shi jian	30	桌面移动	term	鼠标事件	curated	2026-09-17
+向后兼容	xiang hou jian rong	30	架构设计	term	向后兼容	curated	2026-09-17

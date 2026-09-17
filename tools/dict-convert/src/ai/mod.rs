@@ -7,9 +7,13 @@ use std::collections::{BTreeMap, HashSet};
 use std::fmt::Write as FmtWrite;
 use std::path::{Path, PathBuf};
 
-use glimmer_core::parser::is_syllable;
+mod corpus;
+mod inventory;
+mod validation;
+
 use glimmer_dictionary::Dictionary;
 use glimmer_format::Metadata;
+use validation::validate;
 
 use crate::error::ConvertError;
 
@@ -26,25 +30,26 @@ pub fn convert(
     let mut existing = HashSet::new();
     for path in exclude {
         let dict = Dictionary::from_path(path)?;
-        existing.extend(dict.entries().map(|e| {
-            (
-                e.text.to_owned(),
-                e.pinyin.strip_prefix('@').unwrap_or(e.pinyin).to_owned(),
-            )
-        }));
+        existing.extend(
+            dict.entries()
+                .map(|e| (e.text.to_owned(), e.pinyin.to_owned())),
+        );
     }
-    let mut text = String::new();
-    for path in corpus {
-        let content = std::fs::read_to_string(path)?;
-        // 文件间、段落间不拼接，避免产生不存在的跨边界匹配。
-        for line in content.lines().filter(|l| !l.trim_start().starts_with('#')) {
-            text.push_str(line);
-            text.push('\n');
+    let text = corpus::load(corpus)?;
+    let mut rows = BTreeMap::new();
+    let mut paths = vec![source.join("terms.tsv"), source.join("names.tsv")];
+    let domains = source.join("domains");
+    if domains.exists() {
+        for entry in std::fs::read_dir(&domains)? {
+            let path = entry?.path();
+            if path.is_file() && path.extension().is_some_and(|e| e == "tsv") {
+                paths.push(path);
+            }
         }
     }
-    let mut rows = BTreeMap::new();
-    for file in ["terms.tsv", "names.tsv"] {
-        let path = source.join(file);
+    paths.sort();
+    let mut aliases = BTreeMap::new();
+    for path in paths {
         for (index, line) in std::fs::read_to_string(&path)?.lines().enumerate() {
             if line.trim().is_empty() || line.starts_with('#') {
                 continue;
@@ -62,7 +67,13 @@ pub fn convert(
                 .is_some_and(|license| {
                     matches!(
                         license,
-                        "GPL-3.0-or-later" | "Apache-2.0" | "CC-BY-SA-4.0" | "name-facts"
+                        "GPL-3.0-or-later"
+                            | "Apache-2.0"
+                            | "CC-BY-SA-4.0"
+                            | "MIT"
+                            | "MIT AND Unicode-3.0"
+                            | "CC-BY-4.0"
+                            | "name-facts"
                     )
                 })
             {
@@ -70,6 +81,25 @@ pub fn convert(
                     path: path.clone(),
                     line: index + 1,
                     reason: "missing source or unsupported source license".into(),
+                });
+            }
+            if validation::is_alias(&fields)
+                && let Some((word, first_path, first_line)) = aliases.insert(
+                    fields[1].to_owned(),
+                    (fields[0].to_owned(), path.clone(), index + 1),
+                )
+                && word != fields[0]
+            {
+                return Err(ConvertError::Format {
+                    path: path.clone(),
+                    line: index + 1,
+                    reason: format!(
+                        "alias code '{}' conflicts with '{}' at {}:{}",
+                        fields[1],
+                        word,
+                        first_path.display(),
+                        first_line
+                    ),
                 });
             }
             let key = (fields[0].to_owned(), fields[1].to_owned());
@@ -88,16 +118,22 @@ pub fn convert(
             }
         }
     }
-    let mut dictionary = String::from("# AI 与人工智能：词\t编码\t权重\n");
+    let mut dictionary = String::from("# AI 与软件开发：词\t编码\t权重\n");
     let mut audit =
         String::from("# 词\t编码\t人工权重\t正文出现次数\t最终权重\t状态\t分类\t来源\n");
     let mut included = 0;
     for ((word, code), fields) in &rows {
         let manual: u32 = fields[2].parse().expect("validated weight");
-        let count = text.matches(word).count();
+        let count = corpus::count(&text, word);
         // 专业语料仅辅助词级排序，不冒充通用语料一元计数，不修改全局语言模型。
         let weight = manual.max(count.min(200) as u32);
-        let status = if existing.contains(&(word.clone(), code.clone())) {
+        let refs: Vec<&str> = fields.iter().map(String::as_str).collect();
+        let key = if validation::is_alias(&refs) {
+            format!("@{code}")
+        } else {
+            code.clone()
+        };
+        let status = if existing.contains(&(word.clone(), key.clone())) {
             "existing"
         } else {
             "included"
@@ -110,11 +146,6 @@ pub fn convert(
         .expect("String write");
         if status == "included" {
             // 专用前缀使 AI / GAN 等恰好也是拼音的缩写不进入中文词图，避免重复候选。
-            let key = if fields[4] == "english" {
-                format!("@{code}")
-            } else {
-                code.clone()
-            };
             writeln!(dictionary, "{word}\t{key}\t{weight}").expect("String write");
             included += 1;
         }
@@ -133,102 +164,25 @@ pub fn convert(
         .max()
         .unwrap_or_default()
         .to_owned();
+    let coverage = inventory::report(source, &rows, &existing)?;
     let dir = out.join("dicts");
     std::fs::create_dir_all(&dir)?;
     glimmer_core::storage::write_atomic_str(&dir.join("ai.tsv"), &dictionary)?;
     dict.write_qj(&dir.join("ai.qj"), &Metadata {
-        name: "AI 与人工智能".into(),
-        license: "GPL-3.0-or-later AND Apache-2.0 AND CC-BY-SA-4.0".into(),
-        attribution: "Glimmer contributors；动手学深度学习作者及中文贡献者；Eugene Siow 与 AI Glossary in Mandarin 贡献者".into(),
+        name: "AI 与软件开发".into(),
+        license: "GPL-3.0-or-later AND Apache-2.0 AND CC-BY-SA-4.0 AND MIT AND Unicode-3.0 AND CC-BY-4.0".into(),
+        attribution: "Glimmer contributors；动手学深度学习作者及中文贡献者；Eugene Siow 与 AI Glossary in Mandarin 贡献者；THUOCL；Unicode；Evan You 与 Vue 文档贡献者；Rust 中文社区".into(),
         source: "https://github.com/rambocode/glimmer/tree/main/assets/lexicon/ai".into(),
         version,
         ..Metadata::default()
     })?;
     glimmer_core::storage::write_atomic_str(&out.join("ai-audit.tsv"), &audit)?;
+    glimmer_core::storage::write_atomic_str(&out.join("ai-coverage.tsv"), &coverage)?;
     tracing::info!(
         source_rows = rows.len(),
         included,
         excluded = rows.len() - included,
         "AI 领域词库已生成"
     );
-    Ok(())
-}
-
-fn validate(f: &[&str]) -> Result<(), String> {
-    if f.len() != 8 || f.iter().any(|v| v.is_empty() || *v != v.trim()) {
-        return Err("expected eight non-empty, trimmed TSV fields".into());
-    }
-    let weight = f[2].parse::<u32>().map_err(|_| "invalid manual weight")?;
-    if !(1..=200).contains(&weight) {
-        return Err("manual weight must be in 1..=200".into());
-    }
-    let code: Vec<&str> = f[1].split(' ').collect();
-    let han = |c: char| ('\u{4e00}'..='\u{9fff}').contains(&c);
-    match f[4] {
-        "term" | "chinese" => {
-            if !f[0].chars().all(han)
-                || f[0].chars().count() != code.len()
-                || code.iter().any(|s| !is_syllable(s))
-            {
-                return Err(
-                    "Chinese word requires one canonical pinyin syllable per character".into(),
-                );
-            }
-        }
-        "english" => {
-            let compact: String = f[0]
-                .bytes()
-                .filter(u8::is_ascii_alphanumeric)
-                .map(|b| (b as char).to_ascii_lowercase())
-                .collect();
-            if !f[0].is_ascii()
-                || !f[0].bytes().any(|b| b.is_ascii_alphabetic())
-                || f[0].bytes().any(|b| b.is_ascii_control())
-                || compact != f[1]
-            {
-                return Err("English code must be the compact lowercase name".into());
-            }
-        }
-        "mixed" => {
-            if !f[0].starts_with("AI")
-                || f[0].len() == 2
-                || !f[0][2..].chars().all(han)
-                || code.first() != Some(&"ai")
-                || code.len() != f[0][2..].chars().count() + 1
-                || code.iter().any(|s| !is_syllable(s))
-            {
-                return Err(
-                    "mixed name requires AI followed by Chinese and ai + canonical pinyin".into(),
-                );
-            }
-        }
-        _ => return Err("unknown word kind".into()),
-    }
-    let date = f[7].as_bytes();
-    if date.len() != 10
-        || date[4] != b'-'
-        || date[7] != b'-'
-        || date
-            .iter()
-            .enumerate()
-            .any(|(i, b)| i != 4 && i != 7 && !b.is_ascii_digit())
-    {
-        return Err("checked date must be YYYY-MM-DD".into());
-    }
-    let year: u32 = f[7][..4].parse().expect("validated digits");
-    let month: u32 = f[7][5..7].parse().expect("validated digits");
-    let day: u32 = f[7][8..].parse().expect("validated digits");
-    let max_day = match month {
-        4 | 6 | 9 | 11 => 30,
-        2 if year.is_multiple_of(400) || (year.is_multiple_of(4) && !year.is_multiple_of(100)) => {
-            29
-        }
-        2 => 28,
-        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
-        _ => 0,
-    };
-    if year == 0 || day == 0 || day > max_day {
-        return Err("invalid calendar date".into());
-    }
     Ok(())
 }

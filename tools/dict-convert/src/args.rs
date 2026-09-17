@@ -18,9 +18,9 @@ pub struct Args {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
-    /// 校验并生成独立 AI 领域词库（dicts/ai.tsv、ai.qj 与 ai-audit.tsv）
+    /// 校验并生成 AI 与软件开发词库（ai.qj、ai-audit.tsv、ai-coverage.tsv）
     Ai {
-        /// 已审核的词表目录
+        /// 词表目录（terms.tsv、names.tsv、domains/*.tsv 与 sources.json）
         #[arg(long, default_value = "assets/lexicon/ai")]
         source: PathBuf,
 

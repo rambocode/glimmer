@@ -383,8 +383,9 @@ impl Engine {
     /// 英文模式：敲的字母原样显示，候选是英文词表的精确词、前缀补全与拼错纠正（见 [`english::suggest`]），
     /// 词表没装就没有候选。emoji 照配，但排在所有词后面：选词靠上下键，emoji 夹在词中间会挡路。
     pub(super) fn query_english(&self, scope: &str, rest: String, start: Instant) -> Query {
-        let mut items: Vec<Candidate> = english::suggest(
+        let mut items: Vec<Candidate> = english::suggest_with_domain(
             &self.english_lists(),
+            (!self.extra_english.is_empty()).then_some(&self.extra_english),
             scope,
             |text| self.learner.weight(text),
             ENGLISH_MODE_CANDIDATES,

@@ -1,62 +1,105 @@
-# AI 与人工智能词库源
+# AI 与软件开发词库源
 
-这本词库面向 AI 技术写作，覆盖基础算法、数学、模型架构、训练、数据、检索、智能体、提示工程、推理部署、视觉、语音、强化学习、评估、安全及工程实践。
+面向 Claude Code、Codex 等辅助开发流程，覆盖 AI 技术、向量检索、日常开发、项目协作、Git、语言框架、包管理器、测试、部署和配置文件。
+仍使用领域 ID `ai`，已有开关不需要迁移；显示名称从「AI 与人工智能」更新为「AI 与软件开发」，默认关闭。
 
-2026-09-17 的源词表有 2,723 个中文术语及固定搭配，另有 205 条中文品牌、英文名称、缩写及中英混合词；不通过词语笛卡尔积或完整句子凑数量。
-来源中包含旧教材术语与现代术语，部分译名变体分别保留。发布条数取决于当次主词库去重结果。
+本版有 **8,279 个词条、8,278 个不同词形**（C++ 有两个显式别名）。其中复用仓库既有 IT 词库 2,322 条，新增编写的开发与项目词 1,523 条，新增工具名称和混合词 1,506 条，保留首版 2,928 条。
+词条含 AI 辅助整理和按规则筛选的内容，不表示全部经过专业术语委员会审核；不通过词语笛卡尔积凑条数。
 
-## 文件与字段
+## 数据与来源
 
-- `terms.tsv`：中文术语；`names.tsv`：厂商、模型系列、具体型号、技术缩写与 AI 混合词。
-- 两张表格式：`词<Tab>编码<Tab>人工权重<Tab>分类<Tab>类型<Tab>实体<Tab>来源<Tab>核对日期`，无表头，注释以 `#` 开头。
-- 类型：`term` / `chinese` 的编码是逐字规范拼音；`english` 的编码是原名去除空格、标点后的 ASCII 小写字母数字；`mixed` 目前只支持 AI 加中文，编码为 `ai` 加中文拼音。
-- 人工权重在 1–200 之间；术语初始 20，品牌初始 40。它们不是语料次数。
-- `sources.json`：来源 ID、固定提交、作者、许可证、处理方式或官方名称核对 URL。
-- `corpus.txt`：2,486 段中文教材正文，去除代码、公式和引用标记后按段落去重；`corpus-sources.tsv` 按正文行号记录教材文件。
+| 文件 | 内容 |
+|---|---|
+| `terms.tsv` | 首版中文 AI 术语 |
+| `names.tsv` | 首版模型厂商、名称、缩写及 AI 混合词 |
+| `domains/development.tsv` | 开发操作、项目协作、架构、测试、排障、数据、前端、桌面、代理及向量术语 |
+| `domains/it.tsv` | 从现有 `assets/lexicon/dicts/it_computing.tsv` 筛选复用的术语 |
+| `domains/tools.tsv` | 工具、框架、包管理器、配置文件、英文别名及中英混合词 |
+| `corpus.txt` / `corpus-sources.tsv` | 首版 2,486 段深度学习教材正文及逐行出处 |
+| `development.txt` / `development-sources.tsv` | 新增 3,645 段 Vue、Rust 中文文档正文及逐行出处 |
+| `sources.json` / `LICENSE.*` | 来源、固定提交、归档校验值、处理方法、署名与许可 |
 
-拼音初稿由 pypinyin 生成，静态保存后人工修订，运行与构建不依赖 pypinyin。重点复核微调、去重、重排序、重采样、长程、角色、泊松及数据等读音。
-术语筛选不代表上游译名均具有标准地位；不明确、碎片化及明显机器直译的项已移除或改为常用表达。
+正文是公开来源的真实文本；不把生成的测试句或任务清单用作词频语料。
+开发正文提取脚本为 `tools/corpus/development.py`，只接受 `sources.json` 中 SHA256 匹配的本地上游归档，不联网、不扫描私人仓库。
+保留中文正文，去代码、HTML 和引用标记，按段落去重。重建命令：
 
-## 生成
+```bash
+python3 tools/corpus/development.py --vue /path/to/vue.tar.gz --rust-book /path/to/rust-book.tar.gz
+```
+
+## 词条格式与编码
+
+八列 TSV：`词<Tab>编码<Tab>人工权重<Tab>分类<Tab>类型<Tab>实体<Tab>来源<Tab>核对日期`。注释以 `#` 开头。
+
+| 类型 | 编码规则 | 示例 |
+|---|---|---|
+| `term` / `chinese` | 每个汉字一个规范拼音音节 | `向后兼容 / xiang hou jian rong` |
+| `english` | 名称去标点、空格后的 ASCII 小写字母数字码 | `Claude Code / claudecode` |
+| `alias` | 显式指定的、字母开头的小写 ASCII 字母数字码，最长 128 字节 | `C++ / cpp`、`C# / csharp`、`.env / envfile` |
+| `mixed` | 显式别名，显示内容同时含中文和英文字母 | `Git分支 / gitfenzhi`、`API接口 / apijiekou` |
+
+旧式 `AI模型 / ai mo xing` 仍支持，保留其全拼、简拼、双拼输入行为；新式混合词是英文名称加全拼尾部的完整输入码，不自动转换为双拼。
+同一词允许不同别名；同一别名指向不同词则构建失败，并报告两条来源位置。`go.work / gowork` 与环境变量 `GOWORK / goworkenv` 分开。
+名称、源码文件不是大小写不敏感的路径匹配器；显示使用源文件名，英文模式继续遵守原有大小写输入规则。
+
+生成后英文、别名及新式混合词都使用 `@` 键，不进入拼音词图。普通导入 TSV 也可显式使用该格式。
+词表上的核对日期是本次整理快照日期，不表示逐项在线验证或模型/工具仍是最新版。
+
+## 生成与覆盖盘点
 
 在仓库根目录运行，无需联网或 API 密钥：
 
 ```bash
 cargo run --release --locked -p glimmer-dict-convert -- ai \
-  --exclude assets/lexicon/dict.tsv --corpus assets/lexicon/ai/corpus.txt
+  --exclude assets/lexicon/dict.tsv \
+  --corpus assets/lexicon/ai/corpus.txt --corpus assets/lexicon/ai/development.txt
 ```
 
-输出 `data/generated/dicts/ai.tsv`、`ai.qj` 与 `data/generated/ai-audit.tsv`。发布数据包时由 `tools/release/data-bundle.sh` 自动生成，按实际发布的 `dict.qj` 去重。
-仅与始终加载的主词库去重。IT 词库默认关闭，不能把只在 IT 词库里的术语从 AI 词库删除，否则 AI 开关不能独立使用。
+`terms.tsv`、`names.tsv` 和 `domains/*.tsv` 一起校验后打包。输出：
 
-审计表分别记录人工权重、正文非重叠子串出现次数、最终权重及 `included` / `existing` 状态。最终权重为人工权重与封顶 200 的正文次数中的较大值。
-中文词形的不同合法读音分别处理。英文大小写与型号标点保留在显示名称中；生成时编码加 `@`，只用于英文候选，不进入中文拼音词图。
+- `data/generated/dicts/ai.tsv` / `ai.qj`：可加载词库；相对仓库主词库去重后 8,179 条。
+- `data/generated/ai-audit.tsv`：人工权重、真实正文次数、最终权重、加入或已存在状态。
+- `data/generated/ai-coverage.tsv`：主词库、可选 IT 词库、主英文表的覆盖情况，以及英文同码其他词；参考表缺失标为 `unknown`。
 
-## 独立语言模型统计实验
+只自动排除 `--exclude` 指定主词库的同词同码，编码类型也参与区分。IT 词库默认关闭，不能用它去除 AI/开发词，否则单独开启后会缺词。
+英文主表同词不强制去掉，保留领域标准大小写与优先级，查询时去重；不同显示词的同码关系列入覆盖报告。
+构建内部的别名冲突直接失败；跨用户导入词库的冲突在加载时警告并保留先加载者，不静默改写别人的词条。
 
-已有 `bigram` 工具可以统计该正文的一元词频和相邻词关系。将主词库与新领域词库合并为实验分词词表，输出到独立目录，避免覆盖产品语言模型：
+人工权重：既有 AI 术语 20、开发术语 30、复用 IT 词 15、工具名称 40。无真实出现次数时仍明确保留人工权重。
+最终词级权重是人工值与封顶 200 的正文出现次数的较大值。中文按非重叠子串计数；英文名称要求 ASCII 标识符边界，不把 C 从 CSS、C++ 中拆出计数。
+语料按段落跨文件去重，文件/段落之间不拼接。正文计数不是分词后的通用语言模型一元概率。
+
+## 独立验收与语言模型实验
+
+`tools/eval/development/acceptance.tsv` 是按开发任务独立编写的 164 项验收，不从词表批量反向生成；`general.txt` 为 80 条普通中文回归输入。
+运行：
+
+```bash
+cargo build -p glimmer-cli --locked
+python3 tools/eval/development/run.py \
+  --cli target/debug/glimmer-cli --extra data/generated/dicts/ai.qj
+```
+
+中文/混合词前 5 命中目标 ≥95%，必备英文与文件名按各自最大位置全部通过，普通中文首选不得回退；JSON 报告保留实际候选及预热后的完整查询耗时。
+`--baseline-extra /path/to/old-ai.qj` 可比较上一版。另用 CLI `--typing` 测逐键耗时。验收集不作为词频语料。
+
+真实语料的一元和相邻词统计复用 `bigram` 工具，写到隔离实验目录，避免覆盖产品模型：
 
 ```bash
 mkdir -p data/generated/ai-corpus
 cat assets/lexicon/dict.tsv data/generated/dicts/ai.tsv > data/generated/ai-corpus/dict.tsv
 cargo run --release --locked -p glimmer-dict-convert -- --out-dir data/generated/ai-corpus \
-  bigram assets/lexicon/ai/corpus.txt --dict data/generated/ai-corpus/dict.tsv
+  bigram assets/lexicon/ai/corpus.txt assets/lexicon/ai/development.txt --dict data/generated/ai-corpus/dict.tsv
 ```
 
-当前正文统计得到 5,970 个一元词项及 8,651 条出现不少于三次的相邻词关系。它们是实验数据，不默认装配到输入法；样本数量和领域覆盖不足时不能替换通用语言模型。
+当前不自动替换全局 bigram 模型。真实语料仍不能覆盖所有新工具和项目表达，未出现的词采用透明的人工权重。
 
-## 来源与许可
+## 许可与维护
 
-自编术语和拼音整理沿用项目 GPL-3.0-or-later；《动手学深度学习》数据改编遵循 Apache-2.0；AI Glossary in Mandarin 数据改编遵循 CC-BY-SA-4.0。
-随附上游许可证全文 `LICENSE.d2l`、`LICENSE.glossary`。组合词库的元数据列明来源、署名与各许可证，不能宣称整本词库只有 MIT 许可。
-中文专项任务译名有筛选、去重与修订；教材正文删去了非正文内容，修改方式见上文。厂商名称仅记录名称事实，不复制官方产品说明，不引入厂商模型权重或模型许可证。
-未采用带非商业限制的机器之心术语库，也未引入 GPL 雾凇词库。
+自编数据沿用 GPL-3.0-or-later；深度学习教材 Apache-2.0；AI Glossary in Mandarin CC-BY-SA-4.0；THUOCL MIT 与规范拼音 Unicode-3.0；Vue 正文 CC-BY-4.0；Rust 中文正文采用其 MIT 许可。
+作者、固定提交和处理方式见 `sources.json`，完整许可见 `LICENSE.*`，三平台安装包沿用通配规则附带这些文件。
+第三方词表有筛选、去重、拼音修订及译名修订；文档正文删去代码和标记。名称只记录公开事实，不复制产品说明，不引入厂商模型权重。
+未引入雾凇词库或非商业限制词库。
 
-## 更新规则与边界
-
-新增词先核对词形、含义、读音及来源；型号只保留有输入价值的官方公开名称，不穷举参数规模、日期快照与供应商内部编号。
-来源快照与日期须随更新调整；不把词库名称清单当作实时可调用模型目录。
-
-正文主要来自深度学习教材，现代智能体、协议和新型号的真实出现次数可能为零，此时使用明确标记的人工权重；不生成伪语料来提高计数。
-当前不更新全局 bigram 语言模型。领域正文可用于后续整句评测与独立语料实验，覆盖不足的现代术语仍需补充许可明确的真实文档。
-每次更新运行生成器测试及 Core 查询验证，再重新生成产品数据包。应用读取本地数据，输入过程中没有网络采集或远端更新。
+具体项目的内部模块、服务及业务专名使用个人 `dicts/` 导入和开关，不能自动汇入随包词库，见用户文档「项目词库」。
+更新词表后运行生成器、Core 测试与独立验收，再生成产品数据包；修改源码不等于已安装或发布。

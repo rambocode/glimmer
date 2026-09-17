@@ -1,5 +1,8 @@
 //! AI 生成器的格式、去重、语料来源与容器回归测试。
 
+mod failures;
+mod validation;
+
 use super::{convert, validate};
 use glimmer_dictionary::{Dictionary, WordList};
 use std::path::Path;
@@ -89,7 +92,7 @@ fn bundled_sources_generate_queryable_container_and_audit() {
     .unwrap();
     let dict = Dictionary::from_path(out.join("dicts/ai.qj")).unwrap();
     assert!(dict.len() > 2500);
-    assert_eq!(dict.metadata().unwrap().name, "AI 与人工智能");
+    assert_eq!(dict.metadata().unwrap().name, "AI 与软件开发");
     assert!(
         !dict
             .lookup(&["jian", "suo", "zeng", "qiang", "sheng", "cheng"], false)

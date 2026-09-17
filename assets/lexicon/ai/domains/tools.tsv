@@ -1,0 +1,1507 @@
+# 词	编码	人工权重	分类	类型	实体	来源	核对日期
+.NET	dotnet	40	语言运行时	alias	.NET	development-names	2026-09-17
+.NET Core	dotnetcore	40	语言运行时	alias	.NET Core	development-names	2026-09-17
+.dockerignore	dockerignore	40	文件配置	alias	.dockerignore	development-names	2026-09-17
+.editorconfig	editorconfig	40	文件配置	alias	.editorconfig	development-names	2026-09-17
+.env	envfile	40	文件配置	alias	.env	development-names	2026-09-17
+.env.example	envexample	40	文件配置	alias	.env.example	development-names	2026-09-17
+.env.local	envlocal	40	文件配置	alias	.env.local	development-names	2026-09-17
+.env.production	envproduction	40	文件配置	alias	.env.production	development-names	2026-09-17
+.eslintrc.json	eslintrcjson	40	文件配置	alias	.eslintrc.json	development-names	2026-09-17
+.gitattributes	gitattributes	40	文件配置	alias	.gitattributes	development-names	2026-09-17
+.gitignore	gitignore	40	文件配置	alias	.gitignore	development-names	2026-09-17
+.gitmodules	gitmodules	40	文件配置	alias	.gitmodules	development-names	2026-09-17
+.node-version	nodeversion	40	文件配置	alias	.node-version	development-names	2026-09-17
+.nvmrc	nvmrc	40	文件配置	alias	.nvmrc	development-names	2026-09-17
+.prettierignore	prettierignore	40	文件配置	alias	.prettierignore	development-names	2026-09-17
+.prettierrc	prettierrc	40	文件配置	alias	.prettierrc	development-names	2026-09-17
+.python-version	pythonversion	40	文件配置	alias	.python-version	development-names	2026-09-17
+.tool-versions	toolversions	40	文件配置	alias	.tool-versions	development-names	2026-09-17
+ABAC	abac	40	接口协议	english	ABAC	development-names	2026-09-17
+ABI	abi	40	语言运行时	english	ABI	development-names	2026-09-17
+ACL	acl	40	接口协议	english	ACL	development-names	2026-09-17
+ADB	adb	40	桌面移动	english	ADB	development-names	2026-09-17
+AES	aes	40	接口协议	english	AES	development-names	2026-09-17
+AFL	afl	40	测试质量	english	AFL	development-names	2026-09-17
+AGENTS.md	agentsmd	40	文件配置	english	AGENTS.md	development-names	2026-09-17
+AMQP	amqp	40	部署运维	english	AMQP	development-names	2026-09-17
+AOT	aot	40	语言运行时	english	AOT	development-names	2026-09-17
+APISIX	apisix	40	部署运维	english	APISIX	development-names	2026-09-17
+API响应	apixiangying	30	中英开发表达	mixed	API响应	curated	2026-09-17
+API密钥	apimiyao	30	中英开发表达	mixed	API密钥	curated	2026-09-17
+API接口	apijiekou	30	中英开发表达	mixed	API接口	curated	2026-09-17
+API文档	apiwendang	30	中英开发表达	mixed	API文档	curated	2026-09-17
+API版本	apibanben	30	中英开发表达	mixed	API版本	curated	2026-09-17
+API网关	apiwangguan	30	中英开发表达	mixed	API网关	curated	2026-09-17
+API调用	apidiaoyong	30	中英开发表达	mixed	API调用	curated	2026-09-17
+API路由	apiluyou	30	中英开发表达	mixed	API路由	curated	2026-09-17
+API鉴权	apijianquan	30	中英开发表达	mixed	API鉴权	curated	2026-09-17
+API限流	apixianliu	30	中英开发表达	mixed	API限流	curated	2026-09-17
+ASP.NET Core	aspnetcore	40	后端框架	english	ASP.NET Core	development-names	2026-09-17
+AST	ast	40	编程助手	english	AST	development-names	2026-09-17
+AVA	ava	40	测试质量	english	AVA	development-names	2026-09-17
+AVFoundation	avfoundation	40	桌面移动	english	AVFoundation	development-names	2026-09-17
+AVKit	avkit	40	桌面移动	english	AVKit	development-names	2026-09-17
+AWS	aws	40	部署运维	english	AWS	development-names	2026-09-17
+Access Token	accesstoken	40	接口协议	english	Access Token	development-names	2026-09-17
+Accessibility	accessibility	40	桌面移动	english	Accessibility	development-names	2026-09-17
+Actionlint	actionlint	40	测试质量	english	Actionlint	development-names	2026-09-17
+ActiveMQ	activemq	40	部署运维	english	ActiveMQ	development-names	2026-09-17
+ActiveRecord	activerecord	40	后端框架	english	ActiveRecord	development-names	2026-09-17
+Activity	activity	40	桌面移动	english	Activity	development-names	2026-09-17
+ActivityKit	activitykit	40	桌面移动	english	ActivityKit	development-names	2026-09-17
+Actix Web	actixweb	40	后端框架	english	Actix Web	development-names	2026-09-17
+AdonisJS	adonisjs	40	后端框架	english	AdonisJS	development-names	2026-09-17
+Age	age	40	部署运维	english	Age	development-names	2026-09-17
+Agenda	agenda	40	后端框架	english	Agenda	development-names	2026-09-17
+Agent Skills	agentskills	40	编程助手	english	Agent Skills	development-names	2026-09-17
+Agent2Agent	agent2agent	40	编程助手	english	Agent2Agent	development-names	2026-09-17
+Agentic AI	agenticai	40	编程助手	english	Agentic AI	development-names	2026-09-17
+Agentic Coding	agenticcoding	40	编程助手	english	Agentic Coding	development-names	2026-09-17
+Agentic Workflow	agenticworkflow	40	编程助手	english	Agentic Workflow	development-names	2026-09-17
+Agent工具	agentgongju	30	中英开发表达	mixed	Agent工具	curated	2026-09-17
+Agent技能	agentjineng	30	中英开发表达	mixed	Agent技能	curated	2026-09-17
+Aider	aider	40	编程助手	english	Aider	development-names	2026-09-17
+Airbyte	airbyte	40	部署运维	english	Airbyte	development-names	2026-09-17
+Airflow	airflow	40	部署运维	english	Airflow	development-names	2026-09-17
+Akka	akka	40	后端框架	english	Akka	development-names	2026-09-17
+Alembic	alembic	40	后端框架	english	Alembic	development-names	2026-09-17
+Algolia	algolia	40	数据检索	english	Algolia	development-names	2026-09-17
+Aliyun	aliyun	40	部署运维	english	Aliyun	development-names	2026-09-17
+Alpine.js	alpinejs	40	前端框架	english	Alpine.js	development-names	2026-09-17
+Anaconda	anaconda	40	包管理构建	english	Anaconda	development-names	2026-09-17
+Android	android	40	桌面移动	english	Android	development-names	2026-09-17
+Android Manifest	androidmanifest	40	桌面移动	english	Android Manifest	development-names	2026-09-17
+Android Studio	androidstudio	40	桌面移动	english	Android Studio	development-names	2026-09-17
+AndroidManifest.xml	androidmanifestxml	40	文件配置	english	AndroidManifest.xml	development-names	2026-09-17
+AndroidX	androidx	40	桌面移动	english	AndroidX	development-names	2026-09-17
+Angular	angular	40	前端框架	english	Angular	development-names	2026-09-17
+Annoy	annoy	40	数据检索	english	Annoy	development-names	2026-09-17
+Ansible	ansible	40	部署运维	english	Ansible	development-names	2026-09-17
+Ant	ant	40	包管理构建	english	Ant	development-names	2026-09-17
+Ant Design	antdesign	40	前端框架	english	Ant Design	development-names	2026-09-17
+Anyhow	anyhow	40	后端框架	english	Anyhow	development-names	2026-09-17
+AnythingLLM	anythingllm	40	数据检索	english	AnythingLLM	development-names	2026-09-17
+Apache HTTP Server	apachehttpserver	40	部署运维	english	Apache HTTP Server	development-names	2026-09-17
+Apollo	apollo	40	接口协议	english	Apollo	development-names	2026-09-17
+Apollo Client	apolloclient	40	接口协议	english	Apollo Client	development-names	2026-09-17
+Apollo Server	apolloserver	40	接口协议	english	Apollo Server	development-names	2026-09-17
+App Intents	appintents	40	桌面移动	english	App Intents	development-names	2026-09-17
+App Sandbox	appsandbox	40	桌面移动	english	App Sandbox	development-names	2026-09-17
+App Store Connect	appstoreconnect	40	桌面移动	english	App Store Connect	development-names	2026-09-17
+AppKit	appkit	40	桌面移动	english	AppKit	development-names	2026-09-17
+Appium	appium	40	测试质量	english	Appium	development-names	2026-09-17
+Approval	approval	40	编程助手	english	Approval	development-names	2026-09-17
+Appwrite	appwrite	40	数据检索	english	Appwrite	development-names	2026-09-17
+ArangoDB	arangodb	40	数据检索	english	ArangoDB	development-names	2026-09-17
+Arc	arc	40	后端框架	english	Arc	development-names	2026-09-17
+Argo CD	argocd	40	部署运维	english	Argo CD	development-names	2026-09-17
+Argo Events	argoevents	40	部署运维	english	Argo Events	development-names	2026-09-17
+Argo Workflows	argoworkflows	40	部署运维	english	Argo Workflows	development-names	2026-09-17
+Argon2	argon2	40	接口协议	english	Argon2	development-names	2026-09-17
+Arize	arize	40	数据检索	english	Arize	development-names	2026-09-17
+Arrow	arrow	40	语言运行时	english	Arrow	development-names	2026-09-17
+Artifactory	artifactory	40	包管理构建	english	Artifactory	development-names	2026-09-17
+Artillery	artillery	40	测试质量	english	Artillery	development-names	2026-09-17
+Assembly	assembly	40	语言运行时	english	Assembly	development-names	2026-09-17
+AssertJ	assertj	40	测试质量	english	AssertJ	development-names	2026-09-17
+Astro	astro	40	前端框架	english	Astro	development-names	2026-09-17
+AsyncAPI	asyncapi	40	接口协议	english	AsyncAPI	development-names	2026-09-17
+AsyncSequence	asyncsequence	40	桌面移动	english	AsyncSequence	development-names	2026-09-17
+AsyncStream	asyncstream	40	桌面移动	english	AsyncStream	development-names	2026-09-17
+AudioToolbox	audiotoolbox	40	桌面移动	english	AudioToolbox	development-names	2026-09-17
+Authorization	authorization	40	接口协议	english	Authorization	development-names	2026-09-17
+AutoGen	autogen	40	数据检索	english	AutoGen	development-names	2026-09-17
+Autoprefixer	autoprefixer	40	前端框架	english	Autoprefixer	development-names	2026-09-17
+Autotools	autotools	40	包管理构建	english	Autotools	development-names	2026-09-17
+Avalonia	avalonia	40	桌面移动	english	Avalonia	development-names	2026-09-17
+Avro	avro	40	语言运行时	english	Avro	development-names	2026-09-17
+Axe	axe	40	测试质量	english	Axe	development-names	2026-09-17
+Axios	axios	40	前端框架	english	Axios	development-names	2026-09-17
+Axum	axum	40	后端框架	english	Axum	development-names	2026-09-17
+Azure	azure	40	部署运维	english	Azure	development-names	2026-09-17
+Azure Pipelines	azurepipelines	40	部署运维	english	Azure Pipelines	development-names	2026-09-17
+BEAM	beam	40	语言运行时	english	BEAM	development-names	2026-09-17
+BGE	bge	40	数据检索	english	BGE	development-names	2026-09-17
+BM25F	bm25f	40	数据检索	english	BM25F	development-names	2026-09-17
+BM25检索	bm25jiansuo	30	中英开发表达	mixed	BM25检索	curated	2026-09-17
+BOM	bom	40	前端框架	english	BOM	development-names	2026-09-17
+Babel	babel	40	前端框架	english	Babel	development-names	2026-09-17
+Backbone	backbone	40	前端框架	english	Backbone	development-names	2026-09-17
+Backoff	backoff	40	接口协议	english	Backoff	development-names	2026-09-17
+BackstopJS	backstopjs	40	测试质量	english	BackstopJS	development-names	2026-09-17
+Badger	badger	40	数据检索	english	Badger	development-names	2026-09-17
+Bamboo	bamboo	40	部署运维	english	Bamboo	development-names	2026-09-17
+Bandit	bandit	40	包管理构建	english	Bandit	development-names	2026-09-17
+BasedPyright	basedpyright	40	包管理构建	english	BasedPyright	development-names	2026-09-17
+Bash	bash	40	语言运行时	english	Bash	development-names	2026-09-17
+Bazel	bazel	40	包管理构建	english	Bazel	development-names	2026-09-17
+Bcrypt	bcrypt	40	接口协议	english	Bcrypt	development-names	2026-09-17
+Bearer Token	bearertoken	40	接口协议	english	Bearer Token	development-names	2026-09-17
+Beego	beego	40	后端框架	english	Beego	development-names	2026-09-17
+Bi Encoder	biencoder	40	数据检索	english	Bi Encoder	development-names	2026-09-17
+BigQuery	bigquery	40	数据检索	english	BigQuery	development-names	2026-09-17
+Biome	biome	40	测试质量	english	Biome	development-names	2026-09-17
+Bitbucket	bitbucket	40	版本协作	english	Bitbucket	development-names	2026-09-17
+Black	black	40	包管理构建	english	Black	development-names	2026-09-17
+Bloc	bloc	40	桌面移动	english	Bloc	development-names	2026-09-17
+BoltDB	boltdb	40	数据检索	english	BoltDB	development-names	2026-09-17
+Bootstrap	bootstrap	40	前端框架	english	Bootstrap	development-names	2026-09-17
+Brewfile	brewfile	40	文件配置	english	Brewfile	development-names	2026-09-17
+Brewfile.lock.json	brewfilelockjson	40	文件配置	english	Brewfile.lock.json	development-names	2026-09-17
+Browser Use	browseruse	40	编程助手	english	Browser Use	development-names	2026-09-17
+Buck2	buck2	40	包管理构建	english	Buck2	development-names	2026-09-17
+Bugsnag	bugsnag	40	部署运维	english	Bugsnag	development-names	2026-09-17
+Buildah	buildah	40	部署运维	english	Buildah	development-names	2026-09-17
+Buildkite	buildkite	40	部署运维	english	Buildkite	development-names	2026-09-17
+BullMQ	bullmq	40	后端框架	english	BullMQ	development-names	2026-09-17
+Bulma	bulma	40	前端框架	english	Bulma	development-names	2026-09-17
+Bun	bun	40	语言运行时	english	Bun	development-names	2026-09-17
+Bun ORM	bunorm	40	后端框架	english	Bun ORM	development-names	2026-09-17
+Bundler	bundler	40	包管理构建	english	Bundler	development-names	2026-09-17
+C	c	40	语言运行时	english	C	development-names	2026-09-17
+C#	csharp	40	语言运行时	alias	C#	development-names	2026-09-17
+C++	cplusplus	40	语言运行时	alias	C++	development-names	2026-09-17
+C++	cpp	40	语言运行时	alias	C++	development-names	2026-09-17
+CD	cd	40	版本协作	english	CD	development-names	2026-09-17
+CD部署	cdbushu	30	中英开发表达	mixed	CD部署	curated	2026-09-17
+CHANGELOG.md	changelogmd	40	文件配置	english	CHANGELOG.md	development-names	2026-09-17
+CI	ci	40	版本协作	english	CI	development-names	2026-09-17
+CI/CD	cicd	40	版本协作	english	CI/CD	development-names	2026-09-17
+CI流水线	ciliushuixian	30	中英开发表达	mixed	CI流水线	curated	2026-09-17
+CLAUDE.md	claudemd	40	文件配置	english	CLAUDE.md	development-names	2026-09-17
+CLI参数	clicanshu	30	中英开发表达	mixed	CLI参数	curated	2026-09-17
+CLI工具	cligongju	30	中英开发表达	mixed	CLI工具	curated	2026-09-17
+CLR	clr	40	语言运行时	english	CLR	development-names	2026-09-17
+CMake	cmake	40	包管理构建	english	CMake	development-names	2026-09-17
+CMakeLists.txt	cmakeliststxt	40	文件配置	english	CMakeLists.txt	development-names	2026-09-17
+CMakePresets.json	cmakepresetsjson	40	文件配置	english	CMakePresets.json	development-names	2026-09-17
+COBOL	cobol	40	语言运行时	english	COBOL	development-names	2026-09-17
+CODEOWNERS	codeowners	40	版本协作	english	CODEOWNERS	development-names	2026-09-17
+CONTRIBUTING.md	contributingmd	40	文件配置	english	CONTRIBUTING.md	development-names	2026-09-17
+CORS	cors	40	接口协议	english	CORS	development-names	2026-09-17
+CPM	cpm	40	包管理构建	english	CPM	development-names	2026-09-17
+CPU占用	cpuzhanyong	30	中英开发表达	mixed	CPU占用	curated	2026-09-17
+CPython	cpython	40	语言运行时	english	CPython	development-names	2026-09-17
+CRI-O	crio	40	部署运维	english	CRI-O	development-names	2026-09-17
+CSP	csp	40	接口协议	english	CSP	development-names	2026-09-17
+CSR	csr	40	前端框架	english	CSR	development-names	2026-09-17
+CSRF	csrf	40	接口协议	english	CSRF	development-names	2026-09-17
+CSS	css	40	语言运行时	english	CSS	development-names	2026-09-17
+CSS Modules	cssmodules	40	前端框架	english	CSS Modules	development-names	2026-09-17
+CSS-in-JS	cssinjs	40	前端框架	english	CSS-in-JS	development-names	2026-09-17
+CSSOM	cssom	40	前端框架	english	CSSOM	development-names	2026-09-17
+CSS变量	cssbianliang	30	中英开发表达	mixed	CSS变量	curated	2026-09-17
+CSS样式	cssyangshi	30	中英开发表达	mixed	CSS样式	curated	2026-09-17
+CSS选择器	cssxuanzeqi	30	中英开发表达	mixed	CSS选择器	curated	2026-09-17
+CSV	csv	40	语言运行时	english	CSV	development-names	2026-09-17
+Cache Control	cachecontrol	40	接口协议	english	Cache Control	development-names	2026-09-17
+Cache Storage	cachestorage	40	前端框架	english	Cache Storage	development-names	2026-09-17
+Caddy	caddy	40	部署运维	english	Caddy	development-names	2026-09-17
+Cadence	cadence	40	部署运维	english	Cadence	development-names	2026-09-17
+CakePHP	cakephp	40	后端框架	english	CakePHP	development-names	2026-09-17
+Canvas	canvas	40	前端框架	english	Canvas	development-names	2026-09-17
+Capacitor	capacitor	40	桌面移动	english	Capacitor	development-names	2026-09-17
+Cargo	cargo	40	包管理构建	english	Cargo	development-names	2026-09-17
+Cargo.lock	cargolock	40	文件配置	english	Cargo.lock	development-names	2026-09-17
+Cargo.toml	cargotoml	40	文件配置	english	Cargo.toml	development-names	2026-09-17
+Cartfile	cartfile	40	文件配置	english	Cartfile	development-names	2026-09-17
+Cartfile.resolved	cartfileresolved	40	文件配置	english	Cartfile.resolved	development-names	2026-09-17
+Carthage	carthage	40	桌面移动	english	Carthage	development-names	2026-09-17
+Cassandra	cassandra	40	数据检索	english	Cassandra	development-names	2026-09-17
+Celery	celery	40	后端框架	english	Celery	development-names	2026-09-17
+Celery Beat	celerybeat	40	部署运维	english	Celery Beat	development-names	2026-09-17
+Ceph	ceph	40	部署运维	english	Ceph	development-names	2026-09-17
+Cert Manager	certmanager	40	部署运维	english	Cert Manager	development-names	2026-09-17
+Certbot	certbot	40	部署运维	english	Certbot	development-names	2026-09-17
+Chai	chai	40	测试质量	english	Chai	development-names	2026-09-17
+Chakra UI	chakraui	40	前端框架	english	Chakra UI	development-names	2026-09-17
+Changesets	changesets	40	包管理构建	english	Changesets	development-names	2026-09-17
+Chart.js	chartjs	40	前端框架	english	Chart.js	development-names	2026-09-17
+Chart.yaml	chartyaml	40	文件配置	english	Chart.yaml	development-names	2026-09-17
+Checkov	checkov	40	测试质量	english	Checkov	development-names	2026-09-17
+Checkpoint	checkpoint	40	编程助手	english	Checkpoint	development-names	2026-09-17
+Chef	chef	40	部署运维	english	Chef	development-names	2026-09-17
+Chi	chi	40	后端框架	english	Chi	development-names	2026-09-17
+Chocolatey	chocolatey	40	包管理构建	english	Chocolatey	development-names	2026-09-17
+Chromatic	chromatic	40	测试质量	english	Chromatic	development-names	2026-09-17
+CircleCI	circleci	40	部署运维	english	CircleCI	development-names	2026-09-17
+Circuit Breaker	circuitbreaker	40	接口协议	english	Circuit Breaker	development-names	2026-09-17
+Clang	clang	40	语言运行时	english	Clang	development-names	2026-09-17
+Clap	clap	40	后端框架	english	Clap	development-names	2026-09-17
+Claude Agent SDK	claudeagentsdk	40	编程助手	english	Claude Agent SDK	development-names	2026-09-17
+Claude Code	claudecode	40	编程助手	english	Claude Code	development-names	2026-09-17
+ClickHouse	clickhouse	40	数据检索	english	ClickHouse	development-names	2026-09-17
+Cline	cline	40	编程助手	english	Cline	development-names	2026-09-17
+Clippy	clippy	40	包管理构建	english	Clippy	development-names	2026-09-17
+Clojure	clojure	40	语言运行时	english	Clojure	development-names	2026-09-17
+CloudFront	cloudfront	40	部署运维	english	CloudFront	development-names	2026-09-17
+CloudKit	cloudkit	40	桌面移动	english	CloudKit	development-names	2026-09-17
+Cloudflare	cloudflare	40	部署运维	english	Cloudflare	development-names	2026-09-17
+CockroachDB	cockroachdb	40	数据检索	english	CockroachDB	development-names	2026-09-17
+CocoaPods	cocoapods	40	桌面移动	english	CocoaPods	development-names	2026-09-17
+Codable	codable	40	桌面移动	english	Codable	development-names	2026-09-17
+Code Review	codereview	40	编程助手	english	Code Review	development-names	2026-09-17
+Code Search	codesearch	40	编程助手	english	Code Search	development-names	2026-09-17
+CodeIgniter	codeigniter	40	后端框架	english	CodeIgniter	development-names	2026-09-17
+CodeMirror	codemirror	40	前端框架	english	CodeMirror	development-names	2026-09-17
+CodeQL	codeql	40	测试质量	english	CodeQL	development-names	2026-09-17
+Codecov	codecov	40	测试质量	english	Codecov	development-names	2026-09-17
+Codex App	codexapp	40	编程助手	english	Codex App	development-names	2026-09-17
+Codex CLI	codexcli	40	编程助手	english	Codex CLI	development-names	2026-09-17
+ColBERT	colbert	40	数据检索	english	ColBERT	development-names	2026-09-17
+Combine	combine	40	桌面移动	english	Combine	development-names	2026-09-17
+Commitlint	commitlint	40	测试质量	english	Commitlint	development-names	2026-09-17
+Compaction	compaction	40	编程助手	english	Compaction	development-names	2026-09-17
+Compose Multiplatform	composemultiplatform	40	桌面移动	english	Compose Multiplatform	development-names	2026-09-17
+Composer	composer	40	包管理构建	english	Composer	development-names	2026-09-17
+Computer Use	computeruse	40	编程助手	english	Computer Use	development-names	2026-09-17
+Conan	conan	40	包管理构建	english	Conan	development-names	2026-09-17
+Conda	conda	40	包管理构建	english	Conda	development-names	2026-09-17
+Consul	consul	40	数据检索	english	Consul	development-names	2026-09-17
+Containerfile	containerfile	40	部署运维	english	Containerfile	development-names	2026-09-17
+Content Type	contenttype	40	接口协议	english	Content Type	development-names	2026-09-17
+Context Engineering	contextengineering	40	编程助手	english	Context Engineering	development-names	2026-09-17
+Context Window	contextwindow	40	编程助手	english	Context Window	development-names	2026-09-17
+Continue	continue	40	编程助手	english	Continue	development-names	2026-09-17
+Conventional Commits	conventionalcommits	40	版本协作	english	Conventional Commits	development-names	2026-09-17
+Cordova	cordova	40	桌面移动	english	Cordova	development-names	2026-09-17
+Core Animation	coreanimation	40	桌面移动	english	Core Animation	development-names	2026-09-17
+Core Data	coredata	40	桌面移动	english	Core Data	development-names	2026-09-17
+Core Graphics	coregraphics	40	桌面移动	english	Core Graphics	development-names	2026-09-17
+Core ML	coreml	40	桌面移动	english	Core ML	development-names	2026-09-17
+Core Text	coretext	40	桌面移动	english	Core Text	development-names	2026-09-17
+Corepack	corepack	40	包管理构建	english	Corepack	development-names	2026-09-17
+Coroutine	coroutine	40	桌面移动	english	Coroutine	development-names	2026-09-17
+Correlation ID	correlationid	40	接口协议	english	Correlation ID	development-names	2026-09-17
+Cosine Similarity	cosinesimilarity	40	数据检索	english	Cosine Similarity	development-names	2026-09-17
+CouchDB	couchdb	40	数据检索	english	CouchDB	development-names	2026-09-17
+Couchbase	couchbase	40	数据检索	english	Couchbase	development-names	2026-09-17
+Coursier	coursier	40	包管理构建	english	Coursier	development-names	2026-09-17
+Coverage.py	coveragepy	40	测试质量	english	Coverage.py	development-names	2026-09-17
+Coveralls	coveralls	40	测试质量	english	Coveralls	development-names	2026-09-17
+Crawl4AI	crawl4ai	40	数据检索	english	Crawl4AI	development-names	2026-09-17
+CrewAI	crewai	40	数据检索	english	CrewAI	development-names	2026-09-17
+Criterion	criterion	40	测试质量	english	Criterion	development-names	2026-09-17
+Cross Encoder	crossencoder	40	数据检索	english	Cross Encoder	development-names	2026-09-17
+Crossbeam	crossbeam	40	后端框架	english	Crossbeam	development-names	2026-09-17
+Cursor	cursor	40	编程助手	english	Cursor	development-names	2026-09-17
+Custom Elements	customelements	40	前端框架	english	Custom Elements	development-names	2026-09-17
+Cypress	cypress	40	测试质量	english	Cypress	development-names	2026-09-17
+Cython	cython	40	语言运行时	english	Cython	development-names	2026-09-17
+D3.js	d3js	40	前端框架	english	D3.js	development-names	2026-09-17
+DB2	db2	40	数据检索	english	DB2	development-names	2026-09-17
+DNS	dns	40	接口协议	english	DNS	development-names	2026-09-17
+DNS解析	dnsjiexi	30	中英开发表达	mixed	DNS解析	curated	2026-09-17
+DOM	dom	40	前端框架	english	DOM	development-names	2026-09-17
+DOM操作	domcaozuo	30	中英开发表达	mixed	DOM操作	curated	2026-09-17
+DOM节点	domjiedian	30	中英开发表达	mixed	DOM节点	curated	2026-09-17
+DSPy	dspy	40	数据检索	english	DSPy	development-names	2026-09-17
+Dagger	dagger	40	桌面移动	english	Dagger	development-names	2026-09-17
+Dagster	dagster	40	部署运维	english	Dagster	development-names	2026-09-17
+DaisyUI	daisyui	40	前端框架	english	DaisyUI	development-names	2026-09-17
+Danger	danger	40	测试质量	english	Danger	development-names	2026-09-17
+Dapper	dapper	40	后端框架	english	Dapper	development-names	2026-09-17
+Dapr	dapr	40	部署运维	english	Dapr	development-names	2026-09-17
+Dart	dart	40	语言运行时	english	Dart	development-names	2026-09-17
+Dart VM	dartvm	40	桌面移动	english	Dart VM	development-names	2026-09-17
+DashMap	dashmap	40	后端框架	english	DashMap	development-names	2026-09-17
+DataStore	datastore	40	桌面移动	english	DataStore	development-names	2026-09-17
+Databricks	databricks	40	数据检索	english	Databricks	development-names	2026-09-17
+Datadog	datadog	40	部署运维	english	Datadog	development-names	2026-09-17
+Debezium	debezium	40	部署运维	english	Debezium	development-names	2026-09-17
+Decodable	decodable	40	桌面移动	english	Decodable	development-names	2026-09-17
+Deno	deno	40	语言运行时	english	Deno	development-names	2026-09-17
+Dense Retrieval	denseretrieval	40	数据检索	english	Dense Retrieval	development-names	2026-09-17
+Detox	detox	40	测试质量	english	Detox	development-names	2026-09-17
+Dgraph	dgraph	40	数据检索	english	Dgraph	development-names	2026-09-17
+Diesel	diesel	40	后端框架	english	Diesel	development-names	2026-09-17
+Dify	dify	40	数据检索	english	Dify	development-names	2026-09-17
+DigitalOcean	digitalocean	40	部署运维	english	DigitalOcean	development-names	2026-09-17
+Dio	dio	40	桌面移动	english	Dio	development-names	2026-09-17
+Directory.Build.props	directorybuildprops	40	文件配置	english	Directory.Build.props	development-names	2026-09-17
+Directory.Packages.props	directorypackagesprops	40	文件配置	english	Directory.Packages.props	development-names	2026-09-17
+Directus	directus	40	后端框架	english	Directus	development-names	2026-09-17
+DiskANN	diskann	40	数据检索	english	DiskANN	development-names	2026-09-17
+DispatchQueue	dispatchqueue	40	桌面移动	english	DispatchQueue	development-names	2026-09-17
+Django	django	40	后端框架	english	Django	development-names	2026-09-17
+Django REST Framework	djangorestframework	40	后端框架	english	Django REST Framework	development-names	2026-09-17
+DoH	doh	40	接口协议	english	DoH	development-names	2026-09-17
+DoT	dot	40	接口协议	english	DoT	development-names	2026-09-17
+Docker	docker	40	部署运维	english	Docker	development-names	2026-09-17
+Docker Compose	dockercompose	40	部署运维	english	Docker Compose	development-names	2026-09-17
+Dockerfile	dockerfile	40	部署运维	english	Dockerfile	development-names	2026-09-17
+Docker容器	dockerrongqi	30	中英开发表达	mixed	Docker容器	curated	2026-09-17
+Docker构建	dockergoujian	30	中英开发表达	mixed	Docker构建	curated	2026-09-17
+Docker网络	dockerwangluo	30	中英开发表达	mixed	Docker网络	curated	2026-09-17
+Docker镜像	dockerjingxiang	30	中英开发表达	mixed	Docker镜像	curated	2026-09-17
+Docling	docling	40	数据检索	english	Docling	development-names	2026-09-17
+Doris	doris	40	数据检索	english	Doris	development-names	2026-09-17
+Dragonfly	dragonfly	40	数据检索	english	Dragonfly	development-names	2026-09-17
+Dramatiq	dramatiq	40	后端框架	english	Dramatiq	development-names	2026-09-17
+Drift	drift	40	桌面移动	english	Drift	development-names	2026-09-17
+Drizzle ORM	drizzleorm	40	后端框架	english	Drizzle ORM	development-names	2026-09-17
+Drone	drone	40	部署运维	english	Drone	development-names	2026-09-17
+Dropwizard	dropwizard	40	后端框架	english	Dropwizard	development-names	2026-09-17
+DuckDB	duckdb	40	数据检索	english	DuckDB	development-names	2026-09-17
+DynamoDB	dynamodb	40	数据检索	english	DynamoDB	development-names	2026-09-17
+E5	e5	40	数据检索	english	E5	development-names	2026-09-17
+ECDSA	ecdsa	40	接口协议	english	ECDSA	development-names	2026-09-17
+ECharts	echarts	40	前端框架	english	ECharts	development-names	2026-09-17
+EMQX	emqx	40	部署运维	english	EMQX	development-names	2026-09-17
+ESLint	eslint	40	测试质量	english	ESLint	development-names	2026-09-17
+ETag	etag	40	接口协议	english	ETag	development-names	2026-09-17
+EasyOCR	easyocr	40	数据检索	english	EasyOCR	development-names	2026-09-17
+Echo	echo	40	后端框架	english	Echo	development-names	2026-09-17
+Ecto	ecto	40	后端框架	english	Ecto	development-names	2026-09-17
+Ed25519	ed25519	40	接口协议	english	Ed25519	development-names	2026-09-17
+Electron	electron	40	前端框架	english	Electron	development-names	2026-09-17
+Element Plus	elementplus	40	前端框架	english	Element Plus	development-names	2026-09-17
+Elixir	elixir	40	语言运行时	english	Elixir	development-names	2026-09-17
+Embedding	embedding	40	数据检索	english	Embedding	development-names	2026-09-17
+Embeddings	embeddings	40	数据检索	english	Embeddings	development-names	2026-09-17
+Embedding模型	embeddingmoxing	30	中英开发表达	mixed	Embedding模型	curated	2026-09-17
+Ember	ember	40	前端框架	english	Ember	development-names	2026-09-17
+Emotion	emotion	40	前端框架	english	Emotion	development-names	2026-09-17
+Encodable	encodable	40	桌面移动	english	Encodable	development-names	2026-09-17
+Ent	ent	40	后端框架	english	Ent	development-names	2026-09-17
+Entitlements	entitlements	40	桌面移动	english	Entitlements	development-names	2026-09-17
+Entity Framework Core	entityframeworkcore	40	后端框架	english	Entity Framework Core	development-names	2026-09-17
+Envoy	envoy	40	部署运维	english	Envoy	development-names	2026-09-17
+Enzyme	enzyme	40	测试质量	english	Enzyme	development-names	2026-09-17
+Erlang	erlang	40	语言运行时	english	Erlang	development-names	2026-09-17
+Euclidean Distance	euclideandistance	40	数据检索	english	Euclidean Distance	development-names	2026-09-17
+EventSource	eventsource	40	前端框架	english	EventSource	development-names	2026-09-17
+Excalidraw	excalidraw	40	前端框架	english	Excalidraw	development-names	2026-09-17
+Expo	expo	40	桌面移动	english	Expo	development-names	2026-09-17
+Express	express	40	后端框架	english	Express	development-names	2026-09-17
+External Secrets	externalsecrets	40	部署运维	english	External Secrets	development-names	2026-09-17
+F#	fsharp	40	语言运行时	alias	F#	development-names	2026-09-17
+F1	f1	40	数据检索	english	F1	development-names	2026-09-17
+FFI	ffi	40	语言运行时	english	FFI	development-names	2026-09-17
+FIDO2	fido2	40	接口协议	english	FIDO2	development-names	2026-09-17
+Fabric	fabric	40	桌面移动	english	Fabric	development-names	2026-09-17
+FastAPI	fastapi	40	后端框架	english	FastAPI	development-names	2026-09-17
+FastEmbed	fastembed	40	数据检索	english	FastEmbed	development-names	2026-09-17
+Fastify	fastify	40	后端框架	english	Fastify	development-names	2026-09-17
+Fastlane	fastlane	40	桌面移动	english	Fastlane	development-names	2026-09-17
+Fcitx5	fcitx5	40	桌面移动	english	Fcitx5	development-names	2026-09-17
+Feathers	feathers	40	后端框架	english	Feathers	development-names	2026-09-17
+Fetch API	fetchapi	40	前端框架	english	Fetch API	development-names	2026-09-17
+Fiber	fiber	40	后端框架	english	Fiber	development-names	2026-09-17
+FileManager	filemanager	40	桌面移动	english	FileManager	development-names	2026-09-17
+Filebeat	filebeat	40	部署运维	english	Filebeat	development-names	2026-09-17
+Firebase	firebase	40	数据检索	english	Firebase	development-names	2026-09-17
+Firestore	firestore	40	数据检索	english	Firestore	development-names	2026-09-17
+Fish	fish	40	语言运行时	english	Fish	development-names	2026-09-17
+Fivetran	fivetran	40	部署运维	english	Fivetran	development-names	2026-09-17
+Flake8	flake8	40	包管理构建	english	Flake8	development-names	2026-09-17
+Flask	flask	40	后端框架	english	Flask	development-names	2026-09-17
+Flatpak	flatpak	40	包管理构建	english	Flatpak	development-names	2026-09-17
+Flink	flink	40	部署运维	english	Flink	development-names	2026-09-17
+Flow	flow	40	桌面移动	english	Flow	development-names	2026-09-17
+Flowise	flowise	40	数据检索	english	Flowise	development-names	2026-09-17
+Fluent Bit	fluentbit	40	部署运维	english	Fluent Bit	development-names	2026-09-17
+FluentAssertions	fluentassertions	40	测试质量	english	FluentAssertions	development-names	2026-09-17
+Fluentd	fluentd	40	部署运维	english	Fluentd	development-names	2026-09-17
+Flutter	flutter	40	桌面移动	english	Flutter	development-names	2026-09-17
+Flux	flux	40	部署运维	english	Flux	development-names	2026-09-17
+Fly.io	flyio	40	部署运维	english	Fly.io	development-names	2026-09-17
+Forgejo	forgejo	40	版本协作	english	Forgejo	development-names	2026-09-17
+Fortran	fortran	40	语言运行时	english	Fortran	development-names	2026-09-17
+Foundation	foundation	40	桌面移动	english	Foundation	development-names	2026-09-17
+Fragment	fragment	40	桌面移动	english	Fragment	development-names	2026-09-17
+Freezed	freezed	40	桌面移动	english	Freezed	development-names	2026-09-17
+Function Calling	functioncalling	40	编程助手	english	Function Calling	development-names	2026-09-17
+GC	gc	40	语言运行时	english	GC	development-names	2026-09-17
+GCC	gcc	40	语言运行时	english	GCC	development-names	2026-09-17
+GCP	gcp	40	部署运维	english	GCP	development-names	2026-09-17
+GDB	gdb	40	语言运行时	english	GDB	development-names	2026-09-17
+GOPATH	gopath	40	包管理构建	english	GOPATH	development-names	2026-09-17
+GOPROXY	goproxy	40	包管理构建	english	GOPROXY	development-names	2026-09-17
+GORM	gorm	40	后端框架	english	GORM	development-names	2026-09-17
+GOWORK	goworkenv	40	包管理构建	alias	GOWORK	development-names	2026-09-17
+GPU推理	gputuili	30	中英开发表达	mixed	GPU推理	curated	2026-09-17
+GPU显存	gpuxiancun	30	中英开发表达	mixed	GPU显存	curated	2026-09-17
+GTE	gte	40	数据检索	english	GTE	development-names	2026-09-17
+GTK	gtk	40	桌面移动	english	GTK	development-names	2026-09-17
+Gatling	gatling	40	测试质量	english	Gatling	development-names	2026-09-17
+Gemfile	gemfile	40	文件配置	english	Gemfile	development-names	2026-09-17
+Gemfile.lock	gemfilelock	40	文件配置	english	Gemfile.lock	development-names	2026-09-17
+Gemini CLI	geminicli	40	编程助手	english	Gemini CLI	development-names	2026-09-17
+GetX	getx	40	桌面移动	english	GetX	development-names	2026-09-17
+Gin	gin	40	后端框架	english	Gin	development-names	2026-09-17
+Ginkgo	ginkgo	40	测试质量	english	Ginkgo	development-names	2026-09-17
+Git	git	40	版本协作	english	Git	development-names	2026-09-17
+Git Flow	gitflow	40	版本协作	english	Git Flow	development-names	2026-09-17
+Git LFS	gitlfs	40	版本协作	english	Git LFS	development-names	2026-09-17
+GitHub	github	40	版本协作	english	GitHub	development-names	2026-09-17
+GitHub Actions	githubactions	40	版本协作	english	GitHub Actions	development-names	2026-09-17
+GitHub Actions Runner	githubactionsrunner	40	部署运维	english	GitHub Actions Runner	development-names	2026-09-17
+GitHub CLI	githubcli	40	版本协作	english	GitHub CLI	development-names	2026-09-17
+GitHub Copilot	githubcopilot	40	编程助手	english	GitHub Copilot	development-names	2026-09-17
+GitLab	gitlab	40	版本协作	english	GitLab	development-names	2026-09-17
+GitLab CI	gitlabci	40	版本协作	english	GitLab CI	development-names	2026-09-17
+Gitea	gitea	40	版本协作	english	Gitea	development-names	2026-09-17
+Git仓库	gitcangku	30	中英开发表达	mixed	Git仓库	curated	2026-09-17
+Git冲突	gitchongtu	30	中英开发表达	mixed	Git冲突	curated	2026-09-17
+Git分支	gitfenzhi	30	中英开发表达	mixed	Git分支	curated	2026-09-17
+Git变基	gitbianji	30	中英开发表达	mixed	Git变基	curated	2026-09-17
+Git合并	githebing	30	中英开发表达	mixed	Git合并	curated	2026-09-17
+Git工作树	gitgongzuoshu	30	中英开发表达	mixed	Git工作树	curated	2026-09-17
+Git提交	gittijiao	30	中英开发表达	mixed	Git提交	curated	2026-09-17
+Git暂存区	gitzancunqu	30	中英开发表达	mixed	Git暂存区	curated	2026-09-17
+Git标签	gitbiaoqian	30	中英开发表达	mixed	Git标签	curated	2026-09-17
+Go	go	40	语言运行时	english	Go	development-names	2026-09-17
+Go Modules	gomodules	40	包管理构建	english	Go Modules	development-names	2026-09-17
+Go Test	gotest	40	测试质量	english	Go Test	development-names	2026-09-17
+Go Workspace	goworkspace	40	包管理构建	english	Go Workspace	development-names	2026-09-17
+Go-zero	gozero	40	后端框架	english	Go-zero	development-names	2026-09-17
+GoFrame	goframe	40	后端框架	english	GoFrame	development-names	2026-09-17
+GoMock	gomock	40	测试质量	english	GoMock	development-names	2026-09-17
+GoRouter	gorouter	40	桌面移动	english	GoRouter	development-names	2026-09-17
+Golang	golang	40	语言运行时	english	Golang	development-names	2026-09-17
+Gomega	gomega	40	测试质量	english	Gomega	development-names	2026-09-17
+Google Cloud	googlecloud	40	部署运维	english	Google Cloud	development-names	2026-09-17
+Gorilla	gorilla	40	后端框架	english	Gorilla	development-names	2026-09-17
+GraalVM	graalvm	40	语言运行时	english	GraalVM	development-names	2026-09-17
+Gradle	gradle	40	包管理构建	english	Gradle	development-names	2026-09-17
+Gradle Kotlin DSL	gradlekotlindsl	40	桌面移动	english	Gradle Kotlin DSL	development-names	2026-09-17
+GraphQL	graphql	40	语言运行时	english	GraphQL	development-names	2026-09-17
+GraphQL Federation	graphqlfederation	40	接口协议	english	GraphQL Federation	development-names	2026-09-17
+GraphQL Yoga	graphqlyoga	40	接口协议	english	GraphQL Yoga	development-names	2026-09-17
+Groovy	groovy	40	语言运行时	english	Groovy	development-names	2026-09-17
+Grunt	grunt	40	前端框架	english	Grunt	development-names	2026-09-17
+Grype	grype	40	测试质量	english	Grype	development-names	2026-09-17
+Guix	guix	40	包管理构建	english	Guix	development-names	2026-09-17
+Gulp	gulp	40	前端框架	english	Gulp	development-names	2026-09-17
+Gunicorn	gunicorn	40	后端框架	english	Gunicorn	development-names	2026-09-17
+HAL	hal	40	接口协议	english	HAL	development-names	2026-09-17
+HAProxy	haproxy	40	部署运维	english	HAProxy	development-names	2026-09-17
+HDFS	hdfs	40	部署运维	english	HDFS	development-names	2026-09-17
+HEAD	head	40	版本协作	english	HEAD	development-names	2026-09-17
+HMAC	hmac	40	接口协议	english	HMAC	development-names	2026-09-17
+HNSW索引	hnswsuoyin	30	中英开发表达	mixed	HNSW索引	curated	2026-09-17
+HOTP	hotp	40	接口协议	english	HOTP	development-names	2026-09-17
+HTML	html	40	语言运行时	english	HTML	development-names	2026-09-17
+HTML模板	htmlmoban	30	中英开发表达	mixed	HTML模板	curated	2026-09-17
+HTTP	http	40	接口协议	english	HTTP	development-names	2026-09-17
+HTTP/2	http2	40	接口协议	alias	HTTP/2	development-names	2026-09-17
+HTTP/3	http3	40	接口协议	alias	HTTP/3	development-names	2026-09-17
+HTTPS	https	40	接口协议	english	HTTPS	development-names	2026-09-17
+HTTPS证书	httpszhengshu	30	中英开发表达	mixed	HTTPS证书	curated	2026-09-17
+HTTP响应	httpxiangying	30	中英开发表达	mixed	HTTP响应	curated	2026-09-17
+HTTP请求	httpqingqiu	30	中英开发表达	mixed	HTTP请求	curated	2026-09-17
+Hadolint	hadolint	40	测试质量	english	Hadolint	development-names	2026-09-17
+Hadoop	hadoop	40	部署运维	english	Hadoop	development-names	2026-09-17
+Hamcrest	hamcrest	40	测试质量	english	Hamcrest	development-names	2026-09-17
+Hanami	hanami	40	后端框架	english	Hanami	development-names	2026-09-17
+Handoff	handoff	40	编程助手	english	Handoff	development-names	2026-09-17
+Hangfire	hangfire	40	后端框架	english	Hangfire	development-names	2026-09-17
+Hapi	hapi	40	后端框架	english	Hapi	development-names	2026-09-17
+Haskell	haskell	40	语言运行时	english	Haskell	development-names	2026-09-17
+Hatch	hatch	40	包管理构建	english	Hatch	development-names	2026-09-17
+Haystack	haystack	40	数据检索	english	Haystack	development-names	2026-09-17
+Headless UI	headlessui	40	前端框架	english	Headless UI	development-names	2026-09-17
+Health Check	healthcheck	40	接口协议	english	Health Check	development-names	2026-09-17
+Helicone	helicone	40	数据检索	english	Helicone	development-names	2026-09-17
+Helidon	helidon	40	后端框架	english	Helidon	development-names	2026-09-17
+Helm	helm	40	部署运维	english	Helm	development-names	2026-09-17
+Helm模板	helmmoban	30	中英开发表达	mixed	Helm模板	curated	2026-09-17
+Hermes	hermes	40	桌面移动	english	Hermes	development-names	2026-09-17
+Hetzner	hetzner	40	部署运维	english	Hetzner	development-names	2026-09-17
+Hibernate	hibernate	40	后端框架	english	Hibernate	development-names	2026-09-17
+Hilt	hilt	40	桌面移动	english	Hilt	development-names	2026-09-17
+Histoire	histoire	40	前端框架	english	Histoire	development-names	2026-09-17
+Hive	hive	40	桌面移动	english	Hive	development-names	2026-09-17
+Hnswlib	hnswlib	40	数据检索	english	Hnswlib	development-names	2026-09-17
+Homebrew	homebrew	40	包管理构建	english	Homebrew	development-names	2026-09-17
+Honeycomb	honeycomb	40	部署运维	english	Honeycomb	development-names	2026-09-17
+Honggfuzz	honggfuzz	40	测试质量	english	Honggfuzz	development-names	2026-09-17
+Hono	hono	40	后端框架	english	Hono	development-names	2026-09-17
+Hook	hook	40	编程助手	english	Hook	development-names	2026-09-17
+Hooks	hooks	40	编程助手	english	Hooks	development-names	2026-09-17
+Huawei Cloud	huaweicloud	40	部署运维	english	Huawei Cloud	development-names	2026-09-17
+Hunter	hunter	40	包管理构建	english	Hunter	development-names	2026-09-17
+Husky	husky	40	测试质量	english	Husky	development-names	2026-09-17
+Hybrid Search	hybridsearch	40	数据检索	english	Hybrid Search	development-names	2026-09-17
+Hyper	hyper	40	后端框架	english	Hyper	development-names	2026-09-17
+Hypercorn	hypercorn	40	后端框架	english	Hypercorn	development-names	2026-09-17
+Hyperf	hyperf	40	后端框架	english	Hyperf	development-names	2026-09-17
+Hypothesis	hypothesis	40	测试质量	english	Hypothesis	development-names	2026-09-17
+IBus	ibus	40	桌面移动	english	IBus	development-names	2026-09-17
+IME	ime	40	桌面移动	english	IME	development-names	2026-09-17
+IMK	imk	40	桌面移动	english	IMK	development-names	2026-09-17
+IP	ip	40	接口协议	english	IP	development-names	2026-09-17
+IPC	ipc	40	桌面移动	english	IPC	development-names	2026-09-17
+IPv4	ipv4	40	接口协议	english	IPv4	development-names	2026-09-17
+IPv6	ipv6	40	接口协议	english	IPv6	development-names	2026-09-17
+ISR	isr	40	前端框架	english	ISR	development-names	2026-09-17
+IVFFlat	ivfflat	40	数据检索	english	IVFFlat	development-names	2026-09-17
+IVFPQ	ivfpq	40	数据检索	english	IVFPQ	development-names	2026-09-17
+Idempotency Key	idempotencykey	40	接口协议	english	Idempotency Key	development-names	2026-09-17
+IndexedDB	indexeddb	40	前端框架	english	IndexedDB	development-names	2026-09-17
+Infisical	infisical	40	部署运维	english	Infisical	development-names	2026-09-17
+InfluxDB	influxdb	40	数据检索	english	InfluxDB	development-names	2026-09-17
+Info.plist	infoplist	40	桌面移动	english	Info.plist	development-names	2026-09-17
+Inner Product	innerproduct	40	数据检索	english	Inner Product	development-names	2026-09-17
+InputMethodKit	inputmethodkit	40	桌面移动	english	InputMethodKit	development-names	2026-09-17
+Instruments	instruments	40	桌面移动	english	Instruments	development-names	2026-09-17
+Ionic	ionic	40	桌面移动	english	Ionic	development-names	2026-09-17
+Isar	isar	40	桌面移动	english	Isar	development-names	2026-09-17
+Istio	istio	40	部署运维	english	Istio	development-names	2026-09-17
+JDBC	jdbc	40	后端框架	english	JDBC	development-names	2026-09-17
+JDK	jdk	40	语言运行时	english	JDK	development-names	2026-09-17
+JIT	jit	40	语言运行时	english	JIT	development-names	2026-09-17
+JMH	jmh	40	测试质量	english	JMH	development-names	2026-09-17
+JMeter	jmeter	40	测试质量	english	JMeter	development-names	2026-09-17
+JNI	jni	40	语言运行时	english	JNI	development-names	2026-09-17
+JPA	jpa	40	后端框架	english	JPA	development-names	2026-09-17
+JRE	jre	40	语言运行时	english	JRE	development-names	2026-09-17
+JSON	json	40	语言运行时	english	JSON	development-names	2026-09-17
+JSON Schema	jsonschema	40	编程助手	english	JSON Schema	development-names	2026-09-17
+JSON-RPC	jsonrpc	40	接口协议	english	JSON-RPC	development-names	2026-09-17
+JSON:API	jsonapi	40	接口协议	alias	JSON:API	development-names	2026-09-17
+JSONC	jsonc	40	语言运行时	english	JSONC	development-names	2026-09-17
+JSONL	jsonl	40	语言运行时	english	JSONL	development-names	2026-09-17
+JSON序列化	jsonxuliehua	30	中英开发表达	mixed	JSON序列化	curated	2026-09-17
+JSON文件	jsonwenjian	30	中英开发表达	mixed	JSON文件	curated	2026-09-17
+JSON校验	jsonjiaoyan	30	中英开发表达	mixed	JSON校验	curated	2026-09-17
+JSON格式	jsongeshi	30	中英开发表达	mixed	JSON格式	curated	2026-09-17
+JSON解析	jsonjiexi	30	中英开发表达	mixed	JSON解析	curated	2026-09-17
+JUnit	junit	40	测试质量	english	JUnit	development-names	2026-09-17
+JVM	jvm	40	语言运行时	english	JVM	development-names	2026-09-17
+JWK	jwk	40	接口协议	english	JWK	development-names	2026-09-17
+JWKS	jwks	40	接口协议	english	JWKS	development-names	2026-09-17
+JWT	jwt	40	接口协议	english	JWT	development-names	2026-09-17
+JWT令牌	jwtlingpai	30	中英开发表达	mixed	JWT令牌	curated	2026-09-17
+JaCoCo	jacoco	40	测试质量	english	JaCoCo	development-names	2026-09-17
+Jaeger	jaeger	40	部署运维	english	Jaeger	development-names	2026-09-17
+Jakarta EE	jakartaee	40	后端框架	english	Jakarta EE	development-names	2026-09-17
+JanusGraph	janusgraph	40	数据检索	english	JanusGraph	development-names	2026-09-17
+Jasmine	jasmine	40	测试质量	english	Jasmine	development-names	2026-09-17
+Java	java	40	语言运行时	english	Java	development-names	2026-09-17
+JavaScript	javascript	40	语言运行时	english	JavaScript	development-names	2026-09-17
+JavaScriptCore	javascriptcore	40	语言运行时	english	JavaScriptCore	development-names	2026-09-17
+Jenkins	jenkins	40	部署运维	english	Jenkins	development-names	2026-09-17
+Jenkinsfile	jenkinsfile	40	文件配置	english	Jenkinsfile	development-names	2026-09-17
+Jest	jest	40	测试质量	english	Jest	development-names	2026-09-17
+Jetpack Compose	jetpackcompose	40	桌面移动	english	Jetpack Compose	development-names	2026-09-17
+Jetty	jetty	40	后端框架	english	Jetty	development-names	2026-09-17
+Jotai	jotai	40	前端框架	english	Jotai	development-names	2026-09-17
+Julia	julia	40	语言运行时	english	Julia	development-names	2026-09-17
+Justfile	justfile	40	文件配置	english	Justfile	development-names	2026-09-17
+K3s	k3s	40	部署运维	english	K3s	development-names	2026-09-17
+K8s	k8s	40	部署运维	english	K8s	development-names	2026-09-17
+K9s	k9s	40	部署运维	english	K9s	development-names	2026-09-17
+KMM	kmm	40	桌面移动	english	KMM	development-names	2026-09-17
+KMP	kmp	40	桌面移动	english	KMP	development-names	2026-09-17
+Kafka	kafka	40	部署运维	english	Kafka	development-names	2026-09-17
+KeyDB	keydb	40	数据检索	english	KeyDB	development-names	2026-09-17
+Keychain	keychain	40	桌面移动	english	Keychain	development-names	2026-09-17
+Kind	kind	40	部署运维	english	Kind	development-names	2026-09-17
+Knex	knex	40	后端框架	english	Knex	development-names	2026-09-17
+Koa	koa	40	后端框架	english	Koa	development-names	2026-09-17
+Koin	koin	40	桌面移动	english	Koin	development-names	2026-09-17
+Kong	kong	40	部署运维	english	Kong	development-names	2026-09-17
+Kotlin	kotlin	40	语言运行时	english	Kotlin	development-names	2026-09-17
+Kotlin Multiplatform	kotlinmultiplatform	40	桌面移动	english	Kotlin Multiplatform	development-names	2026-09-17
+KrakenD	krakend	40	部署运维	english	KrakenD	development-names	2026-09-17
+Kratos	kratos	40	后端框架	english	Kratos	development-names	2026-09-17
+Ktor	ktor	40	后端框架	english	Ktor	development-names	2026-09-17
+Kubeadm	kubeadm	40	部署运维	english	Kubeadm	development-names	2026-09-17
+Kubernetes	kubernetes	40	部署运维	english	Kubernetes	development-names	2026-09-17
+Kubernetes集群	kubernetesjiqun	30	中英开发表达	mixed	Kubernetes集群	curated	2026-09-17
+Kustomize	kustomize	40	部署运维	english	Kustomize	development-names	2026-09-17
+LICENSE	license	40	文件配置	english	LICENSE	development-names	2026-09-17
+LLDB	lldb	40	语言运行时	english	LLDB	development-names	2026-09-17
+LLM推理	llmtuili	30	中英开发表达	mixed	LLM推理	curated	2026-09-17
+LLVM	llvm	40	语言运行时	english	LLVM	development-names	2026-09-17
+LM Studio	lmstudio	40	数据检索	english	LM Studio	development-names	2026-09-17
+LMDB	lmdb	40	数据检索	english	LMDB	development-names	2026-09-17
+LSP	lsp	40	编程助手	english	LSP	development-names	2026-09-17
+Ladle	ladle	40	前端框架	english	Ladle	development-names	2026-09-17
+Lance	lance	40	数据检索	english	Lance	development-names	2026-09-17
+LanceDB	lancedb	40	数据检索	english	LanceDB	development-names	2026-09-17
+LangGraph	langgraph	40	数据检索	english	LangGraph	development-names	2026-09-17
+LangServe	langserve	40	数据检索	english	LangServe	development-names	2026-09-17
+LangSmith	langsmith	40	数据检索	english	LangSmith	development-names	2026-09-17
+Langflow	langflow	40	数据检索	english	Langflow	development-names	2026-09-17
+Langfuse	langfuse	40	数据检索	english	Langfuse	development-names	2026-09-17
+Language Server	languageserver	40	编程助手	english	Language Server	development-names	2026-09-17
+Language Server Protocol	languageserverprotocol	40	编程助手	english	Language Server Protocol	development-names	2026-09-17
+Laravel	laravel	40	后端框架	english	Laravel	development-names	2026-09-17
+LazyLock	lazylock	40	后端框架	english	LazyLock	development-names	2026-09-17
+Lefthook	lefthook	40	测试质量	english	Lefthook	development-names	2026-09-17
+Lens	lens	40	部署运维	english	Lens	development-names	2026-09-17
+Lerna	lerna	40	包管理构建	english	Lerna	development-names	2026-09-17
+Less	less	40	语言运行时	english	Less	development-names	2026-09-17
+Let's Encrypt	letsencrypt	40	部署运维	alias	Let's Encrypt	development-names	2026-09-17
+LevelDB	leveldb	40	数据检索	english	LevelDB	development-names	2026-09-17
+Lexical	lexical	40	前端框架	english	Lexical	development-names	2026-09-17
+LibFuzzer	libfuzzer	40	测试质量	english	LibFuzzer	development-names	2026-09-17
+Lighthouse	lighthouse	40	测试质量	english	Lighthouse	development-names	2026-09-17
+Linkerd	linkerd	40	部署运维	english	Linkerd	development-names	2026-09-17
+Linode	linode	40	部署运维	english	Linode	development-names	2026-09-17
+Lit	lit	40	前端框架	english	Lit	development-names	2026-09-17
+LiteLLM	litellm	40	数据检索	english	LiteLLM	development-names	2026-09-17
+LiveData	livedata	40	桌面移动	english	LiveData	development-names	2026-09-17
+Liveness Probe	livenessprobe	40	接口协议	english	Liveness Probe	development-names	2026-09-17
+LocalAI	localai	40	数据检索	english	LocalAI	development-names	2026-09-17
+LocalStorage	localstorage	40	前端框架	english	LocalStorage	development-names	2026-09-17
+Locust	locust	40	测试质量	english	Locust	development-names	2026-09-17
+Logcat	logcat	40	桌面移动	english	Logcat	development-names	2026-09-17
+Logstash	logstash	40	部署运维	english	Logstash	development-names	2026-09-17
+Loki	loki	40	部署运维	english	Loki	development-names	2026-09-17
+Long Polling	longpolling	40	接口协议	english	Long Polling	development-names	2026-09-17
+Loom	loom	40	测试质量	english	Loom	development-names	2026-09-17
+LoopBack	loopback	40	后端框架	english	LoopBack	development-names	2026-09-17
+Lua	lua	40	语言运行时	english	Lua	development-names	2026-09-17
+Lucene	lucene	40	数据检索	english	Lucene	development-names	2026-09-17
+MAUI	maui	40	桌面移动	english	MAUI	development-names	2026-09-17
+MCP Client	mcpclient	40	编程助手	english	MCP Client	development-names	2026-09-17
+MCP Inspector	mcpinspector	40	编程助手	english	MCP Inspector	development-names	2026-09-17
+MCP Server	mcpserver	40	编程助手	english	MCP Server	development-names	2026-09-17
+MCP协议	mcpxieyi	30	中英开发表达	mixed	MCP协议	curated	2026-09-17
+MCP客户端	mcpkehuduan	30	中英开发表达	mixed	MCP客户端	curated	2026-09-17
+MCP工具	mcpgongju	30	中英开发表达	mixed	MCP工具	curated	2026-09-17
+MCP服务	mcpfuwu	30	中英开发表达	mixed	MCP服务	curated	2026-09-17
+MCP服务器	mcpfuwuqi	30	中英开发表达	mixed	MCP服务器	curated	2026-09-17
+MCP配置	mcppeizhi	30	中英开发表达	mixed	MCP配置	curated	2026-09-17
+MDX	mdx	40	语言运行时	english	MDX	development-names	2026-09-17
+MLX	mlx	40	数据检索	english	MLX	development-names	2026-09-17
+MLX LM	mlxlm	40	数据检索	english	MLX LM	development-names	2026-09-17
+MPA	mpa	40	前端框架	english	MPA	development-names	2026-09-17
+MQTT	mqtt	40	部署运维	english	MQTT	development-names	2026-09-17
+MR	mr	40	版本协作	english	MR	development-names	2026-09-17
+MRR	mrr	40	数据检索	english	MRR	development-names	2026-09-17
+MSBuild	msbuild	40	包管理构建	english	MSBuild	development-names	2026-09-17
+MSTest	mstest	40	测试质量	english	MSTest	development-names	2026-09-17
+MSVC	msvc	40	语言运行时	english	MSVC	development-names	2026-09-17
+MUI	mui	40	前端框架	english	MUI	development-names	2026-09-17
+MacPorts	macports	40	包管理构建	english	MacPorts	development-names	2026-09-17
+Maestro	maestro	40	测试质量	english	Maestro	development-names	2026-09-17
+MainActor	mainactor	40	桌面移动	english	MainActor	development-names	2026-09-17
+Make	make	40	包管理构建	english	Make	development-names	2026-09-17
+Makefile	makefile	40	文件配置	english	Makefile	development-names	2026-09-17
+Mamba	mamba	40	包管理构建	english	Mamba	development-names	2026-09-17
+Mantine	mantine	40	前端框架	english	Mantine	development-names	2026-09-17
+MapKit	mapkit	40	桌面移动	english	MapKit	development-names	2026-09-17
+MariaDB	mariadb	40	数据检索	english	MariaDB	development-names	2026-09-17
+MarkItDown	markitdown	40	数据检索	english	MarkItDown	development-names	2026-09-17
+Markdown	markdown	40	语言运行时	english	Markdown	development-names	2026-09-17
+Markdownlint	markdownlint	40	测试质量	english	Markdownlint	development-names	2026-09-17
+Material Design	materialdesign	40	桌面移动	english	Material Design	development-names	2026-09-17
+Material UI	materialui	40	前端框架	english	Material UI	development-names	2026-09-17
+Maturin	maturin	40	包管理构建	english	Maturin	development-names	2026-09-17
+Maven	maven	40	包管理构建	english	Maven	development-names	2026-09-17
+Maven Central	mavencentral	40	包管理构建	english	Maven Central	development-names	2026-09-17
+MediatR	mediatr	40	后端框架	english	MediatR	development-names	2026-09-17
+Meilisearch	meilisearch	40	数据检索	english	Meilisearch	development-names	2026-09-17
+Memcached	memcached	40	数据检索	english	Memcached	development-names	2026-09-17
+Merge Request	mergerequest	40	版本协作	english	Merge Request	development-names	2026-09-17
+Mermaid	mermaid	40	前端框架	english	Mermaid	development-names	2026-09-17
+Meson	meson	40	包管理构建	english	Meson	development-names	2026-09-17
+Metal	metal	40	桌面移动	english	Metal	development-names	2026-09-17
+MetalKit	metalkit	40	桌面移动	english	MetalKit	development-names	2026-09-17
+Metricbeat	metricbeat	40	部署运维	english	Metricbeat	development-names	2026-09-17
+Metro	metro	40	桌面移动	english	Metro	development-names	2026-09-17
+MicroK8s	microk8s	40	部署运维	english	MicroK8s	development-names	2026-09-17
+Micronaut	micronaut	40	后端框架	english	Micronaut	development-names	2026-09-17
+MikroORM	mikroorm	40	后端框架	english	MikroORM	development-names	2026-09-17
+Mimir	mimir	40	部署运维	english	Mimir	development-names	2026-09-17
+MinIO	minio	40	部署运维	english	MinIO	development-names	2026-09-17
+MinerU	mineru	40	数据检索	english	MinerU	development-names	2026-09-17
+Miniconda	miniconda	40	包管理构建	english	Miniconda	development-names	2026-09-17
+Minikube	minikube	40	部署运维	english	Minikube	development-names	2026-09-17
+MobX	mobx	40	前端框架	english	MobX	development-names	2026-09-17
+Mocha	mocha	40	测试质量	english	Mocha	development-names	2026-09-17
+MockK	mockk	40	测试质量	english	MockK	development-names	2026-09-17
+MockServer	mockserver	40	测试质量	english	MockServer	development-names	2026-09-17
+Mockito	mockito	40	测试质量	english	Mockito	development-names	2026-09-17
+Model Context Protocol	modelcontextprotocol	40	编程助手	english	Model Context Protocol	development-names	2026-09-17
+Monaco Editor	monacoeditor	40	前端框架	english	Monaco Editor	development-names	2026-09-17
+MongoDB	mongodb	40	数据检索	english	MongoDB	development-names	2026-09-17
+Mono	mono	40	语言运行时	english	Mono	development-names	2026-09-17
+Moq	moq	40	测试质量	english	Moq	development-names	2026-09-17
+Mosquitto	mosquitto	40	部署运维	english	Mosquitto	development-names	2026-09-17
+Mutation Testing	mutationtesting	40	测试质量	english	Mutation Testing	development-names	2026-09-17
+Mutex	mutex	40	后端框架	english	Mutex	development-names	2026-09-17
+MyBatis	mybatis	40	后端框架	english	MyBatis	development-names	2026-09-17
+MyBatis Plus	mybatisplus	40	后端框架	english	MyBatis Plus	development-names	2026-09-17
+MySQL	mysql	40	数据检索	english	MySQL	development-names	2026-09-17
+MySQL事务	mysqlshiwu	30	中英开发表达	mixed	MySQL事务	curated	2026-09-17
+MySQL索引	mysqlsuoyin	30	中英开发表达	mixed	MySQL索引	curated	2026-09-17
+Mypy	mypy	40	包管理构建	english	Mypy	development-names	2026-09-17
+N-API	napi	40	语言运行时	alias	N-API	development-names	2026-09-17
+NATS	nats	40	部署运维	english	NATS	development-names	2026-09-17
+NDCG	ndcg	40	数据检索	english	NDCG	development-names	2026-09-17
+NGINX Ingress	nginxingress	40	部署运维	english	NGINX Ingress	development-names	2026-09-17
+NSApplication	nsapplication	40	桌面移动	english	NSApplication	development-names	2026-09-17
+NSMenu	nsmenu	40	桌面移动	english	NSMenu	development-names	2026-09-17
+NSPasteboard	nspasteboard	40	桌面移动	english	NSPasteboard	development-names	2026-09-17
+NSStatusItem	nsstatusitem	40	桌面移动	english	NSStatusItem	development-names	2026-09-17
+NSTextView	nstextview	40	桌面移动	english	NSTextView	development-names	2026-09-17
+NSUserDefaults	nsuserdefaults	40	桌面移动	english	NSUserDefaults	development-names	2026-09-17
+NSView	nsview	40	桌面移动	english	NSView	development-names	2026-09-17
+NSViewController	nsviewcontroller	40	桌面移动	english	NSViewController	development-names	2026-09-17
+NSWindow	nswindow	40	桌面移动	english	NSWindow	development-names	2026-09-17
+NSubstitute	nsubstitute	40	测试质量	english	NSubstitute	development-names	2026-09-17
+NUnit	nunit	40	测试质量	english	NUnit	development-names	2026-09-17
+Nagios	nagios	40	部署运维	english	Nagios	development-names	2026-09-17
+Naive UI	naiveui	40	前端框架	english	Naive UI	development-names	2026-09-17
+NanoID	nanoid	40	接口协议	english	NanoID	development-names	2026-09-17
+NativeScript	nativescript	40	桌面移动	english	NativeScript	development-names	2026-09-17
+Navigation Compose	navigationcompose	40	桌面移动	english	Navigation Compose	development-names	2026-09-17
+NebulaGraph	nebulagraph	40	数据检索	english	NebulaGraph	development-names	2026-09-17
+Neo4j	neo4j	40	数据检索	english	Neo4j	development-names	2026-09-17
+NestJS	nestjs	40	后端框架	english	NestJS	development-names	2026-09-17
+Netdata	netdata	40	部署运维	english	Netdata	development-names	2026-09-17
+Netlify	netlify	40	部署运维	english	Netlify	development-names	2026-09-17
+Netty	netty	40	后端框架	english	Netty	development-names	2026-09-17
+Neutralinojs	neutralinojs	40	前端框架	english	Neutralinojs	development-names	2026-09-17
+New Relic	newrelic	40	部署运维	english	New Relic	development-names	2026-09-17
+Next.js	nextjs	40	前端框架	english	Next.js	development-names	2026-09-17
+Nexus	nexus	40	包管理构建	english	Nexus	development-names	2026-09-17
+Nginx	nginx	40	部署运维	english	Nginx	development-names	2026-09-17
+Nightwatch	nightwatch	40	测试质量	english	Nightwatch	development-names	2026-09-17
+Nim	nim	40	语言运行时	english	Nim	development-names	2026-09-17
+Nimble	nimble	40	测试质量	english	Nimble	development-names	2026-09-17
+Ninja	ninja	40	包管理构建	english	Ninja	development-names	2026-09-17
+Nix	nix	40	包管理构建	english	Nix	development-names	2026-09-17
+NixOS	nixos	40	包管理构建	english	NixOS	development-names	2026-09-17
+Node.js	nodejs	40	语言运行时	english	Node.js	development-names	2026-09-17
+NotificationCenter	notificationcenter	40	桌面移动	english	NotificationCenter	development-names	2026-09-17
+Nox	nox	40	测试质量	english	Nox	development-names	2026-09-17
+NuGet	nuget	40	包管理构建	english	NuGet	development-names	2026-09-17
+NuGet.Config	nugetconfig	40	文件配置	english	NuGet.Config	development-names	2026-09-17
+Numba	numba	40	语言运行时	english	Numba	development-names	2026-09-17
+Nuxt	nuxt	40	前端框架	english	Nuxt	development-names	2026-09-17
+Nx	nx	40	包管理构建	english	Nx	development-names	2026-09-17
+OAuth	oauth	40	接口协议	english	OAuth	development-names	2026-09-17
+OAuth2	oauth2	40	接口协议	english	OAuth2	development-names	2026-09-17
+OAuth认证	oauthrenzheng	30	中英开发表达	mixed	OAuth认证	curated	2026-09-17
+OCaml	ocaml	40	语言运行时	english	OCaml	development-names	2026-09-17
+OData	odata	40	接口协议	english	OData	development-names	2026-09-17
+OIDC	oidc	40	接口协议	english	OIDC	development-names	2026-09-17
+ONNX Runtime	onnxruntime	40	数据检索	english	ONNX Runtime	development-names	2026-09-17
+OPQ	opq	40	数据检索	english	OPQ	development-names	2026-09-17
+OTel	otel	40	部署运维	english	OTel	development-names	2026-09-17
+OVH	ovh	40	部署运维	english	OVH	development-names	2026-09-17
+Oban	oban	40	后端框架	english	Oban	development-names	2026-09-17
+ObjectBox	objectbox	40	桌面移动	english	ObjectBox	development-names	2026-09-17
+Objection.js	objectionjs	40	后端框架	english	Objection.js	development-names	2026-09-17
+Objective-C	objectivec	40	语言运行时	english	Objective-C	development-names	2026-09-17
+Objective-C++	objectivecpp	40	语言运行时	alias	Objective-C++	development-names	2026-09-17
+Observation	observation	40	桌面移动	english	Observation	development-names	2026-09-17
+OceanBase	oceanbase	40	数据检索	english	OceanBase	development-names	2026-09-17
+OkHttp	okhttp	40	桌面移动	english	OkHttp	development-names	2026-09-17
+Ollama	ollama	40	数据检索	english	Ollama	development-names	2026-09-17
+OnceLock	oncelock	40	后端框架	english	OnceLock	development-names	2026-09-17
+Open WebUI	openwebui	40	数据检索	english	Open WebUI	development-names	2026-09-17
+OpenAI Agents SDK	openaiagentssdk	40	编程助手	english	OpenAI Agents SDK	development-names	2026-09-17
+OpenAPI	openapi	40	接口协议	english	OpenAPI	development-names	2026-09-17
+OpenCode	opencode	40	编程助手	english	OpenCode	development-names	2026-09-17
+OpenHands	openhands	40	数据检索	english	OpenHands	development-names	2026-09-17
+OpenID Connect	openidconnect	40	接口协议	english	OpenID Connect	development-names	2026-09-17
+OpenJDK	openjdk	40	语言运行时	english	OpenJDK	development-names	2026-09-17
+OpenRouter	openrouter	40	数据检索	english	OpenRouter	development-names	2026-09-17
+OpenTelemetry	opentelemetry	40	部署运维	english	OpenTelemetry	development-names	2026-09-17
+OpenTofu	opentofu	40	部署运维	english	OpenTofu	development-names	2026-09-17
+OpenVINO	openvino	40	数据检索	english	OpenVINO	development-names	2026-09-17
+Opsgenie	opsgenie	40	部署运维	english	Opsgenie	development-names	2026-09-17
+Oracle Database	oracledatabase	40	数据检索	english	Oracle Database	development-names	2026-09-17
+Oxlint	oxlint	40	测试质量	english	Oxlint	development-names	2026-09-17
+P95	p95	40	接口协议	english	P95	development-names	2026-09-17
+P99	p99	40	接口协议	english	P99	development-names	2026-09-17
+PBKDF2	pbkdf2	40	接口协议	english	PBKDF2	development-names	2026-09-17
+PDM	pdm	40	包管理构建	english	PDM	development-names	2026-09-17
+PHP	php	40	语言运行时	english	PHP	development-names	2026-09-17
+PITest	pitest	40	测试质量	english	PITest	development-names	2026-09-17
+PQ	pq	40	数据检索	english	PQ	development-names	2026-09-17
+PR	pr	40	版本协作	english	PR	development-names	2026-09-17
+PR合并	prhebing	30	中英开发表达	mixed	PR合并	curated	2026-09-17
+PR审查	prshencha	30	中英开发表达	mixed	PR审查	curated	2026-09-17
+PR描述	prmiaoshu	30	中英开发表达	mixed	PR描述	curated	2026-09-17
+PR评论	prpinglun	30	中英开发表达	mixed	PR评论	curated	2026-09-17
+PWA	pwa	40	前端框架	english	PWA	development-names	2026-09-17
+Pa11y	pa11y	40	测试质量	english	Pa11y	development-names	2026-09-17
+Package.resolved	packageresolved	40	文件配置	english	Package.resolved	development-names	2026-09-17
+Package.swift	packageswift	40	桌面移动	english	Package.swift	development-names	2026-09-17
+Packagist	packagist	40	包管理构建	english	Packagist	development-names	2026-09-17
+Packer	packer	40	部署运维	english	Packer	development-names	2026-09-17
+PaddleOCR	paddleocr	40	数据检索	english	PaddleOCR	development-names	2026-09-17
+PagerDuty	pagerduty	40	部署运维	english	PagerDuty	development-names	2026-09-17
+Paket	paket	40	包管理构建	english	Paket	development-names	2026-09-17
+Panda CSS	pandacss	40	前端框架	english	Panda CSS	development-names	2026-09-17
+Pants	pants	40	包管理构建	english	Pants	development-names	2026-09-17
+Parcel	parcel	40	前端框架	english	Parcel	development-names	2026-09-17
+Parking Lot	parkinglot	40	后端框架	english	Parking Lot	development-names	2026-09-17
+Parquet	parquet	40	语言运行时	english	Parquet	development-names	2026-09-17
+Passkey	passkey	40	接口协议	english	Passkey	development-names	2026-09-17
+Payload CMS	payloadcms	40	后端框架	english	Payload CMS	development-names	2026-09-17
+Pekko	pekko	40	后端框架	english	Pekko	development-names	2026-09-17
+Percy	percy	40	测试质量	english	Percy	development-names	2026-09-17
+Perl	perl	40	语言运行时	english	Perl	development-names	2026-09-17
+Phoenix	phoenix	40	后端框架	english	Phoenix	development-names	2026-09-17
+Pinecone	pinecone	40	数据检索	english	Pinecone	development-names	2026-09-17
+Pinia	pinia	40	前端框架	english	Pinia	development-names	2026-09-17
+Pipfile	pipfile	40	文件配置	english	Pipfile	development-names	2026-09-17
+Pipfile.lock	pipfilelock	40	文件配置	english	Pipfile.lock	development-names	2026-09-17
+Plan Mode	planmode	40	编程助手	english	Plan Mode	development-names	2026-09-17
+Play Framework	playframework	40	后端框架	english	Play Framework	development-names	2026-09-17
+Playwright	playwright	40	测试质量	english	Playwright	development-names	2026-09-17
+Plotly	plotly	40	前端框架	english	Plotly	development-names	2026-09-17
+Plug	plug	40	后端框架	english	Plug	development-names	2026-09-17
+Plugin	plugin	40	编程助手	english	Plugin	development-names	2026-09-17
+Plugins	plugins	40	编程助手	english	Plugins	development-names	2026-09-17
+PocketBase	pocketbase	40	数据检索	english	PocketBase	development-names	2026-09-17
+Podfile	podfile	40	文件配置	english	Podfile	development-names	2026-09-17
+Podfile.lock	podfilelock	40	文件配置	english	Podfile.lock	development-names	2026-09-17
+Podman	podman	40	部署运维	english	Podman	development-names	2026-09-17
+Poetry	poetry	40	包管理构建	english	Poetry	development-names	2026-09-17
+Portkey	portkey	40	数据检索	english	Portkey	development-names	2026-09-17
+PostCSS	postcss	40	前端框架	english	PostCSS	development-names	2026-09-17
+PostgreSQL	postgresql	40	数据检索	english	PostgreSQL	development-names	2026-09-17
+PostgreSQL向量	postgresqlxiangliang	30	中英开发表达	mixed	PostgreSQL向量	curated	2026-09-17
+PostgreSQL扩展	postgresqlkuozhan	30	中英开发表达	mixed	PostgreSQL扩展	curated	2026-09-17
+Postgres	postgres	40	数据检索	english	Postgres	development-names	2026-09-17
+PowerShell	powershell	40	语言运行时	english	PowerShell	development-names	2026-09-17
+Preact	preact	40	前端框架	english	Preact	development-names	2026-09-17
+Precision	precision	40	数据检索	english	Precision	development-names	2026-09-17
+Prefect	prefect	40	部署运维	english	Prefect	development-names	2026-09-17
+Presto	presto	40	部署运维	english	Presto	development-names	2026-09-17
+Prettier	prettier	40	测试质量	english	Prettier	development-names	2026-09-17
+Prisma	prisma	40	后端框架	english	Prisma	development-names	2026-09-17
+PrivacyInfo.xcprivacy	privacyinfoxcprivacy	40	桌面移动	english	PrivacyInfo.xcprivacy	development-names	2026-09-17
+Procfile	procfile	40	文件配置	english	Procfile	development-names	2026-09-17
+Prometheus	prometheus	40	数据检索	english	Prometheus	development-names	2026-09-17
+Prompt	prompt	40	编程助手	english	Prompt	development-names	2026-09-17
+Prompt Engineering	promptengineering	40	编程助手	english	Prompt Engineering	development-names	2026-09-17
+Prompt Injection	promptinjection	40	编程助手	english	Prompt Injection	development-names	2026-09-17
+Proptest	proptest	40	测试质量	english	Proptest	development-names	2026-09-17
+ProseMirror	prosemirror	40	前端框架	english	ProseMirror	development-names	2026-09-17
+Protobuf	protobuf	40	语言运行时	english	Protobuf	development-names	2026-09-17
+Protocol Buffers	protocolbuffers	40	语言运行时	english	Protocol Buffers	development-names	2026-09-17
+Provider	provider	40	桌面移动	english	Provider	development-names	2026-09-17
+Pull Request	pullrequest	40	版本协作	english	Pull Request	development-names	2026-09-17
+Pulsar	pulsar	40	部署运维	english	Pulsar	development-names	2026-09-17
+Pulumi	pulumi	40	部署运维	english	Pulumi	development-names	2026-09-17
+Puppet	puppet	40	部署运维	english	Puppet	development-names	2026-09-17
+Puppeteer	puppeteer	40	测试质量	english	Puppeteer	development-names	2026-09-17
+PyMuPDF	pymupdf	40	数据检索	english	PyMuPDF	development-names	2026-09-17
+PyO3	pyo3	40	语言运行时	english	PyO3	development-names	2026-09-17
+PyPI	pypi	40	包管理构建	english	PyPI	development-names	2026-09-17
+PyPy	pypy	40	语言运行时	english	PyPy	development-names	2026-09-17
+Pydantic	pydantic	40	后端框架	english	Pydantic	development-names	2026-09-17
+Pydantic AI	pydanticai	40	数据检索	english	Pydantic AI	development-names	2026-09-17
+Pylint	pylint	40	包管理构建	english	Pylint	development-names	2026-09-17
+Pyright	pyright	40	包管理构建	english	Pyright	development-names	2026-09-17
+Python	python	40	语言运行时	english	Python	development-names	2026-09-17
+Python依赖	pythonyilai	30	中英开发表达	mixed	Python依赖	curated	2026-09-17
+Python环境	pythonhuanjing	30	中英开发表达	mixed	Python环境	curated	2026-09-17
+Python脚本	pythonjiaoben	30	中英开发表达	mixed	Python脚本	curated	2026-09-17
+QML	qml	40	桌面移动	english	QML	development-names	2026-09-17
+QUIC	quic	40	接口协议	english	QUIC	development-names	2026-09-17
+QUnit	qunit	40	测试质量	english	QUnit	development-names	2026-09-17
+Qt	qt	40	桌面移动	english	Qt	development-names	2026-09-17
+Quarkus	quarkus	40	后端框架	english	Quarkus	development-names	2026-09-17
+Quasar	quasar	40	前端框架	english	Quasar	development-names	2026-09-17
+QuestDB	questdb	40	数据检索	english	QuestDB	development-names	2026-09-17
+Quick	quick	40	测试质量	english	Quick	development-names	2026-09-17
+QuickCheck	quickcheck	40	测试质量	english	QuickCheck	development-names	2026-09-17
+Quill	quill	40	前端框架	english	Quill	development-names	2026-09-17
+Qwik	qwik	40	前端框架	english	Qwik	development-names	2026-09-17
+R	r	40	语言运行时	english	R	development-names	2026-09-17
+R2	r2	40	部署运维	english	R2	development-names	2026-09-17
+RAGFlow	ragflow	40	数据检索	english	RAGFlow	development-names	2026-09-17
+RAG检索	ragjiansuo	30	中英开发表达	mixed	RAG检索	curated	2026-09-17
+RAG评测	ragpingce	30	中英开发表达	mixed	RAG评测	curated	2026-09-17
+RBAC	rbac	40	接口协议	english	RBAC	development-names	2026-09-17
+RCE	rce	40	接口协议	english	RCE	development-names	2026-09-17
+README	readme	40	文件配置	english	README	development-names	2026-09-17
+README.md	readmemd	40	文件配置	english	README.md	development-names	2026-09-17
+REST	rest	40	接口协议	english	REST	development-names	2026-09-17
+REST Assured	restassured	40	测试质量	english	REST Assured	development-names	2026-09-17
+RESTful	restful	40	接口协议	english	RESTful	development-names	2026-09-17
+RPC	rpc	40	接口协议	english	RPC	development-names	2026-09-17
+RPC调用	rpcdiaoyong	30	中英开发表达	mixed	RPC调用	curated	2026-09-17
+RPO	rpo	40	接口协议	english	RPO	development-names	2026-09-17
+RQ	rq	40	后端框架	english	RQ	development-names	2026-09-17
+RRF	rrf	40	数据检索	english	RRF	development-names	2026-09-17
+RSA	rsa	40	接口协议	english	RSA	development-names	2026-09-17
+RSC	rsc	40	前端框架	english	RSC	development-names	2026-09-17
+RTO	rto	40	接口协议	english	RTO	development-names	2026-09-17
+RabbitMQ	rabbitmq	40	部署运维	english	RabbitMQ	development-names	2026-09-17
+Radix UI	radixui	40	前端框架	english	Radix UI	development-names	2026-09-17
+Rails	rails	40	后端框架	english	Rails	development-names	2026-09-17
+Railway	railway	40	部署运维	english	Railway	development-names	2026-09-17
+Rake	rake	40	包管理构建	english	Rake	development-names	2026-09-17
+Rakefile	rakefile	40	文件配置	english	Rakefile	development-names	2026-09-17
+Rate Limit	ratelimit	40	接口协议	english	Rate Limit	development-names	2026-09-17
+Rayon	rayon	40	后端框架	english	Rayon	development-names	2026-09-17
+React	react	40	前端框架	english	React	development-names	2026-09-17
+React DOM	reactdom	40	前端框架	english	React DOM	development-names	2026-09-17
+React Hook Form	reacthookform	40	前端框架	english	React Hook Form	development-names	2026-09-17
+React Native	reactnative	40	前端框架	english	React Native	development-names	2026-09-17
+React Query	reactquery	40	前端框架	english	React Query	development-names	2026-09-17
+React Router	reactrouter	40	前端框架	english	React Router	development-names	2026-09-17
+React Testing Library	reacttestinglibrary	40	测试质量	english	React Testing Library	development-names	2026-09-17
+React状态	reactzhuangtai	30	中英开发表达	mixed	React状态	curated	2026-09-17
+React组件	reactzujian	30	中英开发表达	mixed	React组件	curated	2026-09-17
+React钩子	reactgouzi	30	中英开发表达	mixed	React钩子	curated	2026-09-17
+Readiness Probe	readinessprobe	40	接口协议	english	Readiness Probe	development-names	2026-09-17
+Reanimated	reanimated	40	桌面移动	english	Reanimated	development-names	2026-09-17
+Recall	recall	40	数据检索	english	Recall	development-names	2026-09-17
+Recoil	recoil	40	前端框架	english	Recoil	development-names	2026-09-17
+Redis	redis	40	数据检索	english	Redis	development-names	2026-09-17
+Redis Streams	redisstreams	40	部署运维	english	Redis Streams	development-names	2026-09-17
+Redis缓存	redishuancun	30	中英开发表达	mixed	Redis缓存	curated	2026-09-17
+Redis连接	redislianjie	30	中英开发表达	mixed	Redis连接	curated	2026-09-17
+Redpanda	redpanda	40	部署运维	english	Redpanda	development-names	2026-09-17
+Redshift	redshift	40	数据检索	english	Redshift	development-names	2026-09-17
+Redux	redux	40	前端框架	english	Redux	development-names	2026-09-17
+Redux Toolkit	reduxtoolkit	40	前端框架	english	Redux Toolkit	development-names	2026-09-17
+Refresh Token	refreshtoken	40	接口协议	english	Refresh Token	development-names	2026-09-17
+Relay	relay	40	接口协议	english	Relay	development-names	2026-09-17
+Release Please	releaseplease	40	包管理构建	english	Release Please	development-names	2026-09-17
+Remix	remix	40	前端框架	english	Remix	development-names	2026-09-17
+Render	render	40	部署运维	english	Render	development-names	2026-09-17
+Request ID	requestid	40	接口协议	english	Request ID	development-names	2026-09-17
+Reqwest	reqwest	40	后端框架	english	Reqwest	development-names	2026-09-17
+Rerank	rerank	40	数据检索	english	Rerank	development-names	2026-09-17
+Reranker	reranker	40	数据检索	english	Reranker	development-names	2026-09-17
+Rerank模型	rerankmoxing	30	中英开发表达	mixed	Rerank模型	curated	2026-09-17
+Retrofit	retrofit	40	桌面移动	english	Retrofit	development-names	2026-09-17
+Retry Policy	retrypolicy	40	接口协议	english	Retry Policy	development-names	2026-09-17
+Riverpod	riverpod	40	桌面移动	english	Riverpod	development-names	2026-09-17
+Rocket	rocket	40	后端框架	english	Rocket	development-names	2026-09-17
+RocketMQ	rocketmq	40	部署运维	english	RocketMQ	development-names	2026-09-17
+RocksDB	rocksdb	40	数据检索	english	RocksDB	development-names	2026-09-17
+Rollbar	rollbar	40	部署运维	english	Rollbar	development-names	2026-09-17
+Rollup	rollup	40	前端框架	english	Rollup	development-names	2026-09-17
+Roo Code	roocode	40	编程助手	english	Roo Code	development-names	2026-09-17
+Room	room	40	桌面移动	english	Room	development-names	2026-09-17
+Rspack	rspack	40	前端框架	english	Rspack	development-names	2026-09-17
+Ruby	ruby	40	语言运行时	english	Ruby	development-names	2026-09-17
+Ruby on Rails	rubyonrails	40	后端框架	english	Ruby on Rails	development-names	2026-09-17
+RubyGems	rubygems	40	包管理构建	english	RubyGems	development-names	2026-09-17
+Ruff	ruff	40	包管理构建	english	Ruff	development-names	2026-09-17
+Rush	rush	40	包管理构建	english	Rush	development-names	2026-09-17
+Rust	rust	40	语言运行时	english	Rust	development-names	2026-09-17
+Rust借用	rustjieyong	30	中英开发表达	mixed	Rust借用	curated	2026-09-17
+Rust生命周期	rustshengmingzhouqi	30	中英开发表达	mixed	Rust生命周期	curated	2026-09-17
+Rust编译	rustbianyi	30	中英开发表达	mixed	Rust编译	curated	2026-09-17
+RwLock	rwlock	40	后端框架	english	RwLock	development-names	2026-09-17
+RxJS	rxjs	40	前端框架	english	RxJS	development-names	2026-09-17
+Rye	rye	40	包管理构建	english	Rye	development-names	2026-09-17
+S3	s3	40	部署运维	english	S3	development-names	2026-09-17
+SAML	saml	40	接口协议	english	SAML	development-names	2026-09-17
+SBT	sbt	40	包管理构建	english	SBT	development-names	2026-09-17
+SCSS	scss	40	语言运行时	english	SCSS	development-names	2026-09-17
+SDK集成	sdkjicheng	30	中英开发表达	mixed	SDK集成	curated	2026-09-17
+SECURITY.md	securitymd	40	文件配置	english	SECURITY.md	development-names	2026-09-17
+SHA256	sha256	40	接口协议	english	SHA256	development-names	2026-09-17
+SHA512	sha512	40	接口协议	english	SHA512	development-names	2026-09-17
+SKILL.md	skillmd	40	文件配置	english	SKILL.md	development-names	2026-09-17
+SLA	sla	40	接口协议	english	SLA	development-names	2026-09-17
+SLI	sli	40	接口协议	english	SLI	development-names	2026-09-17
+SLO	slo	40	接口协议	english	SLO	development-names	2026-09-17
+SOAP	soap	40	接口协议	english	SOAP	development-names	2026-09-17
+SOPS	sops	40	部署运维	english	SOPS	development-names	2026-09-17
+SPA	spa	40	前端框架	english	SPA	development-names	2026-09-17
+SPLADE	splade	40	数据检索	english	SPLADE	development-names	2026-09-17
+SPM	spm	40	桌面移动	english	SPM	development-names	2026-09-17
+SQ	sq	40	数据检索	english	SQ	development-names	2026-09-17
+SQL	sql	40	语言运行时	english	SQL	development-names	2026-09-17
+SQL Injection	sqlinjection	40	接口协议	english	SQL Injection	development-names	2026-09-17
+SQL Server	sqlserver	40	数据检索	english	SQL Server	development-names	2026-09-17
+SQLAlchemy	sqlalchemy	40	后端框架	english	SQLAlchemy	development-names	2026-09-17
+SQLFluff	sqlfluff	40	测试质量	english	SQLFluff	development-names	2026-09-17
+SQLite	sqlite	40	数据检索	english	SQLite	development-names	2026-09-17
+SQLite数据库	sqliteshujuku	30	中英开发表达	mixed	SQLite数据库	curated	2026-09-17
+SQLx	sqlx	40	后端框架	english	SQLx	development-names	2026-09-17
+SQL优化	sqlyouhua	30	中英开发表达	mixed	SQL优化	curated	2026-09-17
+SQL查询	sqlchaxun	30	中英开发表达	mixed	SQL查询	curated	2026-09-17
+SQL注入	sqlzhuru	30	中英开发表达	mixed	SQL注入	curated	2026-09-17
+SQL语句	sqlyuju	30	中英开发表达	mixed	SQL语句	curated	2026-09-17
+SQL迁移	sqlqianyi	30	中英开发表达	mixed	SQL迁移	curated	2026-09-17
+SSE	sse	40	前端框架	english	SSE	development-names	2026-09-17
+SSE连接	sselianjie	30	中英开发表达	mixed	SSE连接	curated	2026-09-17
+SSG	ssg	40	前端框架	english	SSG	development-names	2026-09-17
+SSL	ssl	40	接口协议	english	SSL	development-names	2026-09-17
+SSR	ssr	40	前端框架	english	SSR	development-names	2026-09-17
+SSRF	ssrf	40	接口协议	english	SSRF	development-names	2026-09-17
+STOMP	stomp	40	部署运维	english	STOMP	development-names	2026-09-17
+SVG	svg	40	前端框架	english	SVG	development-names	2026-09-17
+SWC	swc	40	前端框架	english	SWC	development-names	2026-09-17
+SWE-agent	sweagent	40	数据检索	english	SWE-agent	development-names	2026-09-17
+SWR	swr	40	前端框架	english	SWR	development-names	2026-09-17
+SaltStack	saltstack	40	部署运维	english	SaltStack	development-names	2026-09-17
+Sandbox	sandbox	40	编程助手	english	Sandbox	development-names	2026-09-17
+Sanic	sanic	40	后端框架	english	Sanic	development-names	2026-09-17
+Sass	sass	40	语言运行时	english	Sass	development-names	2026-09-17
+ScaNN	scann	40	数据检索	english	ScaNN	development-names	2026-09-17
+Scala	scala	40	语言运行时	english	Scala	development-names	2026-09-17
+Scoop	scoop	40	包管理构建	english	Scoop	development-names	2026-09-17
+ScyllaDB	scylladb	40	数据检索	english	ScyllaDB	development-names	2026-09-17
+SeaORM	seaorm	40	后端框架	english	SeaORM	development-names	2026-09-17
+Sealed Secrets	sealedsecrets	40	部署运维	english	Sealed Secrets	development-names	2026-09-17
+Selenium	selenium	40	测试质量	english	Selenium	development-names	2026-09-17
+SemVer	semver	40	版本协作	english	SemVer	development-names	2026-09-17
+Semantic Kernel	semantickernel	40	数据检索	english	Semantic Kernel	development-names	2026-09-17
+Semantic Release	semanticrelease	40	包管理构建	english	Semantic Release	development-names	2026-09-17
+Semantic Search	semanticsearch	40	编程助手	english	Semantic Search	development-names	2026-09-17
+Semantic Versioning	semanticversioning	40	版本协作	english	Semantic Versioning	development-names	2026-09-17
+Semgrep	semgrep	40	测试质量	english	Semgrep	development-names	2026-09-17
+Sendable	sendable	40	桌面移动	english	Sendable	development-names	2026-09-17
+Sentence Transformers	sentencetransformers	40	数据检索	english	Sentence Transformers	development-names	2026-09-17
+Sentry	sentry	40	部署运维	english	Sentry	development-names	2026-09-17
+Sequelize	sequelize	40	后端框架	english	Sequelize	development-names	2026-09-17
+Serde	serde	40	后端框架	english	Serde	development-names	2026-09-17
+Server Sent Events	serversentevents	40	接口协议	english	Server Sent Events	development-names	2026-09-17
+Service Worker	serviceworker	40	前端框架	english	Service Worker	development-names	2026-09-17
+SessionStorage	sessionstorage	40	前端框架	english	SessionStorage	development-names	2026-09-17
+Setuptools	setuptools	40	包管理构建	english	Setuptools	development-names	2026-09-17
+Shadow DOM	shadowdom	40	前端框架	english	Shadow DOM	development-names	2026-09-17
+SharedFlow	sharedflow	40	桌面移动	english	SharedFlow	development-names	2026-09-17
+Shell	shell	40	语言运行时	english	Shell	development-names	2026-09-17
+ShellCheck	shellcheck	40	测试质量	english	ShellCheck	development-names	2026-09-17
+Sidekiq	sidekiq	40	后端框架	english	Sidekiq	development-names	2026-09-17
+SigNoz	signoz	40	部署运维	english	SigNoz	development-names	2026-09-17
+SignalR	signalr	40	后端框架	english	SignalR	development-names	2026-09-17
+Sinatra	sinatra	40	后端框架	english	Sinatra	development-names	2026-09-17
+Sinon	sinon	40	测试质量	english	Sinon	development-names	2026-09-17
+Skill	skill	40	编程助手	english	Skill	development-names	2026-09-17
+Skills	skills	40	编程助手	english	Skills	development-names	2026-09-17
+Skopeo	skopeo	40	部署运维	english	Skopeo	development-names	2026-09-17
+Slate	slate	40	前端框架	english	Slate	development-names	2026-09-17
+Slim	slim	40	后端框架	english	Slim	development-names	2026-09-17
+Smolagents	smolagents	40	数据检索	english	Smolagents	development-names	2026-09-17
+Snap	snap	40	包管理构建	english	Snap	development-names	2026-09-17
+SnapshotTesting	snapshottesting	40	测试质量	english	SnapshotTesting	development-names	2026-09-17
+Snowflake	snowflake	40	数据检索	english	Snowflake	development-names	2026-09-17
+Snowflake ID	snowflakeid	40	接口协议	english	Snowflake ID	development-names	2026-09-17
+Snyk	snyk	40	测试质量	english	Snyk	development-names	2026-09-17
+Socket.IO	socketio	40	后端框架	english	Socket.IO	development-names	2026-09-17
+SolidJS	solidjs	40	前端框架	english	SolidJS	development-names	2026-09-17
+Solr	solr	40	数据检索	english	Solr	development-names	2026-09-17
+SonarCloud	sonarcloud	40	测试质量	english	SonarCloud	development-names	2026-09-17
+SonarQube	sonarqube	40	测试质量	english	SonarQube	development-names	2026-09-17
+Spark	spark	40	部署运维	english	Spark	development-names	2026-09-17
+Sparse Retrieval	sparseretrieval	40	数据检索	english	Sparse Retrieval	development-names	2026-09-17
+Spectral	spectral	40	测试质量	english	Spectral	development-names	2026-09-17
+Spring	spring	40	后端框架	english	Spring	development-names	2026-09-17
+Spring AI	springai	40	后端框架	english	Spring AI	development-names	2026-09-17
+Spring Batch	springbatch	40	后端框架	english	Spring Batch	development-names	2026-09-17
+Spring Boot	springboot	40	后端框架	english	Spring Boot	development-names	2026-09-17
+Spring Cloud	springcloud	40	后端框架	english	Spring Cloud	development-names	2026-09-17
+Spring Data	springdata	40	后端框架	english	Spring Data	development-names	2026-09-17
+Spring MVC	springmvc	40	后端框架	english	Spring MVC	development-names	2026-09-17
+Spring Security	springsecurity	40	后端框架	english	Spring Security	development-names	2026-09-17
+Spring WebFlux	springwebflux	40	后端框架	english	Spring WebFlux	development-names	2026-09-17
+Stagehand	stagehand	40	数据检索	english	Stagehand	development-names	2026-09-17
+StarRocks	starrocks	40	数据检索	english	StarRocks	development-names	2026-09-17
+Starlette	starlette	40	后端框架	english	Starlette	development-names	2026-09-17
+Startup Probe	startupprobe	40	接口协议	english	Startup Probe	development-names	2026-09-17
+StateFlow	stateflow	40	桌面移动	english	StateFlow	development-names	2026-09-17
+StoreKit	storekit	40	桌面移动	english	StoreKit	development-names	2026-09-17
+Storybook	storybook	40	前端框架	english	Storybook	development-names	2026-09-17
+Strapi	strapi	40	后端框架	english	Strapi	development-names	2026-09-17
+Structured Output	structuredoutput	40	编程助手	english	Structured Output	development-names	2026-09-17
+Stryker	stryker	40	测试质量	english	Stryker	development-names	2026-09-17
+Styled Components	styledcomponents	40	前端框架	english	Styled Components	development-names	2026-09-17
+Stylelint	stylelint	40	测试质量	english	Stylelint	development-names	2026-09-17
+Subagent	subagent	40	编程助手	english	Subagent	development-names	2026-09-17
+Subagents	subagents	40	编程助手	english	Subagents	development-names	2026-09-17
+Supabase	supabase	40	数据检索	english	Supabase	development-names	2026-09-17
+Svelte	svelte	40	前端框架	english	Svelte	development-names	2026-09-17
+SvelteKit	sveltekit	40	前端框架	english	SvelteKit	development-names	2026-09-17
+Swagger	swagger	40	接口协议	english	Swagger	development-names	2026-09-17
+Swift	swift	40	语言运行时	english	Swift	development-names	2026-09-17
+Swift Package Manager	swiftpackagemanager	40	桌面移动	english	Swift Package Manager	development-names	2026-09-17
+Swift Testing	swifttesting	40	测试质量	english	Swift Testing	development-names	2026-09-17
+SwiftData	swiftdata	40	桌面移动	english	SwiftData	development-names	2026-09-17
+SwiftUI	swiftui	40	桌面移动	english	SwiftUI	development-names	2026-09-17
+Swift协议	swiftxieyi	30	中英开发表达	mixed	Swift协议	curated	2026-09-17
+Swift并发	swiftbingfa	30	中英开发表达	mixed	Swift并发	curated	2026-09-17
+Swoole	swoole	40	后端框架	english	Swoole	development-names	2026-09-17
+Symfony	symfony	40	后端框架	english	Symfony	development-names	2026-09-17
+System Prompt	systemprompt	40	编程助手	english	System Prompt	development-names	2026-09-17
+TCP	tcp	40	接口协议	english	TCP	development-names	2026-09-17
+TDengine	tdengine	40	数据检索	english	TDengine	development-names	2026-09-17
+TLS	tls	40	接口协议	english	TLS	development-names	2026-09-17
+TLS握手	tlswoshou	30	中英开发表达	mixed	TLS握手	curated	2026-09-17
+TOML	toml	40	语言运行时	english	TOML	development-names	2026-09-17
+TOML配置	tomlpeizhi	30	中英开发表达	mixed	TOML配置	curated	2026-09-17
+TOTP	totp	40	接口协议	english	TOTP	development-names	2026-09-17
+TSF	tsf	40	桌面移动	english	TSF	development-names	2026-09-17
+TSV	tsv	40	语言运行时	english	TSV	development-names	2026-09-17
+Tailwind CSS	tailwindcss	40	前端框架	english	Tailwind CSS	development-names	2026-09-17
+Tamagui	tamagui	40	前端框架	english	Tamagui	development-names	2026-09-17
+TanStack Query	tanstackquery	40	前端框架	english	TanStack Query	development-names	2026-09-17
+TanStack Router	tanstackrouter	40	前端框架	english	TanStack Router	development-names	2026-09-17
+TanStack Table	tanstacktable	40	前端框架	english	TanStack Table	development-names	2026-09-17
+TanStack Virtual	tanstackvirtual	40	前端框架	english	TanStack Virtual	development-names	2026-09-17
+Tantivy	tantivy	40	数据检索	english	Tantivy	development-names	2026-09-17
+Tape	tape	40	测试质量	english	Tape	development-names	2026-09-17
+TaskGroup	taskgroup	40	桌面移动	english	TaskGroup	development-names	2026-09-17
+Taskfile.yml	taskfileyml	40	文件配置	english	Taskfile.yml	development-names	2026-09-17
+Tauri	tauri	40	前端框架	english	Tauri	development-names	2026-09-17
+TeamCity	teamcity	40	部署运维	english	TeamCity	development-names	2026-09-17
+Tekton	tekton	40	部署运维	english	Tekton	development-names	2026-09-17
+Tempo	tempo	40	部署运维	english	Tempo	development-names	2026-09-17
+Temporal	temporal	40	部署运维	english	Temporal	development-names	2026-09-17
+Tencent Cloud	tencentcloud	40	部署运维	english	Tencent Cloud	development-names	2026-09-17
+TensorRT LLM	tensorrtllm	40	数据检索	english	TensorRT LLM	development-names	2026-09-17
+Terraform	terraform	40	部署运维	english	Terraform	development-names	2026-09-17
+Tesseract	tesseract	40	数据检索	english	Tesseract	development-names	2026-09-17
+TestCafe	testcafe	40	测试质量	english	TestCafe	development-names	2026-09-17
+TestFlight	testflight	40	桌面移动	english	TestFlight	development-names	2026-09-17
+TestNG	testng	40	测试质量	english	TestNG	development-names	2026-09-17
+Testcontainers	testcontainers	40	测试质量	english	Testcontainers	development-names	2026-09-17
+Testify	testify	40	测试质量	english	Testify	development-names	2026-09-17
+Testing Library	testinglibrary	40	测试质量	english	Testing Library	development-names	2026-09-17
+Text Embeddings Inference	textembeddingsinference	40	数据检索	english	Text Embeddings Inference	development-names	2026-09-17
+ThinkPHP	thinkphp	40	后端框架	english	ThinkPHP	development-names	2026-09-17
+Thiserror	thiserror	40	后端框架	english	Thiserror	development-names	2026-09-17
+Three.js	threejs	40	前端框架	english	Three.js	development-names	2026-09-17
+TiDB	tidb	40	数据检索	english	TiDB	development-names	2026-09-17
+TigerGraph	tigergraph	40	数据检索	english	TigerGraph	development-names	2026-09-17
+Timeout	timeout	40	接口协议	english	Timeout	development-names	2026-09-17
+TimescaleDB	timescaledb	40	数据检索	english	TimescaleDB	development-names	2026-09-17
+Tiptap	tiptap	40	前端框架	english	Tiptap	development-names	2026-09-17
+Token Budget	tokenbudget	40	编程助手	english	Token Budget	development-names	2026-09-17
+Token用量	tokenyongliang	30	中英开发表达	mixed	Token用量	curated	2026-09-17
+Token预算	tokenyusuan	30	中英开发表达	mixed	Token预算	curated	2026-09-17
+Tokio	tokio	40	后端框架	english	Tokio	development-names	2026-09-17
+Tomcat	tomcat	40	后端框架	english	Tomcat	development-names	2026-09-17
+Tonic	tonic	40	后端框架	english	Tonic	development-names	2026-09-17
+Tool Call	toolcall	40	编程助手	english	Tool Call	development-names	2026-09-17
+Tool Use	tooluse	40	编程助手	english	Tool Use	development-names	2026-09-17
+TopK	topk	40	数据检索	english	TopK	development-names	2026-09-17
+TopP	topp	40	数据检索	english	TopP	development-names	2026-09-17
+Tornado	tornado	40	后端框架	english	Tornado	development-names	2026-09-17
+Tower	tower	40	后端框架	english	Tower	development-names	2026-09-17
+Tox	tox	40	测试质量	english	Tox	development-names	2026-09-17
+Trace ID	traceid	40	接口协议	english	Trace ID	development-names	2026-09-17
+Tracing	tracing	40	后端框架	english	Tracing	development-names	2026-09-17
+Traefik	traefik	40	部署运维	english	Traefik	development-names	2026-09-17
+Travis CI	travisci	40	部署运维	english	Travis CI	development-names	2026-09-17
+Tree-sitter	treesitter	40	编程助手	english	Tree-sitter	development-names	2026-09-17
+Trino	trino	40	部署运维	english	Trino	development-names	2026-09-17
+Triton Inference Server	tritoninferenceserver	40	数据检索	english	Triton Inference Server	development-names	2026-09-17
+Trivy	trivy	40	测试质量	english	Trivy	development-names	2026-09-17
+Trunk Based Development	trunkbaseddevelopment	40	版本协作	english	Trunk Based Development	development-names	2026-09-17
+TurboModules	turbomodules	40	桌面移动	english	TurboModules	development-names	2026-09-17
+Turbopack	turbopack	40	前端框架	english	Turbopack	development-names	2026-09-17
+Turborepo	turborepo	40	包管理构建	english	Turborepo	development-names	2026-09-17
+Twine	twine	40	包管理构建	english	Twine	development-names	2026-09-17
+Tyk	tyk	40	部署运维	english	Tyk	development-names	2026-09-17
+TypeORM	typeorm	40	后端框架	english	TypeORM	development-names	2026-09-17
+TypeScript	typescript	40	语言运行时	english	TypeScript	development-names	2026-09-17
+TypeScript接口	typescriptjiekou	30	中英开发表达	mixed	TypeScript接口	curated	2026-09-17
+TypeScript类型	typescriptleixing	30	中英开发表达	mixed	TypeScript类型	curated	2026-09-17
+Typesense	typesense	40	数据检索	english	Typesense	development-names	2026-09-17
+UDP	udp	40	接口协议	english	UDP	development-names	2026-09-17
+UIKit	uikit	40	桌面移动	english	UIKit	development-names	2026-09-17
+UI测试	uiceshi	30	中英开发表达	mixed	UI测试	curated	2026-09-17
+UI组件	uizujian	30	中英开发表达	mixed	UI组件	curated	2026-09-17
+ULID	ulid	40	接口协议	english	ULID	development-names	2026-09-17
+URLSession	urlsession	40	桌面移动	english	URLSession	development-names	2026-09-17
+URQL	urql	40	接口协议	english	URQL	development-names	2026-09-17
+USearch	usearch	40	数据检索	english	USearch	development-names	2026-09-17
+UUID	uuid	40	接口协议	english	UUID	development-names	2026-09-17
+UX设计	uxsheji	30	中英开发表达	mixed	UX设计	curated	2026-09-17
+Undertow	undertow	40	后端框架	english	Undertow	development-names	2026-09-17
+UnoCSS	unocss	40	前端框架	english	UnoCSS	development-names	2026-09-17
+Unstructured	unstructured	40	数据检索	english	Unstructured	development-names	2026-09-17
+Uptime Kuma	uptimekuma	40	部署运维	english	Uptime Kuma	development-names	2026-09-17
+Uptrace	uptrace	40	部署运维	english	Uptrace	development-names	2026-09-17
+UserDefaults	userdefaults	40	桌面移动	english	UserDefaults	development-names	2026-09-17
+Uvicorn	uvicorn	40	后端框架	english	Uvicorn	development-names	2026-09-17
+V8	v8	40	语言运行时	english	V8	development-names	2026-09-17
+Vagrant	vagrant	40	部署运维	english	Vagrant	development-names	2026-09-17
+Vale	vale	40	测试质量	english	Vale	development-names	2026-09-17
+Valkey	valkey	40	数据检索	english	Valkey	development-names	2026-09-17
+Valtio	valtio	40	前端框架	english	Valtio	development-names	2026-09-17
+Vanilla Extract	vanillaextract	40	前端框架	english	Vanilla Extract	development-names	2026-09-17
+Vault	vault	40	部署运维	english	Vault	development-names	2026-09-17
+Vector	vector	40	部署运维	english	Vector	development-names	2026-09-17
+Vector Database	vectordatabase	40	数据检索	english	Vector Database	development-names	2026-09-17
+Vector Search	vectorsearch	40	数据检索	english	Vector Search	development-names	2026-09-17
+Vegeta	vegeta	40	测试质量	english	Vegeta	development-names	2026-09-17
+Vercel	vercel	40	部署运维	english	Vercel	development-names	2026-09-17
+Vert.x	vertx	40	后端框架	english	Vert.x	development-names	2026-09-17
+Vespa	vespa	40	数据检索	english	Vespa	development-names	2026-09-17
+Vibe Coding	vibecoding	40	编程助手	english	Vibe Coding	development-names	2026-09-17
+VictoriaMetrics	victoriametrics	40	数据检索	english	VictoriaMetrics	development-names	2026-09-17
+ViewModel	viewmodel	40	桌面移动	english	ViewModel	development-names	2026-09-17
+Vision	vision	40	桌面移动	english	Vision	development-names	2026-09-17
+Vite	vite	40	前端框架	english	Vite	development-names	2026-09-17
+Vitest	vitest	40	前端框架	english	Vitest	development-names	2026-09-17
+Volta	volta	40	包管理构建	english	Volta	development-names	2026-09-17
+Voyager	voyager	40	数据检索	english	Voyager	development-names	2026-09-17
+Vue	vue	40	前端框架	english	Vue	development-names	2026-09-17
+Vue Router	vuerouter	40	前端框架	english	Vue Router	development-names	2026-09-17
+Vue Test Utils	vuetestutils	40	测试质量	english	Vue Test Utils	development-names	2026-09-17
+Vue.js	vuejs	40	前端框架	english	Vue.js	development-names	2026-09-17
+Vuetify	vuetify	40	前端框架	english	Vuetify	development-names	2026-09-17
+Vuex	vuex	40	前端框架	english	Vuex	development-names	2026-09-17
+Vue指令	vuezhiling	30	中英开发表达	mixed	Vue指令	curated	2026-09-17
+Vue组件	vuezujian	30	中英开发表达	mixed	Vue组件	curated	2026-09-17
+Vue路由	vueluyou	30	中英开发表达	mixed	Vue路由	curated	2026-09-17
+WASI	wasi	40	语言运行时	english	WASI	development-names	2026-09-17
+WKWebView	wkwebview	40	桌面移动	english	WKWebView	development-names	2026-09-17
+WPF	wpf	40	桌面移动	english	WPF	development-names	2026-09-17
+WSDL	wsdl	40	接口协议	english	WSDL	development-names	2026-09-17
+Wails	wails	40	前端框架	english	Wails	development-names	2026-09-17
+Warp	warp	40	后端框架	english	Warp	development-names	2026-09-17
+Wasm	wasm	40	语言运行时	english	Wasm	development-names	2026-09-17
+Web Components	webcomponents	40	前端框架	english	Web Components	development-names	2026-09-17
+Web Workers	webworkers	40	前端框架	english	Web Workers	development-names	2026-09-17
+WebAssembly	webassembly	40	语言运行时	english	WebAssembly	development-names	2026-09-17
+WebAuthn	webauthn	40	接口协议	english	WebAuthn	development-names	2026-09-17
+WebGL	webgl	40	前端框架	english	WebGL	development-names	2026-09-17
+WebGPU	webgpu	40	前端框架	english	WebGPU	development-names	2026-09-17
+WebKit	webkit	40	桌面移动	english	WebKit	development-names	2026-09-17
+WebPageTest	webpagetest	40	测试质量	english	WebPageTest	development-names	2026-09-17
+WebRTC	webrtc	40	前端框架	english	WebRTC	development-names	2026-09-17
+WebSocket	websocket	40	前端框架	english	WebSocket	development-names	2026-09-17
+WebSocket API	websocketapi	40	接口协议	english	WebSocket API	development-names	2026-09-17
+WebSocket连接	websocketlianjie	30	中英开发表达	mixed	WebSocket连接	curated	2026-09-17
+WebdriverIO	webdriverio	40	测试质量	english	WebdriverIO	development-names	2026-09-17
+Webhook	webhook	40	接口协议	english	Webhook	development-names	2026-09-17
+Webhooks	webhooks	40	接口协议	english	Webhooks	development-names	2026-09-17
+Webpack	webpack	40	前端框架	english	Webpack	development-names	2026-09-17
+Wheel	wheel	40	包管理构建	english	Wheel	development-names	2026-09-17
+WhisperX	whisperx	40	数据检索	english	WhisperX	development-names	2026-09-17
+WidgetKit	widgetkit	40	桌面移动	english	WidgetKit	development-names	2026-09-17
+WinForms	winforms	40	桌面移动	english	WinForms	development-names	2026-09-17
+WinUI	winui	40	桌面移动	english	WinUI	development-names	2026-09-17
+Windi CSS	windicss	40	前端框架	english	Windi CSS	development-names	2026-09-17
+Windsurf	windsurf	40	编程助手	english	Windsurf	development-names	2026-09-17
+WireMock	wiremock	40	测试质量	english	WireMock	development-names	2026-09-17
+Woodpecker	woodpecker	40	部署运维	english	Woodpecker	development-names	2026-09-17
+WorkManager	workmanager	40	桌面移动	english	WorkManager	development-names	2026-09-17
+Workspace	workspace	40	编程助手	english	Workspace	development-names	2026-09-17
+Worktree	worktree	40	编程助手	english	Worktree	development-names	2026-09-17
+XCTest	xctest	40	测试质量	english	XCTest	development-names	2026-09-17
+XML	xml	40	语言运行时	english	XML	development-names	2026-09-17
+XML-RPC	xmlrpc	40	接口协议	english	XML-RPC	development-names	2026-09-17
+XPC	xpc	40	桌面移动	english	XPC	development-names	2026-09-17
+XSS	xss	40	接口协议	english	XSS	development-names	2026-09-17
+XState	xstate	40	前端框架	english	XState	development-names	2026-09-17
+Xcode	xcode	40	桌面移动	english	Xcode	development-names	2026-09-17
+YAML	yaml	40	语言运行时	english	YAML	development-names	2026-09-17
+YAML配置	yamlpeizhi	30	中英开发表达	mixed	YAML配置	curated	2026-09-17
+Yarn	yarn	40	包管理构建	english	Yarn	development-names	2026-09-17
+YugabyteDB	yugabytedb	40	数据检索	english	YugabyteDB	development-names	2026-09-17
+Zabbix	zabbix	40	部署运维	english	Zabbix	development-names	2026-09-17
+ZeroMQ	zeromq	40	部署运维	english	ZeroMQ	development-names	2026-09-17
+Zig	zig	40	语言运行时	english	Zig	development-names	2026-09-17
+Zilliz	zilliz	40	数据检索	english	Zilliz	development-names	2026-09-17
+Zipkin	zipkin	40	部署运维	english	Zipkin	development-names	2026-09-17
+ZooKeeper	zookeeper	40	数据检索	english	ZooKeeper	development-names	2026-09-17
+Zsh	zsh	40	语言运行时	english	Zsh	development-names	2026-09-17
+Zustand	zustand	40	前端框架	english	Zustand	development-names	2026-09-17
+Zypper	zypper	40	包管理构建	english	Zypper	development-names	2026-09-17
+aiohttp	aiohttp	40	后端框架	english	aiohttp	development-names	2026-09-17
+alembic.ini	alembicini	40	文件配置	english	alembic.ini	development-names	2026-09-17
+apk	apk	40	包管理构建	english	apk	development-names	2026-09-17
+application.properties	applicationproperties	40	文件配置	english	application.properties	development-names	2026-09-17
+application.yml	applicationyml	40	文件配置	english	application.yml	development-names	2026-09-17
+appsettings.Development.json	appsettingsdevelopmentjson	40	文件配置	english	appsettings.Development.json	development-names	2026-09-17
+appsettings.json	appsettingsjson	40	文件配置	english	appsettings.json	development-names	2026-09-17
+apt	apt	40	包管理构建	english	apt	development-names	2026-09-17
+apt-get	aptget	40	包管理构建	english	apt-get	development-names	2026-09-17
+asdf	asdf	40	包管理构建	english	asdf	development-names	2026-09-17
+astro.config.mjs	astroconfigmjs	40	文件配置	english	astro.config.mjs	development-names	2026-09-17
+async-std	asyncstd	40	后端框架	english	async-std	development-names	2026-09-17
+biome.json	biomejson	40	文件配置	english	biome.json	development-names	2026-09-17
+bisect	bisect	40	版本协作	english	bisect	development-names	2026-09-17
+blame	blame	40	版本协作	english	blame	development-names	2026-09-17
+bootstrap.yml	bootstrapyml	40	文件配置	english	bootstrap.yml	development-names	2026-09-17
+branch	branch	40	版本协作	english	branch	development-names	2026-09-17
+build.gradle	buildgradle	40	文件配置	english	build.gradle	development-names	2026-09-17
+build.gradle.kts	buildgradlekts	40	文件配置	english	build.gradle.kts	development-names	2026-09-17
+build.rs	buildrs	40	文件配置	english	build.rs	development-names	2026-09-17
+bun.lock	bunlock	40	文件配置	english	bun.lock	development-names	2026-09-17
+bun.lockb	bunlockb	40	文件配置	english	bun.lockb	development-names	2026-09-17
+bunx	bunx	40	包管理构建	english	bunx	development-names	2026-09-17
+cargo-audit	cargoaudit	40	包管理构建	english	cargo-audit	development-names	2026-09-17
+cargo-deny	cargodeny	40	包管理构建	english	cargo-deny	development-names	2026-09-17
+cargo-edit	cargoedit	40	包管理构建	english	cargo-edit	development-names	2026-09-17
+cargo-llvm-cov	cargollvmcov	40	包管理构建	english	cargo-llvm-cov	development-names	2026-09-17
+cargo-nextest	cargonextest	40	包管理构建	english	cargo-nextest	development-names	2026-09-17
+cargo-tarpaulin	cargotarpaulin	40	包管理构建	english	cargo-tarpaulin	development-names	2026-09-17
+cargo-watch	cargowatch	40	包管理构建	english	cargo-watch	development-names	2026-09-17
+ccache	ccache	40	包管理构建	english	ccache	development-names	2026-09-17
+changelog	changelog	40	版本协作	english	changelog	development-names	2026-09-17
+checkout	checkout	40	版本协作	english	checkout	development-names	2026-09-17
+cherry-pick	cherrypick	40	版本协作	english	cherry-pick	development-names	2026-09-17
+clippy.toml	clippytoml	40	文件配置	english	clippy.toml	development-names	2026-09-17
+clone	clone	40	版本协作	english	clone	development-names	2026-09-17
+commit	commit	40	版本协作	english	commit	development-names	2026-09-17
+components.json	componentsjson	40	文件配置	english	components.json	development-names	2026-09-17
+compose.yaml	composeyaml	40	文件配置	english	compose.yaml	development-names	2026-09-17
+composer.json	composerjson	40	文件配置	english	composer.json	development-names	2026-09-17
+composer.lock	composerlock	40	文件配置	english	composer.lock	development-names	2026-09-17
+config.json	configjson	40	文件配置	english	config.json	development-names	2026-09-17
+config.toml	configtoml	40	文件配置	english	config.toml	development-names	2026-09-17
+config.yaml	configyaml	40	文件配置	english	config.yaml	development-names	2026-09-17
+conftest.py	conftestpy	40	文件配置	english	conftest.py	development-names	2026-09-17
+containerd	containerd	40	部署运维	english	containerd	development-names	2026-09-17
+dbt	dbt	40	部署运维	english	dbt	development-names	2026-09-17
+default.nix	defaultnix	40	文件配置	english	default.nix	development-names	2026-09-17
+develop	develop	40	版本协作	english	develop	development-names	2026-09-17
+diff	diff	40	版本协作	english	diff	development-names	2026-09-17
+distcc	distcc	40	包管理构建	english	distcc	development-names	2026-09-17
+dnf	dnf	40	包管理构建	english	dnf	development-names	2026-09-17
+docker-compose.yml	dockercomposeyml	40	文件配置	english	docker-compose.yml	development-names	2026-09-17
+dpkg	dpkg	40	包管理构建	english	dpkg	development-names	2026-09-17
+drizzle.config.ts	drizzleconfigts	40	文件配置	english	drizzle.config.ts	development-names	2026-09-17
+electron-builder.yml	electronbuilderyml	40	文件配置	english	electron-builder.yml	development-names	2026-09-17
+esbuild	esbuild	40	前端框架	english	esbuild	development-names	2026-09-17
+eslint.config.js	eslintconfigjs	40	文件配置	english	eslint.config.js	development-names	2026-09-17
+eslint.config.mjs	eslintconfigmjs	40	文件配置	english	eslint.config.mjs	development-names	2026-09-17
+etcd	etcd	40	数据检索	english	etcd	development-names	2026-09-17
+extensions.json	extensionsjson	40	文件配置	english	extensions.json	development-names	2026-09-17
+fast-forward	fastforward	40	版本协作	english	fast-forward	development-names	2026-09-17
+feature	feature	40	版本协作	english	feature	development-names	2026-09-17
+fetch	fetch	40	版本协作	english	fetch	development-names	2026-09-17
+fixup	fixup	40	版本协作	english	fixup	development-names	2026-09-17
+flake.lock	flakelock	40	文件配置	english	flake.lock	development-names	2026-09-17
+flake.nix	flakenix	40	文件配置	english	flake.nix	development-names	2026-09-17
+fly.toml	flytoml	40	文件配置	english	fly.toml	development-names	2026-09-17
+fnm	fnm	40	包管理构建	english	fnm	development-names	2026-09-17
+gRPC	grpc	40	接口协议	english	gRPC	development-names	2026-09-17
+gRPC服务	grpcfuwu	30	中英开发表达	mixed	gRPC服务	curated	2026-09-17
+global.json	globaljson	40	文件配置	english	global.json	development-names	2026-09-17
+go.mod	gomod	40	文件配置	english	go.mod	development-names	2026-09-17
+go.sum	gosum	40	文件配置	english	go.sum	development-names	2026-09-17
+go.work.sum	goworksum	40	文件配置	english	go.work.sum	development-names	2026-09-17
+gradle.properties	gradleproperties	40	文件配置	english	gradle.properties	development-names	2026-09-17
+gradlew	gradlew	40	文件配置	english	gradlew	development-names	2026-09-17
+gradlew.bat	gradlewbat	40	文件配置	english	gradlew.bat	development-names	2026-09-17
+hey	hey	40	测试质量	english	hey	development-names	2026-09-17
+hotfix	hotfix	40	版本协作	english	hotfix	development-names	2026-09-17
+http4s	http4s	40	后端框架	english	http4s	development-names	2026-09-17
+isort	isort	40	包管理构建	english	isort	development-names	2026-09-17
+jQuery	jquery	40	前端框架	english	jQuery	development-names	2026-09-17
+jsconfig.json	jsconfigjson	40	文件配置	english	jsconfig.json	development-names	2026-09-17
+k6	k6	40	测试质量	english	k6	development-names	2026-09-17
+kubectl	kubectl	40	部署运维	english	kubectl	development-names	2026-09-17
+kustomization.yaml	kustomizationyaml	40	文件配置	english	kustomization.yaml	development-names	2026-09-17
+launch.json	launchjson	40	文件配置	english	launch.json	development-names	2026-09-17
+lib.rs	librs	40	文件配置	english	lib.rs	development-names	2026-09-17
+lint-staged	lintstaged	40	测试质量	english	lint-staged	development-names	2026-09-17
+llama-cpp-python	llamacpppython	40	数据检索	english	llama-cpp-python	development-names	2026-09-17
+llama.cpp	llamacpp	40	数据检索	english	llama.cpp	development-names	2026-09-17
+log4j2.xml	log4j2xml	40	文件配置	english	log4j2.xml	development-names	2026-09-17
+logback.xml	logbackxml	40	文件配置	english	logback.xml	development-names	2026-09-17
+main	main	40	版本协作	english	main	development-names	2026-09-17
+main.rs	mainrs	40	文件配置	english	main.rs	development-names	2026-09-17
+manage.py	managepy	40	文件配置	english	manage.py	development-names	2026-09-17
+manifest.json	manifestjson	40	文件配置	english	manifest.json	development-names	2026-09-17
+master	master	40	版本协作	english	master	development-names	2026-09-17
+mcp.json	mcpjson	40	文件配置	english	mcp.json	development-names	2026-09-17
+merge	merge	40	版本协作	english	merge	development-names	2026-09-17
+mise	mise	40	包管理构建	english	mise	development-names	2026-09-17
+mise.toml	misetoml	40	文件配置	english	mise.toml	development-names	2026-09-17
+mypy.ini	mypyini	40	文件配置	english	mypy.ini	development-names	2026-09-17
+napi-rs	napirs	40	语言运行时	english	napi-rs	development-names	2026-09-17
+netlify.toml	netlifytoml	40	文件配置	english	netlify.toml	development-names	2026-09-17
+next.config.ts	nextconfigts	40	文件配置	english	next.config.ts	development-names	2026-09-17
+npm	npm	40	包管理构建	english	npm	development-names	2026-09-17
+npx	npx	40	包管理构建	english	npx	development-names	2026-09-17
+nuxt.config.ts	nuxtconfigts	40	文件配置	english	nuxt.config.ts	development-names	2026-09-17
+nvm	nvm	40	包管理构建	english	nvm	development-names	2026-09-17
+openapi.yaml	openapiyaml	40	文件配置	english	openapi.yaml	development-names	2026-09-17
+origin	origin	40	版本协作	english	origin	development-names	2026-09-17
+package-lock.json	packagelockjson	40	文件配置	english	package-lock.json	development-names	2026-09-17
+package.json	packagejson	40	文件配置	english	package.json	development-names	2026-09-17
+pacman	pacman	40	包管理构建	english	pacman	development-names	2026-09-17
+patch	patch	40	版本协作	english	patch	development-names	2026-09-17
+pdfplumber	pdfplumber	40	数据检索	english	pdfplumber	development-names	2026-09-17
+pgvecto.rs	pgvectors	40	数据检索	english	pgvecto.rs	development-names	2026-09-17
+pgvector	pgvector	40	数据检索	english	pgvector	development-names	2026-09-17
+pgvectorscale	pgvectorscale	40	数据检索	english	pgvectorscale	development-names	2026-09-17
+pip	pip	40	包管理构建	english	pip	development-names	2026-09-17
+pipx	pipx	40	包管理构建	english	pipx	development-names	2026-09-17
+pnpm	pnpm	40	包管理构建	english	pnpm	development-names	2026-09-17
+pnpm-lock.yaml	pnpmlockyaml	40	文件配置	english	pnpm-lock.yaml	development-names	2026-09-17
+pnpm-workspace.yaml	pnpmworkspaceyaml	40	文件配置	english	pnpm-workspace.yaml	development-names	2026-09-17
+pnpx	pnpx	40	包管理构建	english	pnpx	development-names	2026-09-17
+poetry.lock	poetrylock	40	文件配置	english	poetry.lock	development-names	2026-09-17
+pom.xml	pomxml	40	文件配置	english	pom.xml	development-names	2026-09-17
+postcss.config.js	postcssconfigjs	40	文件配置	english	postcss.config.js	development-names	2026-09-17
+pre-commit	precommit	40	测试质量	english	pre-commit	development-names	2026-09-17
+pull	pull	40	版本协作	english	pull	development-names	2026-09-17
+push	push	40	版本协作	english	push	development-names	2026-09-17
+pyenv	pyenv	40	包管理构建	english	pyenv	development-names	2026-09-17
+pyproject.toml	pyprojecttoml	40	文件配置	english	pyproject.toml	development-names	2026-09-17
+pytest	pytest	40	测试质量	english	pytest	development-names	2026-09-17
+pytest-cov	pytestcov	40	测试质量	english	pytest-cov	development-names	2026-09-17
+pytest-xdist	pytestxdist	40	测试质量	english	pytest-xdist	development-names	2026-09-17
+pytest.ini	pytestini	40	文件配置	english	pytest.ini	development-names	2026-09-17
+rebase	rebase	40	版本协作	english	rebase	development-names	2026-09-17
+reflog	reflog	40	版本协作	english	reflog	development-names	2026-09-17
+release	release	40	版本协作	english	release	development-names	2026-09-17
+remote	remote	40	版本协作	english	remote	development-names	2026-09-17
+render.yaml	renderyaml	40	文件配置	english	render.yaml	development-names	2026-09-17
+requirements-dev.txt	requirementsdevtxt	40	文件配置	english	requirements-dev.txt	development-names	2026-09-17
+requirements.txt	requirementstxt	40	文件配置	english	requirements.txt	development-names	2026-09-17
+rollup.config.js	rollupconfigjs	40	文件配置	english	rollup.config.js	development-names	2026-09-17
+rpm	rpm	40	包管理构建	english	rpm	development-names	2026-09-17
+ruff.toml	rufftoml	40	文件配置	english	ruff.toml	development-names	2026-09-17
+runc	runc	40	部署运维	english	runc	development-names	2026-09-17
+rust-toolchain.toml	rusttoolchaintoml	40	文件配置	english	rust-toolchain.toml	development-names	2026-09-17
+rustc	rustc	40	包管理构建	english	rustc	development-names	2026-09-17
+rustfmt	rustfmt	40	包管理构建	english	rustfmt	development-names	2026-09-17
+rustfmt.toml	rustfmttoml	40	文件配置	english	rustfmt.toml	development-names	2026-09-17
+rustup	rustup	40	包管理构建	english	rustup	development-names	2026-09-17
+sccache	sccache	40	包管理构建	english	sccache	development-names	2026-09-17
+schema.prisma	schemaprisma	40	文件配置	english	schema.prisma	development-names	2026-09-17
+settings.gradle	settingsgradle	40	文件配置	english	settings.gradle	development-names	2026-09-17
+settings.gradle.kts	settingsgradlekts	40	文件配置	english	settings.gradle.kts	development-names	2026-09-17
+settings.json	settingsjson	40	文件配置	english	settings.json	development-names	2026-09-17
+setup.cfg	setupcfg	40	文件配置	english	setup.cfg	development-names	2026-09-17
+setup.py	setuppy	40	文件配置	english	setup.py	development-names	2026-09-17
+shadcn/ui	shadcnui	40	前端框架	english	shadcn/ui	development-names	2026-09-17
+shell.nix	shellnix	40	文件配置	english	shell.nix	development-names	2026-09-17
+sqlc	sqlc	40	后端框架	english	sqlc	development-names	2026-09-17
+squash	squash	40	版本协作	english	squash	development-names	2026-09-17
+stash	stash	40	版本协作	english	stash	development-names	2026-09-17
+submodule	submodule	40	版本协作	english	submodule	development-names	2026-09-17
+subtree	subtree	40	版本协作	english	subtree	development-names	2026-09-17
+svelte.config.js	svelteconfigjs	40	文件配置	english	svelte.config.js	development-names	2026-09-17
+swagger.json	swaggerjson	40	文件配置	english	swagger.json	development-names	2026-09-17
+tRPC	trpc	40	后端框架	english	tRPC	development-names	2026-09-17
+tag	tag	40	版本协作	english	tag	development-names	2026-09-17
+tailwind.config.js	tailwindconfigjs	40	文件配置	english	tailwind.config.js	development-names	2026-09-17
+tasks.json	tasksjson	40	文件配置	english	tasks.json	development-names	2026-09-17
+tauri.conf.json	tauriconfjson	40	文件配置	english	tauri.conf.json	development-names	2026-09-17
+tox.ini	toxini	40	文件配置	english	tox.ini	development-names	2026-09-17
+tsconfig.json	tsconfigjson	40	文件配置	english	tsconfig.json	development-names	2026-09-17
+unittest	unittest	40	测试质量	english	unittest	development-names	2026-09-17
+upstream	upstream	40	版本协作	english	upstream	development-names	2026-09-17
+uv	uv	40	包管理构建	english	uv	development-names	2026-09-17
+uv.lock	uvlock	40	文件配置	english	uv.lock	development-names	2026-09-17
+values.yaml	valuesyaml	40	文件配置	english	values.yaml	development-names	2026-09-17
+vcpkg	vcpkg	40	包管理构建	english	vcpkg	development-names	2026-09-17
+venv	venv	40	包管理构建	english	venv	development-names	2026-09-17
+vercel.json	verceljson	40	文件配置	english	vercel.json	development-names	2026-09-17
+virtualenv	virtualenv	40	包管理构建	english	virtualenv	development-names	2026-09-17
+vite.config.ts	viteconfigts	40	文件配置	english	vite.config.ts	development-names	2026-09-17
+vitest.config.ts	vitestconfigts	40	文件配置	english	vitest.config.ts	development-names	2026-09-17
+wasm-bindgen	wasmbindgen	40	语言运行时	english	wasm-bindgen	development-names	2026-09-17
+webpack.config.js	webpackconfigjs	40	文件配置	english	webpack.config.js	development-names	2026-09-17
+winget	winget	40	包管理构建	english	winget	development-names	2026-09-17
+wrangler.toml	wranglertoml	40	文件配置	english	wrangler.toml	development-names	2026-09-17
+wrk	wrk	40	测试质量	english	wrk	development-names	2026-09-17
+xUnit	xunit	40	测试质量	english	xUnit	development-names	2026-09-17
+yarn.lock	yarnlock	40	文件配置	english	yarn.lock	development-names	2026-09-17
+yum	yum	40	包管理构建	english	yum	development-names	2026-09-17
+向量TopK	xiangliangtopk	30	中英开发表达	mixed	向量TopK	curated	2026-09-17
+go.work	gowork	40	文件配置	english	go.work	development-names	2026-09-17

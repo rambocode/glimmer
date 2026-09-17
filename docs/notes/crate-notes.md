@@ -154,7 +154,7 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
   壳每次 `push` 后先 `take_auto_commit`）/ 日志级别 `log_level`（缺省 info 不含敲的内容，debug 逐键记，热切换）/ 输入日志 `input_log`；
   `[shortcut]` 模式键 v / u、`question_mark`（缺省关，开了空缓冲区敲 `?` 进问字）、上屏第一 / 第二个译词的修饰键 `translation` / `translation_second`、删候选 `delete_candidate`（缺省 shift，用户词整删、词库词清学习）、翻译选中文字 `translate_selection`、macOS 中英文切换 `mode_switch`（缺省 `shift` 单击，也支持旧版修饰键加字母，不能与翻译键冲突）；
   `[apps] english_candidates_off` 按 bundle identifier 列出英文模式不给候选的应用（缺省终端 / 编辑器 / IDE，`*` 前缀匹配）；
-  `[dictionaries] domains` 打开随包的领域词库（`Resources/dicts/` 12 本（含 AI 与人工智能），缺省只开 `idioms`），`disabled` 关掉用户目录 `dicts/` 里的某本导入词库；
+  `[dictionaries] domains` 打开随包的领域词库（`Resources/dicts/` 12 本（含 AI 与软件开发），缺省只开 `idioms`），`disabled` 关掉用户目录 `dicts/` 里的某本导入词库；
   偏好设置「词库」页随包的可开关、导入的可开关 / 移除，可导入 TSV / Rime yaml / .qj。
 - 系统文本替换（系统设置「键盘 → 文本替换」）：`host/config/text_replacements.rs` 从 `NSUserDefaults` 全局域读 `NSUserDictionaryReplacementItems`
   （每条 `{ on, replace, with }`），激活输入法时重读，变了就经 Core `merge_replacements` 并进配置里的自定义短语再 `set_custom_phrases`；
@@ -216,7 +216,7 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
 
 产品数据的生成工具，输出到 `data/generated/`（gitignore）。
 
-- `ai`：独立 AI 领域词库，从 `assets/lexicon/ai/{terms,names}.tsv` 校验并生成 `dicts/ai.tsv` / `ai.qj` 与 `ai-audit.tsv`；`--exclude` 按主词库排除已有词读音，`--corpus` 按真实正文出现次数辅助权重（封顶 200，人工权重分列保留）。初版 2,723 中文术语、205 名称/缩写/混合词；默认关闭，配置 `[dictionaries] domains` 加 `ai`。英文名称使用专用键 `@claudeopus5`，由 Core 抽取，避免与拼音重复。来源与流程见 [AI 领域词库](../design/ai-dictionary.md)。
+- `ai`：AI 与软件开发领域词库，从 `assets/lexicon/ai/{terms,names}.tsv` 和 `domains/*.tsv` 校验生成 `dicts/ai.tsv` / `ai.qj`、`ai-audit.tsv`、`ai-coverage.tsv`；8,279 源条目，主词库去重后 8,179 条。`--exclude` 只排除必选主词库，`--corpus` 同时给 `corpus.txt` 和 `development.txt`，人工权重与真实次数分列，英文按标识符边界计数。`alias` 支持 `C++/@cpp`，`mixed` 支持 `Git分支/@gitfenzhi`，构建拒绝同码不同词。Core 统一开关，英文补全个人选择优先、领域次之；配置 `domains` 仍用 `ai`。见 [设计](../design/ai-dictionary.md)。
 
 - `lexicon`：从 `assets/lexicon/`（自建词库源：规范字 + 常用词 + THUOCL 领域词）加 Unihan 读音（`data/unihan/Unihan_Readings.txt`）、LLM 多音字标注（`gloss-gen pinyin`，
   结果 `data/generated/pinyin-llm.jsonl`，不进 git）、语料词频（`lm-unigram.tsv`）建基础词库 `dict.tsv`（8.7 万条），并把 THUOCL 领域词按语料次数 < 50 拆成

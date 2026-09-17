@@ -3,6 +3,7 @@
 mod cloud;
 mod correction;
 mod custom;
+mod domain_alias;
 mod emoji;
 mod english;
 mod learning;

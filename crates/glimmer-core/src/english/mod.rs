@@ -20,6 +20,18 @@ pub fn suggest(
     weight: impl Fn(&str) -> u32,
     limit: usize,
 ) -> Vec<String> {
+    suggest_with_domain(lists, None, typed, weight, limit)
+}
+
+/// 开启领域词库时，补全仍先按个人选择次数排序，再优先领域名称；
+/// 精确匹配始终在补全前，拼错纠正仍在最后，不改变未开启领域词库时的排序。
+pub(crate) fn suggest_with_domain(
+    lists: &[&WordList],
+    domain: Option<&WordList>,
+    typed: &str,
+    weight: impl Fn(&str) -> u32,
+    limit: usize,
+) -> Vec<String> {
     let code = typed.to_ascii_lowercase();
     if code.is_empty() || limit == 0 {
         return Vec::new();
@@ -28,14 +40,15 @@ pub fn suggest(
     if let Some(word) = lists.iter().find_map(|words| words.get(&code)) {
         result.push(adapt_case(word, typed));
     }
-    let ranked = |mut hits: Vec<(&str, u32)>, result: &mut Vec<String>| {
+    let ranked = |mut hits: Vec<(&str, u32, bool)>, result: &mut Vec<String>| {
         hits.sort_by(|a, b| {
             weight(b.0)
                 .cmp(&weight(a.0))
+                .then_with(|| b.2.cmp(&a.2))
                 .then_with(|| b.1.cmp(&a.1))
                 .then_with(|| a.0.cmp(b.0))
         });
-        for (word, _) in hits {
+        for (word, _, _) in hits {
             if result.len() >= limit {
                 break;
             }
@@ -45,22 +58,31 @@ pub fn suggest(
             }
         }
     };
-    let entries = || lists.iter().flat_map(|words| words.entries());
-    let completions: Vec<(&str, u32)> = entries()
-        .filter(|(entry_code, _, _)| entry_code.len() > code.len() && entry_code.starts_with(&code))
-        .map(|(_, word, frequency)| (word, frequency))
+    let entries = || {
+        lists.iter().flat_map(|words| {
+            let preferred = domain.is_some_and(|d| std::ptr::eq(d, *words));
+            words
+                .entries()
+                .map(move |(code, word, frequency)| (code, word, frequency, preferred))
+        })
+    };
+    let completions: Vec<(&str, u32, bool)> = entries()
+        .filter(|(entry_code, _, _, _)| {
+            entry_code.len() > code.len() && entry_code.starts_with(&code)
+        })
+        .map(|(_, word, frequency, preferred)| (word, frequency, preferred))
         .collect();
     ranked(completions, &mut result);
     // 带数字或符号的（`foo1`、`x_y`）是标识符不是拼错的词，不去猜
     let letters_only = code.bytes().all(|b| b.is_ascii_lowercase());
     if letters_only && code.len() >= MIN_CORRECTION_LETTERS && result.len() < limit {
-        let corrections: Vec<(&str, u32)> = entries()
-            .filter(|(entry_code, _, _)| {
+        let corrections: Vec<(&str, u32, bool)> = entries()
+            .filter(|(entry_code, _, _, _)| {
                 entry_code.len().abs_diff(code.len()) <= 1
                     && !entry_code.starts_with(&code)
                     && within_one_edit(entry_code, &code)
             })
-            .map(|(_, word, frequency)| (word, frequency))
+            .map(|(_, word, frequency, preferred)| (word, frequency, preferred))
             .collect();
         ranked(corrections, &mut result);
     }
@@ -144,5 +166,20 @@ mod tests {
         // 精确词后面跟着差一处编辑的 gift
         assert_eq!(suggest(&[&user, &main], "gist", |_| 0, 9), ["gist", "gift"]);
         assert_eq!(suggest(&[&main], "gis", |_| 0, 9), ["gist"]);
+    }
+    #[test]
+    fn personal_choice_beats_domain_completion() {
+        let main = WordList::parse("springboard\tspringboard\t4000\n").unwrap();
+        let domain = WordList::parse("Spring Boot\tspringboot\t40\n").unwrap();
+        assert_eq!(
+            suggest_with_domain(
+                &[&domain, &main],
+                Some(&domain),
+                "springb",
+                |w| u32::from(w == "springboard"),
+                2
+            ),
+            ["springboard", "Spring Boot"]
+        );
     }
 }
