@@ -190,8 +190,10 @@ impl Engine {
         self.translator.flush();
     }
 
-    /// 词库 / 用户词 / 学习数据变了，整句格子候选全部作废。
+    /// 词库 / 用户词 / 学习数据变了，整句格子候选与记下的首选切分全部作废。
     pub(super) fn forget_span_cache(&self) {
         self.span_cache.borrow_mut().clear();
+        // 首选切分是按整句得分挑的，词库 / 学习 / 设置一变也作废
+        self.preferred_segmentations.borrow_mut().clear();
     }
 }

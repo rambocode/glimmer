@@ -5,6 +5,9 @@ use super::*;
 /// 直通字符攒到这么多就先写一条，免得长时间纯英文输入时一条攒得没边。
 const MAX_PENDING_PASSTHROUGH: usize = 200;
 
+/// 全拼串 → 首选切分与切不动的尾巴（[`Engine::preferred_segmentation`]），传给按音节算长度的自由函数。
+type Preferred<'e> = &'e dyn for<'t> Fn(&'t str) -> Result<(Segmentation, &'t str), ParseError>;
+
 impl Engine {
     /// 中文模式下把半角字符转成全角标点；不需要转换返回 `None`。
     pub fn punctuate(&mut self, c: char) -> Option<&'static str> {
@@ -198,7 +201,9 @@ impl Engine {
         let before = &self.composition.text()[..cursor];
         let plain =
             self.raw_mode() || self.expression_mode() || self.question_mode() || self.zhuyin;
-        let len = unit_len_before(before, self.shuangpin.is_some(), plain);
+        let len = unit_len_before(before, self.shuangpin.is_some(), plain, &|text| {
+            self.preferred_segmentation(text)
+        });
         self.composition.delete_before_cursor(len)
     }
 
@@ -211,7 +216,9 @@ impl Engine {
         let before = &self.composition.text()[..cursor];
         let plain =
             self.raw_mode() || self.expression_mode() || self.question_mode() || self.zhuyin;
-        let len = unit_len_before(before, self.shuangpin.is_some(), plain);
+        let len = unit_len_before(before, self.shuangpin.is_some(), plain, &|text| {
+            self.preferred_segmentation(text)
+        });
         len > 0 && (0..len).all(|_| self.composition.move_left())
     }
 
@@ -224,7 +231,9 @@ impl Engine {
         let after = &self.composition.text()[cursor..];
         let plain =
             self.raw_mode() || self.expression_mode() || self.question_mode() || self.zhuyin;
-        let len = unit_len_after(after, self.shuangpin.is_some(), plain);
+        let len = unit_len_after(after, self.shuangpin.is_some(), plain, &|text| {
+            self.preferred_segmentation(text)
+        });
         len > 0 && (0..len).all(|_| self.composition.move_right())
     }
 
@@ -392,7 +401,7 @@ impl Engine {
 }
 
 /// 光标后的第一个「单位」占几个字节：先跳过紧跟的 `'`，再算一个音节；规则同 [`unit_len_before`]。
-fn unit_len_after(after: &str, shuangpin: bool, plain: bool) -> usize {
+fn unit_len_after(after: &str, shuangpin: bool, plain: bool, preferred: Preferred<'_>) -> usize {
     let trimmed = after.trim_start_matches('\'');
     let separators = after.len() - trimmed.len();
     let Some(first) = trimmed.chars().next() else {
@@ -417,18 +426,16 @@ fn unit_len_after(after: &str, shuangpin: bool, plain: bool) -> usize {
             .count();
         return separators + run.min(2);
     }
-    let syllable = match segment_longest_prefix(trimmed) {
-        Ok((segmentations, _)) => segmentations
-            .first()
-            .and_then(|s| s.syllables.first())
-            .map_or(1, |s| s.text.len()),
+    let syllable = match preferred(trimmed) {
+        Ok((segmentation, _)) => segmentation.syllables.first().map_or(1, |s| s.text.len()),
         Err(_) => 1,
     };
     separators + syllable
 }
 
 /// 光标前的最后一个「单位」占几个字节：拼音里是一个音节（连同它后面的 `'`），见 [`Engine::delete_syllable_backward`]。
-fn unit_len_before(before: &str, shuangpin: bool, plain: bool) -> usize {
+/// 全拼的音节按 `preferred` 给的首选切分算，与拼音行显示的切法一致（`hen'gan'rao` 一格跨 rao 再跨 gan）。
+fn unit_len_before(before: &str, shuangpin: bool, plain: bool, preferred: Preferred<'_>) -> usize {
     let trimmed = before.trim_end_matches('\'');
     let separators = before.len() - trimmed.len();
     let Some(last) = trimmed.chars().last() else {
@@ -457,12 +464,9 @@ fn unit_len_before(before: &str, shuangpin: bool, plain: bool) -> usize {
             .count();
         return separators + if run % 2 == 1 { 1 } else { 2 };
     }
-    let syllable = match segment_longest_prefix(trimmed) {
+    let syllable = match preferred(trimmed) {
         Ok((_, tail)) if !tail.is_empty() => tail.len(),
-        Ok((segmentations, _)) => segmentations
-            .first()
-            .and_then(|s| s.syllables.last())
-            .map_or(1, |s| s.text.len()),
+        Ok((segmentation, _)) => segmentation.syllables.last().map_or(1, |s| s.text.len()),
         Err(_) => 1,
     };
     separators + syllable

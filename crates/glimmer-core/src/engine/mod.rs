@@ -218,6 +218,10 @@ pub struct Engine {
     /// 整句转换的格子候选缓存：跨按键复用，学习数据一变就清（见 [`Self::forget_span_cache`]）。
     span_cache: std::cell::RefCell<sentence::SpanCache>,
 
+    /// 最近算过的首选切分：(拼音串, 同形切分里按整句得分挑出的那种, 切不动的尾巴字节数)。
+    /// 查询与拼音行显示时记下，光标按音节移动 / 按音节删直接用，不再重转整句；与 `span_cache` 一起清。
+    preferred_segmentations: std::cell::RefCell<Vec<(String, Segmentation, usize)>>,
+
     /// 本次会话经我们上屏的文本，应用不给上下文时用它联想。
     history: InputHistory,
 
@@ -364,6 +368,7 @@ impl Engine {
             neural_context: RESCORE_CONTEXT_CHARS,
             correction_cache: std::cell::RefCell::new(None),
             span_cache: std::cell::RefCell::new(sentence::SpanCache::default()),
+            preferred_segmentations: std::cell::RefCell::new(Vec::new()),
             recent_commits: Vec::new(),
             logger: input_log::MutedLogger::new(Box::new(NoInputLogger)),
             private: false,
@@ -463,17 +468,6 @@ fn take_last_chars(text: &str, count: usize) -> String {
 /// 开头 `count` 个字符。
 fn take_first_chars(text: &str, count: usize) -> String {
     text.chars().take(count).collect()
-}
-
-/// 光标后剩余拼音的显示形式：能切就按音节用 `'` 连上，切不动就原样。
-fn marked_rest(rest: &str) -> String {
-    if rest.is_empty() {
-        return String::new();
-    }
-    match segment_longest_prefix(rest) {
-        Ok((segmentations, tail)) => query::join_marked(&segmentations, tail),
-        Err(_) => rest.to_owned(),
-    }
 }
 
 /// 整段切不动时退而求其次：找能切分的最长前缀，剩余字母作为尾部返回。

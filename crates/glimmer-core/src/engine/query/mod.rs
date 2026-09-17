@@ -241,6 +241,10 @@ impl Engine {
         // 放在查词之后，词级候选的收集顺序不受影响
         let mut segmentations = segmentations;
         self.prefer_convertible(&mut segmentations, correction.is_none());
+        // 按原样整段读的（不是双拼解码、纠正后的拼音或英文尾段前的头段）记下来，光标按音节移动时直接用
+        if decoded.is_none() && correction.is_none() && !head_wins {
+            self.remember_preferred(keys, &segmentations[0], tail.len());
+        }
         // 再往后翻也翻不到的候选不必再造：单字母简拼能命中两万个词，排完序只留前面这些。
         // 同输入串（候选覆盖的那段字母）下选过的优先；上下文是上一个上屏的词（句首为 None）：
         // `ba` 在「做了」后面出 吧、句首出 把

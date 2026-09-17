@@ -86,3 +86,51 @@ fn committing_the_sentence_replays_the_same_segmentation() {
     let texts: Vec<&str> = words.iter().map(|w| w.text.as_str()).collect();
     assert_eq!(texts, ["蛋糕", "店"]);
 }
+
+/// 光标按音节移动、按音节删走的是拼音行显示的那种切分：`hen'gan'rao` 时 ⌥← / ⌥→ 一格跨 rao / hen，不按 heng an 跳。
+#[test]
+fn syllable_cursor_moves_follow_the_displayed_segmentation() {
+    let dictionary = Dictionary::parse(
+        "很\then\t800000\n干扰\tgan rao\t20000\n恒安\theng an\t3000\n绕\trao\t10000\n\
+         安\tan\t50000\n哼\theng\t1000\n",
+    )
+    .unwrap();
+    let mut engine = Engine::new(dictionary);
+    engine.set_input("henganrao");
+    assert_eq!(engine.query().unwrap().marked_text(), "hen'gan'rao");
+    // 光标在末尾：⌥← 跨过 rao
+    assert!(engine.move_cursor_syllable_left());
+    assert_eq!(engine.composition().cursor(), "hengan".len());
+    // 回到开头：⌥→ 跨过 hen，不是 heng
+    engine.move_cursor_home();
+    assert!(engine.move_cursor_syllable_right());
+    assert_eq!(engine.composition().cursor(), "hen".len());
+    // 光标停在中间时拼音行后半段也按首选切分显示
+    assert_eq!(engine.query().unwrap().rest, "gan'rao");
+    // ⌥⌫ 删的也是显示出来的最后一个音节
+    engine.set_input("henganrao");
+    engine.query().unwrap();
+    assert!(engine.delete_syllable_backward());
+    assert_eq!(engine.composition().text(), "hengan");
+}
+
+/// 查询记下的首选切分给光标移动复用；记下的与现算的一致，学习数据一变就作废。
+#[test]
+fn cursor_moves_reuse_the_segmentation_the_query_picked() {
+    let dictionary =
+        Dictionary::parse("蛋糕\tdan gao\t50000\n当\tdang\t900000\n奥\tao\t20000\n").unwrap();
+    let mut engine = Engine::new(dictionary);
+    engine.set_input("dangao");
+    engine.query().unwrap();
+    let remembered = engine.preferred_segmentations.borrow().clone();
+    assert_eq!(remembered.len(), 1);
+    assert_eq!(remembered[0].0, "dangao");
+    assert_eq!(remembered[0].1.joined("'"), "dan'gao");
+    // 复用的结果与清掉后现算的相同
+    let (reused, _) = engine.preferred_segmentation("dangao").unwrap();
+    engine.forget_span_cache();
+    assert!(engine.preferred_segmentations.borrow().is_empty());
+    let (fresh, tail) = engine.preferred_segmentation("dangao").unwrap();
+    assert_eq!(reused, fresh);
+    assert_eq!(tail, "");
+}

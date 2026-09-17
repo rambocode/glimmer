@@ -166,11 +166,19 @@ impl Engine {
         }
     }
 
-    /// 光标后剩余拼音的显示形式：双拼先解码；能切就按音节用 `'` 连上，切不动就原样。
+    /// 光标后剩余拼音的显示形式：双拼先解码；能切就按首选切分用 `'` 连上（与按音节移动光标同一种），切不动就原样。
     pub(super) fn marked_rest(&self, rest: &str) -> String {
-        match self.decode(rest) {
-            Some(decoded) => decoded.marked(),
-            None => marked_rest(rest),
+        if let Some(decoded) = self.decode(rest) {
+            return decoded.marked();
+        }
+        if rest.is_empty() {
+            return String::new();
+        }
+        match self.preferred_segmentation(rest) {
+            Ok((segmentation, tail)) => {
+                query::join_marked(std::slice::from_ref(&segmentation), tail)
+            }
+            Err(_) => rest.to_owned(),
         }
     }
 

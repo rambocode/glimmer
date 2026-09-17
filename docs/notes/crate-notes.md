@@ -33,7 +33,8 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 - 整句读哪种切分：`parser::segment` 只按字母排（音节少、残缺少，再同就前面的音节长），零声母边界上会偏向前字吞 n / g（`dangao` 排出 `dang ao`）。
   `Engine::prefer_convertible`（`engine/query/segmentation.rs`）在与第一种同形（音节数、残缺数相同）的切分里按整句得分挑最高的挪到最前；
   查询（在查词之后、插整句之前）、上屏重算 `sentence_words` / `mixed_words`、中英混输比分、纠错的原样得分、云联想的拼音与本地参考都先调它，几处读的是同一种切分。
-  只有一种同形切分时不做转换。
+  只有一种同形切分时不做转换。光标按音节移动 / 按音节删与光标后剩余拼音的显示走 `Engine::preferred_segmentation`（同一种挑法）；
+  查询与剩余拼音显示把挑出的切分记在 `preferred_segmentations`（最多 4 条，与 `span_cache` 一起清），方向键直接复用，不重转整句。
 - `custom_phrase::merge_replacements` 把平台给的「输入码 → 短语」表（macOS 系统文本替换）并进配置里的自定义短语：每条占该码最靠前的空位（1–9），
   输入码不是小写字母、已有同码同文本、九位都满的跳过；Core 不管数据从哪来。
 
