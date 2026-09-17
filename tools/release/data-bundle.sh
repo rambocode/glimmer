@@ -48,7 +48,8 @@ du -h "$OUT"/*.tar.gz "$OUT/model.qjm"
 [[ "$MODE" == "pack" ]] && exit 0
 
 if [[ -z "$TAG" ]]; then
-  last="$(gh release list --limit 200 --json tagName --jq '.[].tagName' | grep -E '^data-v[0-9]+$' | sed 's/data-v//' | sort -n | tail -1)"
+  # 还没有任何 data-vN 时 grep 没匹配返回 1，pipefail 会让整条命令失败：这里放行，空就从 1 起
+  last="$(gh release list --limit 200 --json tagName --jq '.[].tagName' | { grep -E '^data-v[0-9]+$' || true; } | sed 's/data-v//' | sort -n | tail -1)"
   TAG="data-v$(( ${last:-0} + 1 ))"
 fi
 [[ "$TAG" =~ ^data-v[0-9]+$ ]] || { echo "标签要写成 data-vN：$TAG" >&2; exit 1; }
@@ -65,4 +66,4 @@ tag = $TAG
 glimmer-data.tar.gz = $(sha_of glimmer-data.tar.gz)
 model.qjm = $(sha_of model.qjm)
 EOF
-echo "已发 $TAG，锁文件已更新（记得提交）"
+echo "已发 ${TAG}，锁文件已更新（记得提交）"
