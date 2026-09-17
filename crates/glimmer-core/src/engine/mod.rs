@@ -124,6 +124,12 @@ pub struct Engine {
     /// 中英混输时中文候选总在英文词前面（缺省关：拼音不像话的输入英文词排第一，常在中文模式里打英文词的人靠它）。
     chinese_first: bool,
 
+    /// 中文模式里给英文词与英文补全候选（中英混输，缺省开）；与英文模式（Caps Lock）的候选无关。
+    mixed_english: bool,
+
+    /// 给 emoji 候选（缺省开）；关掉时即便加载了 emoji 表也不出。
+    emoji_candidates: bool,
+
     /// 联想提供方，缺省为 [`NoPredictor`]。
     predictor: Box<dyn Predictor>,
 
@@ -355,6 +361,8 @@ impl Engine {
             punctuation_mode: PunctuationMode::default(),
             custom_phrases: Vec::new(),
             chinese_first: false,
+            mixed_english: true,
+            emoji_candidates: true,
             predictor: Box::new(NoPredictor),
             language_model: Box::new(NoLanguageModel),
             sentence_scorer: None,

@@ -163,7 +163,22 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
             "开着时整段输入是英文词时（hello、key）英文词排第二，空格上屏的仍是中文；关着（缺省）拼音不成立的输入英文词排第一。",
             ToggleSwitch::new()
                 .is_on(g.chinese_first)
+                .is_enabled(g.mixed_english_candidates)
                 .on_toggled(context.callback(Message::ChineseFirst)),
+        ),
+        field(
+            "输入拼音时也给英文词候选",
+            "hello 给出 hello、compa 补全成 company 这类英文词；关掉后只给中文。与上面的「英文模式也给候选」无关。",
+            ToggleSwitch::new()
+                .is_on(g.mixed_english_candidates)
+                .on_toggled(context.callback(Message::MixedEnglishCandidates)),
+        ),
+        field(
+            "给 emoji 候选",
+            "kaixin 在「开心」后面给出 😄；关掉后候选里不出 emoji。",
+            ToggleSwitch::new()
+                .is_on(g.emoji_candidates)
+                .on_toggled(context.callback(Message::EmojiCandidates)),
         ),
     ];
     page("通用", StackPanel::new().spacing(16.0).children(rows))

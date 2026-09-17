@@ -23,6 +23,10 @@ impl Host {
         self.apply_custom_phrases(&config);
         self.engine.set_mode_keys(config.shortcut.mode);
         self.engine.set_chinese_first(config.general.chinese_first);
+        self.engine
+            .set_mixed_english(config.general.mixed_english_candidates);
+        self.engine
+            .set_emoji_candidates(config.general.emoji_candidates);
         self.engine.set_shuangpin(config.general.shuangpin());
         self.apply_wubi(&config);
         self.engine.set_learning(config.general.learning);

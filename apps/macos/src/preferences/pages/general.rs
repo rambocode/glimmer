@@ -1,4 +1,4 @@
-//! 「通用」页：学习语言、每页候选数、双拼 / 五笔方案、英文模式候选。
+//! 「通用」页：学习语言、每页候选数、双拼 / 五笔方案、英文模式候选、中文模式英文词与 emoji 候选开关。
 
 use glimmer_core::{Language, PunctuationMode, ShuangpinScheme};
 use glimmer_platform::{Config, MAX_PAGE_SIZE};
@@ -42,6 +42,12 @@ pub struct GeneralPage {
 
     /// 中英混输时中文候选排在英文词前。
     chinese_first: Retained<NSButton>,
+
+    /// 中文模式下给英文词候选。
+    mixed_english: Retained<NSButton>,
+
+    /// 给 emoji 候选。
+    emoji: Retained<NSButton>,
 
     /// 学习语言弹出菜单里各项对应的语言。
     languages: Vec<Language>,
@@ -186,6 +192,25 @@ impl GeneralPage {
             mtm,
             "勾上后整段输入是英文词时（hello、key）英文词排第二，空格上屏的仍是中文；不勾（缺省）拼音不成立的输入英文词排第一。",
         );
+        let mixed_english = checkbox(
+            mtm,
+            "输入拼音时也给英文词候选",
+            Setting::MixedEnglishCandidates,
+            target,
+        );
+        row_checkbox(layout, &mixed_english);
+        note(
+            layout,
+            mtm,
+            "hello 给出 hello、compa 补全成 company 这类英文词；不勾后只给中文。与上面的「英文模式也给候选」无关。",
+        );
+        let emoji = checkbox(mtm, "给 emoji 候选", Setting::EmojiCandidates, target);
+        row_checkbox(layout, &emoji);
+        note(
+            layout,
+            mtm,
+            "kaixin 在「开心」后面给出 😄；不勾后候选里不出 emoji。",
+        );
         Self {
             learning_language,
             page_size,
@@ -197,6 +222,8 @@ impl GeneralPage {
             english,
             english_off_in_apps,
             chinese_first,
+            mixed_english,
+            emoji,
             languages: languages.to_vec(),
             punctuation,
             punctuation_mode,
@@ -260,5 +287,10 @@ impl GeneralPage {
         self.english_off_in_apps
             .setEnabled(general.english_candidates);
         set_checked(&self.chinese_first, general.chinese_first);
+        set_checked(&self.mixed_english, general.mixed_english_candidates);
+        set_checked(&self.emoji, general.emoji_candidates);
+        // 中文优先只在中文模式给英文词时有意义
+        self.chinese_first
+            .setEnabled(general.mixed_english_candidates);
     }
 }

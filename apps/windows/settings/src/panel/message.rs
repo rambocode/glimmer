@@ -19,6 +19,10 @@ pub(crate) enum Message {
     Traditional(bool),
     EnglishCandidates(bool),
     ChineseFirst(bool),
+    /// `[general] mixed_english_candidates`：中文模式下给英文词候选。
+    MixedEnglishCandidates(bool),
+    /// `[general] emoji_candidates`。
+    EmojiCandidates(bool),
     FullWidthPunctuation(bool),
     EnglishFullWidthPunctuation(bool),
     PunctuationMode(Option<usize>),

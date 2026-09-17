@@ -113,6 +113,12 @@ pub enum Setting {
     /// `[general] chinese_first`，勾选框：中英混输时中文候选排在英文词前。
     ChineseFirst,
 
+    /// `[general] mixed_english_candidates`，勾选框：中文模式下给英文词候选。
+    MixedEnglishCandidates,
+
+    /// `[general] emoji_candidates`，勾选框：给 emoji 候选。
+    EmojiCandidates,
+
     /// `[shortcut] translation`，快捷键录制按钮（只记修饰键）。
     TranslationKeys,
 
@@ -208,6 +214,8 @@ impl Setting {
             Self::Preedit => 13,
             Self::EnglishCandidates => 14,
             Self::ChineseFirst => 51,
+            Self::MixedEnglishCandidates => 53,
+            Self::EmojiCandidates => 54,
             Self::TranslationKeys => 15,
             Self::TranslationSecondKeys => 16,
             Self::TranslateSelectionKeys => 17,
@@ -270,6 +278,8 @@ impl Setting {
             13 => Self::Preedit,
             14 => Self::EnglishCandidates,
             51 => Self::ChineseFirst,
+            53 => Self::MixedEnglishCandidates,
+            54 => Self::EmojiCandidates,
             15 => Self::TranslationKeys,
             16 => Self::TranslationSecondKeys,
             17 => Self::TranslateSelectionKeys,
@@ -345,6 +355,9 @@ mod tests {
             Setting::Preedit,
             Setting::PunctuationMode,
             Setting::EnglishCandidates,
+            Setting::ChineseFirst,
+            Setting::MixedEnglishCandidates,
+            Setting::EmojiCandidates,
             Setting::TranslationKeys,
             Setting::TranslationSecondKeys,
             Setting::TranslateSelectionKeys,

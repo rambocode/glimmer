@@ -35,6 +35,8 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   查询（在查词之后、插整句之前）、上屏重算 `sentence_words` / `mixed_words`、中英混输比分、纠错的原样得分、云联想的拼音与本地参考都先调它，几处读的是同一种切分。
   只有一种同形切分时不做转换。光标按音节移动 / 按音节删与光标后剩余拼音的显示走 `Engine::preferred_segmentation`（同一种挑法）；
   查询与剩余拼音显示把挑出的切分记在 `preferred_segmentations`（最多 4 条，与 `span_cache` 一起清），方向键直接复用，不重转整句。
+- 两个候选开关都在 Core 生效、缺省开：`Engine::set_mixed_english`（配置 `[general] mixed_english_candidates`）关掉时 `insert_english` 直接返回（精确词与补全都不出，句末英文词 `EnglishTail` 照旧）；
+  `Engine::set_emoji_candidates`（配置 `[general] emoji_candidates`）关掉时 `insert_emoji` 直接返回，emoji 表照常加载，热重载改开关不用重建 Engine。
 - `custom_phrase::merge_replacements` 把平台给的「输入码 → 短语」表（macOS 系统文本替换）并进配置里的自定义短语：每条占该码最靠前的空位（1–9），
   输入码不是小写字母、已有同码同文本、九位都满的跳过；Core 不管数据从哪来。
 
@@ -154,7 +156,7 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 - 日志在 `~/Library/Logs/Glimmer/`（按天分文件留 7 天，删了会重建），用户数据与配置在 `~/Library/Application Support/Glimmer/`。
 - 配置项：云联想 `[predict]`（偏好设置「云服务」页有「测试连接」按钮：`glimmer_predict::ConnectionTest` 起线程发一条最小请求，`Host` 用独立定时器 `CloudTestMonitor` 轮询结果显示到窗口底部；
   `reasoning_effort` 缺省 `none`，DeepSeek V4 默认思考，不关正文为空）；模糊音 `[fuzzy]` 默认都关；`[general]` 学习语言（`off` 不显示译文）/ 每页候选数 / 翻页键 / 外观 / 竖排横排 / 拼音显示位置 /
-  英文模式候选开关 / 中文优先 `chinese_first` / 双拼方案 `shuangpin`（小鹤 / 自然码 / 微软 / 搜狗 / 智能ABC，空为全拼）/ 五笔 `wubi`（空为拼音，`86` / `98` / `xsj`，开着时双拼与注音被忽略；行为在 `[wubi]`：`auto_select` / `hint` / `fixed_order_length`，
+  英文模式候选开关 / 中文优先 `chinese_first` / 中文模式英文词候选 `mixed_english_candidates` / emoji 候选 `emoji_candidates` / 双拼方案 `shuangpin`（小鹤 / 自然码 / 微软 / 搜狗 / 智能ABC，空为全拼）/ 五笔 `wubi`（空为拼音，`86` / `98` / `xsj`，开着时双拼与注音被忽略；行为在 `[wubi]`：`auto_select` / `hint` / `fixed_order_length`，
   码表 `Resources/wubi86.qj` / `wubi98.qj` / `wubixsj.qj` 三份都随包，按版本装一份，偏好设置「通用」页的「五笔」弹出菜单四项（关 / 86 / 98 / 新世纪）由 `Variant::ALL` 出，
   壳每次 `push` 后先 `take_auto_commit`）/ 日志级别 `log_level`（缺省 info 不含敲的内容，debug 逐键记，热切换）/ 输入日志 `input_log`；
   `[shortcut]` 模式键 v / u、`question_mark`（缺省关，开了空缓冲区敲 `?` 进问字）、上屏第一 / 第二个译词的修饰键 `translation` / `translation_second`、删候选 `delete_candidate`（缺省 shift，用户词整删、词库词清学习）、翻译选中文字 `translate_selection`、macOS 中英文切换 `mode_switch`（缺省 `shift` 单击，也支持旧版修饰键加字母，不能与翻译键冲突）；

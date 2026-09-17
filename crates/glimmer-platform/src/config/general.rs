@@ -54,6 +54,13 @@ pub struct GeneralConfig {
     /// 常在中文模式里打英文词的人不受影响；想要中文永远在前的自己打开。
     pub chinese_first: bool,
 
+    /// 中文模式下（中英混输）是否给英文词与英文补全候选（`hello`、`compa` → company）。缺省开。
+    /// 与 `english_candidates` 不同：那个管英文模式（Caps Lock 亮着）。
+    pub mixed_english_candidates: bool,
+
+    /// 是否给 emoji 候选（`kaixin` → 😄）。缺省开；嫌挤占候选位置的可以关掉。
+    pub emoji_candidates: bool,
+
     /// 中文模式下不在组句时敲的标点转成全角（`，。？！` 等，数字后的 `.` 保持半角）。
     /// Windows 悬浮状态条上可点切换；macOS 在偏好设置中选择默认模式。
     pub full_width_punctuation: bool,
@@ -101,6 +108,8 @@ impl Default for GeneralConfig {
             english_candidates: true,
             traditional: false,
             chinese_first: false,
+            mixed_english_candidates: true,
+            emoji_candidates: true,
             full_width_punctuation: true,
             english_full_width_punctuation: false,
             punctuation_mode: PunctuationMode::default(),

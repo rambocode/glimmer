@@ -60,6 +60,8 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
     engine.set_traditional_mode(config.general.traditional);
     engine.set_mode_keys(config.shortcut.mode);
     engine.set_chinese_first(config.general.chinese_first);
+    engine.set_mixed_english(config.general.mixed_english_candidates);
+    engine.set_emoji_candidates(config.general.emoji_candidates);
     engine.log_session(paths.version, paths.platform);
     dispatch::attach_cloud(&mut engine, &config.predict);
     let router_config = RouterConfig::from(config);

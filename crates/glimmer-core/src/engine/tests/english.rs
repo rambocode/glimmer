@@ -453,3 +453,42 @@ fn english_acronyms_do_not_duplicate_chinese_candidates() {
         assert_eq!(hits[0].kind, CandidateKind::English);
     }
 }
+
+#[test]
+fn mixed_english_candidates_can_be_switched_off_in_chinese_mode() {
+    let words = WordList::parse("hello\ncompany\ncompare\ngithub\n").unwrap();
+    let mut engine = engine().with_english(words);
+    assert!(engine.mixed_english());
+    engine.set_mixed_english(false);
+    // 精确词、补全、拼音切不动的整段英文都不出
+    for input in ["hello", "compa", "github"] {
+        engine.set_input(input);
+        if let Ok(query) = engine.query() {
+            assert!(
+                query
+                    .candidates
+                    .items
+                    .iter()
+                    .all(|c| c.kind != CandidateKind::English),
+                "{input}"
+            );
+        }
+    }
+    // 英文模式（Caps Lock）的候选不受这个开关影响
+    engine.set_english_mode(true);
+    engine.set_input("hello");
+    assert!(
+        engine
+            .query()
+            .unwrap()
+            .candidates
+            .items
+            .iter()
+            .any(|c| c.kind == CandidateKind::English && c.text == "hello")
+    );
+    // 回中文模式、打开开关后立即恢复
+    engine.set_english_mode(false);
+    engine.set_mixed_english(true);
+    engine.set_input("hello");
+    assert_eq!(engine.query().unwrap().candidates.items[0].text, "hello");
+}

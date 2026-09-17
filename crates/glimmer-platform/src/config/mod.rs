@@ -189,6 +189,11 @@ english_candidates = true
 traditional = false
 # 中文模式下整段输入是英文词时（hello / key）是否让中文候选排第一、英文词第二；缺省 false：拼音不像话的输入英文词排第一
 chinese_first = false
+# 中文模式下是否给英文词候选：整段输入是英文词（hello）或英文词开头（compa → company）时列出英文词；
+# 与上面的 english_candidates 无关（那个管 Caps Lock 亮着的英文模式）
+mixed_english_candidates = true
+# 是否给 emoji 候选（kaixin → 😄）；false 不出 emoji
+emoji_candidates = true
 # 中文模式下（没在组句时）敲的标点转全角：, . ? ! : ; ( ) 等，数字后面的 . 保持半角。Windows 上悬浮状态条的「，。」格可以点着切；macOS 在偏好设置中选择默认中文标点模式
 full_width_punctuation = true
 # 英文模式下的同一件事，中英各记一份，状态条切的是当前模式那份；只有 Windows 用
@@ -550,6 +555,7 @@ mod tests {
         assert_eq!(config.general.learning_language, "en");
         assert!(config.general.english_candidates);
         assert!(!config.general.traditional);
+        assert!(config.general.mixed_english_candidates && config.general.emoji_candidates);
         assert_eq!(config.general.shuangpin(), None);
         assert_eq!(config.general.wubi(), None);
         assert_eq!(config.wubi_table_file(), None);

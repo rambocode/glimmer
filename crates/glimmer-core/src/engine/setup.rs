@@ -373,6 +373,27 @@ impl Engine {
         self.chinese_first
     }
 
+    /// 中文模式里是否给英文词与英文补全候选（配置 `[general] mixed_english_candidates`，缺省开）。
+    /// 关掉后 `hello` 只出拼音候选；英文模式（Caps Lock）的候选另由平台层按 `english_candidates` 决定。
+    pub fn set_mixed_english(&mut self, on: bool) {
+        self.mixed_english = on;
+    }
+
+    /// 中文模式里是否给英文词候选。
+    pub fn mixed_english(&self) -> bool {
+        self.mixed_english
+    }
+
+    /// 是否给 emoji 候选（配置 `[general] emoji_candidates`，缺省开）；关掉后中文、英文、五笔都不出 emoji。
+    pub fn set_emoji_candidates(&mut self, on: bool) {
+        self.emoji_candidates = on;
+    }
+
+    /// 是否给 emoji 候选。
+    pub fn emoji_candidates(&self) -> bool {
+        self.emoji_candidates
+    }
+
     pub fn with_learner(mut self, learner: Box<dyn Learner>) -> Self {
         self.learner.replace(learner);
         self.forget_span_cache();

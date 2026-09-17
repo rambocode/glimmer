@@ -171,6 +171,10 @@ impl Router {
         self.engine.set_learning(config.general.learning);
         self.engine.set_mode_keys(config.shortcut.mode);
         self.engine.set_chinese_first(config.general.chinese_first);
+        self.engine
+            .set_mixed_english(config.general.mixed_english_candidates);
+        self.engine
+            .set_emoji_candidates(config.general.emoji_candidates);
         let previous = self.config.render_settings();
         self.config = RouterConfig::from(config);
         let settings = self.config.render_settings();
