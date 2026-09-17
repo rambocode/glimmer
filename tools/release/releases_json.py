@@ -42,6 +42,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 HEADING = re.compile(r"^##\s+(?P<version>\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)\s*·\s*(?P<date>\d{4}-\d{2}-\d{2})\s*·\s*(?P<channel>\S+)\s*$")
+UNRELEASED = re.compile(r"^##\s+\S+\s*·\s*未发布\s*·")
 TAG = re.compile(r"^(?:(?:macos|windows|linux)-)?v(\d+\.\d+\.\d+(?:-[0-9A-Za-z.]+)?)$")
 CHANNELS = ("alpha", "beta", "rc", "stable")
 
@@ -62,6 +63,10 @@ def parse_changelog(path: Path) -> dict[str, dict]:
     for raw in path.read_text(encoding="utf-8").splitlines():
         line = raw.rstrip()
         if line.startswith("## "):
+            # 还没发的版本写「未发布」占日期位（发版时改成日期），整节跳过、不进 releases.json
+            if UNRELEASED.match(line):
+                current = None
+                continue
             m = HEADING.match(line)
             if not m:
                 sys.exit(f"CHANGELOG 标题格式不对，应为「## 版本 · YYYY-MM-DD · 渠道」：{line}")
