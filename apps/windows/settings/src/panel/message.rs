@@ -38,6 +38,8 @@ pub(crate) enum Message {
     FontQuery(String),
     /// 从提示里选了一个字族。
     Font(String),
+    /// `[general] font_size`：数字框的新值。
+    FontSize(Option<f64>),
     StatusBar(bool),
 
     // 云服务页

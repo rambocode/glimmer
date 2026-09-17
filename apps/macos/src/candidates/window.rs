@@ -129,6 +129,11 @@ impl CandidateWindow {
         self.view.set_font(font);
     }
 
+    /// 候选词字号（点），只对微明渲染器生效。下一帧生效。
+    pub fn set_font_size(&self, size: f32) {
+        self.view.set_font_size(size);
+    }
+
     pub fn max_rows(&self) -> usize {
         self.view.theme().max_rows
     }

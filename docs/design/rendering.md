@@ -108,6 +108,10 @@
 
 字体可选：`[general] font` 指定字族名，mac 壳用 CoreText 按字族名查出文件（`CTFontDescriptorCreateMatchingFontDescriptors` → `kCTFontURLAttribute`）交给渲染器只加载那几个文件，系统字体仍在后面当回退；没装就退回系统字体并记日志。真机验过 Kaiti SC 与不存在的字体名。
 
+字号可调（上游 #34）：`[general] font_size`（12–28，缺省 16，平台层 `GeneralConfig::font_size()` 夹紧）经 `Theme::with_text_size` 把候选词、译文、序号三种字号按同一比例缩放，行高同比后向上取整（每行与窗口的高度都按行高排，向上取整不裁字）；
+间距、圆角、云朵图标不跟着变。mac 壳 `BitmapPainter::set_text_size` 只记下、下一帧 `set_frame` 才换（外观变了 `draw` 重画当前帧时窗口还是旧尺寸）；Windows 经 `RenderSettings::font_size` 送到 UI 线程，只换字号不重建字体库，悬浮状态条保持缺省字号。
+AppKit / GDI 旧路径与 Linux（Fcitx5 / IBus 自己画候选）不管字号。已知差异：字号超过 20 pt 时 CoreText 会换 Display 档 opsz，我们的 opsz 补丁仍是全局 17，大字号下英文比原生略宽；要对齐得按上一节说的把字体实例缓存按字号分键。
+
 **结论**：四条都过，mac 上位图渲染器可以替换 AppKit 绘制；Windows 半边见下节。下一步做主题 TOML，稳定一版后删 AppKit / GDI 旧路径。
 主题以后要放图片 / 动图 / 花边：渲染器输出就是一张位图，装饰只是多叠几层，不用换底子。
 

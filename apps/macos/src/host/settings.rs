@@ -209,6 +209,12 @@ impl Host {
                         .set_value("general", "punctuation_mode", mode.key());
                 }
             }
+            // 菜单项从最小字号起一档一点，越界的下标夹回范围内
+            (Setting::FontSize, SettingValue::Index(index)) => {
+                let size = (glimmer_platform::MIN_FONT_SIZE as usize + index)
+                    .min(glimmer_platform::MAX_FONT_SIZE as usize);
+                self.settings.set_value("general", "font_size", size as i64);
+            }
             (Setting::Preedit, SettingValue::Index(index)) => {
                 if let Some(mode) = PreeditMode::ALL.get(index) {
                     self.settings.set_value("general", "preedit", mode.key());

@@ -8,6 +8,9 @@ mod palette;
 pub use font_spec::FontSpec;
 pub use palette::Palette;
 
+/// 缺省主题里候选词的字号（点）；[`Theme::with_text_size`] 以它为 1 倍缩放。
+pub const DEFAULT_TEXT_SIZE: f32 = 16.0;
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Theme {
     /// 候选词字体。
@@ -56,7 +59,7 @@ impl Theme {
     fn with_palette(colors: Palette, text_gamma: f32) -> Self {
         Self {
             // 行高取 AppKit 系统字体在这几个字号下 NSAttributedString.size() 的高度
-            text_font: FontSpec::new(16.0, 19.0),
+            text_font: FontSpec::new(DEFAULT_TEXT_SIZE, 19.0),
             annotation_font: FontSpec::new(12.0, 15.0),
             index_font: FontSpec::new(11.0, 14.0),
             colors,
@@ -68,4 +71,27 @@ impl Theme {
             text_gamma,
         }
     }
+
+    /// 候选词字号换成 `size` 点（配置 `[general] font_size`），译文与序号字号、三者行高按同一比例缩放。
+    /// 行高向上取整：每行与窗口的高度都按行高排，取小了字形会被高亮条和窗口边裁掉。
+    /// 间距、圆角、云朵图标不跟着变：它们是窗口的骨架，字大了留白比例略紧但不裁字。
+    /// `size` 由调用方夹到合法范围；不是正的有限数时原样返回。
+    pub fn with_text_size(mut self, size: f32) -> Self {
+        if !size.is_finite() || size <= 0.0 {
+            return self;
+        }
+        let factor = size / self.text_font.size;
+        for font in [
+            &mut self.text_font,
+            &mut self.annotation_font,
+            &mut self.index_font,
+        ] {
+            font.size *= factor;
+            font.line_height = (font.line_height * factor).ceil();
+        }
+        self
+    }
 }
+
+#[cfg(test)]
+mod tests;

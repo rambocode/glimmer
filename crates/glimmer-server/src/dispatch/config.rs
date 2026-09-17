@@ -25,6 +25,9 @@ pub struct RouterConfig {
     /// 候选窗口字体的字族名（`[general] font`），空为系统字体；只对微明渲染器生效。
     pub font: String,
 
+    /// 候选窗口字号（点，`[general] font_size`，已夹到 12–28）；只对微明渲染器生效。
+    pub font_size: u32,
+
     /// 翻页键对（`[general] page_keys`，上一页 / 下一页）。
     pub page_keys: (char, char),
 
@@ -73,6 +76,7 @@ impl RouterConfig {
         RenderSettings {
             renderer: self.renderer,
             font: self.font.clone(),
+            font_size: self.font_size,
         }
     }
 }
@@ -86,6 +90,7 @@ impl From<&Config> for RouterConfig {
             theme: config.general.theme,
             renderer: config.general.renderer,
             font: config.general.font.trim().to_owned(),
+            font_size: config.general.font_size(),
             page_keys: config.general.page_keys(),
             english_candidates: config.general.english_candidates,
             full_width: config.general.full_width_punctuation,

@@ -11,6 +11,9 @@ pub struct RenderSettings {
 
     /// 字族名（`[general] font`），空为系统字体。
     pub font: String,
+
+    /// 候选窗口字号（点，`[general] font_size`）；状态条不跟着变。
+    pub font_size: u32,
 }
 
 /// Router 只产出帧，画交给它；Windows 上由 UI 线程实现。

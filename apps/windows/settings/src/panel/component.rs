@@ -2,7 +2,7 @@
 
 use glimmer_platform::{
     CandidateRenderer, Config, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS, LayoutMode, LogLevel,
-    PreeditMode, PunctuationMode, ThemeMode,
+    MAX_FONT_SIZE, MIN_FONT_SIZE, PreeditMode, PunctuationMode, ThemeMode,
 };
 use windows_reactor::*;
 
@@ -114,6 +114,11 @@ impl Component for Settings {
             Message::Font(family) => {
                 self.font_query = None;
                 self.save("general", "font", family);
+            }
+            Message::FontSize(Some(value)) => {
+                let size = (value.round() as i64)
+                    .clamp(i64::from(MIN_FONT_SIZE), i64::from(MAX_FONT_SIZE));
+                self.save("general", "font_size", size);
             }
             Message::StatusBar(on) => self.save("status_bar", "enabled", on),
 

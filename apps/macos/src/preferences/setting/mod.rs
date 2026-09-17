@@ -41,6 +41,9 @@ pub enum Setting {
     /// `[general] font`，字体列表选中的字族名；「系统默认」为系统字体。
     Font,
 
+    /// `[general] font_size`，弹出菜单：第 i 项是 `MIN_FONT_SIZE + i` 点。
+    FontSize,
+
     /// `[shortcut] expression`，弹出菜单 v / u / i。
     ExpressionKey,
 
@@ -251,6 +254,7 @@ impl Setting {
             Self::WubiHint => 45,
             Self::Renderer => 46,
             Self::Font => 47,
+            Self::FontSize => 55,
             Self::SystemTextReplacements => 50,
             Self::Fuzzy(index) => FUZZY_TAG_BASE + index as NSInteger,
             Self::DictionaryEnabled(index) => DICTIONARY_ENABLED_TAG_BASE + index as NSInteger,
@@ -266,6 +270,7 @@ impl Setting {
             4 => Self::Theme,
             46 => Self::Renderer,
             47 => Self::Font,
+            55 => Self::FontSize,
             5 => Self::ExpressionKey,
             6 => Self::QuestionKey,
             48 => Self::QuestionMark,
@@ -343,6 +348,7 @@ mod tests {
             Setting::Theme,
             Setting::Renderer,
             Setting::Font,
+            Setting::FontSize,
             Setting::ExpressionKey,
             Setting::QuestionKey,
             Setting::CloudEnabled,

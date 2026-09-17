@@ -21,11 +21,14 @@ pub(super) struct Painter {
 
     /// 建它时用的字族名（空为系统字体），设置没变就不重建。
     font: String,
+
+    /// 候选窗口字号（点）；换字号不用重建字体库，下一帧按它画。
+    text_size: f32,
 }
 
 impl Painter {
     /// `font` 是用户选的字族名，空为系统字体；没装就回到系统字体。字体库加载失败返回 `None`，调用方退回 GDI。
-    fn new(font: &str) -> Option<Self> {
+    fn new(font: &str, text_size: f32) -> Option<Self> {
         let started = std::time::Instant::now();
         let library = if font.is_empty() {
             FontLibrary::system("zh-CN")
@@ -51,18 +54,19 @@ impl Painter {
         Some(Self {
             renderer: Renderer::new(library),
             font: font.to_owned(),
+            text_size,
         })
     }
 
-    /// 按设置建 / 换 / 撤渲染器。
+    /// 按设置建 / 换 / 撤渲染器；只换字号时留着字体库，改字号即可。
     pub(super) fn configure(shared: &SharedPainter, settings: &RenderSettings) {
         let mut painter = shared.borrow_mut();
+        let text_size = settings.font_size as f32;
         match settings.renderer {
-            CandidateRenderer::Glimmer => {
-                if painter.as_ref().map(|p| p.font.as_str()) != Some(settings.font.as_str()) {
-                    *painter = Self::new(&settings.font);
-                }
-            }
+            CandidateRenderer::Glimmer => match painter.as_mut() {
+                Some(current) if current.font == settings.font => current.text_size = text_size,
+                _ => *painter = Self::new(&settings.font, text_size),
+            },
             CandidateRenderer::System => {
                 if painter.is_some() {
                     tracing::info!("候选窗口与状态条切回 GDI 绘制");
@@ -72,7 +76,7 @@ impl Painter {
         }
     }
 
-    /// 画一帧候选窗口；`dpi` 96 为 100%。失败记日志返回 `None`，调用方退回 GDI。
+    /// 画一帧候选窗口（按配置的字号）；`dpi` 96 为 100%。失败记日志返回 `None`，调用方退回 GDI。
     pub(super) fn render_frame(
         &mut self,
         frame: &Frame,
@@ -87,7 +91,13 @@ impl Painter {
         let started = std::time::Instant::now();
         let rendered = self
             .renderer
-            .render(frame, layout, &theme(dark), scale(dpi), Some(&SHADOW))
+            .render(
+                frame,
+                layout,
+                &theme(dark).with_text_size(self.text_size),
+                scale(dpi),
+                Some(&SHADOW),
+            )
             .inspect_err(|error| tracing::warn!(%error, "候选窗渲染失败"))
             .ok()?;
         tracing::debug!(
@@ -99,7 +109,7 @@ impl Painter {
         Some(rendered)
     }
 
-    /// 画状态条。
+    /// 画状态条；用缺省字号，状态条是固定大小的小条，不随候选窗字号变。
     pub(super) fn render_status(
         &mut self,
         cells: &[StatusCell],
@@ -116,6 +126,7 @@ impl Painter {
 /// 两个窗口都用渲染器画阴影（分层窗口没有系统阴影），参数与 macOS 面板一致。
 const SHADOW: Shadow = Shadow::mac_panel();
 
+/// 按深浅色取缺省主题。
 fn theme(dark: bool) -> Theme {
     if dark { Theme::dark() } else { Theme::light() }
 }

@@ -45,6 +45,9 @@ pub struct Ivars {
 
     /// 用户选的字族名（空为系统字体），换了要重建渲染器。
     font: RefCell<String>,
+
+    /// 候选词字号（点，配置 `[general] font_size`），只对位图渲染器生效。
+    font_size: Cell<f32>,
 }
 
 /// preedit 光标的宽度。
@@ -120,6 +123,7 @@ impl CandidateView {
             theme,
             bitmap: RefCell::new(None),
             font: RefCell::new(String::new()),
+            font_size: Cell::new(glimmer_render::DEFAULT_TEXT_SIZE),
         });
         unsafe { msg_send![super(this), initWithFrame: NSRect::ZERO] }
     }
@@ -132,9 +136,17 @@ impl CandidateView {
         *self.ivars().font.borrow_mut() = font.to_owned();
         let mut bitmap = self.ivars().bitmap.borrow_mut();
         if bitmap.is_some() {
-            *bitmap = BitmapPainter::new(font);
+            *bitmap = BitmapPainter::new(font, self.ivars().font_size.get());
             drop(bitmap);
             self.setNeedsDisplay(true);
+        }
+    }
+
+    /// 候选词字号（点）。渲染器在用就交给它，下一帧生效；AppKit 绘制路径不管字号。
+    pub fn set_font_size(&self, size: f32) {
+        self.ivars().font_size.set(size);
+        if let Some(bitmap) = &mut *self.ivars().bitmap.borrow_mut() {
+            bitmap.set_text_size(size);
         }
     }
 
@@ -143,7 +155,8 @@ impl CandidateView {
         let mut bitmap = self.ivars().bitmap.borrow_mut();
         match renderer {
             CandidateRenderer::Glimmer if bitmap.is_none() => {
-                *bitmap = BitmapPainter::new(&self.ivars().font.borrow());
+                *bitmap =
+                    BitmapPainter::new(&self.ivars().font.borrow(), self.ivars().font_size.get());
             }
             CandidateRenderer::System if bitmap.is_some() => {
                 tracing::info!("候选窗切回 AppKit 绘制");

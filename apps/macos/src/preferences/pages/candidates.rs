@@ -1,6 +1,9 @@
-//! 「候选窗口」页：外观、排布、渲染引擎、字体（可搜索的列表）、拼音显示位置。
+//! 「候选窗口」页：外观、排布、渲染引擎、字体（可搜索的列表）、文字大小、拼音显示位置。
 
-use glimmer_platform::{CandidateRenderer, Config, LayoutMode, PreeditMode, ThemeMode};
+use glimmer_platform::{
+    CandidateRenderer, Config, DEFAULT_FONT_SIZE, LayoutMode, MAX_FONT_SIZE, MIN_FONT_SIZE,
+    PreeditMode, ThemeMode,
+};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::NSPopUpButton;
@@ -24,6 +27,9 @@ pub struct CandidatesPage {
 
     /// 候选窗字体：搜索框 + 列表。
     font: FontPicker,
+
+    /// 文字大小（候选词字号，点）。
+    font_size: Retained<NSPopUpButton>,
 
     /// 拼音显示位置。
     preedit: Retained<NSPopUpButton>,
@@ -61,6 +67,28 @@ impl CandidatesPage {
             mtm,
             "只对微明渲染器生效；没装的字体自动回到系统字体。",
         );
+        let font_size_titles: Vec<String> = (MIN_FONT_SIZE..=MAX_FONT_SIZE)
+            .map(|size| {
+                if size == DEFAULT_FONT_SIZE {
+                    format!("{size}（缺省）")
+                } else {
+                    size.to_string()
+                }
+            })
+            .collect();
+        let font_size = row_popup(
+            layout,
+            mtm,
+            "文字大小",
+            &font_size_titles,
+            Setting::FontSize,
+            target,
+        );
+        note(
+            layout,
+            mtm,
+            "候选词的字号，译词与序号按比例跟着变；只对微明渲染器生效。",
+        );
         let preedit_titles: Vec<String> = PreeditMode::ALL
             .iter()
             .map(|p| p.label().to_owned())
@@ -83,6 +111,7 @@ impl CandidatesPage {
             layout_mode,
             renderer,
             font,
+            font_size,
             preedit,
         }
     }
@@ -104,6 +133,10 @@ impl CandidatesPage {
                 .position(|r| *r == general.renderer),
         );
         self.font.sync(&general.font);
+        select(
+            &self.font_size,
+            Some((general.font_size() - MIN_FONT_SIZE) as usize),
+        );
         select(
             &self.preedit,
             PreeditMode::ALL.iter().position(|p| *p == general.preedit),

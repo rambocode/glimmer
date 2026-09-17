@@ -11,6 +11,15 @@ pub const MAX_PAGE_SIZE: usize = 9;
 /// 拿它们翻页就得先按空格再敲标点。选 `-` `=` 时组句中的 `-` 是翻页，不再进英文直输段（#43）。
 pub const PAGE_KEY_OPTIONS: [&str; 3] = ["[]", ",.", "-="];
 
+/// 候选窗口文字大小（点）的可调范围与缺省值：小于 12 在 Retina 以外的屏上发虚，大于 28 一页九条会高过半屏。
+pub const MIN_FONT_SIZE: u32 = 12;
+
+/// 候选窗口文字大小上限，见 [`MIN_FONT_SIZE`]。
+pub const MAX_FONT_SIZE: u32 = 28;
+
+/// 候选窗口文字大小缺省值，等于改成可调之前写死的字号。
+pub const DEFAULT_FONT_SIZE: u32 = 16;
+
 /// 缺省翻页键对，与 [`PAGE_KEY_OPTIONS`] 第一项一致。
 pub const DEFAULT_PAGE_KEYS: (char, char) = ('[', ']');
 
@@ -41,6 +50,9 @@ pub struct GeneralConfig {
 
     /// 候选窗口字体的字族名；空为系统字体。只对微明渲染器生效，没装这个字体时回到系统字体。
     pub font: String,
+
+    /// 候选窗口里候选词的字号（点），译文与序号按比例跟着变；12–28，超出夹到边上。只对微明渲染器生效。
+    pub font_size: u32,
 
     /// 组句中的拼音显示在行内、候选窗口还是两处都显示。
     pub preedit: PreeditMode,
@@ -104,6 +116,7 @@ impl Default for GeneralConfig {
             layout: LayoutMode::default(),
             renderer: CandidateRenderer::default(),
             font: String::new(),
+            font_size: DEFAULT_FONT_SIZE,
             preedit: PreeditMode::default(),
             english_candidates: true,
             traditional: false,
@@ -167,6 +180,11 @@ impl GeneralConfig {
         self.page_size.clamp(1, MAX_PAGE_SIZE)
     }
 
+    /// 夹到合法范围的候选窗口字号（点）。
+    pub fn font_size(&self) -> u32 {
+        self.font_size.clamp(MIN_FONT_SIZE, MAX_FONT_SIZE)
+    }
+
     /// 翻页键对；写得不对（不是两个不同的 ASCII 可见字符）时退回缺省。
     pub fn page_keys(&self) -> (char, char) {
         let mut chars = self.page_keys.chars();
@@ -204,6 +222,18 @@ mod tests {
         assert_eq!(general.page_keys(), ('[', ']'));
         general.page_keys = ",,".to_owned();
         assert_eq!(general.page_keys(), ('[', ']'));
+    }
+
+    #[test]
+    fn font_size_defaults_to_16_and_is_clamped() {
+        let mut general = GeneralConfig::default();
+        assert_eq!(general.font_size(), DEFAULT_FONT_SIZE);
+        general.font_size = 20;
+        assert_eq!(general.font_size(), 20);
+        general.font_size = 0;
+        assert_eq!(general.font_size(), MIN_FONT_SIZE);
+        general.font_size = 100;
+        assert_eq!(general.font_size(), MAX_FONT_SIZE);
     }
 
     #[test]

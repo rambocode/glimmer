@@ -38,11 +38,18 @@ pub struct BitmapPainter {
 
     /// 最近一帧的尺寸（点）。
     size: NSSize,
+
+    /// 最近一帧用的候选词字号（点），译文与序号按比例跟着变。
+    text_size: f32,
+
+    /// 配置里的候选词字号（点，`[general] font_size`），下一帧起替换 `text_size`。
+    next_text_size: f32,
 }
 
 impl BitmapPainter {
-    /// `font` 是用户选的字族名，空为系统字体；没装就回到系统字体。字体库加载失败返回 `None`，调用方退回旧路径。
-    pub fn new(font: &str) -> Option<Self> {
+    /// `font` 是用户选的字族名，空为系统字体；没装就回到系统字体。`text_size` 是候选词字号（点）。
+    /// 字体库加载失败返回 `None`，调用方退回旧路径。
+    pub fn new(font: &str, text_size: f32) -> Option<Self> {
         let started = std::time::Instant::now();
         let font = font.trim();
         let library = if font.is_empty() {
@@ -74,7 +81,15 @@ impl BitmapPainter {
             dark: false,
             scale: 2.0,
             size: NSSize::ZERO,
+            text_size,
+            next_text_size: text_size,
         })
+    }
+
+    /// 换候选词字号：只记下，下一帧（`set_frame`）按新字号画并给出新的窗口尺寸。
+    /// 不直接改当前字号：外观变了 `draw` 会重画当前帧，那时窗口还是旧尺寸，换了字号的位图会被裁掉。
+    pub fn set_text_size(&mut self, text_size: f32) {
+        self.next_text_size = text_size;
     }
 
     /// 记下新一帧并画好，返回窗口该有的尺寸（点）。
@@ -92,6 +107,7 @@ impl BitmapPainter {
         };
         self.dark = dark;
         self.scale = scale;
+        self.text_size = self.next_text_size;
         self.repaint();
         self.size
     }
@@ -120,12 +136,14 @@ impl BitmapPainter {
         }
     }
 
+    /// 按当前外观、倍数与字号把最近一帧画成位图，并记下窗口尺寸。
     fn repaint(&mut self) {
         let theme = if self.dark {
             Theme::dark()
         } else {
             Theme::light()
-        };
+        }
+        .with_text_size(self.text_size);
         let started = std::time::Instant::now();
         let rendered =
             match self

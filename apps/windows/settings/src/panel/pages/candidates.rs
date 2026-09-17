@@ -1,6 +1,8 @@
-//! 「候选窗口」页：外观、排布、渲染引擎、字体、拼音显示位置、悬浮状态条。
+//! 「候选窗口」页：外观、排布、渲染引擎、字体、文字大小、拼音显示位置、悬浮状态条。
 
-use glimmer_platform::{CandidateRenderer, LayoutMode, PreeditMode, ThemeMode};
+use glimmer_platform::{
+    CandidateRenderer, LayoutMode, MAX_FONT_SIZE, MIN_FONT_SIZE, PreeditMode, ThemeMode,
+};
 use windows_reactor::*;
 
 use crate::panel::controls::{field, page};
@@ -73,6 +75,15 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
                 .items_source(suggestions)
                 .on_text_changed(context.callback(Message::FontQuery))
                 .on_suggestion_chosen(context.callback(Message::Font)),
+        ),
+        field(
+            "文字大小",
+            "候选词的字号（12 至 28，缺省 16），译词与序号按比例跟着变；只对微明渲染器生效。",
+            NumberBox::new()
+                .minimum(f64::from(MIN_FONT_SIZE))
+                .maximum(f64::from(MAX_FONT_SIZE))
+                .value(f64::from(g.font_size()))
+                .on_value_changed(context.callback(Message::FontSize)),
         ),
         field(
             "拼音显示",
