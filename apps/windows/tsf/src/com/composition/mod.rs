@@ -18,7 +18,7 @@ use glimmer_platform::protocol::{Frame, PreeditKind};
 
 pub(crate) use self::shared::Shared;
 use self::sink::CompositionSink;
-use super::edit::{InputContext, anchor_rect, input_context};
+use super::edit::{InputContext, anchor_rect, caret_rect, input_context};
 use super::service::SharedClient;
 
 /// 内联要显示的拼音行（跳过被纠错划掉的原字母）；空串表示没有组句内容。
@@ -44,17 +44,22 @@ pub(crate) fn apply(
     if let Some(text) = commit {
         commit_text(shared, context, ec, text)?;
     }
+    // 一段组句里只问一次输入框状态。行内模式看组句刚起；`preedit = window` 模式应用里根本没有组句，
+    // 得另用一个标记，否则每敲一键都要重读一遍光标前文、重报一次私密状态。
+    let report_input = !shared.has_composition() && !shared.context_reported();
+    if report_input {
+        shared.set_context_reported(true);
+    }
+    let input = report_input.then(|| input_context(context, ec));
     if preedit.is_empty() {
         end_composition(shared, ec)?;
     } else {
-        let starting = !shared.has_composition();
-        let input = starting.then(|| input_context(context, ec));
         update_preedit(shared, context, ec, preedit)?;
-        if let Some(InputContext { private, before }) = input {
-            report_privacy(engine, private);
-            if let Some(before) = before {
-                report_surrounding(engine, before);
-            }
+    }
+    if let Some(InputContext { private, before }) = input {
+        report_privacy(engine, private);
+        if let Some(before) = before {
+            report_surrounding(engine, before);
         }
     }
     report_caret(shared, engine, context, ec);
@@ -86,13 +91,17 @@ fn report_surrounding(engine: &SharedClient, before: String) {
 
 /// 组句进行中才报位置；组句已收 Server 会按空帧 / `Commit` 自行收窗口。
 fn report_caret(shared: &Shared, engine: &SharedClient, context: &ITfContext, ec: u32) {
-    let Some(composition) = shared.composition() else {
-        return;
+    let rect = match shared.composition() {
+        Some(composition) => {
+            let Ok(range) = (unsafe { composition.GetRange() }) else {
+                return;
+            };
+            anchor_rect(context, ec, &range)
+        }
+        // 「只在候选窗口」模式应用里不放行内拼音：没有组句范围可量，量插入点。
+        None if shared.composing() => caret_rect(context, ec),
+        None => return,
     };
-    let Ok(range) = (unsafe { composition.GetRange() }) else {
-        return;
-    };
-    let rect = anchor_rect(context, ec, &range);
     // 引擎正被别处借着（罕见）就跳过这拍，Server 保持上次位置。
     if let Ok(mut guard) = engine.try_borrow_mut()
         && let Some(client) = guard.as_mut()

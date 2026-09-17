@@ -1,18 +1,16 @@
 //! 「翻译选中文字」的读选区会话：Server 收到快捷键后请 DLL 读当前选区，这里在异步只读会话里取文本与屏幕矩形回给 Server。
 //! 读到非空选区才置 [`Shared::set_translating`]。
 
-use std::mem::ManuallyDrop;
 use std::rc::Rc;
 
 use windows::Win32::UI::TextServices::{
-    ITfContext, ITfEditSession, ITfEditSession_Impl, ITfRange, TF_DEFAULT_SELECTION, TF_ES_READ,
-    TF_SELECTION,
+    ITfContext, ITfEditSession, ITfEditSession_Impl, ITfRange, TF_ES_READ,
 };
 use windows::core::{Result, implement};
 
 use glimmer_platform::protocol::ScreenRect;
 
-use super::anchor::{anchor_rect, mouse_screen_rect};
+use super::anchor::{anchor_rect, mouse_screen_rect, selection_range};
 use crate::com::composition::Shared;
 use crate::com::log::log;
 use crate::com::service::SharedClient;
@@ -77,21 +75,6 @@ fn read_selection(context: &ITfContext, ec: u32) -> (String, ScreenRect) {
     };
     let rect = anchor_rect(context, ec, &range);
     (range_text(&range, ec), rect)
-}
-
-fn selection_range(context: &ITfContext, ec: u32) -> Option<ITfRange> {
-    let mut selection = [TF_SELECTION::default()];
-    let mut fetched = 0u32;
-    unsafe {
-        context
-            .GetSelection(ec, TF_DEFAULT_SELECTION, &mut selection, &mut fetched)
-            .ok()?;
-    }
-    if fetched == 0 {
-        return None;
-    }
-    // GetSelection 移交 range 的所有权（ManuallyDrop），取出后由调用方释放。
-    unsafe { ManuallyDrop::take(&mut selection[0].range) }
 }
 
 fn range_text(range: &ITfRange, ec: u32) -> String {

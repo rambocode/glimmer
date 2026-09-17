@@ -99,6 +99,7 @@ impl Router {
             .unwrap_or_else(|| "翻译中…".to_owned());
         Frame {
             preedit: Vec::new(),
+            preedit_mode: self.config.preedit,
             cursor: 0,
             candidates: CandidateList {
                 items: vec![translate_candidate(text)],

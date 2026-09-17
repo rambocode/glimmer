@@ -97,16 +97,18 @@ impl Engine {
         if letters < MIN_PREDICTION_LETTERS {
             return None;
         }
-        let (pinyin, syllables, guess) = match segment_longest_prefix(pinyin_source) {
+        let (pinyin, syllables, guess, abbreviated) = match segment_longest_prefix(pinyin_source) {
             Ok((mut segmentations, tail)) => {
                 self.prefer_convertible(&mut segmentations, true);
+                let best = segmentations.first();
                 (
                     query::join_marked(&segmentations, tail),
-                    segmentations.first().map_or(0, |s| s.syllables.len()),
+                    best.map_or(0, |s| s.syllables.len()),
                     self.local_guess(&segmentations),
+                    best.is_some_and(mostly_abbreviated),
                 )
             }
-            Err(_) => (pinyin_source.to_owned(), 0, String::new()),
+            Err(_) => (pinyin_source.to_owned(), 0, String::new(), false),
         };
         if question {
             self.last_question_guess = guess.clone();
@@ -125,7 +127,13 @@ impl Engine {
                 .map(|c| c.text.clone())
                 .collect(),
             guess,
-            max_items: policy.max_items,
+            // 简拼（半数以上音节是缩写）不问词：模型按声母凑出来的大多是生造词（复合语气、符号映射），
+            // 只问整句补全；问字模式的答案不受这条限制（答案本来就对不上问题的拼音）。
+            max_items: if abbreviated && !question {
+                0
+            } else {
+                policy.max_items
+            },
             want_sentence: policy.sentence && !question,
             text: String::new(),
             target_language: String::new(),
@@ -357,4 +365,18 @@ impl Engine {
             .into_iter()
             .any(|d| d.lookup_exact(&pattern).iter().any(|hit| hit.text == ch))
     }
+}
+
+/// 半数以上音节是缩写（声母 `f` 或未打完的前缀 `zho`）：这种输入下模型按声母凑词基本只会给生造词，
+/// 只问整句补全。`fhyq` → 符合要求 是缩写，`fuheyaoqiu` 不是，`nih`（两全一缩）也不是。
+fn mostly_abbreviated(segmentation: &Segmentation) -> bool {
+    let total = segmentation.syllables.len();
+    total > 0
+        && segmentation
+            .syllables
+            .iter()
+            .filter(|syllable| !syllable.complete)
+            .count()
+            * 2
+            >= total
 }

@@ -13,6 +13,10 @@ pub(crate) struct Shared {
     /// Server 上次回的帧非空；决定 `OnTestKeyDown` 要不要吃功能键。
     composing: Cell<bool>,
 
+    /// 这一段的输入框状态（私密与否、光标前文）已经报给 Server 了。
+    /// 行内模式下靠「组句刚起」判断，`preedit = window` 模式应用里没有组句，得另记一个标记。
+    context_reported: Cell<bool>,
+
     /// 「翻译选中文字」评审进行中：所有键交给 Server 定接受 / 取消，轮询定时器照常拉云端译文。
     translating: Cell<bool>,
 
@@ -34,6 +38,7 @@ impl Shared {
         Rc::new(Self {
             composition: RefCell::new(None),
             composing: Cell::new(false),
+            context_reported: Cell::new(false),
             translating: Cell::new(false),
             last_context: RefCell::new(None),
             server_stale: Cell::new(false),
@@ -68,6 +73,18 @@ impl Shared {
 
     pub(crate) fn set_composing(&self, value: bool) {
         self.composing.set(value);
+        // 组句结束：下一段重新报输入框状态。
+        if !value {
+            self.context_reported.set(false);
+        }
+    }
+
+    pub(crate) fn context_reported(&self) -> bool {
+        self.context_reported.get()
+    }
+
+    pub(crate) fn set_context_reported(&self, value: bool) {
+        self.context_reported.set(value);
     }
 
     pub(crate) fn translating(&self) -> bool {

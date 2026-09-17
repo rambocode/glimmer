@@ -113,8 +113,9 @@ pub(super) fn paint(hdc: HDC, data: &RenderData, client: RECT) {
 }
 
 /// 顶部拼音行：各段按样式画、自己画光标、右侧整句补全。返回占用高度。
+/// 「只在行内」时没有拼音行，但整句补全仍要画（占用同一条线）。
 fn draw_top_line(hdc: HDC, data: &RenderData, y: i32) -> i32 {
-    if data.preedit.is_empty() {
+    if data.preedit.is_empty() && data.sentence.is_none() {
         return 0;
     }
     let theme = &data.theme;
@@ -139,15 +140,17 @@ fn draw_top_line(hdc: HDC, data: &RenderData, y: i32) -> i32 {
         }
         x += width;
     }
-    let before = concat_before_cursor(&data.preedit, data.cursor);
-    let caret_x = theme.padding + measure(hdc, theme.annotation_font, &before).cx;
-    let caret = RECT {
-        left: caret_x,
-        top,
-        right: caret_x + scale_line(theme),
-        bottom: top + height,
-    };
-    fill_rect(hdc, caret, theme.text_color);
+    if !data.preedit.is_empty() {
+        let before = concat_before_cursor(&data.preedit, data.cursor);
+        let caret_x = theme.padding + measure(hdc, theme.annotation_font, &before).cx;
+        let caret = RECT {
+            left: caret_x,
+            top,
+            right: caret_x + scale_line(theme),
+            bottom: top + height,
+        };
+        fill_rect(hdc, caret, theme.text_color);
+    }
     if let Some(sentence) = &data.sentence {
         let sentence_x = x + theme.column_gap;
         let cloud = cloud_glyph_width(hdc, theme);
@@ -330,13 +333,18 @@ fn draw_horizontal(hdc: HDC, data: &RenderData, y: i32, width: i32) {
 }
 
 fn top_line_size(hdc: HDC, data: &RenderData) -> (i32, i32) {
-    if data.preedit.is_empty() {
+    if data.preedit.is_empty() && data.sentence.is_none() {
         return (0, 0);
     }
     let theme = &data.theme;
     let height = line_height(hdc, theme.annotation_font);
-    let full: String = data.preedit.iter().map(|(t, _)| t.as_str()).collect();
-    let mut width = measure(hdc, theme.annotation_font, &full).cx + scale_line(theme);
+    // 没有拼音行时那段宽度为 0，但整句补全前面的间隔照旧。
+    let mut width = if data.preedit.is_empty() {
+        0
+    } else {
+        let full: String = data.preedit.iter().map(|(t, _)| t.as_str()).collect();
+        measure(hdc, theme.annotation_font, &full).cx + scale_line(theme)
+    };
     if let Some(sentence) = &data.sentence {
         width += theme.column_gap
             + cloud_glyph_width(hdc, theme)

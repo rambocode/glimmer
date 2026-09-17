@@ -153,6 +153,7 @@ impl Router {
                     text: text.clone(),
                     kind: PreeditKind::Typed,
                 }],
+                preedit_mode: self.config.preedit,
                 cursor: *cursor,
                 candidates: CandidateList { items: Vec::new() },
                 highlight: usize::MAX,
@@ -180,6 +181,7 @@ impl Router {
                 self.engine.annotate(&mut candidates);
                 Frame {
                     preedit: preedit.clone(),
+                    preedit_mode: self.config.preedit,
                     cursor: *cursor,
                     candidates,
                     highlight: highlight - page * page_size,

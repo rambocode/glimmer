@@ -1,6 +1,8 @@
 use glimmer_core::ShuangpinScheme;
 use glimmer_platform::protocol::KeyModifiers;
-use glimmer_platform::{AppsConfig, CandidateRenderer, Config, KeyCombo, LayoutMode, ThemeMode};
+use glimmer_platform::{
+    AppsConfig, CandidateRenderer, Config, KeyCombo, LayoutMode, PreeditMode, ThemeMode,
+};
 
 use super::RenderSettings;
 
@@ -27,6 +29,9 @@ pub struct RouterConfig {
 
     /// 候选窗口字号（点，`[general] font_size`，已夹到 12–28）；只对微明渲染器生效。
     pub font_size: u32,
+
+    /// 拼音显示位置（`[general] preedit`）。
+    pub preedit: PreeditMode,
 
     /// 翻页键对（`[general] page_keys`，上一页 / 下一页）。
     pub page_keys: (char, char),
@@ -91,6 +96,7 @@ impl From<&Config> for RouterConfig {
             renderer: config.general.renderer,
             font: config.general.font.trim().to_owned(),
             font_size: config.general.font_size(),
+            preedit: config.general.preedit,
             page_keys: config.general.page_keys(),
             english_candidates: config.general.english_candidates,
             full_width: config.general.full_width_punctuation,

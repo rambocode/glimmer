@@ -110,6 +110,38 @@ fn prediction_request_trims_context_and_only_fires_while_composing() {
     assert_eq!(engine.request_prediction(None, &[]), None);
 }
 
+/// 简拼（半数以上音节是缩写）只问整句补全：模型按声母凑出来的词大多是生造词（复合语气、符号映射）。
+#[test]
+fn abbreviated_input_only_asks_for_the_sentence() {
+    let submitted = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
+    let mut engine = engine().with_predictor(Box::new(EchoPredictor {
+        submitted: submitted.clone(),
+        replies: Vec::new(),
+        sentence: true,
+    }));
+    engine.set_input("zhsh");
+    let query = engine.query().unwrap();
+    assert_eq!(
+        engine.request_prediction(None, &query.candidates.items),
+        Some(1)
+    );
+    let request = submitted.borrow()[0].clone();
+    assert_eq!(request.letters, "zhsh");
+    assert_eq!(request.max_items, 0, "简拼不该要词");
+    assert!(request.want_sentence, "整句补全照常要");
+
+    // 完整拼音照常要词
+    engine.set_input("zhongshi");
+    let query = engine.query().unwrap();
+    assert_eq!(
+        engine.request_prediction(None, &query.candidates.items),
+        Some(2)
+    );
+    let request = submitted.borrow()[1].clone();
+    assert_eq!(request.max_items, 2);
+    assert!(request.want_sentence);
+}
+
 #[test]
 fn cursor_in_the_middle_scopes_candidates_and_prediction_to_the_left_part() {
     let mut engine = engine();

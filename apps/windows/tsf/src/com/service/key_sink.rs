@@ -171,7 +171,12 @@ impl TextService_Impl {
             };
             match response {
                 Ok(KeyReply::Result(response)) => {
-                    let preedit = preedit_string(&response.frame);
+                    // 「只在候选窗口」模式应用里不放行内拼音（那一行由 Server 画在候选窗口顶部）。
+                    let preedit = if response.frame.preedit_mode.inline() {
+                        preedit_string(&response.frame)
+                    } else {
+                        String::new()
+                    };
                     self.shared.set_composing(!response.frame.is_empty());
                     // 翻译评审的任何键都结束评审（Server 侧已同步结束）。
                     self.shared.set_translating(false);

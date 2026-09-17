@@ -1,7 +1,9 @@
 //! 候选窗口的定位锚点：组句范围 / 选区在屏幕上的矩形，拿不到时退到鼠标位置。
 
+use std::mem::ManuallyDrop;
+
 use windows::Win32::Foundation::{POINT, RECT};
-use windows::Win32::UI::TextServices::{ITfContext, ITfRange};
+use windows::Win32::UI::TextServices::{ITfContext, ITfRange, TF_DEFAULT_SELECTION, TF_SELECTION};
 use windows::Win32::UI::WindowsAndMessaging::GetCursorPos;
 use windows::core::BOOL;
 
@@ -10,6 +12,30 @@ use glimmer_platform::protocol::ScreenRect;
 /// `range` 的屏幕矩形，拿不到（有些应用给全零 / 空矩形）退到鼠标处。
 pub(crate) fn anchor_rect(context: &ITfContext, ec: u32, range: &ITfRange) -> ScreenRect {
     to_screen(range_rect(context, ec, range).unwrap_or_else(mouse_anchor))
+}
+
+/// 插入点（没有选区时是光标，有选区时是选区）的屏幕矩形。「只在候选窗口」模式应用里不放 marked text，
+/// 没有组句范围可量，就用它给候选窗口定位。
+pub(crate) fn caret_rect(context: &ITfContext, ec: u32) -> ScreenRect {
+    match selection_range(context, ec) {
+        Some(range) => anchor_rect(context, ec, &range),
+        None => mouse_screen_rect(),
+    }
+}
+
+/// 当前选区的范围；`GetSelection` 移交所有权，由调用方释放。
+pub(crate) fn selection_range(context: &ITfContext, ec: u32) -> Option<ITfRange> {
+    let mut selection = [TF_SELECTION::default()];
+    let mut fetched = 0u32;
+    unsafe {
+        context
+            .GetSelection(ec, TF_DEFAULT_SELECTION, &mut selection, &mut fetched)
+            .ok()?;
+    }
+    if fetched == 0 {
+        return None;
+    }
+    unsafe { ManuallyDrop::take(&mut selection[0].range) }
 }
 
 /// 没有可量的范围时的锚点：鼠标处一个零宽、约一行高的矩形。

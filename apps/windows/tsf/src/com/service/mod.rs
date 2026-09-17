@@ -6,6 +6,7 @@ mod connection;
 mod display;
 mod document;
 mod key_sink;
+mod launch;
 mod mode;
 mod next;
 mod processor;

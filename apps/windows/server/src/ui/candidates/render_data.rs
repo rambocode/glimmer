@@ -61,11 +61,7 @@ impl RenderData {
     pub(super) fn set(&mut self, frame: &Frame) {
         self.layout = frame.layout;
         self.theme_mode = frame.theme;
-        self.preedit = frame
-            .preedit
-            .iter()
-            .map(|segment| (segment.text.clone(), segment.kind))
-            .collect();
+        self.preedit = window_preedit(frame);
         self.cursor = frame.cursor;
         self.rows = frame
             .candidates
@@ -107,5 +103,45 @@ impl RenderData {
             sentence: self.sentence.clone(),
             status: self.notice.clone(),
         }
+    }
+}
+
+/// 窗口顶部要画的拼音行：`[general] preedit` 配成「只在行内」时为空（拼音已经在应用里）；
+/// 整句补全仍画在这一行上，所以空行时窗口仍可能留出这条线。
+fn window_preedit(frame: &Frame) -> Vec<(String, PreeditKind)> {
+    if !frame.preedit_mode.in_window() {
+        return Vec::new();
+    }
+    frame
+        .preedit
+        .iter()
+        .map(|segment| (segment.text.clone(), segment.kind))
+        .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use glimmer_platform::PreeditMode;
+    use glimmer_platform::protocol::{Frame, PreeditKind, PreeditSegment};
+
+    use super::window_preedit;
+
+    fn frame(mode: PreeditMode) -> Frame {
+        Frame {
+            preedit: vec![PreeditSegment {
+                text: "ni'hao".to_owned(),
+                kind: PreeditKind::Typed,
+            }],
+            preedit_mode: mode,
+            ..Frame::default()
+        }
+    }
+
+    /// 只有「只在行内」不给窗口拼音行；另两档窗口都得画。
+    #[test]
+    fn window_keeps_the_pinyin_row_unless_inline_only() {
+        assert_eq!(window_preedit(&frame(PreeditMode::Both)).len(), 1);
+        assert_eq!(window_preedit(&frame(PreeditMode::Window)).len(), 1);
+        assert!(window_preedit(&frame(PreeditMode::Inline)).is_empty());
     }
 }
