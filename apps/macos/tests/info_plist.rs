@@ -52,7 +52,7 @@ fn tis_registration_keys_are_present() {
     assert_eq!(
         string(&plist, "InputMethodConnectionName"),
         format!("{id}_Connection"),
-        "连接名必须是 <bundle id>_Connection，与 controller.rs 的 IMKServer 创建参数对得上"
+        "连接名必须是 <bundle id>_Connection，与 IMKServer 创建参数对得上"
     );
     assert!(
         !string(&plist, "InputMethodServerControllerClass").is_empty(),
