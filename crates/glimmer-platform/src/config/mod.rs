@@ -406,7 +406,7 @@ impl Config {
         };
         toml::from_str(&source).map_err(|source| ConfigError::Parse {
             path: path.to_owned(),
-            source,
+            source: Box::new(source),
         })
     }
 
@@ -566,7 +566,11 @@ mod tests {
         assert_eq!(config.general.log_level, LogLevel::Info);
         assert_eq!(config.shortcut.mode.expression, 'i');
         assert_eq!(config.shortcut.mode.question, 'u');
-        assert_eq!(config.shortcut.translation, Modifiers::OPTION);
+        // 译词修饰键缺省分平台（Windows 是 Ctrl 系，其余 Option 系，见 shortcut.rs），断言跟着 Default 走
+        assert_eq!(
+            config.shortcut.translation,
+            Config::default().shortcut.translation
+        );
     }
 
     #[test]
