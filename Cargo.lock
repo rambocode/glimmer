@@ -1562,7 +1562,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-macos"
-version = "0.1.7-dev"
+version = "0.1.7"
 dependencies = [
  "dotenvy",
  "glimmer-core",
@@ -1675,7 +1675,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-windows-server"
-version = "0.1.0-alpha.6-dev"
+version = "0.1.0-alpha.6"
 dependencies = [
  "dotenvy",
  "embed-manifest",
@@ -1693,7 +1693,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-windows-settings"
-version = "0.1.0-alpha.6-dev"
+version = "0.1.0-alpha.6"
 dependencies = [
  "glimmer-core",
  "glimmer-learning",
@@ -1711,7 +1711,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-windows-tsf"
-version = "0.1.0-alpha.6-dev"
+version = "0.1.0-alpha.6"
 dependencies = [
  "glimmer-core",
  "glimmer-platform",
