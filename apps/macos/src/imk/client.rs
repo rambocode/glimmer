@@ -3,10 +3,17 @@
 //! objc2-input-method-kit 没有为 IMKTextInput 生成绑定，这里用 `msg_send!` 直接发消息。
 
 use glimmer_core::SurroundingText;
+use objc2::AnyThread;
 use objc2::msg_send;
 use objc2::rc::Retained;
 use objc2::runtime::AnyObject;
-use objc2_foundation::{NSAttributedString, NSDictionary, NSNotFound, NSRange, NSRect, NSString};
+use objc2_app_kit::{
+    NSMarkedClauseSegmentAttributeName, NSUnderlineStyle, NSUnderlineStyleAttributeName,
+};
+use objc2_foundation::{
+    NSAttributedString, NSAttributedStringKey, NSDictionary, NSNotFound, NSNumber, NSRange, NSRect,
+    NSString,
+};
 
 /// `{NSNotFound, 0}`：不替换任何已有文本，插到当前位置。
 const NO_REPLACEMENT: NSRange = NSRange::new(NSNotFound as usize, 0);
@@ -23,13 +30,19 @@ impl<'a> TextClient<'a> {
     }
 
     /// 设置 marked text（带下划线的未上屏文本），光标放在第 `cursor` 个字符处。空串等于清除。
+    ///
+    /// 必须送带 `NSMarkedClauseSegment` 与下划线属性的 `NSAttributedString`：送纯 `NSString` 时 IMK 不认
+    /// `selectionRange`，应用里整段 marked text 会处于选中状态，网页编辑器（ProseMirror 一类）看到非空选区
+    /// 就弹出加粗 / 链接的浮动格式条。`NSRange` 按 UTF-16 计，光标从字符数换算。
     pub fn set_marked_text(&self, text: &str, cursor: usize) {
         let string = NSString::from_str(text);
-        let cursor = NSRange::new(cursor.min(text.chars().count()), 0);
+        let cursor: usize = text.chars().take(cursor).map(char::len_utf16).sum();
+        let cursor = NSRange::new(cursor, 0);
+        let attributed = marked_attributed_string(&string);
         unsafe {
             let _: () = msg_send![
                 self.object,
-                setMarkedText: &*string,
+                setMarkedText: &*attributed,
                 selectionRange: cursor,
                 replacementRange: NO_REPLACEMENT
             ];
@@ -123,5 +136,28 @@ impl<'a> TextClient<'a> {
             let _: Option<Retained<NSDictionary>> = msg_send![self.object, attributesForCharacterIndex: 0usize, lineHeightRectangle: &mut rect];
         }
         rect
+    }
+}
+
+/// 给 marked text 加上 IMK 认的属性：整段一个子句（`NSMarkedClauseSegment` = 0）加单下划线，
+/// 与 `IMKInputController::markForStyle:atRange:` 对 `kTSMHiliteConvertedText` 的输出等价。
+fn marked_attributed_string(string: &NSString) -> Retained<NSAttributedString> {
+    let underline = NSNumber::numberWithInteger(NSUnderlineStyle::Single.0);
+    let segment = NSNumber::numberWithInteger(0);
+    let attributes: Retained<NSDictionary<NSAttributedStringKey, NSNumber>> = unsafe {
+        NSDictionary::from_slices(
+            &[
+                NSUnderlineStyleAttributeName,
+                NSMarkedClauseSegmentAttributeName,
+            ],
+            &[&*underline, &*segment],
+        )
+    };
+    unsafe {
+        NSAttributedString::initWithString_attributes(
+            NSAttributedString::alloc(),
+            string,
+            Some(&*Retained::cast_unchecked(attributes)),
+        )
     }
 }

@@ -15,3 +15,12 @@ ego lite / Chrome 这类 Chromium 壳里，IMK 送来的事件和别的应用不
 旧会话的 deactivate 若走完整收尾，会把新会话正在敲的拼音原样上屏、收掉菜单栏状态项、停掉配置监视定时器，
 表现为「浏览器里有时敲不出字 / 状态项没了，切到别的应用再切回来就好」。现在 `Host::active_controller` 记着当前会话的对象地址，
 只有它自己的 deactivate 才拆全局状态，旧会话的 deactivate 只重置自己的 Shift 手势。
+
+## marked text 要送 NSAttributedString，纯 NSString 会让整段处于选中状态（2026-09-17）
+
+`setMarkedText:selectionRange:replacementRange:` 送纯 `NSString` 时，IMK 客户端不认 `selectionRange`，
+应用里整段 marked text 会处于选中状态：Chromium 里 `getSelection()` 是 0 到末尾的非空选区（TextEdit 的 AX 也是），
+ProseMirror / Tiptap 一类网页编辑器看到非空选区就弹出加粗 / 链接的浮动格式条。苹果拼音在同一页面里选区是折叠的。
+现在 `TextClient::set_marked_text` 送带 `NSMarkedClauseSegment`（整段一个子句）与单下划线属性的 `NSAttributedString`，
+选区回到 `{cursor, 0}`，光标在组句中间（左箭头）也对。`NSRange` 按 UTF-16 计，光标从字符数换算。
+复现方法：一个记录 `selectionchange` 的 contenteditable 页面，用 `osascript keystroke` 敲拼音、DevTools 读回选区。
