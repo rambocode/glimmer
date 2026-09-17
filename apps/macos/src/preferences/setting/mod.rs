@@ -164,6 +164,9 @@ pub enum Setting {
     /// 「关于」页「复制诊断信息」按钮。
     CopyDiagnostics,
 
+    /// 「关于」「高级」页「打包日志到桌面」按钮。
+    ExportLogs,
+
     /// `[predict] slots`，弹出菜单 0–4：第一页末尾留给云端词的格数。
     CloudSlots,
 
@@ -233,6 +236,7 @@ impl Setting {
             Self::VerboseLog => 21,
             Self::OpenLogDirectory => 22,
             Self::CopyDiagnostics => 23,
+            Self::ExportLogs => 48,
             Self::CloudSlots => 24,
             Self::EnglishCandidatesOffInApps => 25,
             Self::DeleteCandidateKeys => 26,
@@ -300,6 +304,7 @@ impl Setting {
             21 => Self::VerboseLog,
             22 => Self::OpenLogDirectory,
             23 => Self::CopyDiagnostics,
+            48 => Self::ExportLogs,
             24 => Self::CloudSlots,
             25 => Self::EnglishCandidatesOffInApps,
             26 => Self::DeleteCandidateKeys,
@@ -381,6 +386,7 @@ mod tests {
             Setting::VerboseLog,
             Setting::OpenLogDirectory,
             Setting::CopyDiagnostics,
+            Setting::ExportLogs,
             Setting::CloudSlots,
             Setting::EnglishCandidatesOffInApps,
             Setting::DeleteCandidateKeys,
