@@ -227,6 +227,44 @@ fn shuangpin_semicolon_stays_in_buffer_in_question_mode() {
 }
 
 #[test]
+fn shuangpin_enters_modes_with_shifted_letters() {
+    let mut router = router_with(RouterConfig {
+        shuangpin: Some(ShuangpinScheme::Xiaohe),
+        ..RouterConfig::default()
+    });
+    // Shift+V 进表达式：数字和运算符进缓冲区，空格上屏结果。
+    let (outcome, commit, _) = press(&mut router, letter_with('V', SHIFT));
+    assert_eq!((outcome, commit), (KeyOutcome::Consumed, None));
+    press(&mut router, digit(1));
+    press(&mut router, punct('+'));
+    let (_, _, frame) = press(&mut router, digit(2));
+    assert_eq!(preedit(&frame), "V1+2");
+    assert_eq!(candidate_texts(&frame)[0], "3");
+    let (_, commit, _) = press(&mut router, punct(' '));
+    assert_eq!(commit.as_deref(), Some("3"));
+    // Shift+U 进问字：码点本地答。
+    press(&mut router, letter_with('U', SHIFT));
+    press(&mut router, digit(4));
+    type_letters(&mut router, "e");
+    press(&mut router, digit(0));
+    let (_, _, frame) = press(&mut router, digit(0));
+    assert_eq!(candidate_texts(&frame), ["一"]);
+    press(&mut router, function_key(0x1B));
+    // 小写 v 仍是音节键；其他大写字母、全拼下的 Shift+V 照旧交给应用。
+    let (_, _, frame) = type_letters(&mut router, "v");
+    assert_eq!(preedit(&frame), "zh");
+    press(&mut router, function_key(0x1B));
+    assert_eq!(
+        press(&mut router, letter_with('A', SHIFT)).0,
+        KeyOutcome::Passthrough
+    );
+    let mut full = router_with(RouterConfig::default());
+    let (outcome, _, frame) = press(&mut full, letter_with('V', SHIFT));
+    assert_eq!(outcome, KeyOutcome::Passthrough);
+    assert!(frame.is_empty());
+}
+
+#[test]
 fn punctuation_toggle_is_remembered_per_mode() {
     let mut router = router_with(RouterConfig {
         status_enabled: true,

@@ -21,6 +21,11 @@ pub(crate) fn is_letter(vk: u32) -> bool {
     (0x41..=0x5A).contains(&vk)
 }
 
+/// 可配成模式键的字母 V / U / I（Core `ModeKeys::CANDIDATES`）：双拼下按住 Shift 是表达式 / 问字入口。
+pub(crate) fn is_mode_letter(vk: u32) -> bool {
+    matches!(vk, 0x56 | 0x55 | 0x49)
+}
+
 pub(crate) fn is_shift(vk: u32) -> bool {
     vk == VK_SHIFT.0 as u32 || vk == VK_LSHIFT.0 as u32 || vk == VK_RSHIFT.0 as u32
 }

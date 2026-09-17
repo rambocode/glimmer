@@ -121,7 +121,7 @@ impl GeneralPage {
         note(
             layout,
             mtm,
-            "开双拼后 v、u、i 是音节键，表达式与问字模式只能用 ? 开头进；微软、搜狗方案的 ; 键是 ing。",
+            "开双拼后 v、u、i 是音节键，表达式与问字模式改用 Shift+V、Shift+U 进；微软、搜狗方案的 ; 键是 ing。",
         );
         let wubi_titles: Vec<String> = std::iter::once("关".to_owned())
             .chain(WUBI_VARIANTS.iter().map(|v| v.label().to_owned()))

@@ -35,6 +35,12 @@ impl Router {
             self.engine.set_english_mode(false);
             return self.push_key(c);
         }
+        // 双拼下 Shift+V / Shift+U 进表达式 / 问字模式（全拼下的 v / u 被音节占了）。
+        if !self.composing() && !english && self.engine.takes_mode_letter(c) {
+            self.engine.set_english_mode(false);
+            self.engine.push(c);
+            return Effect::Changed(None);
+        }
         let question = self.composing() && self.engine.question_mode();
         // 英文模式下问字：Caps 让字母以大写送来，按小写收进问题。
         let c = if question && english && c.is_ascii_uppercase() {

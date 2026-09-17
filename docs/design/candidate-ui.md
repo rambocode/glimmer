@@ -187,7 +187,8 @@ CLI 用 `--fuzzy z-zh,n-l` 或 `--fuzzy all` 临时开。
 智能ABC只认 `o` + 韵母键（`a` `e` 是翘舌声母键，`aa` 是 zha、`ee` 是 che），ü 在 `v`、üe 与 ui 同在 `m`。
 微软 / 搜狗的 `;` 是 ing：组句中末尾有落单声母时敲 `;` 进缓冲区（`x;` → xing），其他时候仍是标点，壳问 `Engine::takes_semicolon`。
 
-双拼下 v / u / i 都是音节键，字母模式键让位（`ModeKeys::LETTERLESS`）：表达式与问字只能用 `?` 开头进。拼写纠错停用：敲错一键换掉的是整个声母 / 韵母，
+双拼下 v / u / i 都是音节键，模式键换成对应的大写字母（`ModeKeys::shifted`，搜狗 / 微软双拼的做法）：中文模式、没在组句时 `Shift`+`V` / `Shift`+`U` 进表达式 / 问字，
+缓冲区里存的就是大写前缀（`V1+2`、`Unihc`），之后与全拼下的 `v` / `u` 同路；壳问 `Engine::takes_mode_letter`。Windows 的 DLL 不知道双拼开没开，`Shift`+`V` / `U` / `I` 一律送 Server，全拼下 Server 回放行、由 DLL 自己插入。拼写纠错停用：敲错一键换掉的是整个声母 / 韵母，
 全拼的一处编辑模型不适用。回车仍原样上屏敲的键；全部键都能解成完整音节的串（`nihc`）不记进个人英文词表，解不干净的（`gist`、`hello`）照记。
 快捷候选（`rq` `sj` `xq`）与英文候选仍按敲的键认。
 已知：`lue` / `nue` 与 `lve` / `nve` 同键，解成 v 的写法，词库里少量 `lue` 读音的词双拼下打不出（待把词库统一成 v）；`lo` 与 `luo` 同键，解成 luo。

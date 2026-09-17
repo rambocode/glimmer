@@ -139,13 +139,23 @@ impl Engine {
             .is_some_and(|scheme| scheme.decode(body).pending_initial())
     }
 
-    /// 有效的模式键：双拼下 v / u / i 都是音节键、五笔下都是编码键，字母模式键让位，只剩 `?` 开头的问字。
+    /// 有效的模式键：双拼下 v / u / i 是音节键，模式键换成大写字母（Shift+V / Shift+U）；
+    /// 五笔下所有字母都是编码键，连大写也让位，只剩 `?` 开头的问字。
     pub(super) fn modes(&self) -> ModeKeys {
-        if self.shuangpin.is_some() || self.wubi.is_some() {
+        if self.wubi.is_some() {
             self.modes.letterless()
+        } else if self.shuangpin.is_some() {
+            self.modes.shifted()
         } else {
             self.modes
         }
+    }
+
+    /// 缓冲区为空时敲的大写字母该不该进表达式 / 问字模式：只在双拼下、且是模式键的大写时。
+    /// 壳只在中文模式、Caps 灭时问。
+    pub fn takes_mode_letter(&self, c: char) -> bool {
+        let modes = self.modes();
+        self.shuangpin.is_some() && !self.zhuyin && (c == modes.expression || c == modes.question)
     }
 
     /// 缓冲区为空时敲 `?` 该不该进问字模式（配置 `[shortcut] question_mark`）：壳据此决定问号是入口还是标点。

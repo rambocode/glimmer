@@ -374,6 +374,13 @@ impl GlimmerInputController {
             self.refresh(client);
             return true;
         }
+        // 双拼下 Shift+V / Shift+U 进表达式 / 问字模式（全拼下的 v / u 被音节占了）
+        if !composing && !english && host::with(|h| h.engine.takes_mode_letter(c)).unwrap_or(false)
+        {
+            host::with(|h| h.engine.push(c));
+            self.refresh(client);
+            return true;
+        }
         let question = composing && host::with(|h| h.engine.question_mode()).unwrap_or(false);
         // 英文模式下问字：Caps Lock 让字母以大写送来，按小写收进问题
         let c = if question && english && c.is_ascii_uppercase() {
