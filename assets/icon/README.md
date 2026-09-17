@@ -19,3 +19,6 @@ Windows 共用 `apps/windows/tsf/resources/glimmer.ico`，由 TSF DLL 内嵌，S
 ```bash
 magick assets/icon/logo.png -define icon:auto-resize=256,128,64,48,32,16 apps/windows/tsf/resources/glimmer.ico
 ```
+
+`windows/mode-{zh,en,caps}.svg` 是 Windows 任务栏语言栏上的「中 / 英 / A」图标源文件（纯 alpha，DLL 按任务栏主题填色）；
+改了以后跑 `windows/render-mode-icons.sh` 重新导出 `apps/windows/tsf/resources/mode/*.alpha`（16 / 20 / 24 / 32 四档 DPI）。

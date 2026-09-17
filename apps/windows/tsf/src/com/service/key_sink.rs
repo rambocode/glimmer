@@ -3,6 +3,7 @@
 //! 上下文禁了键盘（密码框，见 [`context`](crate::com::context)）时没在组句的键一律放行。
 
 use windows::Win32::Foundation::{FALSE, LPARAM, WPARAM};
+use windows::Win32::UI::Input::KeyboardAndMouse::VK_CAPITAL;
 use windows::Win32::UI::TextServices::{ITfContext, ITfKeyEventSink_Impl};
 use windows::core::{BOOL, GUID, Ref, Result};
 
@@ -99,6 +100,9 @@ impl TextService_Impl {
     }
 
     fn note_key_up(&self, vk: u32) {
+        if vk == u32::from(VK_CAPITAL.0) {
+            self.mode_state.notify();
+        }
         if self.shift_tap.key_up(vk) {
             self.set_english_mode(!self.mode_state.english());
         }

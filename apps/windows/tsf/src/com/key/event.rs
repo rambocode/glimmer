@@ -64,6 +64,10 @@ fn key_down(vk: VIRTUAL_KEY) -> bool {
     state < 0
 }
 
+pub(crate) fn caps_lock_on() -> bool {
+    key_toggled(VK_CAPITAL)
+}
+
 /// 低位为 1 表示锁定键亮着。
 fn key_toggled(vk: VIRTUAL_KEY) -> bool {
     let state = unsafe { GetKeyState(vk.0 as i32) };
