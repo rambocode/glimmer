@@ -22,6 +22,7 @@ pub(crate) const SHUANGPIN: [(&str, &str); 6] = [
     ("自然码", "ziranma"),
     ("微软双拼", "microsoft"),
     ("搜狗双拼", "sogou"),
+    ("小浪双拼", "xiaolang"),
     ("智能ABC", "abc"),
 ];
 

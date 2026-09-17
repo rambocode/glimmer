@@ -206,8 +206,8 @@ english_full_width_punctuation = false
 # 正在打拼音时敲 , . ? - 这些半角标点怎么办：raw 标点跟着拼音进英文直输段（hello, world 整段原样上屏）/
 # commit 先把首选上屏再出标点（nihao, → 你好，）/ auto 缓冲区切不成拼音（hello）才直输，切得成（nihao）就上屏
 punctuation_mode = "raw"
-# 双拼方案：留空为全拼；xiaohe 小鹤 / ziranma 自然码 / microsoft 微软 / sogou 搜狗 / abc 智能ABC
-# 开着时 v / u / i 都是音节键，表达式模式没有入口，问字只能靠 question_mark 打开后用 ? 进；微软、搜狗方案的 ; 键是 ing
+# 双拼方案：留空为全拼；xiaohe 小鹤 / ziranma 自然码 / microsoft 微软 / sogou 搜狗 / xiaolang 小浪 / abc 智能ABC
+# 开着时非声母键按方案规则解析，表达式模式没有入口，问字只能靠 question_mark 打开后用 ? 进；微软、搜狗方案的 ; 键是 ing
 shuangpin = ""
 # 五笔：留空为拼音；86 / 98 / xsj（新世纪）选版本（要有对应的码表文件）。开着时双拼与注音的设置被忽略，v / u 都是编码键，
 # z 开头是拼音反查（z + 全拼，候选右侧注五笔码）；行为选项在下面的 [wubi] 里

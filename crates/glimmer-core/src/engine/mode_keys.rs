@@ -48,6 +48,15 @@ impl ModeKeys {
         }
     }
 
+    /// 去掉字母模式键：五笔下所有字母都是编码键，只剩 `?`（开着的话）进问字。
+    pub fn letterless(self) -> Self {
+        Self {
+            expression: '\0',
+            question: '\0',
+            question_mark: self.question_mark,
+        }
+    }
+
     /// 两个键都合法且互不相同。不合法的配置整个退回缺省，不做一半。
     pub fn is_valid(&self) -> bool {
         self.expression != self.question
