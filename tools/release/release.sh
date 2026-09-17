@@ -76,7 +76,7 @@ find_run() {
 step "检查仓库状态"
 [[ "$(git branch --show-current)" == main ]] || die "要在 main 上发版"
 [[ -z "$(git status --porcelain --untracked-files=no)" ]] || die "工作区有未提交的改动"
-git fetch -q origin main --tags
+git fetch -q origin main --tags || die "git fetch 失败（本地标签与远端冲突时先 git tag -d 掉那些标签再试）"
 [[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]] || die "main 与 origin/main 不一致，先 pull / push"
 gh auth status >/dev/null 2>&1 || die "gh 没登录"
 
