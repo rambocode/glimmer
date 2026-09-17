@@ -132,7 +132,12 @@ fn host_is_plain_desktop_app() -> bool {
     if !queried {
         return false;
     }
-    let label = unsafe { buffer.as_ptr().cast::<TOKEN_MANDATORY_LABEL>().read() };
+    let label = unsafe {
+        buffer
+            .as_ptr()
+            .cast::<TOKEN_MANDATORY_LABEL>()
+            .read_unaligned()
+    };
     let sid = label.Label.Sid;
     let count_ptr = unsafe { GetSidSubAuthorityCount(sid) };
     if count_ptr.is_null() {

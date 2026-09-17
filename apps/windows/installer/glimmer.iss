@@ -1,4 +1,4 @@
-; 微明 Windows 输入法安装脚本（Inno Setup）。
+﻿; 微明 Windows 输入法安装脚本（Inno Setup）。
 ;
 ; 装到 Program Files\Glimmer（64 位），把 TSF DLL（64 位与 32 位各一份，见 README「安装布局」）、Server、设置程序与随包数据装在一起，
 ; 然后：① 给安装目录加 ALL APPLICATION PACKAGES 读+执行权限（UWP/AppContainer 应用——任务栏搜索、
@@ -61,7 +61,7 @@ Name: "chs"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
 [Messages]
 ; 完成页：DLL 会装进每个应用进程，装之前就开着的应用要用新版必须重启（见文件头「升级」）。
 ; 这是最容易被误解成「设置/新版没生效」的一点，所以放在完成页明说。
-FinishedLabel=安装完成。已打开的应用（资源管理器、聊天工具、编辑器、终端等）要继续用微明，需重启它们或注销一次，新版输入法才会在这些进程里生效。%n%n设置项改动不受影响：保存后一秒内生效，不用重启应用。
+FinishedLabel=安装完成。请注销后重新登录（或重启电脑），微明才会在所有应用里生效。%n%n不方便注销的话，先关掉再重新打开要打字的应用也可以。
 
 [Files]
 ; —— 二进制 ——
