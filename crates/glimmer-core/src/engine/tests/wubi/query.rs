@@ -198,7 +198,11 @@ fn compose_prediction_is_off_but_question_still_asks_the_cloud() {
     // 缓冲区里是编码不是拼音，组句联想不发
     engine.set_input("gggg");
     assert_eq!(engine.request_prediction(None, &[]), None);
-    // `?` 问字敲的仍是拼音，照发
+    // `?` 问字（入口要开着，缺省关）敲的仍是拼音，照发
+    engine.set_mode_keys(ModeKeys {
+        question_mark: true,
+        ..ModeKeys::default()
+    });
     engine.set_input("?mumumu");
     assert!(engine.request_prediction(None, &[]).is_some());
     let request = submitted.borrow()[0].clone();
