@@ -15,12 +15,14 @@ pub(crate) const LANGUAGES: [(&str, &str); 4] = [
 ];
 
 /// 双拼方案：界面名 + 配置写法（空串为全拼）。
-pub(crate) const SHUANGPIN: [(&str, &str); 5] = [
+/// 首项之后逐项对齐 `glimmer_core::ShuangpinScheme::ALL`（顺序与文案由底部单测守住）。
+pub(crate) const SHUANGPIN: [(&str, &str); 6] = [
     ("全拼（不启用双拼）", ""),
     ("小鹤双拼", "xiaohe"),
     ("自然码", "ziranma"),
     ("微软双拼", "microsoft"),
     ("搜狗双拼", "sogou"),
+    ("智能ABC", "abc"),
 ];
 
 /// 五笔：界面名 + 配置写法（空串关）。开着时双拼与注音被忽略，界面上置灰。
@@ -169,9 +171,19 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
 
 #[cfg(test)]
 mod tests {
-    use glimmer_core::WubiVariant;
+    use glimmer_core::{ShuangpinScheme, WubiVariant};
 
-    use super::WUBI;
+    use super::{SHUANGPIN, WUBI};
+
+    /// 界面的双拼下拉必须跟着 Core 的方案表走：新方案没加进 SHUANGPIN，或者文案 / 配置写法对不上，这里拦住。
+    #[test]
+    fn shuangpin_options_match_core_schemes() {
+        assert_eq!(SHUANGPIN.len(), ShuangpinScheme::ALL.len() + 1);
+        for (option, scheme) in SHUANGPIN[1..].iter().zip(ShuangpinScheme::ALL) {
+            assert_eq!(option.0, scheme.label());
+            assert_eq!(option.1, scheme.key());
+        }
+    }
 
     /// 界面的五笔下拉必须跟着 Core 的版本表走：多一个版本没加进 WUBI，或者文案 / 配置写法
     /// 与 Core 对不上，用户选了就会写出 Core 不认的 `[general] wubi`，这里直接拦住。

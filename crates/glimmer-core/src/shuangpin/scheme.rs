@@ -3,7 +3,7 @@ use std::str::FromStr;
 
 use serde::{Deserialize, Serialize};
 
-use super::table::{self, DIGRAPH_INITIALS, Table};
+use super::table::{self, Table};
 use super::{Decoded, Unit};
 use crate::parser;
 
@@ -22,11 +22,20 @@ pub enum Scheme {
 
     /// 搜狗双拼。
     Sogou,
+
+    /// 智能ABC双拼。
+    Abc,
 }
 
 impl Scheme {
     /// 全部方案，设置界面按这个顺序列出。
-    pub const ALL: [Self; 4] = [Self::Xiaohe, Self::Ziranma, Self::Microsoft, Self::Sogou];
+    pub const ALL: [Self; 5] = [
+        Self::Xiaohe,
+        Self::Ziranma,
+        Self::Microsoft,
+        Self::Sogou,
+        Self::Abc,
+    ];
 
     /// 配置文件里的写法。
     pub fn key(self) -> &'static str {
@@ -35,6 +44,7 @@ impl Scheme {
             Self::Ziranma => "ziranma",
             Self::Microsoft => "microsoft",
             Self::Sogou => "sogou",
+            Self::Abc => "abc",
         }
     }
 
@@ -45,15 +55,18 @@ impl Scheme {
             Self::Ziranma => "自然码",
             Self::Microsoft => "微软双拼",
             Self::Sogou => "搜狗双拼",
+            Self::Abc => "智能ABC",
         }
     }
 
+    /// 这套方案的键位表。
     fn table(self) -> &'static Table {
         match self {
             Self::Xiaohe => &table::XIAOHE,
             Self::Ziranma => &table::ZIRANMA,
             Self::Microsoft => &table::MICROSOFT,
             Self::Sogou => &table::SOGOU,
+            Self::Abc => &table::ABC,
         }
     }
 
@@ -67,9 +80,10 @@ impl Scheme {
         c.is_ascii_lowercase() || (c == ';' && self.uses_semicolon())
     }
 
-    /// 键 `key` 当声母时是什么：`v` `i` `u` 是 zh ch sh，其他辅音（含 y w）是自己，元音键与 `;` 不是声母。
+    /// 键 `key` 当声母时是什么：翘舌键（多数方案 `v` `i` `u`，智能ABC `a` `e` `v`）是 zh ch sh，
+    /// 其他辅音（含 y w）是自己，其余元音键与 `;` 不是声母。
     pub fn initial(self, key: char) -> Option<&'static str> {
-        if let Some((_, initial)) = DIGRAPH_INITIALS.iter().find(|(k, _)| *k == key) {
+        if let Some((_, initial)) = self.table().digraphs.iter().find(|(k, _)| *k == key) {
             return Some(initial);
         }
         parser::INITIALS
@@ -114,7 +128,8 @@ impl Scheme {
             .filter(|initial| syllable.starts_with(*initial))
             .max_by_key(|initial| initial.len())?;
         let final_ = &syllable[initial.len()..];
-        let first = DIGRAPH_INITIALS
+        let first = table
+            .digraphs
             .iter()
             .find(|(_, i)| i == initial)
             .map(|(key, _)| *key)
@@ -162,7 +177,8 @@ impl Scheme {
         Decoded::new(units, chars[index..].iter().collect())
     }
 
-    /// 落单的一键代表的前缀：声母键是声母，元音键是元音本身（`a` 后面可能是 ai / an / ang / ao）。
+    /// 落单的一键代表的前缀：声母键是声母，元音键是元音本身（`a` 后面可能是 ai / an / ang / ao）；
+    /// 智能ABC的 `a` `e` 先是声母键，落单时按 zh / ch 算，零声母只能从 `o` 开头。
     fn partial(self, key: char) -> Option<String> {
         if let Some(initial) = self.initial(key) {
             return Some(initial.to_owned());
@@ -268,6 +284,20 @@ mod tests {
             (Scheme::Sogou, "nihk", "ni'hao"),
             (Scheme::Sogou, "oe", "e"),
             (Scheme::Sogou, "y;", "ying"),
+            (Scheme::Abc, "asgo", "zhong'guo"),
+            (Scheme::Abc, "vtpc", "shuang'pin"),
+            (Scheme::Abc, "ojqp", "an'quan"),
+            (Scheme::Abc, "ob", "ou"),
+            (Scheme::Abc, "or", "er"),
+            (Scheme::Abc, "oa", "a"),
+            (Scheme::Abc, "oe", "e"),
+            (Scheme::Abc, "oo", "o"),
+            (Scheme::Abc, "ehoe", "chang'e"),
+            (Scheme::Abc, "aieivi", "zhi'chi'shi"),
+            (Scheme::Abc, "xmxi", "xue'xi"),
+            (Scheme::Abc, "lvlm", "lv'lve"),
+            (Scheme::Abc, "lrhcgm", "liu'huai'gui"),
+            (Scheme::Abc, "nihk", "ni'hao"),
         ];
         for (scheme, keys, expected) in cases {
             assert_eq!(scheme.decode(keys).pinyin(), expected, "{scheme}: {keys}");
@@ -284,6 +314,12 @@ mod tests {
         assert!(!decoded.is_complete());
         assert_eq!(Scheme::Xiaohe.decode("v").pinyin(), "zh");
         assert_eq!(Scheme::Xiaohe.decode("a").pinyin(), "a");
+        // 智能ABC的 `a` `e` 是翘舌声母键，零声母从 `o` 起头
+        assert_eq!(Scheme::Abc.decode("a").pinyin(), "zh");
+        assert_eq!(Scheme::Abc.decode("e").pinyin(), "ch");
+        assert_eq!(Scheme::Abc.decode("v").pinyin(), "sh");
+        assert_eq!(Scheme::Abc.decode("o").pinyin(), "o");
+        assert_eq!(Scheme::Abc.decode(";").tail(), ";");
         // `;` 落单不是任何东西
         assert_eq!(Scheme::Microsoft.decode(";").pinyin(), "");
         assert_eq!(Scheme::Microsoft.decode(";").tail(), ";");

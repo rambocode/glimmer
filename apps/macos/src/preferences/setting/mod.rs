@@ -137,7 +137,7 @@ pub enum Setting {
     /// 第 N 本附加词库的「移除」按钮。
     DictionaryRemove(usize),
 
-    /// `[general] shuangpin`，弹出菜单：关 + 四套方案。
+    /// `[general] shuangpin`，弹出菜单：关 + `ShuangpinScheme::ALL` 的各套方案。
     Shuangpin,
 
     /// [general] traditional，勾选框：繁体输出。

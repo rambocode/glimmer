@@ -64,7 +64,7 @@ pub struct GeneralConfig {
     /// 组句中敲半角标点怎么办：`raw` 进英文直输段（缺省）、`commit` 先把候选上屏、`auto` 像英文才直输。
     pub punctuation_mode: PunctuationMode,
 
-    /// 双拼方案：空串为全拼，否则 `xiaohe` / `ziranma` / `microsoft` / `sogou`（见 [`ShuangpinScheme`]）。
+    /// 双拼方案：空串为全拼，否则 `xiaohe` / `ziranma` / `microsoft` / `sogou` / `abc`（见 [`ShuangpinScheme`]）。
     pub shuangpin: String,
 
     /// 注音模式开关，大千键盘。
