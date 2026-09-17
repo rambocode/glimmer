@@ -248,6 +248,23 @@ fn commit_alignment_backtracks_over_typo_variants() {
 }
 
 #[test]
+fn unfinished_last_syllable_is_not_recorded_as_a_typo() {
+    let engine = engine();
+    let syllables =
+        |list: &[&str]| -> Vec<String> { list.iter().map(|s| (*s).to_owned()).collect() };
+    // shijia 选 时间 是 jian 没敲完：jia 虽是 jian 的敲错变体，也不进个人敲错表
+    for (input, list) in [
+        ("shijia", ["shi", "jian"]),
+        ("zhegua", ["zhe", "guan"]),
+        ("woxia", ["wo", "xian"]),
+    ] {
+        let alignment = engine.align(input, &syllables(&list));
+        assert_eq!(alignment.consumed, input.len());
+        assert!(alignment.typos.is_empty(), "{input}: {:?}", alignment.typos);
+    }
+}
+
+#[test]
 fn fuzzy_rules_add_homophones_behind_exact_hits() {
     // 词库里只有 kai fa 系列加一个 哈；敲 kaiha 没开 f/h 时只有前缀词 开（开哈 原样读得通，词图的敲错边翻不过它），
     // 开了就出 开发（模糊命中）且覆盖更多字母排第一

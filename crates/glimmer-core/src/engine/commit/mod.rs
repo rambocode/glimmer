@@ -561,6 +561,10 @@ impl Engine {
         if exact {
             steps.push((syllable.len(), false));
         }
+        // 没打完排在变体前面：`shijia` 选 时间 是 jian 没敲完，不是把 jian 敲成了 jia
+        if !rest.is_empty() && rest.len() < syllable.len() && syllable.starts_with(rest) {
+            steps.push((rest.len(), false));
+        }
         for len in (1..=rest.len().min(parser::MAX_SYLLABLE_LEN)).rev() {
             if exact && len == syllable.len() {
                 continue;
@@ -571,9 +575,6 @@ impl Engine {
             } else if typo::is_variant(typed, syllable) {
                 steps.push((len, true));
             }
-        }
-        if !rest.is_empty() && rest.len() < syllable.len() && syllable.starts_with(rest) {
-            steps.push((rest.len(), false));
         }
         steps
     }
