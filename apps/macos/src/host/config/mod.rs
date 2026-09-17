@@ -27,6 +27,8 @@ impl Host {
             .set_mixed_english(config.general.mixed_english_candidates);
         self.engine
             .set_emoji_candidates(config.general.emoji_candidates);
+        self.engine
+            .set_translation_reading(config.general.translation_reading);
         self.engine.set_shuangpin(config.general.shuangpin());
         self.apply_wubi(&config);
         self.engine.set_learning(config.general.learning);

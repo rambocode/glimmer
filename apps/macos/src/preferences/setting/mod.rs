@@ -122,6 +122,9 @@ pub enum Setting {
     /// `[general] emoji_candidates`，勾选框：给 emoji 候选。
     EmojiCandidates,
 
+    /// `[general] translation_reading`，勾选框：译词带读音（英语音标 / 日语假名）。
+    TranslationReading,
+
     /// `[shortcut] translation`，快捷键录制按钮（只记修饰键）。
     TranslationKeys,
 
@@ -219,6 +222,7 @@ impl Setting {
             Self::ChineseFirst => 51,
             Self::MixedEnglishCandidates => 53,
             Self::EmojiCandidates => 54,
+            Self::TranslationReading => 56,
             Self::TranslationKeys => 15,
             Self::TranslationSecondKeys => 16,
             Self::TranslateSelectionKeys => 17,
@@ -285,6 +289,7 @@ impl Setting {
             51 => Self::ChineseFirst,
             53 => Self::MixedEnglishCandidates,
             54 => Self::EmojiCandidates,
+            56 => Self::TranslationReading,
             15 => Self::TranslationKeys,
             16 => Self::TranslationSecondKeys,
             17 => Self::TranslateSelectionKeys,
@@ -364,6 +369,7 @@ mod tests {
             Setting::ChineseFirst,
             Setting::MixedEnglishCandidates,
             Setting::EmojiCandidates,
+            Setting::TranslationReading,
             Setting::TranslationKeys,
             Setting::TranslationSecondKeys,
             Setting::TranslateSelectionKeys,

@@ -23,6 +23,8 @@ pub(crate) enum Message {
     MixedEnglishCandidates(bool),
     /// `[general] emoji_candidates`。
     EmojiCandidates(bool),
+    /// `[general] translation_reading`：译词带读音（英语音标 / 日语假名）。
+    TranslationReading(bool),
     FullWidthPunctuation(bool),
     EnglishFullWidthPunctuation(bool),
     PunctuationMode(Option<usize>),

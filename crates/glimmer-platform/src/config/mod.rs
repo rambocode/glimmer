@@ -169,6 +169,8 @@ pub const TEMPLATE: &str = concat!(
 [general]
 # 学习语言（en 英语 / ja 日语 / es 西班牙语 / off 不显示译文）：候选旁显示哪种语言的译文，要有对应的释义表才生效
 learning_language = "en"
+# 译词带不带读音：英语是美式音标（develop (dɪˈveləp)）、日语是假名；false 只显示译词
+translation_reading = true
 # 每页候选数（1–9）
 page_size = 9
 # 翻页键对：前一个上一页、后一个下一页。可选 "[]" 或 ",."；选 ",." 的话组句中敲逗号句号是翻页而不是上屏加标点
@@ -556,6 +558,7 @@ mod tests {
         assert_eq!(config.general.layout, LayoutMode::Horizontal);
         assert_eq!(config.general.preedit, PreeditMode::Window);
         assert_eq!(config.general.learning_language, "en");
+        assert!(config.general.translation_reading);
         assert!(config.general.english_candidates);
         assert!(!config.general.traditional);
         assert!(config.general.mixed_english_candidates && config.general.emoji_candidates);

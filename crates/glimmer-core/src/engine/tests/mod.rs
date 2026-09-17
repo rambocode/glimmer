@@ -11,6 +11,7 @@ mod lookup;
 mod privacy;
 mod segmentation;
 mod shuangpin;
+mod translation;
 mod wubi;
 mod zhuyin;
 

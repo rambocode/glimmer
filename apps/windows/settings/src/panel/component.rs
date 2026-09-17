@@ -58,6 +58,7 @@ impl Component for Settings {
                 self.save("general", "mixed_english_candidates", on);
             }
             Message::EmojiCandidates(on) => self.save("general", "emoji_candidates", on),
+            Message::TranslationReading(on) => self.save("general", "translation_reading", on),
             Message::FullWidthPunctuation(on) => {
                 self.save("general", "full_width_punctuation", on);
             }

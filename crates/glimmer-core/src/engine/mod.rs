@@ -130,6 +130,9 @@ pub struct Engine {
     /// 给 emoji 候选（缺省开）；关掉时即便加载了 emoji 表也不出。
     emoji_candidates: bool,
 
+    /// 候选旁的译词带不带读音（英语音标 / 日语假名，缺省带）；关掉时 `annotate` 把读音去掉，只留译词。
+    translation_reading: bool,
+
     /// 联想提供方，缺省为 [`NoPredictor`]。
     predictor: Box<dyn Predictor>,
 
@@ -363,6 +366,7 @@ impl Engine {
             chinese_first: false,
             mixed_english: true,
             emoji_candidates: true,
+            translation_reading: true,
             predictor: Box::new(NoPredictor),
             language_model: Box::new(NoLanguageModel),
             sentence_scorer: None,

@@ -1,4 +1,4 @@
-//! 「通用」页：学习语言、每页候选数、双拼 / 五笔方案、英文模式候选、中文模式英文词与 emoji 候选开关。
+//! 「通用」页：学习语言与译词读音、每页候选数、双拼 / 五笔方案、英文模式候选、中文模式英文词与 emoji 候选开关。
 
 use glimmer_core::{Language, PunctuationMode, ShuangpinScheme};
 use glimmer_platform::{Config, MAX_PAGE_SIZE};
@@ -7,7 +7,8 @@ use objc2::rc::Retained;
 use objc2_app_kit::{NSButton, NSPopUpButton};
 
 use crate::preferences::controls::{
-    checkbox, language_label, note, row_checkbox, row_popup, select, set_checked,
+    checkbox, language_label, note, row_aligned_checkbox, row_popup, row_sub_checkbox, select,
+    set_checked, sub_note,
 };
 use crate::preferences::layout::Layout;
 use crate::preferences::setting::{Setting, WUBI_VARIANTS};
@@ -16,6 +17,9 @@ use crate::preferences::target::PreferencesTarget;
 pub struct GeneralPage {
     /// 学习语言。
     learning_language: Retained<NSPopUpButton>,
+
+    /// 译词带读音（英语音标 / 日语假名）；不显示译文时置灰。
+    translation_reading: Retained<NSButton>,
 
     /// 每页候选数。
     page_size: Retained<NSPopUpButton>,
@@ -40,11 +44,11 @@ pub struct GeneralPage {
     /// 终端 / 编辑器里不给英文候选。
     english_off_in_apps: Retained<NSButton>,
 
-    /// 中英混输时中文候选排在英文词前。
-    chinese_first: Retained<NSButton>,
-
     /// 中文模式下给英文词候选。
     mixed_english: Retained<NSButton>,
+
+    /// 中英混输时中文候选排在英文词前；不给英文词候选时置灰。
+    chinese_first: Retained<NSButton>,
 
     /// 给 emoji 候选。
     emoji: Retained<NSButton>,
@@ -86,6 +90,14 @@ impl GeneralPage {
             mtm,
             "候选词右侧显示哪种语言的译词，只列出安装了释义表的语言；「不显示译文」同时关掉生词标记与释义兜底。",
         );
+        let translation_reading =
+            checkbox(mtm, "显示译文音标", Setting::TranslationReading, target);
+        row_sub_checkbox(layout, &translation_reading);
+        sub_note(
+            layout,
+            mtm,
+            "英文译词后面的美式音标（develop (dɪˈveləp)），日语译词的假名注音也随它；选「不显示译文」时此项不可用。",
+        );
         let page_size_titles: Vec<String> = (1..=MAX_PAGE_SIZE).map(|n| n.to_string()).collect();
         let page_size = row_popup(
             layout,
@@ -121,10 +133,10 @@ impl GeneralPage {
             "开五笔后按码表出字，双拼与注音设置不再生效；z 开头是拼音反查，候选右侧注五笔码。",
         );
         let wubi_auto_select = checkbox(mtm, "四码自动上屏", Setting::WubiAutoSelect, target);
-        row_checkbox(layout, &wubi_auto_select);
+        row_sub_checkbox(layout, &wubi_auto_select);
         let wubi_hint = checkbox(mtm, "显示编码提示", Setting::WubiHint, target);
-        row_checkbox(layout, &wubi_hint);
-        note(
+        row_sub_checkbox(layout, &wubi_hint);
+        sub_note(
             layout,
             mtm,
             "敲满四码且命中全码时首选直接上屏，不用按空格；编码提示是逐键提示候选右侧的完整编码。",
@@ -143,7 +155,7 @@ impl GeneralPage {
             "仅影响标点，字母和数字保持半角；自定义短语原样输出。设置会保存。 ",
         );
         let traditional = checkbox(mtm, "繁体输出", Setting::Traditional, target);
-        row_checkbox(layout, &traditional);
+        row_aligned_checkbox(layout, &traditional);
         let mode_titles: Vec<String> = PunctuationMode::ALL
             .iter()
             .map(|m| m.label().to_owned())
@@ -162,7 +174,7 @@ impl GeneralPage {
             "「进入英文直输」能直接打 hello, world 这样带标点的英文；「先上屏候选再出标点」是 nihao, 出「你好，」；「自动」按拼音切不切得开来定，切不开的 hello 直输、切得开的 nihao 上屏。翻页键不受影响。",
         );
         let english = checkbox(mtm, "英文模式也给候选", Setting::EnglishCandidates, target);
-        row_checkbox(layout, &english);
+        row_aligned_checkbox(layout, &english);
         note(
             layout,
             mtm,
@@ -174,23 +186,11 @@ impl GeneralPage {
             Setting::EnglishCandidatesOffInApps,
             target,
         );
-        row_checkbox(layout, &english_off_in_apps);
-        note(
+        row_sub_checkbox(layout, &english_off_in_apps);
+        sub_note(
             layout,
             mtm,
             "终端、iTerm、Warp、Ghostty、VS Code、Cursor、Zed、JetBrains、Xcode 等，那里的候选窗口会挡住应用自己的补全；名单可在配置文件里改。",
-        );
-        let chinese_first = checkbox(
-            mtm,
-            "输入拼音时中文候选排在英文词前面",
-            Setting::ChineseFirst,
-            target,
-        );
-        row_checkbox(layout, &chinese_first);
-        note(
-            layout,
-            mtm,
-            "勾上后整段输入是英文词时（hello、key）英文词排第二，空格上屏的仍是中文；不勾（缺省）拼音不成立的输入英文词排第一。",
         );
         let mixed_english = checkbox(
             mtm,
@@ -198,14 +198,26 @@ impl GeneralPage {
             Setting::MixedEnglishCandidates,
             target,
         );
-        row_checkbox(layout, &mixed_english);
+        row_aligned_checkbox(layout, &mixed_english);
         note(
             layout,
             mtm,
             "hello 给出 hello、compa 补全成 company 这类英文词；不勾后只给中文。与上面的「英文模式也给候选」无关。",
         );
+        let chinese_first = checkbox(
+            mtm,
+            "输入拼音时中文候选排在英文词前面",
+            Setting::ChineseFirst,
+            target,
+        );
+        row_sub_checkbox(layout, &chinese_first);
+        sub_note(
+            layout,
+            mtm,
+            "勾上后整段输入是英文词时（hello、key）英文词排第二，空格上屏的仍是中文；不勾（缺省）拼音不成立的输入英文词排第一。",
+        );
         let emoji = checkbox(mtm, "给 emoji 候选", Setting::EmojiCandidates, target);
-        row_checkbox(layout, &emoji);
+        row_aligned_checkbox(layout, &emoji);
         note(
             layout,
             mtm,
@@ -213,6 +225,7 @@ impl GeneralPage {
         );
         Self {
             learning_language,
+            translation_reading,
             page_size,
             shuangpin,
             wubi,
@@ -246,6 +259,10 @@ impl GeneralPage {
                     .position(|l| l.code() == general.learning_language)
             },
         );
+        set_checked(&self.translation_reading, general.translation_reading);
+        // 译词读音只在显示译文时有意义
+        self.translation_reading
+            .setEnabled(!general.learning_language_off());
         select(
             &self.punctuation_mode,
             PunctuationMode::ALL

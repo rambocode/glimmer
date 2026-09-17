@@ -26,6 +26,7 @@ pub use transition::Transition;
 
 impl Engine {
     /// 给候选补上译文。与 [`Self::query`] 分开调用，平台层可以先画候选再补画译文。
+    /// 译词读音关着（[`Self::set_translation_reading`]）时去掉每条释义的读音。
     pub fn annotate(&self, list: &mut CandidateList) -> AnnotationReport {
         let start = Instant::now();
         let mut hits = 0;
@@ -49,6 +50,14 @@ impl Engine {
                     translation
                 }),
             };
+            // 用户关了译词读音：音标 / 假名不进候选，壳只画译词
+            if !self.translation_reading
+                && let Some(translation) = candidate.translation.as_mut()
+            {
+                for sense in translation.senses_mut() {
+                    sense.reading = None;
+                }
+            }
             hits += usize::from(candidate.translation.is_some());
         }
         AnnotationReport {

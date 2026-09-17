@@ -394,6 +394,17 @@ impl Engine {
         self.emoji_candidates
     }
 
+    /// 候选旁的译词带不带读音（配置 `[general] translation_reading`，缺省带）：英语是美式音标、日语是假名。
+    /// 关掉后 `annotate` 只留译词本身，各壳不用各自判断。
+    pub fn set_translation_reading(&mut self, on: bool) {
+        self.translation_reading = on;
+    }
+
+    /// 译词带不带读音。
+    pub fn translation_reading(&self) -> bool {
+        self.translation_reading
+    }
+
     pub fn with_learner(mut self, learner: Box<dyn Learner>) -> Self {
         self.learner.replace(learner);
         self.forget_span_cache();

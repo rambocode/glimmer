@@ -1,4 +1,4 @@
-//! 「通用」页：学习语言、每页候选数、双拼 / 注音 / 五笔、英文模式候选。
+//! 「通用」页：学习语言与译词读音、每页候选数、双拼 / 注音 / 五笔、英文模式候选。
 
 use glimmer_platform::{MAX_PAGE_SIZE, PunctuationMode};
 use windows_reactor::*;
@@ -60,6 +60,14 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
                 &g.learning_language,
                 context.callback(Message::LearningLanguage),
             ),
+        ),
+        field(
+            "显示译文音标",
+            "英文译词后面的美式音标（develop (dɪˈveləp)），日语译词的假名注音也随它；「不显示译文」时不可用。",
+            ToggleSwitch::new()
+                .is_on(g.translation_reading)
+                .is_enabled(!g.learning_language_off())
+                .on_toggled(context.callback(Message::TranslationReading)),
         ),
         field(
             "每页候选数",

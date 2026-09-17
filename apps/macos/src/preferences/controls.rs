@@ -106,6 +106,37 @@ pub(super) fn row_checkbox(layout: &mut Layout, button: &NSButton) {
     layout.next_row(ROW_HEIGHT);
 }
 
+/// 子选项比父项再缩进多少（勾选框对齐控件列后，子项要再进一级才看得出层级）。
+const SUB_INDENT: f64 = 20.0;
+
+/// 与带标题的行混排的勾选框：摆在控件列，与上下的下拉框左对齐，整页一条竖线看着才整齐。
+pub(super) fn row_aligned_checkbox(layout: &mut Layout, button: &NSButton) {
+    layout.place(button, CONTROL_X, layout.control_width(), ROW_HEIGHT);
+    layout.next_row(ROW_HEIGHT);
+}
+
+/// 从属于上一项的勾选框：比控件列再缩进一级，看得出它是上一项的子选项。
+pub(super) fn row_sub_checkbox(layout: &mut Layout, button: &NSButton) {
+    layout.place(
+        button,
+        CONTROL_X + SUB_INDENT,
+        layout.control_width() - SUB_INDENT,
+        ROW_HEIGHT,
+    );
+    layout.next_row(ROW_HEIGHT);
+}
+
+/// 子选项下面的说明小字，跟着子选项一起缩进。
+pub(super) fn sub_note(layout: &mut Layout, mtm: MainThreadMarker, text: &str) {
+    note_at(
+        layout,
+        mtm,
+        text,
+        CONTROL_X + SUB_INDENT,
+        layout.control_width() - SUB_INDENT,
+    );
+}
+
 /// 标题列，右对齐贴着控件。
 pub(super) fn caption(mtm: MainThreadMarker, text: &str) -> Retained<NSTextField> {
     let label = NSTextField::labelWithString(&NSString::from_str(text), mtm);
