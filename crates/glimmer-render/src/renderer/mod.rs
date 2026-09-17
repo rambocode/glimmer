@@ -45,6 +45,9 @@ const HIGHLIGHT_INSET: f32 = 5.0;
 /// 光学字号（点）：20 pt 以下 CoreText 给系统字体用的就是这一档。
 const OPTICAL_SIZE: f32 = 17.0;
 
+/// 竖排候选窗口的最小宽度（点）。
+const MIN_VERTICAL_WIDTH: f32 = 200.0;
+
 pub struct Renderer {
     /// 文字测绘。
     text: TextPainter,
@@ -193,11 +196,13 @@ impl Renderer {
             Layout::Vertical => self.vertical_size(frame, m),
             Layout::Horizontal => self.horizontal_size(frame, m),
         };
-        let width = top_width.max(body_width);
-        (
-            width + m.padding() * 2.0,
-            top_height + body_height + m.padding() * 2.0,
-        )
+        let width = top_width.max(body_width) + m.padding() * 2.0;
+        // 竖排时候选都很短（没有译词）窗口会窄得难看，给个下限
+        let width = match layout {
+            Layout::Vertical => width.max(m.px(MIN_VERTICAL_WIDTH)),
+            Layout::Horizontal => width,
+        };
+        (width, top_height + body_height + m.padding() * 2.0)
     }
 
     pub(super) fn measure(&mut self, text: &str, style: &TextStyle) -> TextSize {

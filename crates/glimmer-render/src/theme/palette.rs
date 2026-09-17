@@ -39,7 +39,7 @@ impl Palette {
             index: Color::gray(0, 66),
             cloud: Color::rgb(0, 195, 208),
             background: Color::rgb(255, 255, 255),
-            highlight: Color::rgba(0, 122, 255, 41),
+            highlight: Color::rgba(176, 206, 125, 127),
         }
     }
 
@@ -52,7 +52,7 @@ impl Palette {
             index: Color::gray(255, 63),
             cloud: Color::rgb(0, 210, 224),
             background: Color::rgb(30, 30, 30),
-            highlight: Color::rgba(0, 122, 255, 41),
+            highlight: Color::rgba(36, 76, 36, 255),
         }
     }
 }

@@ -20,7 +20,7 @@ use self::pages::{
 };
 
 /// 左侧标签固定宽度，让各行控件对齐。
-const LABEL_WIDTH: f64 = 220.0;
+const LABEL_WIDTH: f64 = 140.0;
 
 /// 设置窗口状态。
 pub(crate) struct Settings {
