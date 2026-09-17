@@ -66,7 +66,15 @@ fn expression_mode_spells_chinese_numerals() {
     let (_, _, frame) = press(&mut router, punct('.'));
     assert_eq!(preedit(&frame), "v123.");
     let (_, _, frame) = press(&mut router, digit(5));
-    assert_eq!(candidate_texts(&frame), ["123.5", "123.5=123.5"]);
+    assert_eq!(
+        candidate_texts(&frame),
+        [
+            "一百二十三点五",
+            "壹佰贰拾叁点伍",
+            "一百二十三元五角",
+            "壹佰贰拾叁元伍角"
+        ]
+    );
     router.handle(ClientMessage::Key {
         session: SESSION,
         event: KeyEvent::new(0x1B, None, Default::default()),
@@ -79,7 +87,15 @@ fn expression_mode_spells_chinese_numerals() {
     // `v123+` 算不出来就没有候选，回车上屏原文。
     assert!(candidate_texts(&frame).is_empty());
     let (_, _, frame) = press(&mut router, KeyEvent::new(0x08, None, Default::default()));
-    assert_eq!(candidate_texts(&frame), ["一百二十三", "壹佰贰拾叁"]);
+    assert_eq!(
+        candidate_texts(&frame),
+        [
+            "一百二十三",
+            "壹佰贰拾叁",
+            "一百二十三元整",
+            "壹佰贰拾叁元整"
+        ]
+    );
     press(&mut router, KeyEvent::new(0x28, None, Default::default()));
     let (_, commit, _) = press(&mut router, punct(' '));
     assert_eq!(commit.as_deref(), Some("壹佰贰拾叁"));
