@@ -14,6 +14,7 @@ mod model;
 mod presenting;
 mod session;
 mod settings;
+mod update;
 mod wubi;
 
 use std::cell::RefCell;
@@ -57,6 +58,7 @@ use model::RescoreMonitor;
 use presenting::Notice;
 pub use presenting::TranslationJob;
 pub use session::Session;
+use update::UpdateState;
 use wubi::load_wubi_scheme;
 
 pub struct Host {
@@ -169,6 +171,9 @@ pub struct Host {
 
     /// 上次套用的 `[model]`，变了才重载 / 卸载。
     applied_model: Option<LocalModelConfig>,
+
+    /// 检查更新与下载安装包的状态。
+    update: UpdateState,
 
     /// 当前会话的候选、高亮、页码、preedit。
     pub session: Session,

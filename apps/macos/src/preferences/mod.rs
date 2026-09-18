@@ -29,7 +29,7 @@ pub use file_dialog::choose_dictionary_file;
 pub use key_recorder::KeyRecorder;
 pub use pages::{REPOSITORY_URL, WEBSITE_URL};
 pub use setting::{Setting, SettingValue, WUBI_VARIANTS};
-pub use window::PreferencesWindow;
+pub use window::{ABOUT_PAGE, PreferencesWindow};
 
 /// 字体组合框里代表「用系统字体」的那一项。
 pub const DEFAULT_FONT_LABEL: &str = "系统默认";

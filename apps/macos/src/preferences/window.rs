@@ -14,8 +14,8 @@ use super::controls::{language_label, small_label};
 use super::layout::{CARD_MARGIN, Layout, PAGE_WIDTH};
 use super::pager::{HEADER_HEIGHT, Pager, PagerPage};
 use super::pages::{
-    AdvancedPage, CandidatesPage, CloudPage, DictionariesPage, FuzzyPage, GeneralPage, PhrasesPage,
-    ShortcutsPage, UsagePage, build_about,
+    AboutPage, AdvancedPage, CandidatesPage, CloudPage, DictionariesPage, FuzzyPage, GeneralPage,
+    PhrasesPage, ShortcutsPage, UsagePage,
 };
 use super::panel::PreferencesPanel;
 use super::sidebar::{SIDEBAR_WIDTH, Sidebar, SidebarEntry};
@@ -35,6 +35,9 @@ const MIN_CONTENT_HEIGHT: f64 = 400.0;
 
 /// 一页在窗口里最多占多高，再高就装进滚动视图（快捷键页很长，13 寸屏也要放得下整个窗口）。
 const MAX_PAGE_HEIGHT: f64 = 620.0;
+
+/// 「关于」页在侧栏里的位置（菜单「检查更新…」直接跳到这一页）。
+pub const ABOUT_PAGE: usize = 9;
 
 /// 设置窗口与需要按配置刷新的各页。
 pub struct PreferencesWindow {
@@ -73,6 +76,9 @@ pub struct PreferencesWindow {
 
     /// 「统计」页的数字。
     usage: UsagePage,
+
+    /// 「关于」页：检查更新的结果与开关。
+    about: AboutPage,
 
     /// 底部状态行：配置文件解析失败时显示原因，也给临时提示用。
     status: Retained<NSTextField>,
@@ -145,8 +151,9 @@ impl PreferencesWindow {
         drafts.push(("统计", "chart.bar", layout));
 
         let mut layout = new_layout();
-        build_about(&mut layout, mtm, &target, version, build);
+        let about = AboutPage::build(&mut layout, mtm, &target, version, build);
         drafts.push(("关于", "info.circle", layout));
+        debug_assert_eq!(drafts.len() - 1, ABOUT_PAGE);
 
         // 每页按自己的内容定高；切页时窗口跟着伸缩，不再按最高的一页统一撑开
         let mut entries = Vec::with_capacity(drafts.len());
@@ -217,6 +224,7 @@ impl PreferencesWindow {
             cloud,
             advanced,
             usage,
+            about,
             status,
             _target: target,
         }
@@ -274,6 +282,7 @@ impl PreferencesWindow {
             crate::app::paths::model_path().is_some(),
         );
         self.advanced.sync(config);
+        self.about.sync(config);
         let status = error
             .map(|e| format!("配置文件有错误，已沿用上一份：{e}"))
             .unwrap_or_default();
@@ -293,6 +302,11 @@ impl PreferencesWindow {
             vocabulary,
             language.map_or("学习语言已关", language_label),
         );
+    }
+
+    /// 「关于」页显示检查更新的结果 / 下载进度；`installable` 为真时露出「下载并安装」。
+    pub fn set_update(&self, text: &str, installable: bool) {
+        self.about.set_update(text, installable);
     }
 
     /// 底部状态行临时显示一句提示（不是错误，灰字）；下次 `sync` 会被配置状态覆盖。

@@ -42,6 +42,7 @@ glimmer/
 │   ├── glimmer-translate/     # 候选翻译 annotation
 │   ├── glimmer-learning/      # 用户词频、用户词、个人英文词、个人 n-gram、个人敲错表（user.tsv / user-words.tsv / user-english.tsv / user-ngram.tsv / user-typos.tsv）、输入日志（input-log.jsonl）、输入统计（usage.tsv）、词汇记录（user-vocab.tsv）
 │   ├── glimmer-predict/       # 云联想：Predictor 的网络实现（OpenAI 兼容接口）
+│   ├── glimmer-update/        # 应用内检查更新：拉 releases.json、比版本、下载安装包并校验；安装交给壳
 │   ├── glimmer-lm/            # 整句转换的 bigram 语言模型：LanguageModel 的实现
 │   ├── glimmer-neural/        # 字级 Transformer 的本地推理（candle）：SentenceScorer 的实现，给整句前几条路径重打分
 │   ├── glimmer-format/        # .qj 数据容器：mmap 打开、零拷贝视图、写入器、可落盘的哈希索引（dictionary / lm 依赖它）

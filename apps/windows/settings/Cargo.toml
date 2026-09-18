@@ -23,6 +23,7 @@ glimmer-render.workspace = true
 glimmer-learning.workspace = true
 glimmer-core.workspace = true
 glimmer-translate.workspace = true
+glimmer-update.workspace = true
 jiff.workspace = true
 rfd = "0.17"
 

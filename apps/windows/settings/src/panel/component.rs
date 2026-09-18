@@ -9,25 +9,47 @@ use windows_reactor::*;
 use super::cloud_status::CloudStatus;
 use super::controls::{export_logs, log_dir, open_in_editor, open_with_explorer};
 use super::pages::{about, cloud, dictionaries, general, shortcut};
+use super::update_status::UpdateStatus;
 use super::{Message, Settings};
+
+impl Settings {
+    /// 起一次后台检查；正在查或正在下载就不重复起。
+    fn start_update_check(&mut self, context: &ComponentContext<Self>, manual: bool) {
+        if matches!(
+            self.update,
+            UpdateStatus::Checking { .. } | UpdateStatus::Downloading(_)
+        ) {
+            return;
+        }
+        self.update = UpdateStatus::Checking { manual };
+        let config = self.config.update.clone();
+        context.spawn_background(move |_cancel| Message::UpdateChecked(about::run_check(&config)));
+    }
+}
 
 impl Component for Settings {
     type Input = ();
     type Message = Message;
 
-    fn create(_input: &(), _context: &ComponentContext<Self>) -> Self {
+    fn create(_input: &(), context: &ComponentContext<Self>) -> Self {
         let path = Self::config_path();
         Self::ensure_config_file(&path);
         let config = Config::load(&path).unwrap_or_default();
-        Self {
+        let mut settings = Self {
             config,
             path,
             page: "general".to_string(),
             cloud_status: CloudStatus::Idle,
+            update: UpdateStatus::Idle,
             dictionary_status: String::new(),
             families: glimmer_render::system_fonts::families(),
             font_query: None,
+        };
+        // 开着自动检查且 12 小时内没查过：设置程序一打开就在后台查一次，有新版本「关于」页会显示
+        if settings.config.update.check && about::check_due() {
+            settings.start_update_check(context, false);
         }
+        settings
     }
 
     fn update(&mut self, message: Message, context: &ComponentContext<Self>) {
@@ -252,6 +274,42 @@ impl Component for Settings {
             // 关于页
             Message::OpenWebsite => open_with_explorer(about::WEBSITE_URL),
             Message::OpenRepository => open_with_explorer(about::REPOSITORY_URL),
+            Message::CheckUpdate => self.start_update_check(context, true),
+            Message::UpdateChecked(result) => {
+                let manual = matches!(self.update, UpdateStatus::Checking { manual: true });
+                self.update = match result {
+                    Ok(Some(update)) => UpdateStatus::Available(update),
+                    Ok(None) => UpdateStatus::UpToDate,
+                    // 自动查失败不打扰：关于页保持没查过的样子，日志里有原因
+                    Err(_) if !manual => UpdateStatus::Idle,
+                    Err(message) => UpdateStatus::Failed(message, None),
+                };
+            }
+            Message::InstallUpdate => match self.update.clone() {
+                // 已经下好：再拉一次安装器就行
+                UpdateStatus::Downloaded(path) => open_with_explorer(&path.to_string_lossy()),
+                UpdateStatus::Available(update) | UpdateStatus::Failed(_, Some(update)) => {
+                    self.update = UpdateStatus::Downloading(update.clone());
+                    context.spawn_background(move |_cancel| {
+                        Message::UpdateDownloaded(about::run_download(&update))
+                    });
+                }
+                _ => {}
+            },
+            Message::UpdateDownloaded(result) => {
+                let UpdateStatus::Downloading(update) = self.update.clone() else {
+                    return;
+                };
+                self.update = match result {
+                    Ok(path) => {
+                        // 交给 ShellExecute 拉起 Setup.exe（会弹 UAC）；安装器会先结束 Server 与本程序
+                        open_with_explorer(&path.to_string_lossy());
+                        UpdateStatus::Downloaded(path)
+                    }
+                    Err(message) => UpdateStatus::Failed(message, Some(update)),
+                };
+            }
+            Message::AutoUpdateCheck(on) => self.save("update", "check", on),
 
             // 下拉被清空 / 越界：不改
             _ => {}

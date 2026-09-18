@@ -12,7 +12,7 @@ mod phrases;
 mod shortcuts;
 mod usage;
 
-pub(super) use about::build as build_about;
+pub(super) use about::AboutPage;
 pub use about::{REPOSITORY_URL, WEBSITE_URL};
 pub(super) use advanced::AdvancedPage;
 pub(super) use candidates::CandidatesPage;

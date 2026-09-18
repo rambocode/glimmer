@@ -79,6 +79,11 @@ impl Host {
                     open_with_system(&[&dir.to_string_lossy()]);
                 }
             }
+            MenuAction::CheckUpdate => {
+                self.preferences.select_page(crate::preferences::ABOUT_PAGE);
+                self.preferences.show();
+                self.start_update_check(true);
+            }
         }
     }
 
@@ -477,6 +482,17 @@ impl Host {
             }
             (Setting::OpenWebsite, _) => {
                 open_with_system(&[crate::preferences::WEBSITE_URL]);
+                return;
+            }
+            (Setting::UpdateCheck, SettingValue::Bool(on)) => {
+                self.settings.set_bool("update", "check", on);
+            }
+            (Setting::CheckUpdate, _) => {
+                self.start_update_check(true);
+                return;
+            }
+            (Setting::InstallUpdate, _) => {
+                self.start_update_download();
                 return;
             }
             (Setting::OpenRepository, _) => {

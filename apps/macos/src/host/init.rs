@@ -172,6 +172,7 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
             rescore: RescoreMonitor::new(mtm),
             model_loader: None,
             applied_model: None,
+            update: UpdateState::new(mtm),
             session: Session::default(),
             sentence: None,
             anchor: NSRect::ZERO,
@@ -179,6 +180,8 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
     });
     // 配置里的开关走和菜单 / 设置窗口 / 热加载同一条通路
     with(|host| host.apply_config(false));
+    // 自动检查新版本：启动 30 秒后一次、之后每 12 小时一次（开关与标记文件在回调里看）；网络在别的线程，不挡启动
+    with(|host| host.schedule_auto_update_check());
     Ok(())
 }
 

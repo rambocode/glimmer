@@ -25,6 +25,9 @@ pub struct InputMenu {
     /// 版本行平时的标题。
     about_title: String,
 
+    /// 查到的新版本号；有它时版本行后面带「新版本 x 可用」。
+    update: Option<String>,
+
     /// 当前输入方案的展示行（「输入方案：拼音」/「输入方案：86 五笔」）；常驻只改标题，不隐藏 / 显示切换（见 [`action_item`]）。
     scheme: Retained<NSMenuItem>,
 
@@ -78,6 +81,12 @@ impl InputMenu {
             Some(MenuAction::OpenLogs),
             &target,
         ));
+        menu.addItem(&action_item(
+            mtm,
+            "检查更新…",
+            Some(MenuAction::CheckUpdate),
+            &target,
+        ));
         menu.addItem(&NSMenuItem::separatorItem(mtm));
 
         let about_title = format!("微明 {version}");
@@ -91,8 +100,24 @@ impl InputMenu {
             fuzzy,
             about,
             about_title,
+            update: None,
             scheme,
             _target: target,
+        }
+    }
+
+    /// 记下查到的新版本（`None` 是已最新），版本行立刻跟着改。
+    pub fn set_update(&mut self, version: Option<&str>) {
+        self.update = version.map(str::to_owned);
+        self.about
+            .setTitle(&NSString::from_str(&self.version_title()));
+    }
+
+    /// 版本行标题：「微明 0.1.7」，有新版本时「微明 0.1.7（新版本 0.1.8 可用）」。
+    fn version_title(&self) -> String {
+        match &self.update {
+            Some(version) => format!("{}（新版本 {version} 可用）", self.about_title),
+            None => self.about_title.clone(),
         }
     }
 
@@ -120,7 +145,7 @@ impl InputMenu {
         }
         let about = match error {
             Some(message) => format!("配置文件有错误：{message}"),
-            None => self.about_title.clone(),
+            None => self.version_title(),
         };
         self.about.setTitle(&NSString::from_str(&about));
     }

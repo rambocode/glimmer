@@ -19,6 +19,7 @@ use std::path::Path;
 
 use glimmer_core::FuzzyRules;
 use glimmer_predict::PredictConfig;
+use glimmer_update::UpdateConfig;
 use serde::{Deserialize, Serialize};
 use toml_edit::DocumentMut;
 
@@ -83,6 +84,9 @@ pub struct Config {
 
     /// 五笔的行为选项（方案在 `[general] wubi` 里选）。
     pub wubi: WubiConfig,
+
+    /// 检查更新：启动时自动查一次的开关与清单地址。
+    pub update: UpdateConfig,
 }
 
 fn deserialize_phrases<'de, D: serde::Deserializer<'de>>(
@@ -331,6 +335,13 @@ enabled = false
 # 记住的屏幕位置（物理像素，拖动后自动写入）；留空则首次出现在屏幕右下角
 # x = 0
 # y = 0
+
+[update]
+# 自动检查新版本（每 12 小时最多一次）：只从下面的地址下载一份几 KB 的版本清单，不带任何个人信息。
+# 有新版本只在菜单 / 设置的「关于」页提示，下载与安装都要你自己点；false 就只有手动点「检查更新」才查
+check = true
+# 版本清单地址，一般不用改
+feed_url = "https://github.com/rambocode/glimmer/releases/latest/download/releases.json"
 "#
 );
 
@@ -560,6 +571,13 @@ mod tests {
         assert_eq!(config.wubi_table_file(), Some("wubi86.qj"));
         assert!(!config.wubi.auto_select && config.wubi.hint);
         assert_eq!(config.wubi.fixed_order_length, 2);
+    }
+
+    #[test]
+    fn update_section_parses() {
+        let config: Config = toml::from_str("[update]\ncheck = false\n").unwrap();
+        assert!(!config.update.check);
+        assert_eq!(config.update.feed_url, glimmer_update::DEFAULT_FEED_URL);
     }
 
     #[test]

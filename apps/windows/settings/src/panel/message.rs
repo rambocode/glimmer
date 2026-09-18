@@ -93,4 +93,14 @@ pub(crate) enum Message {
     // 关于页
     OpenWebsite,
     OpenRepository,
+    /// 「检查更新」按钮。
+    CheckUpdate,
+    /// 后台检查完了：`Ok(None)` 已是最新，`Ok(Some)` 有新版本。
+    UpdateChecked(Result<Option<glimmer_update::Available>, String>),
+    /// 「下载并安装」按钮。
+    InstallUpdate,
+    /// 后台下载完了：校验过的安装包路径。
+    UpdateDownloaded(Result<std::path::PathBuf, String>),
+    /// `[update] check`。
+    AutoUpdateCheck(bool),
 }

@@ -12,6 +12,7 @@ members = [
     "crates/glimmer-neural",
     "crates/glimmer-server",
     "crates/glimmer-render",
+    "crates/glimmer-update",
     "apps/cli", "apps/macos", "apps/windows/server", "apps/windows/tsf", "apps/windows/settings", "apps/linux", "apps/linux/fcitx5", "tools/dict-convert", "tools/gloss-gen",
 ]
 
@@ -38,6 +39,7 @@ glimmer-neural = { path = "crates/glimmer-neural" }
 glimmer-server = { path = "crates/glimmer-server" }
 glimmer-linux = { path = "apps/linux" }
 glimmer-render = { path = "crates/glimmer-render" }
+glimmer-update = { path = "crates/glimmer-update" }
 
 # 外部依赖统一在这里定版本，子 crate 一律 `xxx.workspace = true`
 serde = { version = "1.0.229", features = ["derive"] }
@@ -69,6 +71,8 @@ candle-nn = "0.11.0"
 async-openai = { version = "0.42.0", default-features = false, features = ["chat-completion", "native-tls"] }
 reqwest = { version = "0.13", default-features = false }
 uuid = { version = "1.26", features = ["v4"] }
+# 检查更新：下载的安装包按发版清单里的 sha256 校验
+sha2 = "0.11.0"
 tokio = { version = "1.53.1", features = ["rt", "time"] }
 
 # 自绘渲染器：CPU 栅格 + 文字整形/回退/栅格（fontdb / rustybuzz / swash）

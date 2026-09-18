@@ -13,6 +13,7 @@ workspace = true
 glimmer-core.workspace = true
 glimmer-dictionary.workspace = true
 glimmer-predict.workspace = true
+glimmer-update.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true

@@ -7,6 +7,7 @@ mod component;
 mod controls;
 mod message;
 mod pages;
+mod update_status;
 
 use std::path::{Path, PathBuf};
 
@@ -18,6 +19,7 @@ pub(crate) use self::message::Message;
 use self::pages::{
     about, advanced, candidates, cloud, dictionaries, fuzzy, general, shortcut, usage,
 };
+use self::update_status::UpdateStatus;
 
 /// 左侧标签固定宽度，让各行控件对齐。
 const LABEL_WIDTH: f64 = 140.0;
@@ -35,6 +37,9 @@ pub(crate) struct Settings {
 
     /// 云服务「测试连接」的状态。
     cloud_status: CloudStatus,
+
+    /// 「关于」页检查更新的状态。
+    update: UpdateStatus,
 
     /// 最近一次词库操作的结果，显示在词库页。
     dictionary_status: String,

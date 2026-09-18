@@ -202,6 +202,15 @@ pub enum Setting {
 
     /// `[wubi] hint`，勾选框：逐键提示候选右侧显示完整编码。
     WubiHint,
+
+    /// `[update] check`，勾选框：启动时自动检查更新。
+    UpdateCheck,
+
+    /// 「关于」页「检查更新」按钮。
+    CheckUpdate,
+
+    /// 「关于」页「下载并安装」按钮（有新版本才显示）。
+    InstallUpdate,
 }
 
 impl Setting {
@@ -264,6 +273,9 @@ impl Setting {
             Self::Font => 47,
             Self::FontSize => 55,
             Self::SystemTextReplacements => 50,
+            Self::UpdateCheck => 58,
+            Self::CheckUpdate => 59,
+            Self::InstallUpdate => 60,
             Self::Fuzzy(index) => FUZZY_TAG_BASE + index as NSInteger,
             Self::DictionaryEnabled(index) => DICTIONARY_ENABLED_TAG_BASE + index as NSInteger,
             Self::DictionaryRemove(index) => DICTIONARY_REMOVE_TAG_BASE + index as NSInteger,
@@ -329,6 +341,9 @@ impl Setting {
             44 => Self::WubiAutoSelect,
             45 => Self::WubiHint,
             50 => Self::SystemTextReplacements,
+            58 => Self::UpdateCheck,
+            59 => Self::CheckUpdate,
+            60 => Self::InstallUpdate,
             _ if tag >= DICTIONARY_REMOVE_TAG_BASE => {
                 let index = usize::try_from(tag - DICTIONARY_REMOVE_TAG_BASE).ok()?;
                 (index < MAX_DICTIONARIES).then_some(Self::DictionaryRemove(index))?
@@ -399,6 +414,9 @@ mod tests {
             Setting::Wubi,
             Setting::WubiAutoSelect,
             Setting::WubiHint,
+            Setting::UpdateCheck,
+            Setting::CheckUpdate,
+            Setting::InstallUpdate,
             Setting::DictionaryEnabled(0),
             Setting::DictionaryEnabled(MAX_DICTIONARIES - 1),
             Setting::DictionaryRemove(3),

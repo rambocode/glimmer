@@ -21,3 +21,4 @@ pub use config::{
 };
 pub use error::ConfigError;
 pub use glimmer_core::PunctuationMode;
+pub use glimmer_update::UpdateConfig;

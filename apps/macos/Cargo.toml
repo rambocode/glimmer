@@ -22,6 +22,7 @@ glimmer-render.workspace = true
 glimmer-lm.workspace = true
 glimmer-neural = { workspace = true, features = ["metal"] }
 glimmer-translate.workspace = true
+glimmer-update.workspace = true
 thiserror.workspace = true
 tracing.workspace = true
 tracing-appender.workspace = true

@@ -16,6 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `crates/glimmer-translate`：释义表 `Glossary`、词汇等级表 `LevelTable`。
 - `crates/glimmer-learning`：用户侧落盘：词频 / 用户词 / 个人 n-gram / 敲错表（`FrequencyLearner`）、输入日志（`InputLog`）、输入统计（`UsageStats`）、词汇记录（`VocabularyBook`）。
 - `crates/glimmer-predict`：云联想 `CloudPredictor`（OpenAI 兼容接口）与释义兜底 `CloudGlossFiller`；`PredictConfig` 是 `[predict]` 分节。
+- `crates/glimmer-update`：应用内检查更新：拉发版清单 `releases.json`、`Version` 比版本、`Download` 下载并校验 sha256；`UpdateConfig` 是 `[update]` 分节，安装交给各壳。
 - `crates/glimmer-lm`：整句转换的 bigram 语言模型 `BigramModel`。
 - `crates/glimmer-neural`：字级 Transformer 本地推理 `CharScorer`（candle），给整句前几条路径重打分。
 - `crates/glimmer-format`：`.qj` 数据容器（mmap 读、零拷贝视图、写入器、哈希索引）。

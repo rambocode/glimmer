@@ -92,6 +92,16 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 - 问字键（缺省 `u`）开头是问字模式（`PredictionKind::Question`，答案带读音、不校验拼音），`?` 开头要 `ModeKeys::question_mark` 开着才算（配置 `[shortcut] question_mark`，缺省关，壳用 `Engine::takes_question_mark` 决定空缓冲区的 `?` 是入口还是标点）；`PredictionKind::Translate` 是壳里快捷键触发的「翻译选中文字」
   （双向：汉字为主译成学习语言，外文译回中文，`prediction::translation_target`），译文走结果的 `sentence`。
 
+## crates/glimmer-update
+
+- 应用内检查更新，平台无关：`check_blocking` / `UpdateCheck`（线程 + 通道）拉 `[update] feed_url`（缺省 GitHub latest Release 的 `releases.json`，
+  结构见 `release.md`）→ `Feed::available(current, Target::current())`：在有本机平台 / 架构安装包的条目里按版本号取最大（清单三个平台的版本号各排各的，
+  不能取第一条），架构按清单标签别名表认（`Apple Silicon` / `Intel` / `x64` / `x86_64` / `ARM64`，新包型在 `target.rs` 加）。
+- `Version`：SemVer 比较，`-dev-<哈希>` 单独拆成 dev 标记——同号带 dev 的比发布版小、比前一版大（纯 SemVer 会把 `alpha.7-dev-x` 排在 `alpha.7` 后面）。
+- `download_blocking` / `Download`（带进度）：写 `<文件名>.part` 边下边算 sha256，对上清单才改名；清单没 sha256 拒绝；目录里旧的 `Glimmer-*` 先删。安装本身交给壳。
+- `UpdateConfig` 是 `[update]` 分节（`check` 缺省开、`feed_url`）；`check_due` / `touch` 用数据目录 `update-check` 文件的 mtime 做「每 12 小时最多一次」（`CHECK_INTERVAL`）。
+- 联网测试：`cargo test -p glimmer-update -- --ignored` 真拉一次缺省清单。
+
 ## crates/glimmer-format
 
 `.qj` 数据容器（`Container` mmap 读、`Writer` 写、`Table<T>` / `Text` 零拷贝视图、`hash` 可落盘哈希索引、`Metadata` 名称 / 许可证 / 署名）。
@@ -191,6 +201,9 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 - 本地整句模型：`bundle.sh` 把 `data/model/`（或 `GLIMMER_MODEL_DIR`）三件套打进 `Resources/model/`，用户目录 `model/` 优先；`host/model/mod.rs` 在后台线程加载并预热（首次 Metal 编译）后
   `set_async_sentence_scorer` 接上，`refresh` 每键先读应用光标前 64 字给 Engine 当前文、查询后 `schedule_rescoring`，`RescoreMonitor` 停键 80 ms 请求、20 ms 轮询，
   结果到了重查一次只重画当前页（翻过页 / 动过高亮不动）；「云服务」页有开关（`[model] enabled`）。
+- 检查更新（`host/update/`）：`init` 末尾 `schedule_auto_update_check` 排两只定时器（30 秒一次性 + 12 小时重复），响了走 `auto_update_check`（`[update] check` 开着且 `~/Library/Application Support/Glimmer/update-check` 超过 `CHECK_INTERVAL` 才起 `UpdateCheck`；网络全在它的线程里，主线程一次也不等），
+  `UpdateMonitor` 0.2 秒轮询；有新版本菜单版本行变「微明 x（新版本 y 可用）」、「关于」页三行状态 + 「下载并安装」（`Download` 下到数据目录 `updates/`，校验过 `open` pkg 交给 Installer.app）；
+  菜单「检查更新…」跳到「关于」页（`preferences::ABOUT_PAGE`）手动查。自动查失败不出声，手动查才报错。
 - 端到端验证可用 `osascript` 的 System Events 往 TextEdit 发按键再读回文本（终端需要辅助功能权限；输入法得在中文模式）。
 - 中英文切换的状态、事件优先级与验证边界见 [macOS 中英文切换](../design/macos-mode-switch.md)。
 - macOS 安装后 `repair-input-cache.sh` 定向备份微信 / 企业微信中不含微明的旧键盘缓存；已包含微明则不动。工具随包放在 `Resources/`，不退出应用；已运行的应用需重启。见 [输入源缓存](input-source-cache.md)。
@@ -209,6 +222,9 @@ TSF 原有数字 / OEM 标点 / 空格键码按当前布局用 `ToUnicodeEx` 解
 连不上 Server 时 DLL 自己拉起它（`tsf/src/com/service/launch.rs`）：`ShellExecuteW` 起与 DLL 同目录的 `glimmer-server.exe`
 （`uiAccess=true` 的 exe 用 `CreateProcess` 报 740），进程内 5 秒冷却 + 跨进程命名互斥体防止砸出一串 Server；
 起完清掉重连退避，下一键就试。Server 只在登录时由「启动」文件夹拉起，中途挂了以前只能等下次登录。
+
+检查更新只在设置程序里（Server 没有界面）：打开设置时 `[update] check` 开着且 `%APPDATA%\Glimmer\update-check` 超过 12 小时就后台查一次（`spawn_background` + `check_blocking`），
+「关于」页显示结果与「下载并安装」（`download_blocking` 到 `%APPDATA%\Glimmer\updates\`，校验过用 `explorer` 拉起 `Setup.exe`，走 ShellExecute 才能弹 UAC；安装器会 taskkill Server 与设置程序）。
 
 词库导入（设置「词库」页）走 `glimmer-dictionary::import` 转成 `.qj`（空词库拒绝），多选批量、成功的从 `[dictionaries] disabled` 摘掉、页面显示每个文件的结果；
 Server 每次轮询比对用户 `dicts\` 的路径 / mtime / 长度快照，配置没变也重载新增、同名更新与移除；配置解析失败时词库沿用上次有效的开关（#36）。
