@@ -1,7 +1,7 @@
-//! 「通用」页：学习语言与译词读音、每页候选数、双拼 / 五笔方案、英文模式候选、中文模式英文词与 emoji 候选开关。
+//! 「通用」页：学习语言与译词读音、每页候选数、拼音方案 / 五笔、英文模式候选、中文模式英文词与 emoji 候选开关。
 
-use glimmer_core::{Language, PunctuationMode, ShuangpinScheme};
-use glimmer_platform::{Config, MAX_PAGE_SIZE};
+use glimmer_core::{Language, PunctuationMode};
+use glimmer_platform::{Config, MAX_PAGE_SIZE, Scheme};
 use objc2::MainThreadMarker;
 use objc2::rc::Retained;
 use objc2_app_kit::{NSButton, NSPopUpButton};
@@ -24,10 +24,10 @@ pub struct GeneralPage {
     /// 每页候选数。
     page_size: Retained<NSPopUpButton>,
 
-    /// 双拼方案（第 0 项是关）。
-    shuangpin: Retained<NSPopUpButton>,
+    /// 拼音方案（按 `Scheme::ALL` 的顺序，末项是「关」）。
+    scheme: Retained<NSPopUpButton>,
 
-    /// 五笔版本（第 0 项是关）；开着时双拼菜单置灰。
+    /// 五笔版本（第 0 项是关）；与拼音方案同时开着就是混输。
     wubi: Retained<NSPopUpButton>,
 
     /// 五笔：敲满四码命中全码就自动上屏。
@@ -107,21 +107,19 @@ impl GeneralPage {
             Setting::PageSize,
             target,
         );
-        let shuangpin_titles: Vec<String> = std::iter::once("关（全拼）".to_owned())
-            .chain(ShuangpinScheme::ALL.iter().map(|s| s.label().to_owned()))
-            .collect();
-        let shuangpin = row_popup(
+        let scheme_titles: Vec<String> = Scheme::ALL.iter().map(|s| s.label().to_owned()).collect();
+        let scheme = row_popup(
             layout,
             mtm,
-            "双拼",
-            &shuangpin_titles,
-            Setting::Shuangpin,
+            "拼音方案",
+            &scheme_titles,
+            Setting::Scheme,
             target,
         );
         note(
             layout,
             mtm,
-            "开双拼后 v、u、i 是音节键，表达式与问字模式改用 Shift+V、Shift+U 进；微软、搜狗方案的 ; 键是 ing。",
+            "全拼、六套双拼、大千注音，或「关（只用五笔）」——选「关」就只剩下面的五笔。双拼下 v、u、i 是音节键，表达式与问字模式改用 Shift+V、Shift+U 进（微软、搜狗方案的 ; 键是 ing）；注音下数字键与 - ; , . / 都是注音符号，选词改按 Enter、Space 是一声。",
         );
         let wubi_titles: Vec<String> = std::iter::once("关".to_owned())
             .chain(WUBI_VARIANTS.iter().map(|v| v.label().to_owned()))
@@ -130,7 +128,7 @@ impl GeneralPage {
         note(
             layout,
             mtm,
-            "开五笔后按码表出字，双拼与注音设置不再生效；z 开头是拼音反查，候选右侧注五笔码。",
+            "三版五笔按自己学的那一版选，候选右侧注五笔码。与上面的拼音方案同时开着就是混输：五笔候选在前，打不出的字直接打拼音，第 5 个字母起五笔没有更长的编码，自然只剩拼音。只用五笔请把拼音方案选「关」，那时 z 开头是拼音反查。",
         );
         let wubi_auto_select = checkbox(mtm, "四码自动上屏", Setting::WubiAutoSelect, target);
         row_sub_checkbox(layout, &wubi_auto_select);
@@ -139,7 +137,7 @@ impl GeneralPage {
         sub_note(
             layout,
             mtm,
-            "敲满四码且命中全码时首选直接上屏，不用按空格；编码提示是逐键提示候选右侧的完整编码。",
+            "敲满四码且命中全码时首选直接上屏，不用按空格；混输下不生效（四个字母也可能是一段拼音）。编码提示是逐键提示候选右侧的完整编码。",
         );
         let punctuation = row_popup(
             layout,
@@ -227,7 +225,7 @@ impl GeneralPage {
             learning_language,
             translation_reading,
             page_size,
-            shuangpin,
+            scheme,
             wubi,
             wubi_auto_select,
             wubi_hint,
@@ -270,16 +268,17 @@ impl GeneralPage {
                 .position(|m| *m == general.punctuation_mode),
         );
         select(&self.page_size, Some(general.page_size() - 1));
+        // 认不出来的方案名 Core 按全拼走，菜单跟着选第一项
         select(
-            &self.shuangpin,
-            Some(general.shuangpin().map_or(0, |scheme| {
-                ShuangpinScheme::ALL
+            &self.scheme,
+            Some(
+                Scheme::ALL
                     .iter()
-                    .position(|s| *s == scheme)
-                    .map_or(0, |i| i + 1)
-            })),
+                    .position(|s| *s == general.scheme())
+                    .unwrap_or(0),
+            ),
         );
-        // 五笔与双拼互斥：五笔开着时 Core 忽略双拼，菜单也置灰说明这一点（注音只有配置文件能开，界面上没有控件）
+        // 拼音与五笔是两条独立的轴，谁也不置灰谁：两边都开就是混输
         let wubi = general.wubi();
         select(
             &self.wubi,
@@ -290,10 +289,11 @@ impl GeneralPage {
                     .map_or(0, |i| i + 1)
             })),
         );
-        self.shuangpin.setEnabled(wubi.is_none());
         set_checked(&self.wubi_auto_select, config.wubi.auto_select);
         set_checked(&self.wubi_hint, config.wubi.hint);
-        self.wubi_auto_select.setEnabled(wubi.is_some());
+        // 混输下 Core 不做四码自动上屏（四个字母也可能是拼音），置灰把这一点说清楚
+        self.wubi_auto_select
+            .setEnabled(wubi.is_some() && !general.mixed());
         self.wubi_hint.setEnabled(wubi.is_some());
         set_checked(&self.traditional, general.traditional);
         set_checked(&self.english, general.english_candidates);

@@ -46,8 +46,9 @@ pub struct ModeIndicator {
     /// 云联想开着：标题带云朵，让用户一眼知道上下文会发出去。
     cloud: bool,
 
-    /// 当前输入方案在标题里的附注（五笔开着是 `Variant::label()`，如「86 五笔」），拼音下为 `None`。
-    scheme: Option<&'static str>,
+    /// 当前输入方案在标题里的附注（「86 五笔」「小鹤双拼」，混输是「86 五笔 + 全拼」），
+    /// 单开全拼是缺省、不标，那时为空串。
+    scheme: String,
 
     /// 本输入法的输入源 ID，收起前与系统当前输入源比对。
     source_id: String,
@@ -67,7 +68,7 @@ impl ModeIndicator {
             shown: false,
             english: None,
             cloud: false,
-            scheme: None,
+            scheme: String::new(),
             source_id: input_source::main_bundle_source_id(),
             mtm,
         }
@@ -149,8 +150,8 @@ impl ModeIndicator {
         self.english = None;
     }
 
-    /// 换输入方案附注（`Some("86 五笔")` / `None`），下次 update 重设标题。
-    pub fn set_scheme(&mut self, scheme: Option<&'static str>) {
+    /// 换输入方案附注（`"86 五笔"`、`"86 五笔 + 全拼"`，空串不标），下次 update 重设标题。
+    pub fn set_scheme(&mut self, scheme: String) {
         self.scheme = scheme;
         self.english = None;
     }
@@ -168,9 +169,9 @@ impl ModeIndicator {
         if let Some(button) = self.item.button(self.mtm) {
             // 中文模式下附方案名（「中 · 86 五笔」）；英文模式与方案无关，不附
             let mut title = if english { "英" } else { "中" }.to_owned();
-            if let (false, Some(scheme)) = (english, self.scheme) {
+            if !english && !self.scheme.is_empty() {
                 title.push_str(" · ");
-                title.push_str(scheme);
+                title.push_str(&self.scheme);
             }
             if self.cloud {
                 title.push_str(" ☁︎");

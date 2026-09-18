@@ -1,4 +1,4 @@
-use glimmer_core::{FuzzyRules, WubiVariant};
+use glimmer_core::FuzzyRules;
 use glimmer_platform::Config;
 use objc2::rc::Retained;
 use objc2::{MainThreadMarker, sel};
@@ -103,15 +103,10 @@ impl InputMenu {
 
     /// 按当前配置刷新勾选状态。`cloud_active` 是 Engine 里真接上了 Predictor：
     /// 配置开了但没接上（多半是没密钥）时不打勾，标题说明原因，不能显示开了实际没开。
-    /// `wubi` 同理是 Engine 里真装上的五笔版本（码表缺了配置开着也是 `None`），顶上那行方案名照它写。
-    pub fn sync(
-        &self,
-        config: &Config,
-        cloud_active: bool,
-        wubi: Option<WubiVariant>,
-        error: Option<&str>,
-    ) {
-        let scheme = wubi.map_or("拼音", WubiVariant::label);
+    /// `scheme` 同理是 Engine 里真生效的方案名（码表缺了配置开着也不算五笔），顶上那行照它写；
+    /// 空串是缺省的单开全拼，那时写「拼音」。
+    pub fn sync(&self, config: &Config, cloud_active: bool, scheme: &str, error: Option<&str>) {
+        let scheme = if scheme.is_empty() { "拼音" } else { scheme };
         self.scheme
             .setTitle(&NSString::from_str(&format!("输入方案：{scheme}")));
         let title = match (config.predict.enabled, cloud_active) {

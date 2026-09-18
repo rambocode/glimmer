@@ -21,7 +21,7 @@ use std::path::PathBuf;
 
 use glimmer_core::{
     Candidate, CandidateKind, Cell, CloudWord, EmojiTable, Engine, FuzzyRules, Language, ModeKeys,
-    NoGlossFiller, NoInputLogger, NoPredictor, NoTranslator, Prediction, ShuangpinScheme,
+    NoGlossFiller, NoInputLogger, NoPredictor, NoTranslator, Prediction,
 };
 use glimmer_dictionary::{Dictionary, WordList};
 use glimmer_learning::{FrequencyLearner, InputLog, UsageStats, VocabularyBook};
@@ -30,7 +30,7 @@ use glimmer_platform::extra_dictionaries;
 use glimmer_platform::{
     AppsConfig, CandidateRenderer, DEFAULT_ENGLISH_CANDIDATES_OFF, DictionariesConfig,
     GeneralConfig, KeyCombo, LEARNING_LANGUAGE_OFF, LayoutMode, LocalModelConfig, LogLevel,
-    ModeSwitch, Modifiers, PAGE_KEY_OPTIONS, PreeditMode, ShortcutConfig, ThemeMode,
+    ModeSwitch, Modifiers, PAGE_KEY_OPTIONS, PreeditMode, Scheme, ShortcutConfig, ThemeMode,
 };
 use glimmer_predict::{
     CloudGlossFiller, CloudPredictor, ConnectionTest, PredictConfig, PredictError,

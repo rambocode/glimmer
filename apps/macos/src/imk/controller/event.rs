@@ -101,6 +101,15 @@ impl GlimmerInputController {
                 return self.handle_delete_key(digit, client);
             }
         }
+        // 注音：大千布局把数字键分给了符号，选词只能靠 Enter；Shift+Enter 才是「注音符号原样上屏」，
+        // 它照常走下面的 insertNewline。与 Windows 壳一致
+        if matches!(key, 36 | 76)
+            && !shift
+            && host::with(|h| h.engine.is_zhuyin_mode() && !h.engine.composition().is_empty())
+                .unwrap_or(false)
+        {
+            return self.commit_highlighted(client);
+        }
         let selector = match key {
             36 | 76 => Some(sel!(insertNewline:)),
             48 if shift => Some(sel!(insertBacktab:)),

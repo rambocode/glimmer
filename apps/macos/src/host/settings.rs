@@ -402,13 +402,14 @@ impl Host {
                 self.settings
                     .set_value("apps", "english_candidates_off", apps);
             }
-            // 弹出菜单第 0 项是「关」，之后按 ShuangpinScheme::ALL 的顺序
-            (Setting::Shuangpin, SettingValue::Index(index)) => {
-                let key = index
-                    .checked_sub(1)
-                    .and_then(|i| ShuangpinScheme::ALL.get(i))
-                    .map_or("", |scheme| scheme.key());
-                self.settings.set_value("general", "shuangpin", key);
+            // 弹出菜单按 Scheme::ALL 的顺序，写的是 [general] scheme。
+            // 顺手把旧键清干净：scheme 为空时 Core 才去看 shuangpin / zhuyin，留着它们会让手改过配置的人
+            // 看到两套值并存，日后再清空 scheme 就跳回旧方案
+            (Setting::Scheme, SettingValue::Index(index)) => {
+                let scheme = Scheme::ALL.get(index).copied().unwrap_or(Scheme::Pinyin);
+                self.settings.set_value("general", "scheme", scheme.key());
+                self.settings.set_value("general", "shuangpin", "");
+                self.settings.set_bool("general", "zhuyin", false);
             }
             // 弹出菜单第 0 项是「关」，之后按 WUBI_VARIANTS 的顺序
             (Setting::Wubi, SettingValue::Index(index)) => {

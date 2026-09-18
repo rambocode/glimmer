@@ -464,9 +464,18 @@ impl GlimmerInputController {
             && c != page_previous
             && c != page_next
             && host::with(|h| h.engine.takes_punctuation()).unwrap_or(true);
+        // 大千注音：数字键与 `- ; , . /` 都分给了注音符号与声调，一律进缓冲区，不再选词 / 翻页 / 转标点，
+        // 选词改用 Enter（Windows 壳同样的取舍，见 `dispatch_event`）；没在组句时敲也照样起一段
+        let zhuyin_key = host::with(|h| h.engine.is_zhuyin_mode()).unwrap_or(false)
+            && (c.is_ascii_digit() || matches!(c, '-' | ';' | ',' | '.' | '/'));
+        // 注音这一段还差声调时，空格是一声 / 轻声，进缓冲区而不是上屏候选
+        let zhuyin_tone =
+            composing && c == ' ' && host::with(|h| h.engine.zhuyin_needs_tone()).unwrap_or(false);
         if c.is_ascii_lowercase()
             || (composing && c == '\'')
             || semicolon
+            || zhuyin_key
+            || zhuyin_tone
             || (expression && glimmer_core::shortcut::is_expression_char(c))
             || (raw && c.is_ascii_graphic())
             || (unicode && (c.is_ascii_digit() || c == '+'))
@@ -572,6 +581,8 @@ impl GlimmerInputController {
             // 方向键等其他键还原后交给应用
             return selector == sel!(insertNewline:);
         } else if selector == sel!(insertNewline:) {
+            // 注音下 Enter 是选词（数字键被大千布局占了），Shift+Enter 才原样上屏注音符号；
+            // dispatch_event 把不带 Shift 的注音 Enter 提前截走，到这里的一定是「原样上屏」
             self.commit_raw(client);
         } else if selector == sel!(cancelOperation:) || selector == sel!(complete:) {
             // TextEdit 等应用把 Esc 绑成 complete:（自动补全），也当作取消

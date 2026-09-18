@@ -29,12 +29,15 @@ impl Host {
             .set_emoji_candidates(config.general.emoji_candidates);
         self.engine
             .set_translation_reading(config.general.translation_reading);
-        self.engine.set_shuangpin(config.general.shuangpin());
+        // 双拼键位与注音是同一条轴（`[general] scheme`）上的两个值，一起设，免得改了一个忘掉另一个
+        let scheme = config.general.scheme();
+        self.engine.set_shuangpin(scheme.shuangpin());
+        self.engine.set_zhuyin_mode(scheme == Scheme::Zhuyin);
         self.apply_wubi(&config);
         // 拼音侧：配置说关（`scheme = "none"`）且五笔真装上了才关，码表缺了就留着拼音兜底。
         // 五笔要先装（`apply_wubi`），这一句才知道五笔在不在
         self.engine
-            .set_phonetic(config.general.scheme().is_on() || !self.engine.wubi_mode());
+            .set_phonetic(scheme.is_on() || !self.engine.wubi_mode());
         self.engine.set_learning(config.general.learning);
         logging::set_level(config.general.log_level);
         self.translation_keys = config.shortcut.translation_keys();
@@ -96,12 +99,19 @@ impl Host {
         }
         let cloud_active = self.engine.prediction_enabled();
         let wubi = self.engine.wubi().map(glimmer_core::wubi::Scheme::variant);
+        // 菜单栏与菜单上的方案名按 Engine 里真生效的两条轴写：码表缺了配置开着也不算五笔，
+        // 那时拼音侧即使配置说「关」也在兜底（见上面的 set_phonetic），标签跟着写全拼
+        let shown = if wubi.is_none() && !scheme.is_on() {
+            Scheme::Pinyin
+        } else {
+            scheme
+        };
+        let label = glimmer_platform::scheme_label(shown, wubi);
         self.indicator.set_cloud(cloud_active);
-        self.indicator
-            .set_scheme(wubi.map(glimmer_core::WubiVariant::label));
+        self.indicator.set_scheme(label.clone());
         self.indicator.update();
         self.menu
-            .sync(&config, cloud_active, wubi, self.settings.error());
+            .sync(&config, cloud_active, &label, self.settings.error());
         let key_present = config
             .predict
             .api_key
