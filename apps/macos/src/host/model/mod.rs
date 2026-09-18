@@ -43,14 +43,18 @@ impl Host {
                 let _ = tx.send(loaded);
             });
         match spawned {
-            Ok(_) => self.model_loader = Some(rx),
+            Ok(_) => {
+                self.model_loader = Some(rx);
+                self.rescore.watch_loading();
+            }
             Err(error) => tracing::warn!(%error, "起不了模型加载线程，本地整句模型不用"),
         }
     }
 
-    /// 加载线程有结果了就接到 Engine 上；每次查询顺手看一眼，不阻塞。
+    /// 加载线程有结果了就接到 Engine 上；每次查询和加载定时器都会看一眼，不阻塞。
     pub fn attach_loaded_model(&mut self) {
         let Some(rx) = &self.model_loader else {
+            self.rescore.stop_watching();
             return;
         };
         match rx.try_recv() {
@@ -58,23 +62,51 @@ impl Host {
                 self.engine
                     .set_async_sentence_scorer(Some(Box::new(scorer)));
                 self.model_loader = None;
+                self.rescore.stop_watching();
                 // 模型上线了：日志里补一条会话信息，之后的条目知道重排开着
                 let version = self.version.clone();
                 self.engine.log_session(&version, "macos");
+                self.rescore_current_round();
             }
             Ok(Err(error)) => {
                 tracing::warn!(%error, "本地整句模型加载失败，不重排");
                 self.model_loader = None;
+                self.rescore.stop_watching();
             }
             Err(TryRecvError::Empty) => {}
-            Err(TryRecvError::Disconnected) => self.model_loader = None,
+            Err(TryRecvError::Disconnected) => {
+                self.model_loader = None;
+                self.rescore.stop_watching();
+            }
         }
+    }
+
+    /// 模型接上时用户正在组句：这一轮的查询从没见过打分器，不补查一次就永远错过重排。
+    /// 补查只为攒下整句路径、起防抖，不动画面；用户已翻页或动过高亮就不打扰。
+    fn rescore_current_round(&mut self) {
+        if self.engine.composition().is_empty()
+            || self.translation.is_some()
+            || self.session.page != 0
+            || self.session.navigated
+        {
+            return;
+        }
+        if self.engine.query().is_ok() {
+            tracing::info!("模型接上时正在组句，补一轮重排");
+            self.schedule_rescoring();
+        }
+    }
+
+    /// 模型还在后台加载。
+    pub fn model_loading(&self) -> bool {
+        self.model_loader.is_some()
     }
 
     /// 卸掉模型（配置关掉）。
     pub(super) fn unload_local_model(&mut self) {
         self.model_loader = None;
         self.engine.set_async_sentence_scorer(None);
+        self.rescore.stop_watching();
         self.rescore.stop();
     }
 

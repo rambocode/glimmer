@@ -1,4 +1,4 @@
-//! 本地整句模型的两个定时器：停键后的防抖（到点才把整句路径送去后台打分）与结果轮询（到了就重画，平时不占 CPU）。
+//! 本地整句模型的三个定时器：等后台加载接上、停键后的防抖（到点才把整句路径送去后台打分）与结果轮询（到了就重画，平时不占 CPU）。
 
 use std::time::{Duration, Instant};
 
@@ -16,7 +16,13 @@ const POLL_INTERVAL: f64 = 0.02;
 /// 最长等多久；后台线程卡住时兜底。
 const MAX_WAIT: Duration = Duration::from_secs(2);
 
+/// 等模型加载的间隔：加载要几百毫秒到几秒，接上晚几十毫秒无妨。
+const LOAD_INTERVAL: f64 = 0.1;
+
 pub struct RescoreMonitor {
+    /// 等模型加载的定时器；没在加载为 `None`。
+    loading: Option<Retained<NSTimer>>,
+
     /// 防抖定时器（一次性）；没在等为 `None`。
     debounce: Option<Retained<NSTimer>>,
 
@@ -32,10 +38,36 @@ pub struct RescoreMonitor {
 impl RescoreMonitor {
     pub fn new(mtm: MainThreadMarker) -> Self {
         Self {
+            loading: None,
             debounce: None,
             poll: None,
             since: None,
             mtm,
+        }
+    }
+
+    /// 模型在后台加载：定时看一眼接上没有。按键路径也会看，但用户停键后没人再看，接上的那一刻就没人知道。
+    pub fn watch_loading(&mut self) {
+        if self.loading.is_some() {
+            return;
+        }
+        let target = RescoreTicker::new(self.mtm);
+        let timer = unsafe {
+            NSTimer::scheduledTimerWithTimeInterval_target_selector_userInfo_repeats(
+                LOAD_INTERVAL,
+                &target,
+                sel!(attach:),
+                None,
+                true,
+            )
+        };
+        self.loading = Some(timer);
+    }
+
+    /// 加载有结果了（接上、失败或卸掉）：不再看。
+    pub fn stop_watching(&mut self) {
+        if let Some(timer) = self.loading.take() {
+            timer.invalidate();
         }
     }
 
@@ -100,6 +132,11 @@ define_class!(
     struct RescoreTicker;
 
     impl RescoreTicker {
+        #[unsafe(method(attach:))]
+        fn attach(&self, _timer: Option<&AnyObject>) {
+            crate::host::with(|h| h.attach_loaded_model());
+        }
+
         #[unsafe(method(fire:))]
         fn fire(&self, _timer: Option<&AnyObject>) {
             crate::host::with(|h| h.start_rescoring());
