@@ -43,6 +43,38 @@ unsafe extern "C" {
 
     /// 属性键：是否已启用（CFBoolean）。
     static kTISPropertyInputSourceIsEnabled: NonNull<CFString>;
+
+    /// 当前选中的键盘输入源；按 Copy 规则归调用方释放。
+    fn TISCopyCurrentKeyboardInputSource() -> *mut TISInputSource;
+}
+
+#[link(name = "CoreFoundation", kind = "framework")]
+unsafe extern "C" {
+    /// 释放一个 CF 对象（TISInputSourceRef 也是 CF 类型）。
+    fn CFRelease(cf: *const c_void);
+}
+
+/// 本 bundle 被启用、选中的那个输入源 ID：声明了输入模式就是第一个可见模式（`app.glimmer.inputmethod.Hans`），
+/// 否则是顶层 `TISInputSourceID`。系统「当前输入源」报的也是这个，状态项拿它比对。
+pub fn main_bundle_source_id() -> String {
+    enabled_source_id(&NSBundle::mainBundle())
+}
+
+/// 系统当前选中的键盘输入源 ID；拿不到返回 `None`。
+/// 状态项靠它判断「用户还在用微明」：IMK 在焦点切换时会给一个 deactivate 而不一定再补 activate，
+/// 不能只信回调（见 `menubar/indicator.rs`）。
+pub fn current_source_id() -> Option<String> {
+    // SAFETY: Copy 规则返回的句柄由我们释放；属性值归系统，只读；空指针都判过。
+    unsafe {
+        let source = TISCopyCurrentKeyboardInputSource();
+        if source.is_null() {
+            return None;
+        }
+        let value = TISGetInputSourceProperty(source, kTISPropertyInputSourceID);
+        let id = value.cast::<CFString>().as_ref().map(CFString::to_string);
+        CFRelease(source.cast::<c_void>());
+        id
+    }
 }
 
 /// 注册当前进程所在的 `.app`、启用并切成当前输入源。启用成功返回 `Ok(是否也切成了当前)`，失败带一句能打到安装日志里的说明。

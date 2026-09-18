@@ -16,7 +16,7 @@ pub(crate) const LANGUAGES: [(&str, &str); 4] = [
 
 /// 双拼方案：界面名 + 配置写法（空串为全拼）。
 /// 首项之后逐项对齐 `glimmer_core::ShuangpinScheme::ALL`（顺序与文案由底部单测守住）。
-pub(crate) const SHUANGPIN: [(&str, &str); 6] = [
+pub(crate) const SHUANGPIN: [(&str, &str); 7] = [
     ("全拼", ""),
     ("小鹤双拼", "xiaohe"),
     ("自然码双拼", "ziranma"),
