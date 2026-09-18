@@ -174,7 +174,10 @@ Alacritty / kitty / VS Code / Cursor / Zed / JetBrains 全家 / MacVim / Sublime
 同分排在后面。简拼位置也套声母规则（`zh` 前缀开了 z/zh 就按 `z` 查），整句转换用同一套写法。
 CLI 用 `--fuzzy z-zh,n-l` 或 `--fuzzy all` 临时开。
 
-### 双拼（默认关，`[general] shuangpin`）
+### 双拼（默认关，`[general] scheme`）
+
+输入方案是**两条独立的轴**：拼音侧 `[general] scheme`（全拼 / 六套双拼 / 大千注音 / `none` 关）与形码侧 `[general] wubi`（五笔版本）。
+两边都开就是混输（见 [五笔支持方案](../plan/wubi.md)），所以表达不成一个单选项。`scheme` 没写时回去看旧键 `shuangpin` / `zhuyin`，老配置照常。
 
 六套方案：小鹤（`xiaohe`）、自然码（`ziranma`）、微软（`microsoft`）、搜狗（`sogou`）、小浪（`xiaolang`）、智能ABC（`abc`）。键位表在 Core `shuangpin::table`，
 按 Rime 的 `double_pinyin*.schema.yaml` 核对（搜狗来自 rime-ice 的整理，小浪来自用户提供的搜狗小浪双拼与 Rime 配置，智能ABC另与维基百科「双拼」词条的键位图交叉核对），每套方案对全部音节做往返测试；微软与搜狗只差微软的 `v` 键兼作 üe。

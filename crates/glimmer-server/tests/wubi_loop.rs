@@ -7,10 +7,10 @@ use std::sync::{Arc, Mutex};
 use glimmer_core::wubi::{Options, Scheme};
 use glimmer_core::{Language, WubiVariant};
 use glimmer_dictionary::Dictionary;
-use glimmer_platform::Config;
 use glimmer_platform::protocol::{
     ClientMessage, Frame, KeyEvent, KeyOutcome, PROTOCOL_VERSION, ServerMessage, SessionId,
 };
+use glimmer_platform::{Config, Scheme as PlatformScheme};
 use glimmer_server::dispatch::{StatusSink, StatusView};
 use glimmer_server::{AssemblySpec, Router, RouterConfig, assembly};
 
@@ -24,6 +24,7 @@ fn repo_root() -> PathBuf {
 }
 
 /// 样例词库装的 Router，再把内嵌码表设成 86 五笔，开好一个会话。
+/// 拼音侧按 `config.scheme` 定（与 `startup` 一致）：`Scheme::Off` 是只用五笔，别的值是混输。
 fn wubi_router(options: Options, config: RouterConfig) -> Router {
     let root = repo_root();
     let mut engine = assembly::assemble(&AssemblySpec {
@@ -36,9 +37,18 @@ fn wubi_router(options: Options, config: RouterConfig) -> Router {
     .expect("assemble engine from sample data");
     let table = Dictionary::parse(TABLE).expect("parse inline wubi table");
     engine.set_wubi(Some(Scheme::new(WubiVariant::Wubi86, table, options)));
+    engine.set_phonetic(config.scheme.is_on());
     let mut router = Router::new(engine, config);
     open_session(&mut router);
     router
+}
+
+/// 只用五笔（拼音侧关掉）的 Router 配置：自动上屏、顶字这些都是「只用形码」时才有的行为。
+fn code_only_config() -> RouterConfig {
+    RouterConfig {
+        scheme: PlatformScheme::Off,
+        ..RouterConfig::default()
+    }
 }
 
 fn open_session(router: &mut Router) {
@@ -99,7 +109,7 @@ fn candidate_texts(frame: &Frame) -> Vec<&str> {
 
 #[test]
 fn four_codes_with_a_full_hit_commit_in_the_same_key_result() {
-    let mut router = wubi_router(Options::default(), RouterConfig::default());
+    let mut router = wubi_router(Options::default(), code_only_config());
     let (commits, frame) = type_keys(&mut router, "ggg");
     assert_eq!(commits, vec![None, None, None]);
     assert_eq!(preedit(&frame), "ggg");
@@ -118,7 +128,7 @@ fn four_codes_with_a_full_hit_commit_in_the_same_key_result() {
 
 #[test]
 fn a_full_hit_then_a_new_key_starts_a_new_segment() {
-    let mut router = wubi_router(Options::default(), RouterConfig::default());
+    let mut router = wubi_router(Options::default(), code_only_config());
     let (commits, frame) = type_keys(&mut router, "khlg");
     assert_eq!(commits.last().unwrap().as_deref(), Some("中国"));
     assert!(frame.is_empty());
@@ -135,7 +145,7 @@ fn topping_commits_the_old_segment_and_keeps_the_new_key() {
         auto_select: false,
         ..Options::default()
     };
-    let mut router = wubi_router(options, RouterConfig::default());
+    let mut router = wubi_router(options, code_only_config());
     let (commits, frame) = type_keys(&mut router, "khlg");
     assert!(commits.iter().all(Option::is_none));
     assert_eq!(preedit(&frame), "khlg");
@@ -150,7 +160,7 @@ fn topping_commits_the_old_segment_and_keeps_the_new_key() {
 
 #[test]
 fn a_key_with_no_hits_tops_the_prefix_candidate() {
-    let mut router = wubi_router(Options::default(), RouterConfig::default());
+    let mut router = wubi_router(Options::default(), code_only_config());
     // `ggl` + `x`：`gglx` 什么都命中不了，旧段的提示候选 一 上屏，缓冲区剩 x
     let (commits, frame) = type_keys(&mut router, "gglx");
     assert_eq!(commits[3].as_deref(), Some("一"));
@@ -159,7 +169,7 @@ fn a_key_with_no_hits_tops_the_prefix_candidate() {
 
 #[test]
 fn space_and_digits_still_pick_candidates() {
-    let mut router = wubi_router(Options::default(), RouterConfig::default());
+    let mut router = wubi_router(Options::default(), code_only_config());
     type_keys(&mut router, "gg");
     let (_, commit, frame) = press(&mut router, ' ');
     assert_eq!(commit.as_deref(), Some("五"), "二码首选是全码命中的 五");
@@ -191,10 +201,10 @@ impl StatusSink for RecordingStatus {
 }
 
 #[test]
-fn status_bar_shows_wubi_scheme_and_ignores_zhuyin() {
+fn status_bar_shows_the_wubi_scheme_when_pinyin_is_off() {
     let config = RouterConfig {
         status_enabled: true,
-        zhuyin: true,
+        scheme: PlatformScheme::Off,
         ..RouterConfig::default()
     };
     let mut router = wubi_router(Options::default(), config);
@@ -209,6 +219,29 @@ fn status_bar_shows_wubi_scheme_and_ignores_zhuyin() {
     assert_eq!(
         recorder.0.lock().unwrap().clone(),
         vec![Some("中 · 86 五笔".to_owned())]
+    );
+}
+
+#[test]
+fn status_bar_shows_both_sides_when_mixed() {
+    let config = RouterConfig {
+        status_enabled: true,
+        scheme: PlatformScheme::Zhuyin,
+        ..RouterConfig::default()
+    };
+    let mut router = wubi_router(Options::default(), config);
+    let recorder = RecordingStatus::default();
+    router.set_status_sink(Box::new(recorder.clone()));
+
+    router.handle(ClientMessage::ModeChanged {
+        session: SESSION,
+        english: false,
+    });
+
+    // 混输：五笔在前、拼音侧在后，与候选顺序一致；「注」那一格让位给完整方案名
+    assert_eq!(
+        recorder.0.lock().unwrap().clone(),
+        vec![Some("中 · 86 五笔 + 大千注音".to_owned())]
     );
 }
 
@@ -245,6 +278,7 @@ fn hot_reload_switches_wubi_on_and_off_with_its_own_learning_dir() {
     // 开五笔：码表从目录里重开，四码自动上屏
     let mut config = Config::default();
     config.general.wubi = "86".to_owned();
+    config.general.scheme = "none".to_owned();
     router.apply_config(&config);
     assert_eq!(router.wubi_key(), Some("wubi86"));
     let (commits, _) = type_keys(&mut router, "gggg");
@@ -363,6 +397,7 @@ fn hot_reload_turns_on_xinshiji_with_its_own_learning_dir() {
 
     let mut config = Config::default();
     config.general.wubi = "xsj".to_owned();
+    config.general.scheme = "none".to_owned();
     config.status_bar.enabled = true;
     router.apply_config(&config);
     assert_eq!(router.wubi_key(), Some("wubixsj"));

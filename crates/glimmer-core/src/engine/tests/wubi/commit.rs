@@ -42,6 +42,7 @@ fn consecutive_commits_in_one_buffer_form_a_word_with_the_encoded_code() {
         Dictionary::parse(table).unwrap(),
         Options::default(),
     )));
+    engine.set_phonetic(false);
     let select = |engine: &mut Engine, text: &str| {
         let candidate = engine
             .query()
@@ -96,6 +97,7 @@ fn words_whose_chars_lack_full_codes_are_not_formed() {
         Dictionary::parse(table).unwrap(),
         Options::default(),
     )));
+    engine.set_phonetic(false);
     for _ in 0..3 {
         engine.set_input("g");
         let yi = engine.query().unwrap().candidates.items[0].clone();

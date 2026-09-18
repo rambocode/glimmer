@@ -14,7 +14,7 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 
 模块：`composition` / `parser` / `correction`（拼写纠错：整段一处编辑的候选纠正 + `typo` 音节级敲错变体表，后者进整句词图当带代价的边）/
 `candidate` / `ranking` / `shortcut` / `sentence` / `fuzzy` / `shuangpin`（双拼：四套方案键位表、键 → 全拼解码与消耗换算）/ `zhuyin`（大千注音：键 → 注音符号 → 拼音，`[general] zhuyin` 开关，声调只判音节完整不进查询）/
-`wubi`（五笔码表方案，`Engine::set_wubi(Option<Scheme>)`，开着时双拼 / 注音 / 整句 / 纠错 / 模糊音 / 中英混输 / 快捷候选 / 组句联想全部让位，`v` `u` 是编码键，只剩 `?` 问字；
+`wubi`（五笔码表方案，`Engine::set_wubi(Option<Scheme>)`；与拼音侧 `Engine::set_phonetic(bool)` 是**两条独立的轴**——只用形码（拼音侧关）时双拼 / 注音 / 整句 / 纠错 / 模糊音 / 中英混输 / 快捷候选 / 组句联想全部让位，`v` `u` 是编码键，只剩 `?` 问字；两边都开是混输，见下；
   `Variant`（`Wubi86` / `Wubi98` / `Xinshiji`，`variant.rs`）是版本：配置写法 `86` / `98` / `xsj`（新世纪另认 `06` / `xinshiji`）、方案键 `wubi86` / `wubi98` / `wubixsj`、
   码表文件 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`、界面名；三版行为完全一致，只有字根与码表不同；
   `Scheme` = `Variant` + 码表 `Dictionary`（`词\t编码\t词频`，编码整个是一个音节）+ `Reverse` 字 → 全码（单字取最长码、等长取高频）+ `Options`（`[wubi]`）+ `encode` 造词规则；
@@ -23,7 +23,14 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   `check_wubi_auto_commit` 在 `push` 之后置 `pending_auto_commit`（四码全码命中且 `auto_select`；新键接上后无任何命中 → 旧段首选顶字、新键存 `deferred_key` 等 `commit` 后补回；满四码空码再敲字母整段丢掉），
   壳每键 `take_auto_commit` 取到就走普通 `commit`；`z` 开头走 `query_pinyin` 反查，候选 `reading` 注 `code_of`、`syllables` 是整段作用域，`typed_display` 为 `z'zhong'guo`；
   上屏消耗在 `engine/commit/wubi.rs`：吃候选编码那么长，自动造词按 `encode` 出编码进用户词（造不出就不造），五笔下连着上屏两次即造（同缓冲区阈值），空码回车 `record_raw` 不学成英文词；
-  `scheme_key()` 为 `Variant::key()`（`wubi86` / `wubi98` / `wubixsj`），输入日志与回放据此切方案）/ `emoji` /
+  `scheme_key()` 只用形码时是 `Variant::key()`（`wubi86` / `wubi98` / `wubixsj`）、混输时是 `<拼音侧>+<版本键>`（`pinyin+wubi86` / `xiaohe+wubi98`），输入日志与回放据此切方案；
+  **混输**（`wubi.is_some() && phonetic`，配置 `[general] scheme` 不为 `none` 且 `wubi` 非空）在 `engine/query/mixed.rs`：`wubi_candidates` 的结果按「编码 == 作用域」切成两段，
+  中间夹 `query_pinyin` 的整条 Query（含直输段 `is_raw` 按拼音侧判），顺序是**全码五笔 → 拼音 → 编码前缀五笔**（前缀命中排前面的话 `kai` 的首选会变成 `kaik` 的词），
+  按文本去重、取 `MAX_CANDIDATES`；拼音解析失败不算错（`ih`），整段按五笔走，两边都空才 `Err`；五笔码最长四位，第 5 个字母起自然只剩拼音。
+  混输下关掉的：`z` 反查（`z` 是声母）、四码自动上屏与顶字（`niha` 这类四字母同样可能是拼音，`check_wubi_auto_commit` 只在 `code_only()` 时调）、自动造词（前后两次上屏可能一次编码一次拼音，`auto_word_syllables` 返回 `None`）；
+  模式键与双拼一样走 `shifted()`，纠错门槛是作用域 > `MAX_CODE_LEN`（四码以内还可能是编码）。
+  上屏时哪条是五笔候选由 `is_wubi_candidate` 判：五笔候选只有一个「音节」且它以整段作用域开头（全码等长、前缀命中更长），拼音候选的音节要么更短要么不是前缀；
+  正好重合的只有「单音节吃满整段」那种，两条路算出来的消耗与学习键一样）/ `emoji` /
 `english`（英文模式候选）/ `engine`（`query::EnglishTail`：句末英文词并入整句，`woxiangxuehaorust` → 我想学好rust，尾段也像拼音时按分数与拼音读法比）。
 `Engine` 是对外唯一门面，`Translator` / `Learner` trait 在 `engine` 模块；词库是「主词库 + 附加词库（`set_extra_dictionaries`，同步抽取 `@` 编码的英文名称供补全）+ 用户词」的列表；繁体输出（`traditional` 开关与 `traditional_map` 映射）依赖 `ferrous-opencc`（`s2tw`）在出候选与上屏边界转换，内部保持简体。
 `Engine` 是对外唯一门面，`Translator` / `Learner` trait 在 `engine` 模块；词库是「主词库 + 附加词库（`set_extra_dictionaries`，同步抽取 `@` 编码的英文名称供补全）+ 用户词」的列表。
@@ -113,14 +120,18 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 前 `RESCORE_P
 ## crates/glimmer-platform
 
 `Config`（TOML 配置文件，`[general]` / `[shortcut]` / `[fuzzy]` / `[dictionaries]` / `[apps]` / `[predict]` 分节，首次运行写模板，
-`set_value` 用 toml_edit 原地改键保留注释；`[model] enabled` 本地整句模型开关，`LocalModelConfig`）；`extra_dictionaries` 列出 / 加载随包领域词库与用户 `dicts/`
+`set_value` 用 toml_edit 原地改键保留注释；`[model] enabled` 本地整句模型开关，`LocalModelConfig`）；
+输入方案是两条轴：`config/scheme.rs` 的 `Scheme`（拼音侧，`Pinyin` / `Shuangpin(六套)` / `Zhuyin` / `Off`，`ALL` 给设置界面按顺序列，`log_key` 给输入日志）与 `[general] wubi` 的 `WubiVariant`（形码侧）；
+`GeneralConfig::scheme()` 在 `scheme` 为空串时回落到旧键 `shuangpin` / `zhuyin`（老配置照常，写了 `scheme` 就不看它们），`mixed()` 是两边都开，
+`scheme_label(pinyin, wubi)` 出状态条上的方案名（五笔在前，与候选顺序一致；单开全拼时为空串）；`extra_dictionaries` 列出 / 加载随包领域词库与用户 `dicts/`
 （mac 壳与 Windows Server 共用，同名 `.qj` 优先于 `.tsv`）；`protocol` 模块是 Windows Server ↔ TSF DLL 的 IPC 协议类型
 （`ClientMessage` / `ServerMessage` / `Frame` / `PreeditSegment`，全 serde，两端共用，见 `docs/design/architecture.md`「Windows：TSF」）。
 
 ## crates/glimmer-server
 
 输入法 Server 的平台无关部分，从 `apps/windows/server` 抽出，Windows Server 进程与 Linux IBus 引擎进程共用：`assembly`（按 `AssemblySpec` 装配 Engine：词库 / 释义 / 学习 / 语言模型 / 五笔码表——`WubiSpec` 给版本 + `[wubi]` 选项，`load_scheme` 按 `Variant::data_file()`
-在主词库同目录找 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`，学习器按 `Variant::key()` 分子目录；配置热加载在 `dispatch/reload/wubi.rs`，开关或换版本才重开码表）、
+在主词库同目录找 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`，学习器按 `Variant::key()` 分子目录；配置热加载在 `dispatch/reload/wubi.rs`，开关或换版本才重开码表；
+拼音侧 `set_phonetic(scheme().is_on() || !engine.wubi_mode())`——配置说关但码表没装上时留着拼音兜底，所以要在五笔装完之后设）、
 `dispatch::Router`（`ClientMessage` → Engine → `ServerMessage` / `Frame`：多会话、按键、上屏、翻译选中文字、配置热加载、本地整句模型重排的节拍 `next_tick` / `tick`）、`error::ServerError`。
 不含传输与绘制：候选窗 / 状态条经 `CandidateSink` / `StatusSink` 由平台壳注入，默认不画。键码沿用 Windows 虚拟键码（VK）语义，Linux 端把 keysym 翻成 VK 再发。
 输入日志的会话条目（版本号 / 平台名）由壳用 `Router::set_log_identity` 设置。集成测试 `tests/engine_loop.rs` / `wubi_loop.rs` 用 `assets/sample/` 样例数据，全平台可跑。
@@ -141,9 +152,12 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 前 `RESCORE_P
 - `--typing` 逐键计时（性能测试用 release 构建跑，目标每键 10 ms 以内）。
 - `--chinese-first` 打开中文优先（`[general] chinese_first = true` 的排法），配合 `--replay` 比两种英文词位置。
 - `--replay <input-log.jsonl>` 回放评测：把日志里每次上屏的键重新喂给引擎，按来源算首选 / 前五命中率、平均名次、不在候选的条数，打印没命中的例子（`--misses N`）；
-  只在内存里学习不写文件，加 `--user-dict` 可带上现有学习数据。日志每条带 `scheme`，回放按它切双拼 / 注音 / 五笔：五笔条目要同时给 `--wubi`，没给就跳过并计数（`wubi_missing`）。
-  一次回放只装得下一种五笔版本（`wubi_slot` 是单槽位：拼音条目时把码表卸到槽里、五笔条目再装回来），日志里其他五笔版本的条目一律计入 `wubi_missing`；
+  只在内存里学习不写文件，加 `--user-dict` 可带上现有学习数据。日志每条带 `scheme`，回放在 `replay/scheme.rs` 的 `SchemeSwitcher` 里按它切双拼 / 注音 / 五笔 / 混输
+  （`split` 把 `xiaohe+wubi98` 拆成拼音侧 + 版本键，`wubi86` 单独出现是「只用五笔」）：要用五笔的条目得同时给对版本的 `--wubi`，没给就跳过并计数（`wubi_missing`）。
+  一次回放只装得下一种五笔版本（`slot` 是单槽位：拼音条目时把码表卸到槽里、五笔 / 混输条目再装回来），日志里其他五笔版本的条目一律计入 `wubi_missing`；
   混了多种版本的日志要按版本各跑一遍。
+- `--scheme pinyin|xiaohe|…|zhuyin|none` 覆盖 `[general] scheme`（拼音侧）；`--shuangpin` 是它的旧写法，两个都给以 `--scheme` 为准，`off` 等于全拼。
+  `none` 配上 `--wubi` 才是「只用五笔」，两边都开就是混输。
 - `--wubi 86|98|xsj|off` 覆盖 `[general] wubi`（`xsj` 即新世纪，也可写 `06`）：码表只认 `data/generated/` 下该版本的 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`
   （没有就报错，用 `dict-convert wubi` + `pack dict --output` 生成），`[wubi]` 选项照配置；
   `--user-dict` 给了时按输入串记的表落该版本的方案子目录（`wubi86/` / `wubi98/` / `wubixsj/`）。`--typing` 逐键计时不模拟四码自动上屏（`set_input` 不走 `push`）。
@@ -163,7 +177,7 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 - 日志在 `~/Library/Logs/Glimmer/`（按天分文件留 7 天，删了会重建），用户数据与配置在 `~/Library/Application Support/Glimmer/`。
 - 配置项：云联想 `[predict]`（偏好设置「云服务」页有「测试连接」按钮：`glimmer_predict::ConnectionTest` 起线程发一条最小请求，`Host` 用独立定时器 `CloudTestMonitor` 轮询结果显示到窗口底部；
   `reasoning_effort` 缺省 `none`，DeepSeek V4 默认思考，不关正文为空）；模糊音 `[fuzzy]` 默认都关；`[general]` 学习语言（`off` 不显示译文）/ 译词读音 `translation_reading`（关掉时 `Engine::annotate` 去掉音标 / 假名）/ 每页候选数 / 翻页键 / 外观 / 竖排横排 / 拼音显示位置 /
-  英文模式候选开关 / 中文优先 `chinese_first` / 中文模式英文词候选 `mixed_english_candidates` / emoji 候选 `emoji_candidates` / 双拼方案 `shuangpin`（小鹤 / 自然码 / 微软 / 搜狗 / 小浪 / 智能ABC，空为全拼）/ 五笔 `wubi`（空为拼音，`86` / `98` / `xsj`，开着时双拼与注音被忽略；行为在 `[wubi]`：`auto_select` / `hint` / `fixed_order_length`，
+  英文模式候选开关 / 中文优先 `chinese_first` / 中文模式英文词候选 `mixed_english_candidates` / emoji 候选 `emoji_candidates` / 拼音方案 `scheme`（`pinyin` 全拼 / 小鹤 / 自然码 / 微软 / 搜狗 / 小浪 / 智能ABC / `zhuyin` 大千注音 / `none` 关；空串时回落到旧键 `shuangpin` / `zhuyin`，老配置照常）/ 五笔 `wubi`（空为关，`86` / `98` / `xsj`，与拼音方案是两条轴、都开就是混输；行为在 `[wubi]`：`auto_select` / `hint` / `fixed_order_length`，
   码表 `Resources/wubi86.qj` / `wubi98.qj` / `wubixsj.qj` 三份都随包，按版本装一份，偏好设置「通用」页的「五笔」弹出菜单四项（关 / 86 / 98 / 新世纪）由 `Variant::ALL` 出，
   壳每次 `push` 后先 `take_auto_commit`）/ 日志级别 `log_level`（缺省 info 不含敲的内容，debug 逐键记，热切换）/ 输入日志 `input_log`；
   `[shortcut]` 模式键 v / u、`question_mark`（缺省关，开了空缓冲区敲 `?` 进问字）、上屏第一 / 第二个译词的修饰键 `translation` / `translation_second`、删候选 `delete_candidate`（缺省 shift，用户词整删、词库词清学习）、翻译选中文字 `translate_selection`、macOS 中英文切换 `mode_switch`（缺省 `shift` 单击，也支持旧版修饰键加字母，不能与翻译键冲突）；

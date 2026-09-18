@@ -7,16 +7,17 @@
 
 mod line;
 mod report;
+mod scheme;
 mod tally;
 
 use std::path::Path;
 
-use glimmer_core::wubi::Scheme as WubiScheme;
 use glimmer_core::{Engine, InputLogEntry, InputSource};
 
 pub use report::Report;
 
 use line::Line;
+use scheme::SchemeSwitcher;
 use tally::Tally;
 
 /// 跑一遍日志，返回报告。
@@ -26,8 +27,8 @@ pub fn run(engine: &mut Engine, path: &Path, show_misses: usize) -> Result<Repor
         source,
     })?;
     let mut report = Report::default();
-    // 五笔条目要装着码表（CLI 用 --wubi 装的）：拼音条目时暂时卸到这里，五笔条目再装回去
-    let mut wubi_slot: Option<WubiScheme> = None;
+    // 每条日志按它自己记的方案装配引擎（码表在拼音条目与五笔 / 混输条目之间来回挪）
+    let mut switcher = SchemeSwitcher::default();
     for (number, raw) in text.lines().enumerate() {
         if raw.trim().is_empty() {
             continue;
@@ -76,37 +77,11 @@ pub fn run(engine: &mut Engine, path: &Path, show_misses: usize) -> Result<Repor
                 {
                     report.predictions_accepted += 1;
                 }
-                replay_commit(engine, &commit, &mut report, show_misses, &mut wubi_slot)
+                replay_commit(engine, &commit, &mut report, show_misses, &mut switcher)
             }
         }
     }
     Ok(report)
-}
-
-/// 按这条日志记的方案设引擎：五笔条目装回码表（没装过就记一条「缺码表」返回 `false`），
-/// 拼音条目卸下码表、按日志设双拼 / 注音。
-fn apply_scheme(
-    engine: &mut Engine,
-    scheme: &str,
-    report: &mut Report,
-    wubi_slot: &mut Option<WubiScheme>,
-) -> bool {
-    if scheme.starts_with("wubi") {
-        if engine.wubi().is_none() {
-            engine.set_wubi(wubi_slot.take());
-        }
-        if engine.wubi().is_some_and(|w| w.key() == scheme) {
-            return true;
-        }
-        report.wubi_missing += 1;
-        return false;
-    }
-    if let Some(taken) = engine.take_wubi() {
-        *wubi_slot = Some(taken);
-    }
-    engine.set_shuangpin(scheme.parse().ok());
-    engine.set_zhuyin_mode(scheme == "zhuyin");
-    true
 }
 
 fn replay_commit(
@@ -114,13 +89,17 @@ fn replay_commit(
     commit: &glimmer_core::CommitEntry,
     report: &mut Report,
     show_misses: usize,
-    wubi_slot: &mut Option<WubiScheme>,
+    switcher: &mut SchemeSwitcher,
 ) {
-    if !apply_scheme(engine, &commit.scheme, report, wubi_slot) {
+    // 这条日志所属方案回放不了（用了五笔但没给对版本的 `--wubi`）：只计数。
+    // 拿拼音的读法去喂编码会算出看着像真的、实则无意义的命中率
+    if !switcher.can_replay(engine, &commit.scheme) {
+        report.wubi_missing += 1;
         engine.clear();
         engine.break_chain();
         return;
     }
+    switcher.apply(engine, &commit.scheme);
     let Some(tally) = report.tally_for(commit.source) else {
         // 不是本地排序给出的（云端词、原样上屏……）：只计数；那次上屏的词没法接进上文，断链。
         // 原样上屏照样走一遍 `take_raw`：个人英文词（`gist`）与「这个串不纠」都是从这里学的，不走它回放里的英文候选与纠错就比真实使用差

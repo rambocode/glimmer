@@ -371,10 +371,10 @@ impl Engine {
     }
 
     /// 这个候选上屏算接受了哪些音节级敲错：词图里靠敲错变体对上的音节，加上整段纠错落在的那个音节（吃到了编辑处才算）。
-    /// 双拼不记（键与全拼对不上）。
+    /// 双拼不记（键与全拼对不上）；形码的「音节」是编码，更对不上，混输下选的是五笔候选时同样不记。
     pub(super) fn accepted_typos(&self, candidate: &Candidate) -> Vec<(String, String)> {
         let keys = self.composition.scope();
-        if self.wubi.is_some() || self.decode(keys).is_some() {
+        if self.code_only() || self.decode(keys).is_some() || self.is_wubi_candidate(candidate) {
             return Vec::new();
         }
         match self.active_correction(keys) {
@@ -394,8 +394,9 @@ impl Engine {
         &self,
         candidate: &Candidate,
     ) -> Option<Vec<sentence::SentenceWord>> {
-        // 五笔反查里的整句（作用域带 `z`）不重算路径：不记转移，链就此断开
-        if self.wubi.is_some() {
+        // 五笔反查里的整句（作用域带 `z`）不重算路径：不记转移，链就此断开。
+        // 混输没有反查，整句就是拼音那条路给的，照常重算
+        if self.code_only() {
             return None;
         }
         let scope = self.composition.scope();
@@ -444,7 +445,8 @@ impl Engine {
     /// 候选消耗多少作用域字节，以及按输入串记学习用的键（候选覆盖的那段全拼字母）。
     /// 纠错生效时按纠正后的拼音算，再按那处编辑换算回原串；双拼按解出的全拼算，再换算回键数。
     pub(super) fn consumed_by(&self, candidate: &Candidate) -> (usize, String) {
-        if self.wubi.is_some() {
+        // 五笔候选按编码吃（混输下只有它走这条，拼音候选照拼音音节吃）
+        if self.code_only() || self.is_wubi_candidate(candidate) {
             return self.wubi_consumed_by(candidate);
         }
         let keys = self.composition.scope();
@@ -605,7 +607,7 @@ impl Engine {
             .push(Transition::new(self.chain.context(), text, times));
         if auto_word {
             // 五笔一段编码就是一个词，连着上屏的两个词（中间没有标点 / 断开）就是「一起打的」，按同段的阈值
-            let threshold = if self.chain.same_buffer() || self.wubi.is_some() {
+            let threshold = if self.chain.same_buffer() || self.code_only() {
                 AUTO_WORD_THRESHOLD_SAME_BUFFER
             } else {
                 AUTO_WORD_THRESHOLD
@@ -664,7 +666,7 @@ impl Engine {
                 .iter()
                 .any(|hit| hit.exact && hit.text == candidate.text)
         };
-        let dictionaries = if self.wubi.is_some() {
+        let dictionaries = if self.code_only() {
             self.wubi_dictionaries()
         } else {
             self.all_dictionaries()

@@ -20,7 +20,7 @@ use glimmer_core::{EmojiTable, Engine, FuzzyRules, Language};
 use glimmer_dictionary::{Dictionary, WordList};
 use glimmer_learning::FrequencyLearner;
 use glimmer_lm::BigramModel;
-use glimmer_platform::Config;
+use glimmer_platform::{Config, Scheme};
 use glimmer_predict::CloudPredictor;
 use glimmer_translate::Glossary;
 
@@ -97,9 +97,10 @@ fn load_config(args: &Args) -> Result<Config, CliError> {
         }
         config.fuzzy = rules;
     }
-    if let Some(scheme) = &args.shuangpin {
-        config.general.shuangpin = if scheme == "off" {
-            String::new()
+    // `--shuangpin` 是 `--scheme` 的旧写法（同一个维度），两个都给时以 `--scheme` 为准
+    if let Some(scheme) = args.scheme.as_ref().or(args.shuangpin.as_ref()) {
+        config.general.scheme = if scheme == "off" {
+            Scheme::Pinyin.key().to_owned()
         } else {
             scheme.clone()
         };
@@ -257,14 +258,18 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
     engine.set_traditional_mode(config.general.traditional);
     engine.set_fuzzy(config.fuzzy);
     engine.set_mode_keys(config.shortcut.mode);
-    if let Some(scheme) = config.general.shuangpin() {
-        tracing::info!(%scheme, "双拼已启用");
-    }
-    if config.general.zhuyin {
-        tracing::info!("大千注音已启用");
-    }
-    engine.set_shuangpin(config.general.shuangpin());
-    engine.set_zhuyin_mode(config.general.zhuyin);
+    // 两条轴：拼音侧看 `[general] scheme`，形码侧看 `[general] wubi`，两边都开就是混输
+    let scheme = config.general.scheme();
+    tracing::info!(
+        pinyin = scheme.key(),
+        wubi = config.general.wubi().map_or("关", |v| v.key()),
+        mixed = config.general.mixed(),
+        "输入方案已启用"
+    );
+    engine.set_shuangpin(scheme.shuangpin());
+    engine.set_zhuyin_mode(scheme == Scheme::Zhuyin);
+    // 拼音侧关掉且五笔开着才是「只用形码」；两边都关着时留拼音兜底
+    engine.set_phonetic(scheme.is_on() || config.general.wubi().is_none());
     // 五笔：码表只认 data/generated/ 下打包好的 .qj，没有就报错（用 dict-convert 生成）
     if let Some(variant) = config.general.wubi() {
         let path = std::path::PathBuf::from("data/generated").join(variant.data_file());

@@ -159,12 +159,14 @@ impl Router {
     }
 
     /// 应用新配置。学习语言变了换释义表（词汇等级表启动时已全装，不用换）。文件监视之外也可直接调（测试）。
-    /// 五笔先对齐：双拼 / 注音在五笔开着时被 Core 忽略，先定五笔再设它们，警告才准。
+    /// 五笔先对齐：拼音侧关不关要看五笔有没有真装上（码表缺了就留着拼音兜底），所以先定五笔。
     pub fn apply_config(&mut self, config: &Config) {
         self.apply_wubi_config(config);
         self.engine.set_fuzzy(config.fuzzy);
         self.engine.set_shuangpin(config.general.shuangpin());
-        self.engine.set_zhuyin_mode(config.general.zhuyin);
+        self.engine.set_zhuyin_mode(config.general.is_zhuyin());
+        self.engine
+            .set_phonetic(config.general.scheme().is_on() || !self.engine.wubi_mode());
         self.engine
             .set_punctuation_mode(config.general.punctuation_mode);
         self.engine.set_traditional_mode(config.general.traditional);

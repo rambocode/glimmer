@@ -31,6 +31,10 @@ impl Host {
             .set_translation_reading(config.general.translation_reading);
         self.engine.set_shuangpin(config.general.shuangpin());
         self.apply_wubi(&config);
+        // 拼音侧：配置说关（`scheme = "none"`）且五笔真装上了才关，码表缺了就留着拼音兜底。
+        // 五笔要先装（`apply_wubi`），这一句才知道五笔在不在
+        self.engine
+            .set_phonetic(config.general.scheme().is_on() || !self.engine.wubi_mode());
         self.engine.set_learning(config.general.learning);
         logging::set_level(config.general.log_level);
         self.translation_keys = config.shortcut.translation_keys();

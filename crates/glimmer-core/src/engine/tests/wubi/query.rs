@@ -80,6 +80,7 @@ fn choices_reorder_full_code_hits_beyond_the_fixed_length() {
         Dictionary::parse(table).unwrap(),
         Options::default(),
     )));
+    engine.set_phonetic(false);
     assert_eq!(wubi_texts(&mut engine, "gggg")[0], "王");
     let learner = CountingLearner(HashMap::new());
     let mut engine = engine.with_learner(Box::new(learner));
@@ -108,6 +109,7 @@ fn reverse_lookup_annotates_pinyin_candidates_with_codes() {
         Dictionary::parse(table).unwrap(),
         Options::default(),
     )));
+    engine.set_phonetic(false);
     engine.set_input("zzhong");
     let query = engine.query().unwrap();
     let zhong = &query.candidates.items[0];
@@ -222,5 +224,6 @@ fn rank_style_frequencies_sort_by_table_order_not_text_order() {
         table,
         Options::default(),
     )));
+    engine.set_phonetic(false);
     assert_eq!(wubi_texts(&mut engine, "gggg"), ["王", "五一"]);
 }

@@ -17,7 +17,7 @@ pub use config::{
     DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS, DEFAULT_FONT_SIZE, DEFAULT_PAGE_KEYS,
     DictionariesConfig, GeneralConfig, KeyCombo, LEARNING_LANGUAGE_OFF, LayoutMode,
     LocalModelConfig, LogLevel, MAX_FONT_SIZE, MAX_PAGE_SIZE, MIN_FONT_SIZE, ModeSwitch, Modifiers,
-    PAGE_KEY_OPTIONS, PreeditMode, ShortcutConfig, ThemeMode,
+    PAGE_KEY_OPTIONS, PreeditMode, Scheme, ShortcutConfig, ThemeMode, scheme_label,
 };
 pub use error::ConfigError;
 pub use glimmer_core::PunctuationMode;

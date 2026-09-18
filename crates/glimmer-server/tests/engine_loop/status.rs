@@ -68,7 +68,7 @@ fn status_bar_follows_mode_when_enabled() {
 fn status_bar_shows_shuangpin_scheme_in_chinese() {
     let config = RouterConfig {
         status_enabled: true,
-        shuangpin: Some(ShuangpinScheme::Xiaohe),
+        scheme: Scheme::Shuangpin(ShuangpinScheme::Xiaohe),
         ..RouterConfig::default()
     };
     let mut router = router_with(config);

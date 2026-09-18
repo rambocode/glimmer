@@ -9,7 +9,9 @@ pub use glimmer_platform::protocol::{
     ClientMessage, Frame, KeyEvent, KeyModifiers, KeyOutcome, PROTOCOL_VERSION, ServerMessage,
     SessionId,
 };
-pub use glimmer_platform::{AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS, PreeditMode};
+pub use glimmer_platform::{
+    AppsConfig, DEFAULT_ENGLISH_CANDIDATES_OFF_WINDOWS, PreeditMode, Scheme,
+};
 pub use glimmer_server::dispatch::{StatusEvent, StatusSink, StatusView};
 pub use glimmer_server::{AssemblySpec, Router, RouterConfig, assembly};
 
@@ -78,7 +80,7 @@ pub fn router_in(config: RouterConfig, app: Option<String>) -> Router {
     })
     .expect("assemble engine from sample data");
     // 与 main.rs 一样，双拼方案是启动时直接设给 Engine 的。
-    engine.set_shuangpin(config.shuangpin);
+    engine.set_shuangpin(config.scheme.shuangpin());
     let mut router = Router::new(engine, config);
     assert_eq!(
         router.handle(ClientMessage::OpenSession {

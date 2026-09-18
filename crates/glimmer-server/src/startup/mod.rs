@@ -56,7 +56,9 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
     let mut engine = assemble_with_fallback(spec, root)?;
     engine.set_fuzzy(config.fuzzy);
     engine.set_shuangpin(config.general.shuangpin());
-    engine.set_zhuyin_mode(config.general.zhuyin);
+    engine.set_zhuyin_mode(config.general.is_zhuyin());
+    // 拼音侧：配置说关（`scheme = "none"`）且五笔真装上了才关；码表缺了就留着拼音兜底，不然一个候选都没有
+    engine.set_phonetic(config.general.scheme().is_on() || !engine.wubi_mode());
     engine.set_traditional_mode(config.general.traditional);
     engine.set_mode_keys(config.shortcut.mode);
     engine.set_chinese_first(config.general.chinese_first);
@@ -89,7 +91,7 @@ pub fn build_router(paths: &StartupPaths, config: &Config) -> Result<Router, Ser
         page_keys = %format!("{}{}", router_config.page_keys.0, router_config.page_keys.1),
         layout = router_config.layout.key(),
         theme = router_config.theme.key(),
-        shuangpin = config.general.shuangpin().map(|s| s.key()).unwrap_or("全拼"),
+        scheme = config.general.scheme().key(),
         wubi = router.wubi_key().unwrap_or("关"),
         fuzzy = config.fuzzy.any(),
         cloud = config.predict.enabled,

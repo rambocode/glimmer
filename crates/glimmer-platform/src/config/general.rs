@@ -1,6 +1,7 @@
 use glimmer_core::{PunctuationMode, ShuangpinScheme, WubiVariant};
 use serde::{Deserialize, Serialize};
 
+use super::scheme::{Scheme, scheme_label};
 use super::{CandidateRenderer, LayoutMode, LogLevel, PreeditMode, ThemeMode};
 
 /// 每页最多几个候选：数字键只有 1–9。
@@ -86,14 +87,21 @@ pub struct GeneralConfig {
     /// 组句中敲半角标点怎么办：`raw` 进英文直输段（缺省）、`commit` 先把候选上屏、`auto` 像英文才直输。
     pub punctuation_mode: PunctuationMode,
 
-    /// 双拼方案：空串为全拼，否则 `xiaohe` / `ziranma` / `microsoft` / `sogou` / `xiaolang` / `abc`（见 [`ShuangpinScheme`]）。
+    /// 拼音侧方案：`pinyin`（全拼，缺省）/ `xiaohe` / `ziranma` / `microsoft` / `sogou` / `xiaolang` / `abc`
+    /// / `zhuyin` / `none`（关，只用五笔），见 [`Scheme`]。用不认识的写法时按全拼并警告。
+    /// 缺省是空串：文件里没写这一项时要去看旧键，见 [`Self::scheme`]。
+    pub scheme: String,
+
+    /// 五笔：空串关，`86` / `98` / `xsj`（新世纪，也可写 `06`）选版本（见 [`WubiVariant`]）。
+    /// **与拼音侧同时开着就是混输**，见 [`Self::mixed`]。
+    pub wubi: String,
+
+    /// 旧键（`scheme` 之前的 `[general] shuangpin`，空串为全拼）：只在 [`Self::scheme`] 里用来推断方案，
+    /// 新写的配置不用它；`scheme` 写了值就不看它。当时 `shuangpin` 与 `zhuyin` 是两个字段表达同一个维度。
     pub shuangpin: String,
 
-    /// 注音模式开关，大千键盘。
+    /// 旧键（同上的 `[general] zhuyin`）：同上。
     pub zhuyin: bool,
-
-    /// 五笔：空串关，`86` / `98` / `xsj`（新世纪，也可写 `06`）选版本（见 [`WubiVariant`]）。开着时双拼与注音的设置被忽略。
-    pub wubi: String,
 
     /// 日志级别，缺省 info（不含用户敲的内容）。
     pub log_level: LogLevel,
@@ -130,9 +138,10 @@ impl Default for GeneralConfig {
             full_width_punctuation: true,
             english_full_width_punctuation: false,
             punctuation_mode: PunctuationMode::default(),
+            scheme: String::new(),
+            wubi: String::new(),
             shuangpin: String::new(),
             zhuyin: false,
-            wubi: String::new(),
             log_level: LogLevel::default(),
             input_log: true,
             learning: true,
@@ -149,34 +158,76 @@ impl GeneralConfig {
             .eq_ignore_ascii_case(LEARNING_LANGUAGE_OFF)
     }
 
-    /// 双拼方案；没开或写得不认识时为 `None`（全拼）。
+    /// 拼音侧方案。`scheme` 没写时用旧键（`shuangpin` / `zhuyin`）推，都没有就是全拼。
+    pub fn scheme(&self) -> Scheme {
+        let key = self.scheme.trim();
+        if !key.is_empty() {
+            return match key.parse() {
+                Ok(scheme) => scheme,
+                Err(_) => {
+                    tracing::warn!(key, "不认识的拼音方案，按全拼");
+                    Scheme::Pinyin
+                }
+            };
+        }
+        if self.zhuyin {
+            tracing::info!("[general] zhuyin 已并入 scheme，可改成 scheme = \"zhuyin\"");
+            return Scheme::Zhuyin;
+        }
+        let legacy = self.shuangpin.trim();
+        if legacy.is_empty() {
+            return Scheme::Pinyin;
+        }
+        match legacy.parse::<ShuangpinScheme>() {
+            Ok(scheme) => {
+                tracing::info!(
+                    key = scheme.key(),
+                    "[general] shuangpin 已并入 scheme，可改成它"
+                );
+                Scheme::Shuangpin(scheme)
+            }
+            Err(_) => {
+                tracing::warn!(key = legacy, "不认识的双拼方案，按全拼");
+                Scheme::Pinyin
+            }
+        }
+    }
+
+    /// 当前方案是双拼时是哪一套；不是双拼时为 `None`。
     pub fn shuangpin(&self) -> Option<ShuangpinScheme> {
-        let key = self.shuangpin.trim();
+        self.scheme().shuangpin()
+    }
+
+    /// 当前方案是不是大千注音。
+    pub fn is_zhuyin(&self) -> bool {
+        self.scheme() == Scheme::Zhuyin
+    }
+
+    /// 五笔版本；没开或写得不认识时为 `None`。
+    /// 早先把五笔写在 `scheme` 里（那时它是单选的方案），[`Self::scheme`] 会把那种写法解成
+    /// [`Scheme::Off`]，这里跟着认下来，免得老配置升级后两个轴都关着、一个候选都不出。
+    pub fn wubi(&self) -> Option<WubiVariant> {
+        let key = self.wubi.trim();
         if key.is_empty() {
-            return None;
+            return self.scheme.trim().parse().ok();
         }
         match key.parse() {
-            Ok(scheme) => Some(scheme),
+            Ok(variant) => Some(variant),
             Err(_) => {
-                tracing::warn!(key, "不认识的双拼方案，按全拼");
+                tracing::warn!(key, "不认识的五笔版本，按关");
                 None
             }
         }
     }
 
-    /// 五笔版本；没开或写得不认识时为 `None`（拼音）。
-    pub fn wubi(&self) -> Option<WubiVariant> {
-        let key = self.wubi.trim();
-        if key.is_empty() {
-            return None;
-        }
-        match key.parse() {
-            Ok(variant) => Some(variant),
-            Err(_) => {
-                tracing::warn!(key, "不认识的五笔版本，按拼音");
-                None
-            }
-        }
+    /// 拼音与五笔同时开着 = 混输：两边都出候选，编码打全的五笔词在前。
+    pub fn mixed(&self) -> bool {
+        self.scheme().is_on() && self.wubi().is_some()
+    }
+
+    /// 状态条上显示的输入方案名；见 [`scheme_label`]。
+    pub fn scheme_label(&self) -> String {
+        scheme_label(self.scheme(), self.wubi())
     }
 
     /// 夹到合法范围的每页候选数。
@@ -241,17 +292,73 @@ mod tests {
     }
 
     #[test]
-    fn shuangpin_is_off_by_default_and_unknown_names_fall_back() {
+    fn scheme_defaults_to_pinyin_and_unknown_names_fall_back() {
         let mut general = GeneralConfig::default();
+        assert_eq!(general.scheme(), Scheme::Pinyin);
         assert_eq!(general.shuangpin(), None);
-        general.shuangpin = "xiaohe".to_owned();
+        general.scheme = "xiaohe".to_owned();
         assert_eq!(general.shuangpin(), Some(ShuangpinScheme::Xiaohe));
-        general.shuangpin = " Sogou ".to_owned();
+        general.scheme = " Sogou ".to_owned();
         assert_eq!(general.shuangpin(), Some(ShuangpinScheme::Sogou));
-        general.shuangpin = "xiaolang".to_owned();
-        assert_eq!(general.shuangpin(), Some(ShuangpinScheme::Xiaolang));
-        general.shuangpin = "flypy".to_owned();
-        assert_eq!(general.shuangpin(), None);
+        general.scheme = "abc".to_owned();
+        assert_eq!(general.shuangpin(), Some(ShuangpinScheme::Abc));
+        general.scheme = "zhuyin".to_owned();
+        assert!(general.is_zhuyin());
+        general.scheme = "none".to_owned();
+        assert_eq!(general.scheme(), Scheme::Off);
+        assert!(!general.scheme().is_on());
+        general.scheme = "flypy".to_owned();
+        assert_eq!(general.scheme(), Scheme::Pinyin);
+    }
+
+    #[test]
+    fn the_two_axes_are_independent_and_their_combination_is_mixed_input() {
+        let mut general = GeneralConfig::default();
+        // 缺省：全拼，不开五笔
+        assert_eq!(general.scheme(), Scheme::Pinyin);
+        assert_eq!(general.wubi(), None);
+        assert!(!general.mixed());
+        assert_eq!(general.scheme_label(), "");
+
+        // 只有双拼
+        general.scheme = "xiaohe".to_owned();
+        assert!(!general.mixed());
+        // 只有五笔：拼音侧关掉
+        general.scheme = "none".to_owned();
+        general.wubi = "98".to_owned();
+        assert_eq!(general.wubi(), Some(WubiVariant::Wubi98));
+        assert!(!general.mixed());
+        assert_eq!(general.scheme_label(), "98 五笔");
+        // 组合：两边都开 = 混输
+        general.scheme = "xiaohe".to_owned();
+        assert!(general.mixed());
+        assert_eq!(general.scheme_label(), "98 五笔 + 小鹤双拼");
+        // 五笔写得不认识：按关，且不影响拼音侧
+        general.wubi = "2000".to_owned();
+        assert_eq!(general.wubi(), None);
+        assert_eq!(general.scheme(), Scheme::Shuangpin(ShuangpinScheme::Xiaohe));
+    }
+
+    #[test]
+    fn files_written_before_the_scheme_key_keep_their_scheme() {
+        let parse = |text: &str| toml::from_str::<GeneralConfig>(text).unwrap().scheme();
+        assert_eq!(
+            parse("shuangpin = \"xiaohe\"\n"),
+            Scheme::Shuangpin(ShuangpinScheme::Xiaohe)
+        );
+        assert_eq!(parse("zhuyin = true\n"), Scheme::Zhuyin);
+        assert_eq!(parse("shuangpin = \"\"\nzhuyin = false\n"), Scheme::Pinyin);
+        assert_eq!(parse(""), Scheme::Pinyin);
+        // 新键写了就以它为准
+        assert_eq!(
+            parse("scheme = \"pinyin\"\nshuangpin = \"xiaohe\"\n"),
+            Scheme::Pinyin
+        );
+        // 老配置把五笔写在 scheme 里：拼音关、五笔跟着开，不然一个候选都不出
+        let legacy: GeneralConfig = toml::from_str("scheme = \"wubi86\"\n").unwrap();
+        assert_eq!(legacy.scheme(), Scheme::Off);
+        assert_eq!(legacy.wubi(), Some(WubiVariant::Wubi86));
+        assert!(!legacy.mixed());
     }
 
     #[test]
@@ -268,5 +375,23 @@ mod tests {
         assert_eq!(general.wubi(), Some(WubiVariant::Xinshiji));
         general.wubi = "2000".to_owned();
         assert_eq!(general.wubi(), None);
+    }
+
+    #[test]
+    fn legacy_shuangpin_and_zhuyin_keys_are_read_but_scheme_wins() {
+        let mut general = GeneralConfig {
+            scheme: String::new(),
+            ..GeneralConfig::default()
+        };
+        assert_eq!(general.scheme(), Scheme::Pinyin);
+        general.shuangpin = "xiaohe".to_owned();
+        assert_eq!(general.scheme(), Scheme::Shuangpin(ShuangpinScheme::Xiaohe));
+        general.zhuyin = true;
+        assert_eq!(general.scheme(), Scheme::Zhuyin);
+        assert!(general.is_zhuyin());
+        // 旧配置里两个都写是不合法的，新键写了就不看它们
+        general.scheme = "pinyin".to_owned();
+        assert_eq!(general.scheme(), Scheme::Pinyin);
+        assert!(!general.is_zhuyin());
     }
 }

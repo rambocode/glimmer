@@ -3,6 +3,7 @@
 use super::*;
 
 mod english_tail;
+mod mixed;
 mod result;
 mod segmentation;
 mod snapshot;
@@ -92,10 +93,14 @@ impl Engine {
         if self.modes().is_question(keys, self.zhuyin) {
             return Ok(self.query_question(keys, rest, start));
         }
-        // 五笔：表达式 / 问字的字母键已在 `modes()` 里让位（`v` `u` 都是编码），只剩 `?` 开头的问字在上面分走；
-        // 直输段的判断在里面做，拼音反查再回到下面的拼音路径
+        // 形码与拼音是两条平行的管线，在进切分之前分岔；直输段的判断在各自里面做。
+        // 只用形码时表达式 / 问字的字母键已在 `modes()` 里让位（`v` `u` 都是编码），只剩 `?` 开头的问字在上面分走
         if self.wubi.is_some() {
-            return self.query_wubi(keys, rest, start);
+            return if self.phonetic {
+                self.query_mixed(keys, rest, start)
+            } else {
+                self.query_wubi(keys, rest, start)
+            };
         }
         if is_raw(keys, self.modes(), self.shuangpin, self.zhuyin, false) {
             return Ok(self.query_raw(keys, rest, start));

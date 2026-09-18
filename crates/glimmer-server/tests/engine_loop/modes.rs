@@ -234,7 +234,7 @@ fn bare_question_mark_is_half_width_when_full_width_is_off() {
 #[test]
 fn shuangpin_semicolon_stays_in_buffer_in_question_mode() {
     let mut router = router_asking_with(RouterConfig {
-        shuangpin: Some(ShuangpinScheme::Microsoft),
+        scheme: Scheme::Shuangpin(ShuangpinScheme::Microsoft),
         ..RouterConfig::default()
     });
     // 微软双拼的 `;` 是 ing 键：问字模式下末尾有落单声母时进缓冲区，而不是把候选上屏。
@@ -249,7 +249,7 @@ fn shuangpin_semicolon_stays_in_buffer_in_question_mode() {
 #[test]
 fn shuangpin_enters_modes_with_shifted_letters() {
     let mut router = router_with(RouterConfig {
-        shuangpin: Some(ShuangpinScheme::Xiaohe),
+        scheme: Scheme::Shuangpin(ShuangpinScheme::Xiaohe),
         ..RouterConfig::default()
     });
     // Shift+V 进表达式：数字和运算符进缓冲区，空格上屏结果。

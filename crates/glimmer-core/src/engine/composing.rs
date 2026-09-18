@@ -90,17 +90,31 @@ impl Engine {
         });
     }
 
-    /// 键盘方案的键（五笔 `wubi86` / `wubi98` / `wubixsj`、双拼方案如 `xiaohe`、注音为 `zhuyin`），全拼为空；输入日志与回放用。
+    /// 键盘方案的键，输入日志与回放用。全拼为空串（老日志里没有这个字段就是全拼），双拼是 `xiaohe` 这类，
+    /// 注音是 `zhuyin`，只用形码是 `wubi86` / `wubi98` / `wubixsj`，**混输是 `<拼音侧>+<五笔版本>`**
+    /// （`pinyin+wubi86` / `xiaohe+wubi98`）。
+    ///
+    /// 日志里必须能分辨这几种：形码那些行的「拼音」列其实是编码，回放要照着装配引擎，混输的行两边都要装。
+    /// `wubi86` 单独出现是「只用形码」，不是「全拼 + 五笔」。
     pub fn scheme_key(&self) -> String {
-        if let Some(wubi) = &self.wubi {
-            return wubi.key().to_owned();
-        }
-        if self.zhuyin {
+        let phonetic = if self.zhuyin {
             "zhuyin".to_owned()
         } else {
             self.shuangpin
                 .map_or_else(String::new, |s| s.key().to_owned())
+        };
+        let Some(wubi) = &self.wubi else {
+            return phonetic;
+        };
+        if !self.phonetic {
+            return wubi.key().to_owned();
         }
+        let base = if phonetic.is_empty() {
+            "pinyin"
+        } else {
+            &phonetic
+        };
+        format!("{base}+{}", wubi.key())
     }
 
     /// 组句里要删东西了：第一次删之前把缓冲区留个快照，上屏时对比最终键串，不同就是一次重打（`retype`）。
@@ -158,7 +172,9 @@ impl Engine {
             self.retype_snapshot = None;
         }
         self.composition.push(c);
-        if self.wubi.is_some() {
+        // 四码自动上屏与顶字只在「只用形码」时做：混输下 `niha` 这类四个字母多半是拼音，
+        // 一满四码就把五笔首选顶上去，拼音就没法打了
+        if self.code_only() {
             self.check_wubi_auto_commit(c);
         }
     }
@@ -193,8 +209,8 @@ impl Engine {
     /// 光标在开头时返回 `false`。
     pub fn delete_syllable_backward(&mut self) -> bool {
         self.note_edit();
-        // 五笔一键一码，没有音节：删一个键
-        if self.wubi.is_some() {
+        // 只用形码时一键一码，没有音节：删一个键；混输下缓冲区按拼音读，照拼音删
+        if self.code_only() {
             return self.backspace();
         }
         let cursor = self.composition.cursor();
@@ -209,7 +225,7 @@ impl Engine {
 
     /// 光标向左跳过一个音节，遇 `'` 连它一起跳过。光标在开头时返回 `false`。
     pub fn move_cursor_syllable_left(&mut self) -> bool {
-        if self.wubi.is_some() {
+        if self.code_only() {
             return self.composition.move_left();
         }
         let cursor = self.composition.cursor();
@@ -224,7 +240,7 @@ impl Engine {
 
     /// 光标向右跳过一个音节，遇 `'` 连它一起跳过。光标在末尾时返回 `false`。
     pub fn move_cursor_syllable_right(&mut self) -> bool {
-        if self.wubi.is_some() {
+        if self.code_only() {
             return self.composition.move_right();
         }
         let cursor = self.composition.cursor();
@@ -276,7 +292,7 @@ impl Engine {
             self.modes(),
             self.shuangpin,
             self.zhuyin,
-            self.wubi.is_some(),
+            self.code_only(),
         )
     }
 
@@ -293,7 +309,7 @@ impl Engine {
                 if self.raw_mode() {
                     return true;
                 }
-                if self.shuangpin.is_some() || self.zhuyin || self.wubi.is_some() {
+                if self.shuangpin.is_some() || self.zhuyin || self.code_only() {
                     return false;
                 }
                 let text = self.composition.text();
@@ -360,7 +376,7 @@ impl Engine {
         }
         // 五笔的空码（`xxxx` 回车 / 空格）原样上屏：与拼音一样把原码记一笔
         if !self.english_mode
-            && self.wubi.is_some()
+            && self.code_only()
             && !scope.is_empty()
             && scope.chars().all(crate::wubi::is_code_key)
         {
@@ -384,7 +400,7 @@ impl Engine {
         // 双拼下全部键都能解成完整音节的（`nihc`）不是英文，是用户要原样打出双拼键
         // 五笔下回车打出的是编码不是英文词，中文模式不记
         let english_word = looks_like_english_word(&raw, self.english_mode)
-            && (self.english_mode || self.wubi.is_none())
+            && (self.english_mode || !self.code_only())
             && (self.english_mode || self.decode(&raw).is_none_or(|d| !d.is_complete()));
         if english_word {
             self.learner.learn_english(&raw);

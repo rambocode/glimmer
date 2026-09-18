@@ -77,11 +77,15 @@ pub struct Args {
     #[arg(long)]
     pub chinese_first: bool,
 
-    /// 双拼方案（xiaohe / ziranma / microsoft / sogou / xiaolang / abc），覆盖配置里的 [general] shuangpin；off 强制全拼
+    /// 拼音方案（pinyin / xiaohe / ziranma / microsoft / sogou / xiaolang / abc / zhuyin / none），覆盖配置里的 [general] scheme；none 关掉拼音侧（配 --wubi 就是只用五笔）
+    #[arg(long)]
+    pub scheme: Option<String>,
+
+    /// 双拼方案的旧写法，等同 --scheme；off 强制全拼。两个都给时以 --scheme 为准
     #[arg(long)]
     pub shuangpin: Option<String>,
 
-    /// 五笔（86 / 98 / xsj（新世纪，也可写 06）/ off），覆盖配置里的 [general] wubi；off 强制拼音。码表读 data/generated/wubi<版本>.qj，没有就报错退出
+    /// 五笔（86 / 98 / xsj（新世纪，也可写 06）/ off），覆盖配置里的 [general] wubi；off 关掉五笔。与拼音方案同时开着就是混输。码表读 data/generated/wubi<版本>.qj，没有就报错退出
     #[arg(long)]
     pub wubi: Option<String>,
 

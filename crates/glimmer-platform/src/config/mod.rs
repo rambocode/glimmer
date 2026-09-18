@@ -9,6 +9,7 @@ mod mode_switch;
 mod model;
 mod modifiers;
 mod preedit_mode;
+mod scheme;
 mod shortcut;
 mod status_bar;
 mod theme_mode;
@@ -40,6 +41,7 @@ pub use mode_switch::ModeSwitch;
 pub use model::LocalModelConfig;
 pub use modifiers::Modifiers;
 pub use preedit_mode::PreeditMode;
+pub use scheme::{Scheme, scheme_label};
 pub use shortcut::ShortcutConfig;
 pub use status_bar::StatusBarConfig;
 pub use theme_mode::ThemeMode;
@@ -223,12 +225,18 @@ english_full_width_punctuation = false
 # 正在打拼音时敲 , . ? - 这些半角标点怎么办：raw 标点跟着拼音进英文直输段（hello, world 整段原样上屏）/
 # commit 先把首选上屏再出标点（nihao, → 你好，）/ auto 缓冲区切不成拼音（hello）才直输，切得成（nihao）就上屏
 punctuation_mode = "raw"
-# 双拼方案：留空为全拼；xiaohe 小鹤 / ziranma 自然码 / microsoft 微软 / sogou 搜狗 / xiaolang 小浪 / abc 智能ABC
-# 开着时非声母键按方案规则解析，表达式模式没有入口，问字只能靠 question_mark 打开后用 ? 进；微软、搜狗方案的 ; 键是 ing
-shuangpin = ""
-# 五笔：留空为拼音；86 / 98 / xsj（新世纪）选版本（要有对应的码表文件）。开着时双拼与注音的设置被忽略，v / u 都是编码键，
-# z 开头是拼音反查（z + 全拼，候选右侧注五笔码）；行为选项在下面的 [wubi] 里
+# 拼音方案：留空或 pinyin 全拼（缺省）/ xiaohe 小鹤双拼 / ziranma 自然码 / microsoft 微软双拼 / sogou 搜狗双拼 /
+# xiaolang 小浪双拼 / abc 智能ABC双拼 / zhuyin 大千注音 / none 关（只用五笔，见下面的 wubi）。
+# 双拼与注音下 v / u / i 都是按键，表达式与问字换成 Shift+V / Shift+U；微软、搜狗方案的 ; 键是 ing
+scheme = ""
+# 五笔：留空为关；86 / 98 / xsj（新世纪）选版本（要有对应的码表文件）。**与上面的拼音方案同时开着就是混输**——
+# 两边都出候选，编码打全的五笔词在最前、其次拼音、只打了编码前缀的垫后（五笔打不出的字直接打拼音）。
+# 只用五笔的话把 scheme 写成 none：那时 v / u 都是编码键，z 开头是拼音反查，敲满四码可以自动上屏；
+# 混输下没有这三样（z 是声母，四个字母同样可能是拼音）。行为选项在下面的 [wubi] 里
 wubi = ""
+# 旧写法，改用上面的 scheme；两处都写时以 scheme 为准
+# shuangpin = ""
+# zhuyin = false
 # 日志级别：info 缺省 / debug 详细（会记录敲的拼音与上屏的文字，配合作者排查问题时再开）。日志在 ~/Library/Logs/Glimmer/
 log_level = "info"
 # 输入日志：每次上屏记一行到数据目录的 input-log.jsonl（敲的键、看到的候选、选了什么），只写在这台电脑上，不上传；

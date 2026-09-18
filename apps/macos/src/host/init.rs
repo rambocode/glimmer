@@ -58,6 +58,8 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
         engine = engine.with_translator(Box::new(glossary));
     }
     engine.set_wubi(wubi);
+    // 拼音侧关掉且五笔真装上了才是「只用五笔」；两边都开就是混输
+    engine.set_phonetic(settings.config().general.scheme().is_on() || !engine.wubi_mode());
     // 输入统计（打了多少字）：与学习数据同目录；没有数据目录就只在内存里数
     if let Some(dir) = paths::user_data_dir() {
         // 词汇等级表（levels-en.tsv / levels-ja.tsv）随包可选：有就按级统计

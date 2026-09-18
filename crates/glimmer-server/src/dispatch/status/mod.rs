@@ -88,18 +88,15 @@ impl Router {
     pub(super) fn reconcile_status(&mut self) {
         match self.status_mode {
             Some(english) if self.config.status_enabled => {
-                // 五笔开着时双拼 / 注音被 Core 忽略，方案名只标五笔；看 Engine 上真装着的（码表缺了就不算开）
+                // 方案名由拼音侧与五笔一起算（混输时两个都写出来）；五笔看 Engine 上真装着的那份（码表缺了就不算开）
                 let wubi = self.engine.wubi().map(|scheme| scheme.variant());
+                let label = glimmer_platform::scheme_label(self.config.scheme, wubi);
                 self.status.show_status(StatusView {
                     english,
-                    zhuyin: self.config.zhuyin && wubi.is_none(),
-                    scheme: match wubi {
-                        Some(variant) => Some(variant.label().to_owned()),
-                        None => self
-                            .config
-                            .shuangpin
-                            .map(|scheme| scheme.label().to_owned()),
-                    },
+                    // 「注」这一格代表整个方案，混输时方案名里已经写了注音，让位给 `scheme`
+                    zhuyin: self.config.scheme == glimmer_platform::Scheme::Zhuyin
+                        && wubi.is_none(),
+                    scheme: Some(label).filter(|label| !label.is_empty()),
                     full_width: self.full_width_for(english),
                     theme: self.config.theme,
                     anchor: self.config.status_pos,

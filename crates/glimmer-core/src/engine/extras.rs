@@ -39,8 +39,8 @@ impl Engine {
 
     /// 日期 / 时间 / 星期这类快捷候选插在本地首选之后：`rq` 首选仍是词库里的词，快捷写法紧随其后。
     pub(super) fn insert_shortcuts(&self, items: &mut Vec<Candidate>, scope: &str) {
-        // 五笔下 `rq` 是编码，反查的拼音也不当快捷键
-        if self.wubi.is_some() {
+        // 只用形码时 `rq` 是编码，反查的拼音也不当快捷键；混输下拼音那条路照常给快捷候选
+        if self.code_only() {
             return;
         }
         let expression_char =
@@ -61,8 +61,8 @@ impl Engine {
     /// 缺省作为拼音「不像话」（切不动、或除末尾外还有声母缩写 / 残缺音节）时排第一，否则排第二；
     /// 开了中文优先（`chinese_first`）整句 / 首个中文候选已经在前，英文词排第二。没有中文候选时总在第一。
     pub(super) fn insert_english(&self, items: &mut Vec<Candidate>, unlikely_pinyin: bool) {
-        // 五笔下没有中英混输候选：编码与英文词撞形太多；用户关了中文模式英文候选也不出
-        if self.wubi.is_some() || !self.mixed_english {
+        // 只用形码时没有中英混输候选：编码与英文词撞形太多；用户关了中文模式英文候选也不出
+        if self.code_only() || !self.mixed_english {
             return;
         }
         let lists = self.english_lists();
