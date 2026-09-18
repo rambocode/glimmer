@@ -1,15 +1,32 @@
 #!/bin/sh
-# 装完之后：杀掉旧进程，再以当前登录用户的身份把输入源注册并启用。
+# 装完之后：杀掉旧进程，挪走用户目录里同 ID 的开发版，再以当前登录用户的身份把输入源注册并启用。
 # 安装器以 root 运行，而输入源是每个用户自己的设置，所以要切到用户的会话里去调 `glimmer-macos --register`。
 set -u
 APP="/Library/Input Methods/Glimmer.app"
 BIN="$APP/Contents/MacOS/glimmer-macos"
+LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
 
 pkill -x glimmer-macos 2>/dev/null || true
 
 user="$(stat -f%Su /dev/console 2>/dev/null || true)"
 if [ -n "$user" ] && [ "$user" != "root" ]; then
     uid="$(id -u "$user")"
+    # 同一时刻只能有一份 Glimmer.app：~/Library 里 bundle.sh --install 装的开发版与这份同 ID，
+    # 并存时系统按 ID 拉起会挑错路径、选了输入法立刻退回上一个。挪到数据目录留底，不删。
+    home="$(dscl . -read "/Users/$user" NFSHomeDirectory 2>/dev/null | awk '{print $2}')"
+    dev="$home/Library/Input Methods/Glimmer.app"
+    if [ -n "$home" ] && [ -d "$dev" ]; then
+        backup_dir="$home/Library/Application Support/Glimmer"
+        backup="$backup_dir/Glimmer-dev-$(date +%Y%m%d-%H%M%S).app.bak"
+        mkdir -p "$backup_dir"
+        if mv "$dev" "$backup"; then
+            chown -R "$user" "$backup" 2>/dev/null || true
+            launchctl asuser "$uid" sudo -u "$user" "$LSREGISTER" -u "$dev" >/dev/null 2>&1 || true
+            echo "微明：~/Library/Input Methods 里的开发版与正式版同 ID 不能并存，已挪到 $backup；输入法路径变了，注销后重新登录才会用上这份"
+        else
+            echo "微明：没能挪走 $dev，两份并存时输入法可能选不上，请手动删掉它再注销登录"
+        fi
+    fi
     if launchctl asuser "$uid" sudo -u "$user" "$BIN" --register; then
         echo "微明：已为 $user 注册并启用输入源"
         # 沙盒应用的键盘列表缓存可能早于微明安装；只移动微信 / 企业微信的过期缓存，保留备份。

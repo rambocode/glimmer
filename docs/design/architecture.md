@@ -358,7 +358,7 @@ CC-CEDICT 表（`dict-convert cedict`）保留为备用来源，覆盖面广但�
   `settings.rs` 是配置文件的运行时状态，`logging/` 只写 `~/Library/Logs/Glimmer/`（自己的 `LogFile` 按天分文件、留 7 天、被删重建），`bundle.rs` 读 Info.plist，
   `input_source.rs` 是 `glimmer-macos --register`：走 Carbon TIS（`TISRegisterInputSource` + `TISEnableInputSource`，再起子进程 `--finish-register` 回读 `IsEnabled` 并 `TISSelectInputSource`，隔 3 秒二次确认）把 `.app` 注册成输入源并切成当前。两个坑：TIS 状态按进程缓存，本进程回读永远是旧值，只有新进程看得到；刚换过包的 3–5 秒内系统重扫会把刚启用的记录顶掉，所以要二次确认并启用。
 - **打包与分发**（`apps/macos/scripts/bundle.sh`）：版本号来自 workspace `Cargo.toml`，构建号是提交数，打包时用 PlistBuddy 写进 Info.plist。
-  `--install` 装到 `~/Library/Input Methods/`（开发用）；`--pkg` 做 `target/pkg/Glimmer-<版本>.pkg`：`pkgbuild` 组件包装到
+  `--install` 装开发版（`/Library` 已有 pkg 正式版就覆盖它，否则 `~/Library/Input Methods/`；两处不能并存，postinstall 会挪走 `~/Library` 的那份）；`--pkg` 做 `target/pkg/Glimmer-<版本>.pkg`：`pkgbuild` 组件包装到
   `/Library/Input Methods/`（macOS 输入法的惯例位置，需要管理员密码；组件描述里关掉 bundle 重定位，否则会装到机器上同 id 的旧副本那里），
   postinstall 杀旧进程并 `launchctl asuser <uid> sudo -u <登录用户> glimmer-macos --register`（安装器是 root，输入源是每用户的），
   `productbuild` 套上欢迎页 / 许可证（`LICENSE`）/ 结束页（`apps/macos/pkg/`）。签名与公证全由环境变量决定：

@@ -181,7 +181,9 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 前 `RESCORE_P
 IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences` 分目录。
 
 - 输入法菜单（状态项 + 系统输入源菜单）与偏好设置窗口都是配置文件的前端：只写 `config.toml`，`Host::apply_config` 一条通路热加载，激活期间每秒看一次文件 mtime。
-- `apps/macos/scripts/bundle.sh --install` 打包安装到 `~/Library/Input Methods/`（开发用），`--pkg` 做分发用的 pkg（装 `/Library/Input Methods/`，postinstall 跑 `glimmer-macos --register`
+- `apps/macos/scripts/bundle.sh --install` 打包安装（开发用）：`/Library/Input Methods/` 已有 pkg 装的正式版就 sudo 覆盖它，否则装 `~/Library/Input Methods/`；
+  **两处不能并存**（同 bundle ID 两份时系统拉起挑错路径、选了输入法立刻退回上一个，2026-09-18 踩到），pkg 的 postinstall 反过来把 `~/Library` 的开发版挪到数据目录 `Glimmer-dev-<时间>.app.bak`；
+  同一路径反复覆盖不用注销，换路径要注销再登录。`--pkg` 做分发用的 pkg（装 `/Library/Input Methods/`，postinstall 跑 `glimmer-macos --register`
   注册、启用并切成当前输入源；签名 / 公证靠 `GLIMMER_SIGN_IDENTITY` / `GLIMMER_INSTALLER_IDENTITY` / `GLIMMER_NOTARY_PROFILE`，没设就 ad-hoc；`GLIMMER_TARGET` 指定架构，
   成品 `target/pkg/Glimmer-<版本>-<arm64|x86_64>.pkg`）；`scripts/uninstall.sh` 卸载。
 - 日志在 `~/Library/Logs/Glimmer/`（按天分文件留 7 天，删了会重建），用户数据与配置在 `~/Library/Application Support/Glimmer/`。

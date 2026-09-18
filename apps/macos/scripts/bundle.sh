@@ -2,7 +2,7 @@
 # 把 glimmer-macos 打包成 Glimmer.app。
 #
 #   scripts/bundle.sh            # 只打包到 target/bundle.noindex/Glimmer.app
-#   scripts/bundle.sh --install  # 打包并安装到 ~/Library/Input Methods/，杀掉旧进程（开发用）
+#   scripts/bundle.sh --install  # 打包并安装（开发用）：/Library/Input Methods/ 已有 pkg 装的正式版就 sudo 覆盖它，否则装 ~/Library/Input Methods/；杀掉旧进程
 #   scripts/bundle.sh --pkg      # 打包并做成 target/pkg/Glimmer-<版本>-<arm64|x86_64>.pkg（分发给测试者）
 #
 # 架构：缺省编译本机架构；GLIMMER_TARGET=x86_64-apple-darwin（或 aarch64-apple-darwin）交叉编译另一种，
@@ -17,6 +17,10 @@
 #
 # 首次 --install 后要在「系统设置 → 键盘 → 输入法」里添加「微明」；输入法列表不刷新就注销再登录。
 # pkg 装的不用：postinstall 会以登录用户身份跑 `glimmer-macos --register` 注册并启用。
+#
+# 同一时刻机器上只能有一份 Glimmer.app：~/Library 与 /Library 各一份时系统按 bundle ID 拉起会挑错路径，
+# 选了输入法立刻退回上一个（2026-09-18 踩到）。所以 --install 跟着现有安装位置走，pkg 的 postinstall 反过来把 ~/Library 的开发版挪走；
+# 同一路径反复覆盖不用注销，换了路径（~/Library ↔ /Library）要注销再登录，系统只在登录时重扫输入法。
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
@@ -26,7 +30,13 @@ PROFILE="${PROFILE:-release}"
 # 成品放 .noindex 目录：Spotlight / Launch Services 不扫描它，构建出来的 .app 就不会被登记成又一份同 ID 的输入法
 # （登记多份时启用与切换会失灵，「添加输入法」里出现重复条目）。
 APP="$ROOT/target/bundle.noindex/$APP_NAME.app"
-INSTALL_DIR="$HOME/Library/Input Methods"
+# 开发版装哪：/Library 已有正式版就覆盖它（要 sudo），否则 ~/Library；两处不能并存，见文件头
+SYSTEM_INSTALL_DIR="/Library/Input Methods"
+if [[ -d "$SYSTEM_INSTALL_DIR/$APP_NAME.app" ]]; then
+  INSTALL_DIR="$SYSTEM_INSTALL_DIR"
+else
+  INSTALL_DIR="$HOME/Library/Input Methods"
+fi
 # 目标三元组为空就是本机；架构名按 pkg 文件名与 distribution.xml 的 hostArchitectures 用的写法（arm64 / x86_64）
 TARGET="${GLIMMER_TARGET:-}"
 case "${TARGET:-$(uname -m)}" in
@@ -220,12 +230,17 @@ if [[ "${1:-}" == "--pkg" ]]; then
 fi
 
 if [[ "${1:-}" == "--install" ]]; then
-  if [[ -d "/Library/Input Methods/$APP_NAME.app" ]]; then
-    echo "注意: /Library/Input Methods/$APP_NAME.app 也装着一份（pkg 装的），两份同 id 会互相顶；先跑 scripts/uninstall.sh"
+  if [[ "$INSTALL_DIR" == "$SYSTEM_INSTALL_DIR" ]]; then
+    # 覆盖 pkg 装的那份：目录归 root，文件所有权也照 pkg 的样子给 root:wheel
+    echo "覆盖 $INSTALL_DIR/$APP_NAME.app（pkg 装的正式版，需要管理员密码）"
+    sudo rm -rf "$INSTALL_DIR/$APP_NAME.app"
+    sudo cp -R "$APP" "$INSTALL_DIR/$APP_NAME.app"
+    sudo chown -R root:wheel "$INSTALL_DIR/$APP_NAME.app"
+  else
+    mkdir -p "$INSTALL_DIR"
+    rm -rf "$INSTALL_DIR/$APP_NAME.app"
+    cp -R "$APP" "$INSTALL_DIR/$APP_NAME.app"
   fi
-  mkdir -p "$INSTALL_DIR"
-  rm -rf "$INSTALL_DIR/$APP_NAME.app"
-  cp -R "$APP" "$INSTALL_DIR/$APP_NAME.app"
   # 系统会在下次切换到该输入法时重新拉起进程
   pkill -x "$BIN_NAME" 2>/dev/null || true
   bash "$APP/Contents/Resources/repair-input-cache.sh"

@@ -24,7 +24,8 @@
   Developer ID 签名 + 公证 + 钉票据在本机做（`tools/release/macos-local.sh`，凭据在 `.env`，CI 的 macOS 无签名构建由 `release.sh` 取消）；
   官网读 `releases.json`，发版后用 `deploy-website.sh` 手动部署（CI 没配 `GLIMMER_WEB_TOKEN`，配上就自动触发）。流程见 `docs/notes/release.md`
 - [x] 应用内检查更新（2026-09-18）：`crates/glimmer-update` 读 GitHub latest 的 `releases.json` 比版本号，macOS「关于」页 / 菜单与 Windows 设置程序都有「检查更新」「下载并安装」（下载校验 sha256 后拉起安装器），
-  `[update] check` 自动查（macOS 启动 30 秒后 + 每 12 小时，Windows 打开设置时，12 小时内不重复）（上游 #159 也在要）。还差：Windows Server 侧没有提示（只有打开设置程序才查）；Linux deb 不做应用内更新；两端界面待真机验
+  `[update] check` 自动查（macOS 启动 30 秒后 + 每 12 小时，Windows 打开设置时，12 小时内不重复）（上游 #159 也在要）。还差：Windows Server 侧没有提示（只有打开设置程序才查）；Linux deb 不做应用内更新；两端界面待真机验；
+  两份同 ID 并存（`~/Library` 开发版 + `/Library` pkg）时系统拉不起输入法、选了就退回上一个（2026-09-18 装 0.1.8 踩到，注销重登才恢复）——已约束：`bundle.sh --install` 跟着现有位置覆盖，postinstall 挪走 `~/Library` 的开发版
 - [ ] ★ 特殊应用逐个验证（2026-09-07 用户已验：Zed、Terminal 正常；JetBrains 系没装没验）：Secure Input（已有检测，验证密码框不组句、不发云端）、iTerm / Warp、VS Code / Electron、
   浏览器地址栏、沙盒应用（App Store 版备忘录 / 微信）、全屏游戏；每个记录 preedit 模式建议（按应用的开关已有 `[apps]` 分节，
   英文候选按应用关已做，preedit 模式按应用定可以接在同一分节）
