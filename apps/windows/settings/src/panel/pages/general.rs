@@ -1,4 +1,4 @@
-//! 「通用」页：学习语言与译词读音、每页候选数、双拼 / 注音 / 五笔、英文模式候选。
+//! 「通用」页：学习语言与译词读音、每页候选数、拼音方案 / 五笔、英文模式候选。
 
 use glimmer_platform::{MAX_PAGE_SIZE, PunctuationMode};
 use windows_reactor::*;
@@ -14,22 +14,25 @@ pub(crate) const LANGUAGES: [(&str, &str); 4] = [
     ("不显示译文", "off"),
 ];
 
-/// 双拼方案：界面名 + 配置写法（空串为全拼）。
-/// 首项之后逐项对齐 `glimmer_core::ShuangpinScheme::ALL`（顺序与文案由底部单测守住）。
-pub(crate) const SHUANGPIN: [(&str, &str); 7] = [
-    ("全拼", ""),
+/// 拼音方案：界面名 + 配置写法（`[general] scheme`）。
+/// 首项起逐项对齐 `glimmer_platform::Scheme::ALL`（顺序与文案由底部单测守住）。
+/// `Scheme::label` / `key` 不是 const fn，没法直接由 `ALL` 生成，所以抄一份再用单测守。
+pub(crate) const SCHEME: [(&str, &str); 9] = [
+    ("全拼", "pinyin"),
     ("小鹤双拼", "xiaohe"),
-    ("自然码双拼", "ziranma"),
+    ("自然码", "ziranma"),
     ("微软双拼", "microsoft"),
     ("搜狗双拼", "sogou"),
     ("小浪双拼", "xiaolang"),
     ("智能ABC", "abc"),
+    ("大千注音", "zhuyin"),
+    ("关（只用五笔）", "none"),
 ];
 
-/// 五笔：界面名 + 配置写法（空串关）。开着时双拼与注音被忽略，界面上置灰。
+/// 五笔：界面名 + 配置写法（空串关）。与拼音方案是两条独立的轴，同时开着就是混输。
 /// 首项之后逐项对齐 `glimmer_core::WubiVariant::ALL`（顺序与文案由底部单测守住）。
 pub(crate) const WUBI: [(&str, &str); 4] = [
-    ("关（拼音）", ""),
+    ("关", ""),
     ("86 五笔", "86"),
     ("98 五笔", "98"),
     ("新世纪五笔", "xsj"),
@@ -49,7 +52,7 @@ fn string_combo(
 pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> View {
     let g = &settings.config.general;
     let wubi = &settings.config.wubi;
-    // 五笔开着时 Core 忽略双拼 / 注音，界面上把它们置灰
+    // 五笔的两个子项只在五笔开着时有意义；拼音方案不再受它影响（两边都开就是混输）
     let wubi_on = g.wubi().is_some();
     let english_off = !settings.config.apps.english_candidates_off.is_empty();
     let rows = [
@@ -80,31 +83,18 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
                 .on_value_changed(context.callback(Message::PageSize)),
         ),
         field(
-            "输入方式",
-            "开双拼后 v、u、i 是音节键，表达式与问字模式改用 Shift+V、Shift+U 进；微软、搜狗方案的 ; 键是 ing。",
-            string_combo(
-                &SHUANGPIN,
-                &g.shuangpin,
-                context.callback(Message::Shuangpin),
-            )
-            .is_enabled(!wubi_on),
-        ),
-        field(
-            "大千注音",
-            "启用大千注音键盘布局（容错设定如 ㄢㄤ、ㄣㄥ 不分，请至「模糊音」分页开启）。",
-            ToggleSwitch::new()
-                .is_on(g.zhuyin)
-                .is_enabled(!wubi_on)
-                .on_toggled(context.callback(Message::Zhuyin)),
+            "拼音方案",
+            "全拼、六套双拼、大千注音，或关（只用五笔）。开双拼后 v、u、i 是音节键，表达式与问字模式改用 Shift+V、Shift+U 进；微软、搜狗方案的 ; 键是 ing。注音的容错设定（ㄢㄤ、ㄣㄥ 不分等）在「模糊音」页开。",
+            string_combo(&SCHEME, g.scheme().key(), context.callback(Message::Scheme)),
         ),
         field(
             "五笔",
-            "a–y 是编码键，最长四码；z 开头是拼音反查。开五笔后双拼与注音不再生效。",
+            "a–y 是编码键，最长四码；z 开头是拼音反查。与拼音方案同时开着就是混输：五笔候选在前，打不出的字直接打拼音，第 5 个字母起只剩拼音；混输时 z 反查关掉（z 是声母）。单用五笔请把拼音方案选「关（只用五笔）」。",
             string_combo(&WUBI, &g.wubi, context.callback(Message::Wubi)),
         ),
         field(
             "四码自动上屏",
-            "敲满四码且有全码命中时首选直接上屏，不用再按空格。",
+            "敲满四码且有全码命中时首选直接上屏，不用再按空格；混输时不生效（niha 也可能是拼音）。",
             ToggleSwitch::new()
                 .is_on(wubi.auto_select)
                 .is_enabled(wubi_on)
@@ -195,15 +185,16 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
 
 #[cfg(test)]
 mod tests {
-    use glimmer_core::{ShuangpinScheme, WubiVariant};
+    use glimmer_core::WubiVariant;
+    use glimmer_platform::Scheme;
 
-    use super::{SHUANGPIN, WUBI};
+    use super::{SCHEME, WUBI};
 
-    /// 界面的双拼下拉必须跟着 Core 的方案表走：新方案没加进 SHUANGPIN，或者文案 / 配置写法对不上，这里拦住。
+    /// 界面的拼音方案下拉必须跟着平台层的方案表走：新方案没加进 SCHEME，或者文案 / 配置写法对不上，这里拦住。
     #[test]
-    fn shuangpin_options_match_core_schemes() {
-        assert_eq!(SHUANGPIN.len(), ShuangpinScheme::ALL.len() + 1);
-        for (option, scheme) in SHUANGPIN[1..].iter().zip(ShuangpinScheme::ALL) {
+    fn scheme_options_match_platform_schemes() {
+        assert_eq!(SCHEME.len(), Scheme::ALL.len());
+        for (option, scheme) in SCHEME.iter().zip(Scheme::ALL) {
             assert_eq!(option.0, scheme.label());
             assert_eq!(option.1, scheme.key());
         }

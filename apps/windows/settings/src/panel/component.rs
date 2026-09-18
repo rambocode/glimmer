@@ -43,10 +43,17 @@ impl Component for Settings {
                 let size = (value.round() as i64).clamp(1, 9);
                 self.save("general", "page_size", size);
             }
-            Message::Shuangpin(Some(i)) if i < general::SHUANGPIN.len() => {
-                self.save("general", "shuangpin", general::SHUANGPIN[i].1);
+            Message::Scheme(Some(i)) if i < general::SCHEME.len() => {
+                self.save("general", "scheme", general::SCHEME[i].1);
+                // 旧键（scheme 之前的 shuangpin / zhuyin）留着不改变行为（写了 scheme 就不看它们），
+                // 但手改配置的人会以为两处都管用，所以写新值时顺手清掉；save 一次只写一个键，分开写。
+                if !self.config.general.shuangpin.is_empty() {
+                    self.save("general", "shuangpin", "");
+                }
+                if self.config.general.zhuyin {
+                    self.save("general", "zhuyin", false);
+                }
             }
-            Message::Zhuyin(on) => self.save("general", "zhuyin", on),
             Message::Wubi(Some(i)) if i < general::WUBI.len() => {
                 self.save("general", "wubi", general::WUBI[i].1);
             }

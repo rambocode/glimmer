@@ -9,8 +9,9 @@ pub(crate) enum Message {
     // 通用页
     LearningLanguage(Option<usize>),
     PageSize(Option<f64>),
-    Shuangpin(Option<usize>),
-    Zhuyin(bool),
+    /// `[general] scheme`：拼音侧方案（全拼 / 双拼 / 注音 / 关），下标对 `general::SCHEME`。
+    Scheme(Option<usize>),
+    /// `[general] wubi`：形码侧版本，下标对 `general::WUBI`。与 `Scheme` 互不影响，两边都开就是混输。
     Wubi(Option<usize>),
     /// `[wubi] auto_select`。
     WubiAutoSelect(bool),
