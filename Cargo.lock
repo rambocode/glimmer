@@ -1606,7 +1606,7 @@ dependencies = [
 
 [[package]]
 name = "glimmer-macos"
-version = "0.1.8-dev"
+version = "0.1.8"
 dependencies = [
  "dotenvy",
  "glimmer-core",
