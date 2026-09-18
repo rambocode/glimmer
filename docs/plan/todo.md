@@ -1,10 +1,11 @@
 # TODO
 
 按「从自用到能给别人用」排。勾掉的移到 [roadmap.md](roadmap.md) 对应阶段。`★` 是当前建议的优先项。
-2026-09-06 状态：核心输入、翻译（中→英 / 日 24.9 万词、英→中 4.5 万词、注假名、修饰键上屏译词、翻译选中文字）、英文模式候选、
-自建词库（基础 8.7 万条 + 随包领域词库 11 本 13 万条，含语料挖出的高频词）、多词库与导入 / 移除 / 开关、偏好设置、`.qj` 容器（启动 50 ms）、
-个人 n-gram（二元 + 三元）、词图内敲错边、崩溃不丢、pkg 安装器、README 安装 / 隐私 / 许可都已完成并在自用。
-给测试者打包只剩：特殊应用验证（用户自己在各应用里试）；签名等 Developer ID 证书。
+2026-09-18 状态：macOS 0.1.7 / Windows 0.1.0-alpha.6 / Linux 0.1.0-linux.2 已发（GitHub Release + 官网 glimmerinput.app），产品数据锁到 data-v3。
+核心输入、翻译（中→英带音标 / 日 24.9 万词、英→中 4.5 万词、注假名、修饰键上屏译词、翻译选中文字）、英文模式候选、双拼五套 + 五笔三版、繁体输出、
+自建词库（基础 + 随包领域词库，含语料挖出的高频词与补充常用词）、多词库与导入 / 移除 / 开关、偏好设置、`.qj` 容器（启动 50 ms）、
+个人 n-gram（二元 + 三元）、词图内敲错边、本地整句模型重排、崩溃不丢、pkg 安装器、签名公证、README 安装 / 隐私 / 许可都已完成并在自用。
+给外人用还差：首次运行体验、特殊应用验证、Windows 五项真机验证（见「三、其他平台」）。
 
 ## 〇、上线前必须做（不做就不能给别人）
 
@@ -19,10 +20,10 @@
   历史在同日压成 `v0.1.0` 单提交（完整开发历史在本地分支 `archive/dev-history`，不推），所以公开仓库里从没出现过这些文件。
   还差：仓库推到 GitHub 后跑一次 `tools/release/data-bundle.sh`，把这三个 JSONL 与 `data/generated/*.qj` 传到 `data` 预发布 Release（现在只在本机与归档分支里有）；
   正式开源后若 clone 太慢，再考虑把 `assets/lexicon` + `assets/glossary` 拆成数据仓库，现在不做
-- [ ] ★ 签名与公证：pkg 安装器、自动注册输入源、版本号 / 构建号已做（2026-09-06，`bundle.sh --pkg`）；
-  CI 已搭（2026-09-07，`docs/notes/release.md`）：推标签在 macOS runner 打 arm64 + x86_64 两个 pkg、建 Release、生成 `releases.json`，产品数据从 `data` 预发布 Release 下载。
-  还差：Apple Developer 账号的 Developer ID 证书（配齐 `release.yml` 头部的七个 Secrets 就自动签名公证）、仓库推上 GitHub 后第一次真跑验证（本机没跑过 workflow）、
-  官网改成读 `releases.json`（含 sha256 / 提交 / 构建时间的展示）并配 `GLIMMER_WEB_TOKEN` 让发版与文档改动自动触发官网构建、更新检查
+- [x] 签名与公证（2026-09-17 收尾）：pkg 安装器、自动注册输入源、版本号 / 构建号（2026-09-06，`bundle.sh --pkg`）；CI 推标签出包、建 Release、生成 `releases.json`（2026-09-07）；
+  Developer ID 签名 + 公证 + 钉票据在本机做（`tools/release/macos-local.sh`，凭据在 `.env`，CI 的 macOS 无签名构建由 `release.sh` 取消）；
+  官网读 `releases.json`，发版后用 `deploy-website.sh` 手动部署（CI 没配 `GLIMMER_WEB_TOKEN`，配上就自动触发）。流程见 `docs/notes/release.md`
+- [ ] 应用内检查更新：偏好设置「关于」页读官网 `releases.json` 比版本号、提示下载（上游 #159 也在要）；Windows 设置程序同样做
 - [ ] ★ 特殊应用逐个验证（2026-09-07 用户已验：Zed、Terminal 正常；JetBrains 系没装没验）：Secure Input（已有检测，验证密码框不组句、不发云端）、iTerm / Warp、VS Code / Electron、
   浏览器地址栏、沙盒应用（App Store 版备忘录 / 微信）、全屏游戏；每个记录 preedit 模式建议（按应用的开关已有 `[apps]` 分节，
   英文候选按应用关已做，preedit 模式按应用定可以接在同一分节）
