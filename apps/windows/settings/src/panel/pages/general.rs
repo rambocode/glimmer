@@ -93,11 +93,20 @@ pub(crate) fn view(settings: &Settings, context: &mut ViewContext<Settings>) -> 
             string_combo(&WUBI, &g.wubi, context.callback(Message::Wubi)),
         ),
         field(
+            "整句输入",
+            "连着打编码不按空格，超过四码后首选是整句，空格上屏。开着时不再四码自动上屏；只打五笔时有效，混输时不生效。",
+            ToggleSwitch::new()
+                .is_on(wubi.sentence)
+                .is_enabled(wubi_on)
+                .on_toggled(context.callback(Message::WubiSentence)),
+        ),
+        field(
             "四码自动上屏",
             "敲满四码且有全码命中时首选直接上屏，不用再按空格；混输时不生效（niha 也可能是拼音）。",
+            // 整句开着时四码不自动上屏，这个开关落盘了也不起作用，直接置灰
             ToggleSwitch::new()
                 .is_on(wubi.auto_select)
-                .is_enabled(wubi_on)
+                .is_enabled(wubi_on && !wubi.sentence)
                 .on_toggled(context.callback(Message::WubiAutoSelect)),
         ),
         field(

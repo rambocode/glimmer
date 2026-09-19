@@ -79,6 +79,7 @@ impl Component for Settings {
             Message::Wubi(Some(i)) if i < general::WUBI.len() => {
                 self.save("general", "wubi", general::WUBI[i].1);
             }
+            Message::WubiSentence(on) => self.save("wubi", "sentence", on),
             Message::WubiAutoSelect(on) => self.save("wubi", "auto_select", on),
             Message::WubiHint(on) => self.save("wubi", "hint", on),
             Message::Traditional(on) => self.save("general", "traditional", on),

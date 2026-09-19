@@ -13,6 +13,8 @@ pub(crate) enum Message {
     Scheme(Option<usize>),
     /// `[general] wubi`：形码侧版本，下标对 `general::WUBI`。与 `Scheme` 互不影响，两边都开就是混输。
     Wubi(Option<usize>),
+    /// `[wubi] sentence`：五笔整句输入，开着时不再四码自动上屏。
+    WubiSentence(bool),
     /// `[wubi] auto_select`。
     WubiAutoSelect(bool),
     /// `[wubi] hint`。
