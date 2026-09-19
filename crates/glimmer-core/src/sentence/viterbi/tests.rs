@@ -1,7 +1,7 @@
 //! 词图最优路径的测试。
 
 use super::*;
-use crate::sentence::{Interpolation, NoLanguageModel, UserNgram};
+use crate::sentence::{Interpolation, MAX_WORD_SYLLABLES, NoLanguageModel, UserNgram};
 
 const SAMPLE: &str = "我\two\t900000\n想\txiang\t500000\n去\tqu\t400000\n吃\tchi\t300000\n饭\tfan\t200000\n\
     吃饭\tchi fan\t100000\n我想\two xiang\t600000\n翔\txiang\t3000\n区\tqu\t100000\n卧\two\t2000\n\
