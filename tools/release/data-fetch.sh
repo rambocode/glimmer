@@ -34,7 +34,7 @@ fi
 for f in "${ASSETS[@]}"; do
   expected="$(lock_value "$f")"
   actual="$(sha256 "$OUT/$f")"
-  [[ -n "$expected" && "$actual" == "$expected" ]] || { echo "$f 与 data.lock 不符（$TAG）：期望 $expected，实际 $actual" >&2; exit 1; }
+  [[ -n "$expected" && "$actual" == "$expected" ]] || { echo "$f 与 data.lock 不符（${TAG}）：期望 ${expected}，实际 ${actual}" >&2; exit 1; }
   echo "$f  $actual"
 done
 [[ "${1:-}" == "--verify" ]] && exit 0

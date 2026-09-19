@@ -13,7 +13,7 @@ MODEL_DIR="${GLIMMER_MODEL_DIR:-data/model}"
 WEIGHTS="$MODEL_DIR/model.safetensors"
 OUT="$MODEL_DIR/model.qjm"
 
-[[ -f "$WEIGHTS" ]] || { echo "缺少 $WEIGHTS，先在训练仓库（../train）export.py 导出三件套到 $MODEL_DIR" >&2; exit 1; }
+[[ -f "$WEIGHTS" ]] || { echo "缺少 ${WEIGHTS}，先在训练仓库（../train）export.py 导出三件套到 $MODEL_DIR" >&2; exit 1; }
 if [[ "${1:-}" != "--force" && -f "$OUT" && ! "$WEIGHTS" -nt "$OUT" ]]; then
   echo "已是最新：$OUT"
   exit 0

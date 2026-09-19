@@ -28,6 +28,6 @@ cat "$OUT_DIR/releases.json"
 gh release upload "$TAG" "$OUT_DIR/releases.json" --clobber
 LATEST="$(gh release view --json tagName --jq .tagName)"
 if [[ "$LATEST" != "$TAG" ]]; then
-  echo "latest 是 $LATEST，也覆盖一份 releases.json 上去"
+  echo "latest 是 ${LATEST}，也覆盖一份 releases.json 上去"
   gh release upload "$LATEST" "$OUT_DIR/releases.json" --clobber
 fi
