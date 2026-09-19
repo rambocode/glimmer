@@ -5,11 +5,13 @@ use glimmer_core::correction::TypoCosts;
 use glimmer_core::sentence::Interpolation;
 
 /// 可调的参数名。
-pub const KEYS: [&str; 11] = [
+pub const KEYS: [&str; 14] = [
     "lambda",
     "k",
     "cap",
     "discount",
+    "initial",
+    "word",
     "transpose",
     "substitute",
     "extra",
@@ -17,6 +19,7 @@ pub const KEYS: [&str; 11] = [
     "typo-cap",
     "correction",
     "correction-transpose",
+    "protect",
 ];
 
 /// 把一组 `名=值` 应用到引擎；没给的项保持缺省。
@@ -39,6 +42,8 @@ pub fn apply(engine: &mut Engine, settings: &[String]) -> Result<(), TuneError> 
             "k" => interpolation.confidence_k = value,
             "cap" => interpolation.max_confidence = value,
             "discount" => interpolation.trigram_discount = value,
+            "initial" => interpolation.initial_weight = value,
+            "word" => interpolation.word_penalty = value,
             "transpose" => costs.transpose = value,
             "substitute" => costs.substitute = value,
             "extra" => costs.extra = value,
@@ -46,6 +51,7 @@ pub fn apply(engine: &mut Engine, settings: &[String]) -> Result<(), TuneError> 
             "typo-cap" => costs.discount_cap = value,
             "correction" => costs.correction_penalty = value,
             "correction-transpose" => costs.correction_transpose_discount = value,
+            "protect" => costs.protected_extra = value,
             other => {
                 return Err(TuneError::Unknown {
                     name: other.to_owned(),

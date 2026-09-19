@@ -6,8 +6,8 @@ use super::pair::MAX_CONTEXT_CHARS;
 /// 一句至少几个字：两个字大多是一个词，评不出整句。
 pub const MIN_SENTENCE_CHARS: usize = 3;
 
-/// 一句最多几个字：再长用户也会中途上屏，评它没有意义。
-pub const MAX_SENTENCE_CHARS: usize = 20;
+/// 一句最多几个字：不加标点一口气打下来的长句也要量（报告按句长分桶，长句不会被短句的数字盖住）。
+pub const MAX_SENTENCE_CHARS: usize = 40;
 
 /// 抽出来的一句：汉字与它前面的上文。
 #[derive(Debug, Clone, PartialEq, Eq)]

@@ -7,6 +7,7 @@ mod args;
 mod display;
 mod error;
 mod eval;
+mod learn_text;
 mod logging;
 mod repl;
 mod replay;
@@ -45,6 +46,9 @@ fn run() -> Result<(), CliError> {
     engine.set_english_mode(args.english_mode);
     engine.set_chinese_first(args.chinese_first);
     tuning::apply(&mut engine, &args.tune)?;
+    if !args.learn_text.is_empty() {
+        learn_text::run(&mut engine, &args.learn_text)?;
+    }
     if let Some(path) = &args.replay {
         let report = replay::run(&mut engine, path, args.misses)?;
         print!("{report}");
@@ -55,6 +59,10 @@ fn run() -> Result<(), CliError> {
             &mut engine,
             &args.eval_text,
             args.eval_save.as_deref(),
+            eval::Shape {
+                chunk_words: args.eval_chunk,
+                typos: args.eval_typos,
+            },
             args.misses,
         )?;
         print!("{report}");

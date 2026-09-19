@@ -126,7 +126,8 @@ pub struct Args {
     pub misses: usize,
 
     /// 覆盖引擎里的调参常数，`名=值`，逗号分隔或多次给。名字：lambda / k / cap / discount（个人 n-gram 插值 λ / K / 封顶 / 三元折扣），
-    /// transpose / substitute / extra / missing / typo-cap / correction（敲错四类代价 / 个人折扣上限 / 整段纠错代价）
+    /// transpose / substitute / extra / missing / typo-cap / correction（敲错四类代价 / 个人折扣上限 / 整段纠错代价），
+    /// initial（整句第一个词按上文算的成分）/ protect（原样成词保护多扣的代价）
     #[arg(long, value_delimiter = ',')]
     pub tune: Vec<String>,
 
@@ -138,6 +139,18 @@ pub struct Args {
     /// 把整句评测用到的句子集写成 `句子\t拼音\t上文` 三列文件，下次直接 `--eval-text` 它，保证比的是同一份句子
     #[arg(long)]
     pub eval_save: Option<PathBuf>,
+
+    /// 整句评测改成分段输入：每句按语言模型切词、每 N 个词一段逐段喂，前面各段的原文当上文（量「整句接上文」用）
+    #[arg(long, value_name = "N")]
+    pub eval_chunk: Option<usize>,
+
+    /// 整句评测时给每条拼音注一处敲错（相邻键换位 / 敲到旁边的键，按句子哈希定，可复现）：量敲错纠正的召回
+    #[arg(long)]
+    pub eval_typos: bool,
+
+    /// 先从这些中文文本里学个人 n-gram（按语言模型切词、逐词记转移），再做后面的事；给了 `--user-dict` 就随退出落盘
+    #[arg(long, num_args = 1..)]
+    pub learn_text: Vec<PathBuf>,
 
     /// 直接查询这些拼音后退出；不给则进入交互模式
     pub inputs: Vec<String>,

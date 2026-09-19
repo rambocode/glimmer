@@ -6,10 +6,13 @@
 //! `句子\t拼音\t上文` 三列文件；后者保证不同时间、不同分支比的是同一份句子。
 //! 每句独立：不上屏、不学习，只把这句在原文里的上文写进输入历史给整句转换用。
 
+mod bucket;
+mod chunk;
 mod extract;
 mod pair;
 mod report;
 mod transcribe;
+mod typo;
 
 use std::collections::HashSet;
 use std::path::{Path, PathBuf};
@@ -19,14 +22,26 @@ use glimmer_core::Engine;
 
 pub use report::Report;
 
+use bucket::LengthBucket;
 use pair::Pair;
 use transcribe::Transcriber;
 
-/// 跑一遍评测集，返回报告；`save` 给了就把用到的句子集写成三列文件。
+/// 句子集喂给引擎之前怎么变形；都不给就是一句一条、拼音原样。
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Shape {
+    /// 分段输入：每段几个词（见 [`chunk::split`]）；`None` 为整句一条。
+    pub chunk_words: Option<usize>,
+
+    /// 每条拼音注一处敲错（见 [`typo::inject`]）。
+    pub typos: bool,
+}
+
+/// 跑一遍评测集，返回报告；`save` 给了就把用到的句子集（变形之前的）写成三列文件。
 pub fn run(
     engine: &mut Engine,
     paths: &[PathBuf],
     save: Option<&Path>,
+    shape: Shape,
     show_misses: usize,
 ) -> Result<Report, EvalError> {
     let mut report = Report::default();
@@ -43,10 +58,43 @@ pub fn run(
         })?;
         tracing::info!(path = %path.display(), count = pairs.len(), "句子集已保存");
     }
+    let pairs = reshape(engine, pairs, shape, &mut report);
     for pair in &pairs {
         evaluate(engine, pair, &mut report, show_misses);
     }
     Ok(report)
+}
+
+/// 按 `shape` 把句子集变形：先拆段、再注错（注的是每段自己的拼音）。
+fn reshape(engine: &Engine, pairs: Vec<Pair>, shape: Shape, report: &mut Report) -> Vec<Pair> {
+    let mut pairs = pairs;
+    if let Some(words) = shape.chunk_words {
+        let transcriber = transcriber_of(engine);
+        pairs = pairs
+            .iter()
+            .flat_map(|pair| chunk::split(pair, words, &transcriber, engine.language_model()))
+            .collect();
+        report.mode.push_str(&format!("，分段输入每段 {words} 词"));
+    }
+    if shape.typos {
+        pairs = pairs
+            .into_iter()
+            .filter_map(|pair| {
+                let pinyin = typo::inject(&pair.text, &pair.pinyin)?;
+                Some(Pair { pinyin, ..pair })
+            })
+            .collect();
+        report.mode.push_str("，每条注一处敲错");
+    }
+    pairs
+}
+
+/// 从引擎的词库（主词库 + 附加词库）建读音反查表。
+fn transcriber_of(engine: &Engine) -> Transcriber {
+    let dictionaries = std::iter::once(engine.dictionary()).chain(engine.extra_dictionaries());
+    let transcriber = Transcriber::new(dictionaries);
+    tracing::info!(words = transcriber.len(), "读音反查表已建");
+    transcriber
 }
 
 /// 读全部文件，得到去重后的句子集：有制表符的文件按冻结格式读，其余当原始文本抽句、转拼音。
@@ -73,13 +121,7 @@ fn collect(
             }
             continue;
         }
-        let transcriber = transcriber.get_or_insert_with(|| {
-            let dictionaries =
-                std::iter::once(engine.dictionary()).chain(engine.extra_dictionaries());
-            let transcriber = Transcriber::new(dictionaries);
-            tracing::info!(words = transcriber.len(), "读音反查表已建");
-            transcriber
-        });
+        let transcriber = transcriber.get_or_insert_with(|| transcriber_of(engine));
         for extracted in extract::extract(&text) {
             if !seen.insert(extracted.text.clone()) {
                 continue;
@@ -105,6 +147,8 @@ fn evaluate(engine: &mut Engine, pair: &Pair, report: &mut Report, show_misses: 
     engine.break_chain();
     engine.history_mut().clear();
     engine.history_mut().record(&pair.context);
+    // 上文也摆进上屏链：壳里这段拼音之前上屏的词就在链上，整句的第一个词接着它算
+    engine.seed_chain(&pair.context);
     engine.set_input(&pair.pinyin);
     let started = Instant::now();
     let query = match engine.query() {
@@ -133,16 +177,24 @@ fn evaluate(engine: &mut Engine, pair: &Pair, report: &mut Report, show_misses: 
     let length = pair.text.chars().count();
     let sentence = items.iter().find(|c| c.text.chars().count() == length);
     report.chars_total += length;
+    let bucket = &mut report.buckets[LengthBucket::index_of(length)];
+    bucket.total += 1;
+    bucket.chars_total += length;
+    if position == Some(0) {
+        bucket.top1 += 1;
+    }
     if let Some(sentence) = sentence {
         if sentence.text == pair.text {
             report.sentence_hit += 1;
         }
-        report.chars_correct += sentence
+        let correct = sentence
             .text
             .chars()
             .zip(pair.text.chars())
             .filter(|(a, b)| a == b)
             .count();
+        report.chars_correct += correct;
+        report.buckets[LengthBucket::index_of(length)].chars_correct += correct;
     }
     if position != Some(0) && report.misses.len() < show_misses {
         let top: Vec<&str> = items.iter().take(3).map(|c| c.text.as_str()).collect();

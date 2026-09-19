@@ -1,6 +1,8 @@
 use std::fmt;
 use std::time::Duration;
 
+use super::bucket::LengthBucket;
+
 /// 整句评测报告。
 #[derive(Debug, Default)]
 pub struct Report {
@@ -30,6 +32,12 @@ pub struct Report {
     pub query_time: Duration,
     pub slowest_query: Duration,
 
+    /// 按句长分桶的同一组计数（桶的划分见 [`LengthBucket`]）。
+    pub buckets: [LengthBucket; LengthBucket::COUNT],
+
+    /// 这次评的是什么：分段输入、注错时写在报告标题里。
+    pub mode: String,
+
     /// 没命中首选的例子。
     pub misses: Vec<String>,
 }
@@ -50,7 +58,7 @@ fn percent(part: usize, whole: usize) -> String {
 
 impl fmt::Display for Report {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        writeln!(f, "整句评测（冷启动，不学习，不写文件）")?;
+        writeln!(f, "整句评测（冷启动，不学习，不写文件）{}", self.mode)?;
         let evaluated = self.evaluated();
         writeln!(
             f,
@@ -60,6 +68,19 @@ impl fmt::Display for Report {
             percent(self.sentence_hit, evaluated),
             percent(self.chars_correct, self.chars_total),
         )?;
+        for (index, bucket) in self.buckets.iter().enumerate() {
+            if bucket.total == 0 {
+                continue;
+            }
+            writeln!(
+                f,
+                "  {:<10} {:>5} 条  首选 {:>6}  字准确率 {:>6}",
+                LengthBucket::label(index),
+                bucket.total,
+                percent(bucket.top1, bucket.total),
+                percent(bucket.chars_correct, bucket.chars_total),
+            )?;
+        }
         if evaluated > 0 {
             writeln!(
                 f,
