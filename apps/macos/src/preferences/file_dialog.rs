@@ -23,3 +23,28 @@ pub fn choose_dictionary_file() -> Option<PathBuf> {
     let path = url.path()?;
     Some(PathBuf::from(path.to_string()))
 }
+
+/// 弹打开对话框选要学习的文本：文件（可多选）或文件夹。用户取消返回空。
+/// 模态运行，只在偏好设置窗口打开时调用。
+pub fn choose_text_sources() -> Vec<PathBuf> {
+    let Some(mtm) = MainThreadMarker::new() else {
+        return Vec::new();
+    };
+    let panel = NSOpenPanel::openPanel(mtm);
+    panel.setCanChooseFiles(true);
+    panel.setCanChooseDirectories(true);
+    panel.setAllowsMultipleSelection(true);
+    panel.setMessage(Some(&NSString::from_str(
+        "选择你自己写过的文本（.md / .txt）或放它们的文件夹",
+    )));
+    panel.setPrompt(Some(&NSString::from_str("学习")));
+    if panel.runModal() != NSModalResponseOK {
+        return Vec::new();
+    }
+    panel
+        .URLs()
+        .iter()
+        .filter_map(|url| url.path())
+        .map(|path| PathBuf::from(path.to_string()))
+        .collect()
+}

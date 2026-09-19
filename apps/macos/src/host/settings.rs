@@ -472,6 +472,13 @@ impl Host {
                 self.settings
                     .set_bool("general", "system_text_replacements", on);
             }
+            (Setting::LearnText, _) => {
+                let sources = crate::preferences::choose_text_sources();
+                if !sources.is_empty() {
+                    self.learn_from_text(&sources);
+                }
+                return;
+            }
             (Setting::ClearInputLog, _) => {
                 self.clear_input_log();
                 return;

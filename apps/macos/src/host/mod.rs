@@ -10,6 +10,7 @@ mod config;
 mod diagnostics;
 mod dictionaries;
 mod init;
+mod learn_text;
 mod model;
 mod presenting;
 mod session;

@@ -185,6 +185,9 @@ pub enum Setting {
     /// 「高级」页「清空输入日志」按钮。
     ClearInputLog,
 
+    /// 「高级」页「从文件学习…」按钮：选自己写过的文本，学进个人 n-gram。
+    LearnText,
+
     /// 「云服务」页「测试连接」按钮。
     TestCloud,
 
@@ -252,6 +255,7 @@ impl Setting {
             Self::InputLog => 27,
             Self::Learning => 49,
             Self::ClearInputLog => 28,
+            Self::LearnText => 61,
             Self::TestCloud => 29,
             Self::OpenWebsite => 30,
             Self::OpenRepository => 31,
@@ -323,6 +327,7 @@ impl Setting {
             27 => Self::InputLog,
             49 => Self::Learning,
             28 => Self::ClearInputLog,
+            61 => Self::LearnText,
             29 => Self::TestCloud,
             30 => Self::OpenWebsite,
             31 => Self::OpenRepository,
@@ -408,6 +413,7 @@ mod tests {
             Setting::InputLog,
             Setting::SystemTextReplacements,
             Setting::ClearInputLog,
+            Setting::LearnText,
             Setting::TestCloud,
             Setting::OpenWebsite,
             Setting::OpenRepository,

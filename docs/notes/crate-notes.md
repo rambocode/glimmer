@@ -42,6 +42,15 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   查询（在查词之后、插整句之前）、上屏重算 `sentence_words` / `mixed_words`、中英混输比分、纠错的原样得分、云联想的拼音与本地参考都先调它，几处读的是同一种切分。
   只有一种同形切分时不做转换。光标按音节移动 / 按音节删与光标后剩余拼音的显示走 `Engine::preferred_segmentation`（同一种挑法）；
   查询与剩余拼音显示把挑出的切分记在 `preferred_segmentations`（最多 4 条，与 `span_cache` 一起清），方向键直接复用，不重转整句。
+- 整句搜索的参数打包在 `sentence::Search`（`keep_partial` / `paths` / `initial` / `protected_extra`），`convert_paths` 只收它；全部整句转换都经 `Engine::convert_sentence_with` 一处。
+  - **接上文**：`initial` 取上屏链 `chain.context()`，一段拼音的第一个词按 `ln(w·P(词|上文) + (1−w)·P(词|句首))` 算（`viterbi::initial_step`，静态模型与个人 n-gram 两种读法各自插值后再混），
+    `w` = `INITIAL_CONTEXT_WEIGHT` 0.5（`Interpolation::initial_weight`，`--tune initial=`）；第二个词的个人三元前二词也接 `initial.previous`。全按接续算时「前词 → 的」压过实词（`dizhi` 出 的只）。
+    `Engine::seed_chain(光标前文)` 把末尾那一小句汉字切词后摆进链（不学习、不写日志），整句评测用它摆上文，壳读得到光标前文时也可在链断开后调。
+  - **每词代价**：路径上每个词扣 `WORD_PENALTY` 1（`Interpolation::word_penalty`，`--tune word=`），几个单字连起来不再压过整词（笔给 / 笔记）；不进 `static_score`，神经重排后照留。
+  - **原样成词保护**：一条敲错边整个落在「按敲的原样读出的多音节词」里面（`ce shi` 测试 里的 `ce` → `de`）多扣 `TypoCosts::protected_extra` 4（`viterbi::typed_word_reach`，`--tune protect=`）；
+    伸到原样词外面的（`mei gan xi` 没关系 对 美感）不拦，模糊音（代价 < `PROTECTED_MIN_COST`）不算猜敲错。数字见 `long-sentence.md`。
+- `Engine::learn_text(文本)`（`engine/learning/text.rs`）：从用户自己写的文本学个人 n-gram——按非汉字切小句、`segment_text` 切词、逐词 `record_transition`（每句从句首起），
+  不记词频、不造词、不写日志，私密输入中不学；文本从哪来是壳的事。留出评测首选 23% → 61%，见 `long-sentence.md`。
 - 两个候选开关都在 Core 生效、缺省开：`Engine::set_mixed_english`（配置 `[general] mixed_english_candidates`）关掉时 `insert_english` 直接返回（精确词与补全都不出，句末英文词 `EnglishTail` 照旧）；
   `Engine::set_emoji_candidates`（配置 `[general] emoji_candidates`）关掉时 `insert_emoji` 直接返回，emoji 表照常加载，热重载改开关不用重建 Engine。
 - `custom_phrase::merge_replacements` 把平台给的「输入码 → 短语」表（macOS 系统文本替换）并进配置里的自定义短语：每条占该码最靠前的空位（1–9），
@@ -171,10 +180,14 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 前 `RESCORE_P
 - `--wubi 86|98|xsj|off` 覆盖 `[general] wubi`（`xsj` 即新世纪，也可写 `06`）：码表只认 `data/generated/` 下该版本的 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`
   （没有就报错，用 `dict-convert wubi` + `pack dict --output` 生成），`[wubi]` 选项照配置；
   `--user-dict` 给了时按输入串记的表落该版本的方案子目录（`wubi86/` / `wubi98/` / `wubixsj/`）。`--typing` 逐键计时不模拟四码自动上屏（`set_input` 不走 `push`）。
-- `--tune 名=值`（逗号分隔）覆盖个人 n-gram 插值与敲错代价的常数扫网格（名字见 `apps/cli/src/tuning.rs`，Core 侧是 `Engine::set_interpolation` / `set_typo_costs`，壳只用缺省值）。
+- `--tune 名=值`（逗号分隔）覆盖个人 n-gram 插值（含整句接上文的权重 `initial`、每词代价 `word`）与敲错代价（含原样成词保护 `protect`）的常数扫网格（名字见 `apps/cli/src/tuning.rs`，Core 侧是 `Engine::set_interpolation` / `set_typo_costs`，壳只用缺省值）。
 - `--eval-text <文本>...` 整句评测：把用户自己写的中文文本按标点切句、按词库读音转成全拼，冷启动喂给引擎看整句能不能还原原句
   （首选命中率 / 字准确率 / 查询耗时；不依赖日志里当时选了什么，给整句排序与语言模型的改动当尺子），`--eval-save` 冻结成 `句子\t拼音\t上文` 三列文件，
   之后直接 `--eval-text` 它保证比的是同一份句子（本机的在 `data/eval/sentences.tsv`）。排序、整句、纠错的改动先跑它们再合。
+  报告按句长分桶（1–5 / 6–10 / 11–15 / 16–20 / 21 字以上，`eval/bucket.rs`），抽句上限 40 字；上文同时摆进上屏链（`Engine::seed_chain`）。
+  `--learn-text <文件>...` 先从这些文本学个人 n-gram 再做后面的事（配 `--eval-text` 做留出评测；给了 `--user-dict` 随退出落盘，输入法开着时别对着它的数据目录写，会被它下一次落盘盖掉）。
+  `--eval-chunk N` 分段输入：每句按语言模型切词、N 个词一段逐段喂，前面各段的原文当上文（量整句接上文）；
+  `--eval-typos` 每条拼音注一处敲错（相邻键换位 / 敲到旁边的键，按句子哈希定、可复现），量敲错纠正的召回；两个可以叠用。
 
 ## apps/macos
 
@@ -203,6 +216,8 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
 - 本地整句模型：`bundle.sh` 把 `data/model/`（或 `GLIMMER_MODEL_DIR`）三件套打进 `Resources/model/`，用户目录 `model/` 优先；`host/model/mod.rs` 在后台线程加载并预热（首次 Metal 编译）后
   `set_async_sentence_scorer` 接上，`refresh` 每键先读应用光标前 64 字给 Engine 当前文、查询后 `schedule_rescoring`，`RescoreMonitor` 停键 80 ms 请求、20 ms 轮询，
   结果到了重查一次只重画当前页（翻过页 / 动过高亮不动）；「云服务」页有开关（`[model] enabled`）。
+- 从文件学习（`host/learn_text.rs`）：「高级」页「从文件学习…」（`Setting::LearnText`）→ `choose_text_sources`（文件可多选、可选文件夹）→ 收 `.md` / `.markdown` / `.txt` / `.text`
+  （单个 ≤ 4 MB、最多 2000 个、往下 6 层、隐藏项与符号链接不进）→ 逐个 `Engine::learn_text` → `flush_learning`，结果写底部状态行；读与学都在主线程，日志只记个数。
 - 检查更新（`host/update/`）：`init` 末尾 `schedule_auto_update_check` 排两只定时器（30 秒一次性 + 12 小时重复），响了走 `auto_update_check`（`[update] check` 开着且 `~/Library/Application Support/Glimmer/update-check` 超过 `CHECK_INTERVAL` 才起 `UpdateCheck`；网络全在它的线程里，主线程一次也不等），
   `UpdateMonitor` 0.2 秒轮询；有新版本菜单版本行变「微明 x（新版本 y 可用）」、「关于」页三行状态 + 「下载并安装」（`Download` 下到数据目录 `updates/`，校验过 `open` pkg 交给 Installer.app）；
   菜单「检查更新…」跳到「关于」页（`preferences::ABOUT_PAGE`）手动查。自动查失败不出声，手动查才报错。

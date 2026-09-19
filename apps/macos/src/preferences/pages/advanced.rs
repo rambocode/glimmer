@@ -1,4 +1,4 @@
-//! 「高级」页：打开配置文件、详细日志、学习开关、输入日志。
+//! 「高级」页：打开配置文件、详细日志、学习开关与从文件学习、输入日志。
 
 use glimmer_platform::{Config, LogLevel};
 use objc2::MainThreadMarker;
@@ -54,6 +54,14 @@ impl AdvancedPage {
             layout,
             mtm,
             "按你的选择调整候选顺序、记新词与敲错纠正。关掉后不再学，已学的仍参与排序；学习数据在数据目录里，删掉即清空。",
+        );
+        let learn = button(mtm, "从文件学习…", Setting::LearnText, target);
+        layout.place(&learn, PAGE_PADDING, 160.0, ROW_HEIGHT + 4.0);
+        layout.next_row(ROW_HEIGHT + 4.0);
+        note_full(
+            layout,
+            mtm,
+            "选你自己写过的笔记、文档（.md / .txt，可多选，也可选文件夹），输入法照着里面的用词习惯调整整句。只在这台电脑上读，不上传，也不会把文件内容存下来。",
         );
         layout.end_group();
         let input_log = checkbox(mtm, "记录输入日志", Setting::InputLog, target);
