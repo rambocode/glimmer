@@ -123,7 +123,12 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 `model.safetensors` + `config.json` + `vocab.json`），给「前文 + 整句」按字累加 log 概率；前文的每层 K / V 缓存（`PrefixCache`），
 同一段前文只算一次，每个候选只算自己那几个字（64 字前文 × 8 条 28 ms，Metal）。features `accelerate` / `metal` 换后端，壳用 `metal`。
 
-Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 前 `RESCORE_PATHS` = 6 条路径按 `路径分 + λ·(神经分 − 静态二元分)` 重排（λ `NEURAL_WEIGHT` 0.5，
+Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 的前几条路径（每个音节 2 条，`MIN_RESCORE_PATHS` 6 到 `RESCORE_PATHS` 24，`--tune paths=` 改封顶）。
+前几条是真的前 k 条：词图上每个节点留前 k 种走法（`sentence/viterbi/arrival.rs` 的 `Arrival`，回指带「接的是前驱的第几种走法」），只要一条时与只留最优回指逐位相同；
+以前只留最优回指，「前 k 条」只是 k 个句尾词各自的最优链，句子中间全一样。
+第二轮（`rescoring/combination.rs`）：各条路径相对词级最优路径净赚、互不重叠的替换拼成一条新路径，得分按可加估、再拿神经分一起排；异步时它的分晚一拍，
+壳收到第一轮的分重查之后 `rescoring_pending()` 又为真，要接着 `request_rescoring`（mac `poll_rescoring`、Server `tick`、CLI `rescoring::settled` 都这么做）。
+每条路径按 `路径分 + λ·(神经分 − 静态二元分)` 重排（λ `NEURAL_WEIGHT` 0.5，
 个人 n-gram / 用户加分 / 代价不动），分走「前文 + 文本 → 神经分」缓存 `NeuralCache`；同步打分器（`with_sentence_scorer`，CLI 评测）当场补分，
 异步的（`with_async_sentence_scorer`，后台线程 `RescoreWorker`）查询不等模型：缺分的记下来，壳停键后 `request_rescoring`、`poll_rescoring` 到了再 `query` 一次。
 前文优先用壳给的应用光标前文（`set_rescoring_context`），没有用本会话最近 64 个上屏字符。CLI `--neural <导出目录>`（`--neural-weight` / `--neural-context` / `--neural-async`）。

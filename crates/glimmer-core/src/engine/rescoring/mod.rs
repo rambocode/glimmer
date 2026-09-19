@@ -7,6 +7,7 @@
 //! 按键回调永远不等模型：先按词级模型出候选，模型的意见晚几十毫秒到。
 
 mod cache;
+mod combination;
 mod worker;
 
 #[cfg(test)]
@@ -43,7 +44,10 @@ impl Engine {
 
     /// 把几条整句路径按「路径分 + λ·(神经分 − 静态分)」重排。缓存里缺分的：同步打分器当场补，异步的先记下等壳来取；
     /// 有任何一条没分就不动顺序（半截重排比不重排还糟）。
-    pub(super) fn rescore_paths(&self, paths: &mut [Conversion]) {
+    ///
+    /// 第二轮：各条路径相对词级最优路径净赚的、互不重叠的替换拼成一条新路径（[`combination::combine`]），
+    /// 它也拿到神经分之后一起排；异步时它的分晚一拍到，这一拍先按第一轮的顺序出。
+    pub(super) fn rescore_paths(&self, paths: &mut Vec<Conversion>) {
         if paths.len() < 2 || !self.has_sentence_scorer() {
             return;
         }
@@ -77,9 +81,45 @@ impl Engine {
             }
         }
         let lambda = self.neural_weight;
-        for path in paths.iter_mut() {
-            let neural = cache.get(&path.text).expect("filled above");
-            path.score += lambda * (neural - path.static_score);
+        let rescored: Vec<f64> = paths
+            .iter()
+            .map(|path| {
+                let neural = cache.get(&path.text).expect("filled above");
+                path.score + lambda * (neural - path.static_score)
+            })
+            .collect();
+        let gains: Vec<(&Conversion, f64)> = paths[1..]
+            .iter()
+            .zip(&rescored[1..])
+            .map(|(path, score)| (path, score - rescored[0]))
+            .collect();
+        let combined = combination::combine(&paths[0], &gains)
+            .filter(|combined| paths.iter().all(|p| p.text != combined.text));
+        for (path, score) in paths.iter_mut().zip(rescored) {
+            path.score = score;
+        }
+        if let Some(mut combined) = combined {
+            let neural = match (cache.get(&combined.text), &self.sentence_scorer) {
+                (Some(neural), _) => Some(neural),
+                (None, Some(scorer)) => {
+                    let neural = scorer
+                        .score(&context, &[combined.text.as_str()])
+                        .first()
+                        .copied();
+                    if let Some(neural) = neural {
+                        cache.insert(&combined.text, neural);
+                    }
+                    neural
+                }
+                (None, None) => {
+                    cache.want(&combined.text);
+                    None
+                }
+            };
+            if let Some(neural) = neural {
+                combined.score += lambda * (neural - combined.static_score);
+                paths.push(combined);
+            }
         }
         paths.sort_by(|a, b| {
             b.score

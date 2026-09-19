@@ -3,7 +3,13 @@
 //! 状态只按前一个词分（束宽内），个人三元要的前二词取前驱节点的回指（它那条最优路径上的前一个词）：
 //! 不扩状态，代价是三元上下文是近似的，个人数据量下够用。
 
+mod arrival;
+mod node;
+
 use glimmer_dictionary::{Dictionary, Match, SyllablePattern};
+
+use arrival::Arrival;
+use node::Node;
 
 use super::{
     ABBREVIATED_SPAN_CANDIDATES, BEAM_WIDTH, Context, Conversion, LanguageModel,
@@ -14,33 +20,6 @@ use crate::ranking::weight_bonus;
 
 /// 词库里没有的孤立音节（罕见音节没有单字）按这个 log 概率兜底，让路径总能走通。
 const UNKNOWN_LOG_PROB: f64 = -30.0;
-
-/// 一条部分路径的末尾节点。
-struct Node {
-    /// 这个词从第几个音节开始。
-    start: usize,
-
-    /// 词。
-    text: String,
-
-    /// 词的音节。
-    syllables: Vec<String>,
-
-    /// 到此为止的累计得分。
-    score: f64,
-
-    /// 累计得分里静态模型的部分（见 `Conversion::static_score`）。
-    static_score: f64,
-
-    /// 前驱在 `nodes[start]` 里的下标；`start == 0` 时无意义。
-    back: usize,
-
-    /// 是占位音节。
-    placeholder: bool,
-
-    /// 到此为止路径上模糊音 / 敲错变体的代价之和（已从 `score` 里扣掉，另记一份给调用方判断路径是不是原样）。
-    penalty: f64,
-}
 
 /// 把音节序列转成最可能的词序列。`positions` 每个位置是若干写法（第一种是敲的，其余是模糊音 / 敲错变体），
 /// `cost(位置, 命中的音节)` 是那个位置命中这种写法要扣的分（敲的原样 0），
@@ -132,11 +111,8 @@ pub fn convert_paths(
         start: 0,
         text: String::new(),
         syllables: Vec::new(),
-        score: 0.0,
-        static_score: 0.0,
-        back: 0,
         placeholder: false,
-        penalty: 0.0,
+        arrivals: vec![Arrival::ORIGIN],
     });
     for start in 0..n {
         prune(&mut nodes[start]);
@@ -156,16 +132,6 @@ pub fn convert_paths(
             for hit in hits.iter() {
                 let bonus = weight_bonus(weight(&hit.text));
                 let fallback = fallback_log_prob(hit.frequency, log_total);
-                let (score, back) = best_predecessor(
-                    &nodes,
-                    start,
-                    search.initial,
-                    &hit.text,
-                    model,
-                    personal,
-                    fallback,
-                );
-                let previous = &nodes[start][back];
                 // 原样成词保护：这条猜敲错的边整个落在一个原样读出的多音节词里面，多扣一份
                 let guarded = hit.penalty > 0.0
                     && typed_reach[start] >= end
@@ -177,60 +143,67 @@ pub fn convert_paths(
                 } else {
                     hit.penalty
                 };
-                let penalty = previous.penalty + hit_penalty;
-                let static_step = if start > 0 {
-                    model
-                        .log_prob(Some(previous.text.as_str()), &hit.text)
-                        .unwrap_or(fallback)
-                } else {
-                    initial_log_prob(model, personal, search.initial, &hit.text, fallback)
-                };
-                let static_score = previous.static_score + static_step;
+                let gain = bonus - hit_penalty - personal.interpolation.word_penalty;
+                let arrivals = arrivals(
+                    &nodes,
+                    start,
+                    search,
+                    &hit.text,
+                    model,
+                    personal,
+                    fallback,
+                    (gain, hit_penalty),
+                );
                 nodes[end].push(Node {
                     start,
                     text: hit.text.clone(),
                     syllables: hit.syllables.clone(),
-                    score: score + bonus - hit_penalty - personal.interpolation.word_penalty,
-                    static_score,
-                    back,
                     placeholder: false,
-                    penalty,
+                    arrivals,
                 });
             }
         }
         // 这个音节连单字都查不到：用音节本身占位，别让整句断掉
         if !any {
             let text = positions[start][0].text;
-            let (score, back) = best_predecessor(
+            let arrivals = arrivals(
                 &nodes,
                 start,
-                search.initial,
+                search,
                 text,
                 &NoModel,
                 Personal::NONE,
                 UNKNOWN_LOG_PROB,
+                (0.0, 0.0),
             );
-            let penalty = nodes[start][back].penalty;
-            let static_score = nodes[start][back].static_score + UNKNOWN_LOG_PROB;
             nodes[start + 1].push(Node {
                 start,
                 text: text.to_owned(),
                 syllables: vec![text.to_owned()],
-                score,
-                static_score,
-                back,
                 placeholder: true,
-                penalty,
+                arrivals,
             });
         }
     }
     prune(&mut nodes[n]);
-    let mut paths: Vec<Conversion> = Vec::with_capacity(k.min(nodes[n].len()));
-    for index in 0..nodes[n].len() {
+    // 终点上全部节点的全部走法一起按得分排：前 k 条可以是同一个句尾词的几种走法
+    let mut finals: Vec<(f64, usize, usize)> = nodes[n]
+        .iter()
+        .enumerate()
+        .flat_map(|(index, node)| {
+            node.arrivals
+                .iter()
+                .enumerate()
+                .map(move |(rank, arrival)| (arrival.score, index, rank))
+        })
+        .collect();
+    finals.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
+    let mut paths: Vec<Conversion> = Vec::with_capacity(k.min(finals.len()));
+    for (_, index, rank) in finals {
         if paths.len() >= k {
             break;
         }
-        let conversion = backtrack(&nodes, n, index);
+        let conversion = backtrack(&nodes, n, index, rank);
         if !paths.iter().any(|p| p.text == conversion.text) {
             paths.push(conversion);
         }
@@ -238,21 +211,26 @@ pub fn convert_paths(
     paths
 }
 
-/// 从 `nodes[position][index]` 回溯出整条路径。
-fn backtrack(nodes: &[Vec<Node>], mut position: usize, mut index: usize) -> Conversion {
-    let score = nodes[position][index].score;
-    let static_score = nodes[position][index].static_score;
-    let penalty = nodes[position][index].penalty;
+/// 从 `nodes[position][index]` 的第 `rank` 种走法回溯出整条路径。
+fn backtrack(
+    nodes: &[Vec<Node>],
+    mut position: usize,
+    mut index: usize,
+    mut rank: usize,
+) -> Conversion {
+    let last = nodes[position][index].arrivals[rank];
     let mut words: Vec<SentenceWord> = Vec::new();
     while position > 0 {
         let node = &nodes[position][index];
+        let arrival = node.arrivals[rank];
         words.push(SentenceWord {
             text: node.text.clone(),
             syllables: node.syllables.clone(),
             placeholder: node.placeholder,
         });
         position = node.start;
-        index = node.back;
+        index = arrival.back;
+        rank = arrival.back_rank;
     }
     words.reverse();
     let mut text = String::new();
@@ -265,9 +243,9 @@ fn backtrack(nodes: &[Vec<Node>], mut position: usize, mut index: usize) -> Conv
         text,
         syllables,
         words,
-        score,
-        static_score,
-        penalty,
+        score: last.score,
+        static_score: last.static_score,
+        penalty: last.penalty,
     }
 }
 
@@ -332,43 +310,66 @@ fn span_candidates(
         .collect()
 }
 
-/// 在 `nodes[start]` 的前驱里挑让 `word` 得分最高的那条，返回 (累计得分, 前驱下标)。
-/// 转移概率先问静态模型（不认识就用词库兜底值），再与个人 n-gram 插值；前二词是前驱自己的前驱（回指）。
-/// 路径开头接 `initial`（这段拼音之前的上文）：第一个词的上文就是它，第二个词的前二词是它的 `previous`。
-fn best_predecessor(
+/// 到达「`word` 接在 `nodes[start]` 后面」这个节点的前 `search.paths` 种走法，按得分降序。
+///
+/// 转移概率先问静态模型（不认识就用词库兜底值），再与个人 n-gram 插值；每个前驱只算一次，它的几种走法共用：
+/// 二元转移只看前驱的词，个人三元要的前二词取前驱最优走法的回指（近似，不扩状态）。
+/// 路径开头接 `search.initial`（这段拼音之前的上文）：第一个词的上文就是它，第二个词的前二词是它的 `previous`。
+/// `gain` 是这条边自己的加减分（用户加分 − 代价 − 每词代价）与其中计入 `penalty` 的那部分。
+#[allow(clippy::too_many_arguments)]
+fn arrivals(
     nodes: &[Vec<Node>],
     start: usize,
-    initial: Context<'_>,
+    search: Search<'_>,
     word: &str,
     model: &dyn LanguageModel,
     personal: Personal<'_>,
     fallback: f64,
-) -> (f64, usize) {
-    let mut best = (f64::NEG_INFINITY, 0);
-    for (index, previous) in nodes[start].iter().enumerate() {
-        let context = if start == 0 {
-            initial
+    gain: (f64, f64),
+) -> Vec<Arrival> {
+    let (gain, edge_penalty) = gain;
+    let initial = search.initial;
+    let mut found: Vec<Arrival> = Vec::new();
+    for (back, previous) in nodes[start].iter().enumerate() {
+        let (step, static_step) = if start == 0 {
+            (
+                initial_step(model, personal, initial, word, fallback),
+                initial_log_prob(model, personal, initial, word, fallback),
+            )
         } else {
-            Context {
+            let context = Context {
                 previous: Some(previous.text.as_str()),
                 earlier: if previous.start > 0 {
-                    Some(nodes[previous.start][previous.back].text.as_str())
+                    Some(nodes[previous.start][previous.best().back].text.as_str())
                 } else {
                     initial.previous
                 },
-            }
+            };
+            (
+                transition_log_prob(model, personal, context, word, fallback),
+                model
+                    .log_prob(Some(previous.text.as_str()), word)
+                    .unwrap_or(fallback),
+            )
         };
-        let step = if start == 0 {
-            initial_step(model, personal, initial, word, fallback)
-        } else {
-            transition_log_prob(model, personal, context, word, fallback)
-        };
-        let score = previous.score + step;
-        if score > best.0 {
-            best = (score, index);
+        for (back_rank, arrival) in previous.arrivals.iter().enumerate() {
+            found.push(Arrival {
+                score: arrival.score + step + gain,
+                static_score: arrival.static_score + static_step,
+                penalty: arrival.penalty + edge_penalty,
+                back,
+                back_rank,
+            });
         }
     }
-    best
+    // 稳定排序：同分时留靠前的前驱，与只留最优回指时的取法一致
+    found.sort_by(|a, b| {
+        b.score
+            .partial_cmp(&a.score)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+    found.truncate(search.paths.max(1));
+    found
 }
 
 /// 一段拼音第一个词的静态 log 概率：「接着上文」与「句首」两种读法按 `initial_weight` 混（见 `INITIAL_CONTEXT_WEIGHT`）。
@@ -465,8 +466,9 @@ fn typed_word_reach(
 /// 按得分降序只留束宽条。
 fn prune(nodes: &mut Vec<Node>) {
     nodes.sort_by(|a, b| {
-        b.score
-            .partial_cmp(&a.score)
+        b.best()
+            .score
+            .partial_cmp(&a.best().score)
             .unwrap_or(std::cmp::Ordering::Equal)
     });
     nodes.truncate(BEAM_WIDTH);

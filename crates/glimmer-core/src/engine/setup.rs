@@ -325,6 +325,11 @@ impl Engine {
         self.forget_span_cache();
     }
 
+    /// 神经重打分最多看前几条路径（评测调参用）；至少 2 条才有得排。
+    pub fn set_rescore_paths(&mut self, paths: usize) {
+        self.rescore_paths = paths.max(2);
+    }
+
     fn set_neural_parameters(
         &mut self,
         weight: Option<f64>,

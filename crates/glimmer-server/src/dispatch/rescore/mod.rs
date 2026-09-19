@@ -179,6 +179,10 @@ impl Router {
             return;
         }
         self.requery_rescored();
+        // 第二轮：重查时拼出了新路径（各处赢的替换合在一起），它的分还没有，接着要
+        if self.engine.rescoring_pending() && self.engine.request_rescoring() {
+            self.rescore.start_polling();
+        }
     }
 
     /// 分回来了：按重排后的顺序重建候选布局，云端词与整句补全留着，重画当前页。

@@ -480,3 +480,31 @@ fn word_penalty_prefers_fewer_words() {
     assert_eq!(run(0.0), "笔给");
     assert_eq!(run(1.0), "笔记");
 }
+
+/// 前 k 条是真的前 k 条：不只是 k 个句尾词各自的最优链，句子前面不同的读法也在里面，按得分降序。
+#[test]
+fn top_paths_differ_anywhere_in_the_sentence() {
+    let dictionary = Dictionary::parse(SAMPLE).unwrap();
+    let patterns = complete(&["wo", "qu"]);
+    let paths = convert_paths(
+        &[&dictionary],
+        &patterns,
+        Search {
+            paths: 4,
+            ..Search::BEST
+        },
+        &NoLanguageModel,
+        Personal::NONE,
+        |_| 0,
+        |_, _| 0.0,
+        &mut SpanCache::default(),
+    );
+    let texts: Vec<&str> = paths.iter().map(|p| p.text.as_str()).collect();
+    assert_eq!(texts, ["我去", "我区", "卧去", "卧区"]);
+    assert!(paths.windows(2).all(|pair| pair[0].score >= pair[1].score));
+    // 只要一条时与以前一样
+    assert_eq!(
+        unigram(&dictionary, &patterns).unwrap().score,
+        paths[0].score
+    );
+}

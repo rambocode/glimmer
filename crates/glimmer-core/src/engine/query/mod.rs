@@ -583,7 +583,7 @@ impl Engine {
     }
 
     /// 同 [`Self::convert_sentence`]，`whole` 为真时末尾单字母也读（[`sentence::Search::keep_partial`]），只给比分用。
-    /// 接了神经重打分器时取前 [`RESCORE_PATHS`] 条路径，按「路径分 + λ·(神经分 − 静态分)」重排（[`Self::rescore_paths`]）：
+    /// 接了神经重打分器时取前几条路径（按音节数定，见 [`MIN_RESCORE_PATHS`]），按「路径分 + λ·(神经分 − 静态分)」重排（[`Self::rescore_paths`]）：
     /// 神经分替换的是静态二元模型那部分判断，个人 n-gram 插值、用户加分、敲错代价原样保留，尺度也不变（纠错代价等常数照旧适用）。
     /// 返回重排后的第一条（`score` 换成重排后的分，好与别的读法比）；只有一条路径或模型还没给分时原样返回。
     pub(super) fn convert_sentence_with(
@@ -595,7 +595,9 @@ impl Engine {
         let dictionaries = self.all_dictionaries();
         let expanded = self.expand_positions(patterns, typos);
         let k = if self.has_sentence_scorer() {
-            RESCORE_PATHS
+            (patterns.len() * RESCORE_PATHS_PER_SYLLABLE)
+                .max(MIN_RESCORE_PATHS)
+                .min(self.rescore_paths)
         } else {
             1
         };

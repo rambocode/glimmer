@@ -157,6 +157,9 @@ pub struct Engine {
     /// 只有路径分与最优路径差距在这么多 nat 以内的路径才参与重排：差距大的多半是个人 n-gram 拉开的，通用模型不该翻盘。
     neural_margin: f64,
 
+    /// 神经重打分最多看前几条路径（[`RESCORE_PATHS`]）；只有评测调参会改（`set_rescore_paths`）。
+    rescore_paths: usize,
+
     /// 重打分给模型看的前文长度（本会话最近上屏的字符数），0 为不给前文。
     neural_context: usize,
 
@@ -339,8 +342,14 @@ const PREDICTION_CANDIDATE_HINTS: usize = 5;
 /// 一次查询最多给壳多少条候选。同音字最多的音节也不到这个数，再往后都是长词，没人会翻到。
 const MAX_CANDIDATES: usize = 500;
 
-/// 神经重打分看 Viterbi 的前几条路径：束宽是 8，再多也没有。
-const RESCORE_PATHS: usize = 6;
+/// 神经重打分至少看 Viterbi 的前几条路径；句子越长出错的地方越多，路径数跟着音节数涨（每个音节 [`RESCORE_PATHS_PER_SYLLABLE`] 条），到 [`RESCORE_PATHS`] 封顶。
+pub const MIN_RESCORE_PATHS: usize = 6;
+
+/// 见 [`MIN_RESCORE_PATHS`]。
+pub const RESCORE_PATHS_PER_SYLLABLE: usize = 2;
+
+/// 神经重打分最多看前几条路径。2026-09-19 在 11–20 字的 1558 句上：6 / 12 / 24 条整句首选 20.3% / 22.7% / 24.1%（不开模型 11.7%）。
+pub const RESCORE_PATHS: usize = 24;
 
 /// 神经重打分的缺省权重 λ（见 `Engine::neural_weight`）：整句评测集上 0.5 到 1.0 一样好、0.75 最高（见 docs/notes/neural-rescoring.md），
 /// 取 0.5 给个人 n-gram 留余量；回放里看到的「λ 大整句掉」是那把尺子的偏差。
@@ -381,6 +390,7 @@ impl Engine {
             rescoring_before: None,
             neural_weight: NEURAL_WEIGHT,
             neural_margin: NEURAL_MARGIN,
+            rescore_paths: RESCORE_PATHS,
             interpolation: Interpolation::DEFAULT,
             typo_costs: TypoCosts::DEFAULT,
             neural_context: RESCORE_CONTEXT_CHARS,

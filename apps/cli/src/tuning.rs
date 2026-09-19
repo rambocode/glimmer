@@ -5,7 +5,7 @@ use glimmer_core::correction::TypoCosts;
 use glimmer_core::sentence::Interpolation;
 
 /// 可调的参数名。
-pub const KEYS: [&str; 14] = [
+pub const KEYS: [&str; 15] = [
     "lambda",
     "k",
     "cap",
@@ -20,6 +20,7 @@ pub const KEYS: [&str; 14] = [
     "correction",
     "correction-transpose",
     "protect",
+    "paths",
 ];
 
 /// 把一组 `名=值` 应用到引擎；没给的项保持缺省。
@@ -52,6 +53,7 @@ pub fn apply(engine: &mut Engine, settings: &[String]) -> Result<(), TuneError> 
             "correction" => costs.correction_penalty = value,
             "correction-transpose" => costs.correction_transpose_discount = value,
             "protect" => costs.protected_extra = value,
+            "paths" => engine.set_rescore_paths(value as usize),
             other => {
                 return Err(TuneError::Unknown {
                     name: other.to_owned(),

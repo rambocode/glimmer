@@ -160,11 +160,7 @@ fn evaluate(engine: &mut Engine, pair: &Pair, report: &mut Report, show_misses: 
         }
     };
     // 异步重打分：像壳一样停顿后请求、等结果、再查一次；等的时间也算进查询耗时
-    let query = if crate::rescoring::settle(engine) {
-        engine.query().unwrap_or(query)
-    } else {
-        query
-    };
+    let query = crate::rescoring::settled(engine, query);
     let elapsed = started.elapsed();
     report.query_time += elapsed;
     report.slowest_query = report.slowest_query.max(elapsed);
