@@ -12,8 +12,9 @@ use arrival::Arrival;
 use node::Node;
 
 use super::{
-    BEAM_WIDTH, Context, Conversion, LanguageModel, Lattice, MIN_PARTIAL_LETTERS, Personal, Search,
-    SentenceWord, SpanCache, SyllableLattice, fallback_log_prob, transition_log_prob,
+    BEAM_WIDTH, CodeLattice, Context, Conversion, LanguageModel, Lattice, MIN_PARTIAL_LETTERS,
+    Personal, Search, SentenceWord, SpanCache, SyllableLattice, fallback_log_prob,
+    transition_log_prob,
 };
 use crate::ranking::weight_bonus;
 
@@ -97,8 +98,26 @@ pub fn convert_paths(
     search_lattice(&mut lattice, search, model, personal, &weight)
 }
 
+/// 连着打的五笔编码（`wqvbkhlg`，全是编码键）转成最可能的词序列，前 `search.paths` 条。
+/// `dictionaries` 是码表与用户词；`search.keep_partial` 与 `search.protected_extra` 是拼音的事，这里不看。
+/// `keys` 里有不是编码键的字符时为空。
+pub fn convert_codes(
+    dictionaries: &[&Dictionary],
+    keys: &str,
+    search: Search<'_>,
+    model: &dyn LanguageModel,
+    personal: Personal<'_>,
+    weight: impl Fn(&str) -> u32,
+    cache: &mut SpanCache,
+) -> Vec<Conversion> {
+    let Some(mut lattice) = CodeLattice::new(dictionaries, keys, personal, &weight, cache) else {
+        return Vec::new();
+    };
+    search_lattice(&mut lattice, search, model, personal, &weight)
+}
+
 /// 词图上得分最高的前 `search.paths` 条路径（最多束宽条，按得分降序，文本相同的只留一条）。
-/// 位置是什么由 `lattice` 定（拼音是音节），这里只管找路。
+/// 位置是什么由 `lattice` 定（拼音是音节、五笔是编码字母），这里只管找路。
 fn search_lattice(
     lattice: &mut impl Lattice,
     search: Search<'_>,

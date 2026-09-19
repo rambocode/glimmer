@@ -33,6 +33,8 @@
 - [x] 五笔 98 与新世纪（2026-09-17，Core `wubi::Variant`）：与 86 并列成三个可选版本（`[general] wubi = "86"|"98"|"xsj"`，偏好设置弹出菜单四项，Linux 改配置文件），
   行为与 86 完全一致，只换字根与码表；随包 `wubi98.qj`（yanhuacuo/98wubi 的含词表 `wubi98_ci.dict.yaml`，LGPL-3.0）与 `wubixsj.qj`（GuoBinyong/wubixinshiji，AUTHORS 声明 LGPL）；
   学习数据按方案键分目录（`wubi86/` / `wubi98/` / `wubixsj/`），CLI `--wubi 86|98|xsj|off`，回放一次只装一种版本
+- [x] 五笔整句（2026-09-19，issue #3，Core `sentence::CodeLattice` + `engine/query/wubi/sentence.rs`）：`[wubi] sentence` 缺省关，开着时连着打编码出整句、不再四码自动上屏与顶字；
+  Viterbi 抽成只认 `sentence::Lattice`，拼音（音节位置）与五笔（编码字母位置）共用找路、语言模型、个人 n-gram 与神经重排；CLI `--wubi-sentence`，`--eval-text` 在只用五笔时按码表转全码
 - [x] 查词性能：`lookup_pattern` / `lookup_exact` 逐级前缀二分收窄（简拼位置按音节块跳扫，小区间线性），
   同一次查询内前缀模式记忆化，排序键预计算 + 只选前 500 条。长输入 20 ms → 0.2 ms，全简拼 `zhgdoima` 70 ms → 1 到 3 ms，单字母 30 ms → 3 到 4 ms
 - [x] 逐键性能（2026-09-05，`glimmer-cli --typing` 按前缀逐键计时）：纠错变体先用无分配的「能否完整切分」过滤

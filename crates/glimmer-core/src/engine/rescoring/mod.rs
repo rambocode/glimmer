@@ -8,6 +8,7 @@
 
 mod cache;
 mod combination;
+mod unit;
 mod worker;
 
 #[cfg(test)]
@@ -16,6 +17,7 @@ mod tests;
 use super::*;
 
 pub(crate) use cache::NeuralCache;
+pub(crate) use unit::PathUnit;
 pub(crate) use worker::RescoreWorker;
 
 impl Engine {
@@ -47,7 +49,8 @@ impl Engine {
     ///
     /// 第二轮：各条路径相对词级最优路径净赚的、互不重叠的替换拼成一条新路径（[`combination::combine`]），
     /// 它也拿到神经分之后一起排；异步时它的分晚一拍到，这一拍先按第一轮的顺序出。
-    pub(super) fn rescore_paths(&self, paths: &mut Vec<Conversion>) {
+    /// `unit` 是几条路径对齐用的尺子（拼音按音节，五笔按编码字母）。
+    pub(super) fn rescore_paths(&self, paths: &mut Vec<Conversion>, unit: PathUnit) {
         if paths.len() < 2 || !self.has_sentence_scorer() {
             return;
         }
@@ -93,7 +96,7 @@ impl Engine {
             .zip(&rescored[1..])
             .map(|(path, score)| (path, score - rescored[0]))
             .collect();
-        let combined = combination::combine(&paths[0], &gains)
+        let combined = combination::combine(&paths[0], &gains, unit)
             .filter(|combined| paths.iter().all(|p| p.text != combined.text));
         for (path, score) in paths.iter_mut().zip(rescored) {
             path.score = score;

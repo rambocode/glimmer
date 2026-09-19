@@ -18,10 +18,19 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   `Variant`（`Wubi86` / `Wubi98` / `Xinshiji`，`variant.rs`）是版本：配置写法 `86` / `98` / `xsj`（新世纪另认 `06` / `xinshiji`）、方案键 `wubi86` / `wubi98` / `wubixsj`、
   码表文件 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`、界面名；三版行为完全一致，只有字根与码表不同；
   `Scheme` = `Variant` + 码表 `Dictionary`（`词\t编码\t词频`，编码整个是一个音节）+ `Reverse` 字 → 全码（单字取最长码、等长取高频）+ `Options`（`[wubi]`）+ `encode` 造词规则；
-  查询在 `engine/query/wubi.rs`：`lookup_pattern` 前缀一次查出，全码命中在前、前缀命中短码在前当逐键提示（`hint` 开着 `reading` 注完整编码），作用域 ≤ `fixed_order_length`（缺省 2）的全码命中只按码表静态词频、不叠用户权重与选择记录；
+  查询在 `engine/query/wubi/`（`mod.rs` 查码表与反查、`auto_commit.rs` 自动上屏、`sentence.rs` 整句）：`lookup_pattern` 前缀一次查出，全码命中在前、前缀命中短码在前当逐键提示（`hint` 开着 `reading` 注完整编码），作用域 ≤ `fixed_order_length`（缺省 2）的全码命中只按码表静态词频、不叠用户权重与选择记录；
   `WubiHit::key` 的末项是**码表存放顺序**（`assemble` 已按词频降序、平手保 TSV 原序排好）而不是文本序：补出来的名次词频归一化后 log 概率差在千分位以下、取整会打平，按文本序排会把冷词顶到前面；
   `check_wubi_auto_commit` 在 `push` 之后置 `pending_auto_commit`（四码全码命中且 `auto_select`；新键接上后无任何命中 → 旧段首选顶字、新键存 `deferred_key` 等 `commit` 后补回；满四码空码再敲字母整段丢掉），
   壳每键 `take_auto_commit` 取到就走普通 `commit`；`z` 开头走 `query_pinyin` 反查，候选 `reading` 注 `code_of`、`syllables` 是整段作用域，`typed_display` 为 `z'zhong'guo`；
+  **整句**（`[wubi] sentence`，缺省关，issue #3）：连着打的编码进 `sentence::CodeLattice`（位置是字母，边是编码正好等于那 1 到 4 个字母的词，码表 + 用户词；
+  句末不满四码的边再收前缀命中、扣 `TAIL_PREFIX_PENALTY` 6，扫参数字在常数的注释里），`sentence::convert_codes` 与拼音共用 `viterbi::search_lattice`（静态 bigram、个人 n-gram、上屏链上文、`WORD_PENALTY`）；
+  `convert_wubi_sentence` 按字母数取路径（至少 `MIN_RESCORE_PATHS`、到 `rescore_paths` 封顶）走 `rescore_paths`，异步重排与拼音同一条路；
+  第二轮拼路径时五笔按编码字母对齐（`rescoring::PathUnit::CodeLetters`：五笔一个词只有一条编码，按音节数对不齐），所以路径上每个词的「音节」记的是敲的那段字母而不是完整编码；`SpanCache` 的键带 `\u{1}` 前缀（编码 `a` 与音节 `a` 撞键）；
+  `insert_wubi_sentence`：作用域 ≤ 4 码且码表有命中时候选不动，否则首选是整句（`CandidateKind::Sentence`，`syllables = [整段]`，`typed_display` 为 `gggg'khlg`），
+  后面跟开头那段编码的全码词（4 → 1 码，选了只吃那一段）；有占位（`z` 这类码表里没有的键）不出整句；开着时 `check_wubi_auto_commit` 整个不做；
+  上屏时 `sentence_words` 按编码重算路径、逐词 `record_word`（不造词）；只在 `code_only()` 时有，混输下这个选项不起作用。
+  评测（9807 句按码表转全码、冷启动、不接神经重排）：首选 86 版 79.7% / 98 版 76.3% / 新世纪 77.2%（同一批句子全拼是 27.5%），86 版接上 `--neural data/model/model.qjm` 是 91.7%（真前 k 条路径 + 第二轮拼合对五笔同样有效），逐键 1 ms 以内；
+  98 与新世纪低 3 个点是因为码表词频是名次，语言模型不认识的词兜底时分不出高低（`docs/plan/wubi.md`）；
   上屏消耗在 `engine/commit/wubi.rs`：吃候选编码那么长，自动造词按 `encode` 出编码进用户词（造不出就不造），五笔下连着上屏两次即造（同缓冲区阈值），空码回车 `record_raw` 不学成英文词；
   `scheme_key()` 只用形码时是 `Variant::key()`（`wubi86` / `wubi98` / `wubixsj`）、混输时是 `<拼音侧>+<版本键>`（`pinyin+wubi86` / `xiaohe+wubi98`），输入日志与回放据此切方案；
   **混输**（`wubi.is_some() && phonetic`，配置 `[general] scheme` 不为 `none` 且 `wubi` 非空）在 `engine/query/mixed.rs`：`wubi_candidates` 的结果按「编码 == 作用域」切成两段，
@@ -42,12 +51,14 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   查询（在查词之后、插整句之前）、上屏重算 `sentence_words` / `mixed_words`、中英混输比分、纠错的原样得分、云联想的拼音与本地参考都先调它，几处读的是同一种切分。
   只有一种同形切分时不做转换。光标按音节移动 / 按音节删与光标后剩余拼音的显示走 `Engine::preferred_segmentation`（同一种挑法）；
   查询与剩余拼音显示把挑出的切分记在 `preferred_segmentations`（最多 4 条，与 `span_cache` 一起清），方向键直接复用，不重转整句。
-- 整句搜索的参数打包在 `sentence::Search`（`keep_partial` / `paths` / `initial` / `protected_extra`），`convert_paths` 只收它；全部整句转换都经 `Engine::convert_sentence_with` 一处。
+- 整句搜索的参数打包在 `sentence::Search`（`keep_partial` / `paths` / `initial` / `protected_extra`），`convert_paths` 只收它；拼音的整句转换都经 `Engine::convert_sentence_with` 一处（五笔整句经 `convert_wubi_sentence`）。
+- 词图与找路分开：`sentence/lattice/` 的 `Lattice` trait 回答「位置 `[start, end)` 上有哪些词」，`SyllableLattice`（拼音，位置是音节，格子候选 `span_candidates` 与原样成词保护都在它里面）
+  与 `CodeLattice`（五笔，位置是编码字母）各实现一份；`viterbi::search_lattice` 只认 trait，`convert_paths` / `convert_codes` 是两个入口。2026-09-19 抽出时干净集 9808 句的评测数字一位不变。
   - **接上文**：`initial` 取上屏链 `chain.context()`，一段拼音的第一个词按 `ln(w·P(词|上文) + (1−w)·P(词|句首))` 算（`viterbi::initial_step`，静态模型与个人 n-gram 两种读法各自插值后再混），
     `w` = `INITIAL_CONTEXT_WEIGHT` 0.5（`Interpolation::initial_weight`，`--tune initial=`）；第二个词的个人三元前二词也接 `initial.previous`。全按接续算时「前词 → 的」压过实词（`dizhi` 出 的只）。
     `Engine::seed_chain(光标前文)` 把末尾那一小句汉字切词后摆进链（不学习、不写日志），整句评测用它摆上文，壳读得到光标前文时也可在链断开后调。
   - **每词代价**：路径上每个词扣 `WORD_PENALTY` 1（`Interpolation::word_penalty`，`--tune word=`），几个单字连起来不再压过整词（笔给 / 笔记）；不进 `static_score`，神经重排后照留。
-  - **原样成词保护**：一条敲错边整个落在「按敲的原样读出的多音节词」里面（`ce shi` 测试 里的 `ce` → `de`）多扣 `TypoCosts::protected_extra` 4（`viterbi::typed_word_reach`，`--tune protect=`）；
+  - **原样成词保护**：一条敲错边整个落在「按敲的原样读出的多音节词」里面（`ce shi` 测试 里的 `ce` → `de`）多扣 `TypoCosts::protected_extra` 4（`SyllableLattice::typed_word_reach`，`--tune protect=`）；
     伸到原样词外面的（`mei gan xi` 没关系 对 美感）不拦，模糊音（代价 < `PROTECTED_MIN_COST`）不算猜敲错。数字见 `long-sentence.md`。
 - `Engine::learn_text(文本)`（`engine/learning/text.rs`）：从用户自己写的文本学个人 n-gram——按非汉字切小句、`segment_text` 切词、逐词 `record_transition`（每句从句首起），
   不记词频、不造词、不写日志，私密输入中不学；文本从哪来是壳的事。留出评测首选 23% → 61%，见 `long-sentence.md`。

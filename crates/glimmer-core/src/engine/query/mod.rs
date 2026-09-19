@@ -1,6 +1,7 @@
 //! 候选生成：按模式分派查询，整句转换与词级查找，位置展开。
 
 use super::*;
+use crate::engine::rescoring::PathUnit;
 
 mod english_tail;
 mod mixed;
@@ -622,7 +623,7 @@ impl Engine {
         if paths.len() > 1 {
             let floor = paths[0].score - self.neural_margin;
             paths.retain(|p| p.score >= floor);
-            self.rescore_paths(&mut paths);
+            self.rescore_paths(&mut paths, PathUnit::Syllables);
         }
         paths.into_iter().next()
     }

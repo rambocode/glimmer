@@ -159,6 +159,26 @@ fn topping_commits_the_old_segment_and_keeps_the_new_key() {
 }
 
 #[test]
+fn sentence_mode_keeps_typing_past_four_codes_and_space_commits_the_sentence() {
+    // 整句开着：满四码不自动上屏、第五键不顶字，一路敲完空格上屏整句
+    let options = Options {
+        sentence: true,
+        ..Options::default()
+    };
+    let mut router = wubi_router(options, code_only_config());
+    let (commits, frame) = type_keys(&mut router, "ggggkhlg");
+    assert!(commits.iter().all(Option::is_none), "{commits:?}");
+    // 拼音行按整句的切法分开；首选是整句，后面是开头那段编码的词
+    assert_eq!(preedit(&frame), "gggg'khlg");
+    assert_eq!(candidate_texts(&frame), ["王中国", "王", "五"]);
+
+    let (outcome, commit, frame) = press(&mut router, ' ');
+    assert_eq!(outcome, KeyOutcome::Consumed);
+    assert_eq!(commit.as_deref(), Some("王中国"));
+    assert_eq!(preedit(&frame), "");
+}
+
+#[test]
 fn a_key_with_no_hits_tops_the_prefix_candidate() {
     let mut router = wubi_router(Options::default(), code_only_config());
     // `ggl` + `x`：`gglx` 什么都命中不了，旧段的提示候选 一 上屏，缓冲区剩 x

@@ -1,9 +1,10 @@
-//! 五笔：共用的装配函数，用例按主题分文件（查询与提示、自动上屏、混输、上屏与学习）。
+//! 五笔：共用的装配函数，用例按主题分文件（查询与提示、自动上屏、混输、上屏与学习、整句）。
 
 mod auto_commit;
 mod commit;
 mod mixed;
 mod query;
+mod sentence_mode;
 
 use super::*;
 use crate::wubi::{Options, Scheme as WubiScheme, Variant};

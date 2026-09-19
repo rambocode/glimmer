@@ -395,9 +395,14 @@ impl Engine {
         candidate: &Candidate,
     ) -> Option<Vec<sentence::SentenceWord>> {
         // 五笔反查里的整句（作用域带 `z`）不重算路径：不记转移，链就此断开。
-        // 混输没有反查，整句就是拼音那条路给的，照常重算
+        // 五笔整句（`[wubi] sentence`）按编码重算；混输没有反查，整句就是拼音那条路给的，照常重算
         if self.code_only() {
-            return None;
+            let scope = self.composition.scope();
+            if !self.wubi_sentence_enabled() || crate::wubi::is_reverse_lookup(scope) {
+                return None;
+            }
+            let conversion = self.convert_wubi_sentence(scope)?;
+            return (conversion.text == candidate.text).then_some(conversion.words);
         }
         let scope = self.composition.scope();
         if self.decode(scope).is_none()

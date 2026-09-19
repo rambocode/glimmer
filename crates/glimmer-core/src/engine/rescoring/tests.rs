@@ -42,7 +42,7 @@ fn texts(paths: &[Conversion]) -> Vec<&str> {
 fn sync_scorer_reorders_paths_in_place() {
     let engine = engine().with_sentence_scorer(Box::new(Prefers("开放")), Some(0.5), None, None);
     let mut paths = vec![path("开饭", -10.0), path("开放", -11.0)];
-    engine.rescore_paths(&mut paths);
+    engine.rescore_paths(&mut paths, PathUnit::Syllables);
     assert_eq!(texts(&paths), ["开放", "开饭"]);
     // λ 0.5：开饭 −10 + 0.5·(−20 + 10) = −15；开放 −11 + 0.5·(−1 + 11) = −6
     assert!((paths[0].score - -6.0).abs() < 1e-9);
@@ -55,7 +55,7 @@ fn async_scorer_waits_for_the_shell_to_request_and_poll() {
     let mut engine =
         engine().with_async_sentence_scorer(Box::new(Prefers("开放")), Some(0.5), None, None);
     let mut paths = vec![path("开饭", -10.0), path("开放", -11.0)];
-    engine.rescore_paths(&mut paths);
+    engine.rescore_paths(&mut paths, PathUnit::Syllables);
     // 第一次：没分，顺序不动，记下要分的
     assert_eq!(texts(&paths), ["开饭", "开放"]);
     assert!(engine.rescoring_pending());
@@ -67,7 +67,7 @@ fn async_scorer_waits_for_the_shell_to_request_and_poll() {
         std::thread::sleep(Duration::from_millis(5));
     }
     let mut paths = vec![path("开饭", -10.0), path("开放", -11.0)];
-    engine.rescore_paths(&mut paths);
+    engine.rescore_paths(&mut paths, PathUnit::Syllables);
     assert_eq!(texts(&paths), ["开放", "开饭"]);
     // 没有新的要打的就不发
     assert!(!engine.request_rescoring());
@@ -79,7 +79,7 @@ fn a_changed_context_discards_the_cached_scores() {
         engine().with_async_sentence_scorer(Box::new(Prefers("开放")), Some(0.5), None, None);
     engine.history_mut().record("今天");
     let mut paths = vec![path("开饭", -10.0), path("开放", -11.0)];
-    engine.rescore_paths(&mut paths);
+    engine.rescore_paths(&mut paths, PathUnit::Syllables);
     assert!(engine.request_rescoring());
     let started = Instant::now();
     while !engine.poll_rescoring() {
@@ -89,7 +89,7 @@ fn a_changed_context_discards_the_cached_scores() {
     // 上屏了别的字，前文变了：缓存作废，又得重新要
     engine.history_mut().record("很好");
     let mut paths = vec![path("开饭", -10.0), path("开放", -11.0)];
-    engine.rescore_paths(&mut paths);
+    engine.rescore_paths(&mut paths, PathUnit::Syllables);
     assert_eq!(texts(&paths), ["开饭", "开放"]);
     assert!(engine.rescoring_pending());
 }
@@ -154,7 +154,7 @@ fn winning_replacements_are_combined_into_a_new_path() {
     let good = "词库的生成";
     let engine = engine().with_sentence_scorer(Box::new(CharScores(good)), Some(1.0), None, None);
     let mut sync = paths();
-    engine.rescore_paths(&mut sync);
+    engine.rescore_paths(&mut sync, PathUnit::Syllables);
     assert_eq!(sync[0].text, good);
     assert_eq!(sync.len(), 4);
 
@@ -169,17 +169,17 @@ fn winning_replacements_are_combined_into_a_new_path() {
         }
     };
     let mut first = paths();
-    engine.rescore_paths(&mut first);
+    engine.rescore_paths(&mut first, PathUnit::Syllables);
     wait(&mut engine);
     // 第一轮的分到了：三条按神经分排，拼出来的那条还没分，记下来等第二拍
     let mut second = paths();
-    engine.rescore_paths(&mut second);
+    engine.rescore_paths(&mut second, PathUnit::Syllables);
     assert_eq!(second.len(), 3);
     assert_eq!(second[0].text, "词库的声称");
     assert!(engine.rescoring_pending());
     wait(&mut engine);
     let mut third = paths();
-    engine.rescore_paths(&mut third);
+    engine.rescore_paths(&mut third, PathUnit::Syllables);
     assert_eq!(third[0].text, good);
     assert!(!engine.rescoring_pending());
 }

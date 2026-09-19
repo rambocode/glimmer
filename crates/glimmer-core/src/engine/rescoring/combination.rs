@@ -4,11 +4,12 @@
 //! 在词级模型下要同时吃两份代价，排不进前 k 条；但它的零件都在：一条路径改对了前半句，另一条改对了后半句。
 //! 第一轮重排之后，相对最优路径净赚、彼此不重叠的替换拼在一起，再让模型打一次分，赢了才用。
 
+use super::PathUnit;
 use crate::sentence::{Conversion, SentenceWord};
 
-/// 一条路径相对基准路径改动的那一段：音节区间与换上去的词。
+/// 一条路径相对基准路径改动的那一段：区间（单位见 [`PathUnit`]）与换上去的词。
 struct Replacement<'a> {
-    /// 音节区间 `[start, end)`。
+    /// 区间 `[start, end)`。
     start: usize,
 
     end: usize,
@@ -24,13 +25,17 @@ struct Replacement<'a> {
 /// 净赚（> 0）且互不重叠的替换按赚得多的先挑；挑出两处以上才拼，拼不出新东西返回 `None`。
 ///
 /// 拼出来的路径得分按可加估：`base` 的分加上各处替换各自带来的差。替换不相邻时词级模型的分确实可加；
-/// 相邻时差一个接缝上的二元分，由随后的神经分兜着。
-pub(super) fn combine(base: &Conversion, candidates: &[(&Conversion, f64)]) -> Option<Conversion> {
+/// 相邻时差一个接缝上的二元分，由随后的神经分兜着。`unit` 是路径对齐用的尺子。
+pub(super) fn combine(
+    base: &Conversion,
+    candidates: &[(&Conversion, f64)],
+    unit: PathUnit,
+) -> Option<Conversion> {
     let mut replacements: Vec<(f64, Replacement<'_>)> = candidates
         .iter()
         .enumerate()
         .filter(|(_, (_, gain))| *gain > 0.0)
-        .filter_map(|(source, (path, gain))| Some((*gain, replacement(base, path, source)?)))
+        .filter_map(|(source, (path, gain))| Some((*gain, replacement(base, path, source, unit)?)))
         .collect();
     replacements.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap_or(std::cmp::Ordering::Equal));
     let mut chosen: Vec<Replacement<'_>> = Vec::new();
@@ -50,7 +55,7 @@ pub(super) fn combine(base: &Conversion, candidates: &[(&Conversion, f64)]) -> O
     let mut position = 0;
     let mut pending = chosen.iter().peekable();
     for word in &base.words {
-        let end = position + word.syllables.len();
+        let end = position + unit.width(word);
         match pending.peek() {
             Some(next) if position == next.start => {
                 words.extend(next.words.iter().cloned());
@@ -86,16 +91,16 @@ pub(super) fn combine(base: &Conversion, candidates: &[(&Conversion, f64)]) -> O
     Some(combined)
 }
 
-/// `path` 相对 `base` 改动的那一段：去掉两头相同的词，剩下的音节区间与 `path` 在这段里的词。
+/// `path` 相对 `base` 改动的那一段：去掉两头相同的词，剩下的区间与 `path` 在这段里的词。
 /// 两条路径一样（没有改动）返回 `None`。
 fn replacement<'a>(
     base: &Conversion,
     path: &'a Conversion,
     source: usize,
+    unit: PathUnit,
 ) -> Option<Replacement<'a>> {
-    let same = |a: &SentenceWord, b: &SentenceWord| {
-        a.text == b.text && a.syllables.len() == b.syllables.len()
-    };
+    let same =
+        |a: &SentenceWord, b: &SentenceWord| a.text == b.text && unit.width(a) == unit.width(b);
     let prefix = base
         .words
         .iter()
@@ -111,9 +116,9 @@ fn replacement<'a>(
         .zip(path.words[prefix..].iter().rev())
         .take_while(|(a, b)| same(a, b))
         .count();
-    let start: usize = base.words[..prefix].iter().map(|w| w.syllables.len()).sum();
+    let start: usize = base.words[..prefix].iter().map(|w| unit.width(w)).sum();
     let middle = &path.words[prefix..path.words.len() - suffix];
-    let end = start + middle.iter().map(|w| w.syllables.len()).sum::<usize>();
+    let end = start + middle.iter().map(|w| unit.width(w)).sum::<usize>();
     Some(Replacement {
         start,
         end,
@@ -151,15 +156,81 @@ mod tests {
         let front = path(&[("词库", 2), ("的", 1), ("声称", 2)], -22.0);
         let back = path(&[("次", 1), ("哭", 1), ("的", 1), ("生成", 2)], -21.0);
         let loser = path(&[("次", 1), ("哭", 1), ("得", 1), ("声称", 2)], -23.0);
-        let combined = combine(&base, &[(&front, 3.0), (&back, 2.0), (&loser, -1.0)]).unwrap();
+        let combined = combine(
+            &base,
+            &[(&front, 3.0), (&back, 2.0), (&loser, -1.0)],
+            PathUnit::Syllables,
+        )
+        .unwrap();
         assert_eq!(combined.text, "词库的生成");
         assert_eq!(combined.words.len(), 3);
         assert_eq!(combined.syllables.len(), 5);
         // 可加估分：−20 + (−22 + 20) + (−21 + 20)
         assert_eq!(combined.score, -23.0);
         // 只有一处赢、或两处重叠：不拼
-        assert!(combine(&base, &[(&front, 3.0), (&loser, -1.0)]).is_none());
+        assert!(combine(&base, &[(&front, 3.0), (&loser, -1.0)], PathUnit::Syllables).is_none());
         let overlapping = path(&[("此", 1), ("库", 1), ("的", 1), ("声称", 2)], -22.5);
-        assert!(combine(&base, &[(&front, 3.0), (&overlapping, 1.0)]).is_none());
+        assert!(
+            combine(
+                &base,
+                &[(&front, 3.0), (&overlapping, 1.0)],
+                PathUnit::Syllables
+            )
+            .is_none()
+        );
+    }
+
+    /// 五笔路径：每个词一条编码，`words` 里是（词，敲的那段字母）。
+    fn code_path(words: &[(&str, &str)], score: f64) -> Conversion {
+        let words: Vec<SentenceWord> = words
+            .iter()
+            .map(|(text, code)| SentenceWord {
+                text: (*text).to_owned(),
+                syllables: vec![(*code).to_owned()],
+                placeholder: false,
+            })
+            .collect();
+        Conversion {
+            text: words.iter().map(|w| w.text.as_str()).collect(),
+            syllables: words.iter().flat_map(|w| w.syllables.clone()).collect(),
+            words,
+            score,
+            static_score: score,
+            penalty: 0.0,
+        }
+    }
+
+    #[test]
+    fn code_paths_align_by_letters_not_by_word_count() {
+        // 同一段字母 `gggg` 基准读成一个词、另一条读成两个词：按词数对齐会把后面的 中 一起吞掉
+        let base = code_path(
+            &[("王", "gggg"), ("中", "khk"), ("式", "aa"), ("国", "lgyi")],
+            -20.0,
+        );
+        let front = code_path(
+            &[
+                ("五", "gg"),
+                ("五", "gg"),
+                ("中", "khk"),
+                ("式", "aa"),
+                ("国", "lgyi"),
+            ],
+            -22.0,
+        );
+        let back = code_path(
+            &[
+                ("王", "gggg"),
+                ("中", "khk"),
+                ("工", "a"),
+                ("工", "a"),
+                ("国", "lgyi"),
+            ],
+            -21.0,
+        );
+        let combined =
+            combine(&base, &[(&front, 3.0), (&back, 2.0)], PathUnit::CodeLetters).unwrap();
+        assert_eq!(combined.text, "五五中工工国");
+        // 拼出来的路径盖住的还是同一串字母
+        assert_eq!(combined.syllables.concat(), "ggggkhkaalgyi");
     }
 }

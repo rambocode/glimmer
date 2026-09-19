@@ -6,7 +6,7 @@ use crate::sentence::SpanWord;
 
 /// 一张词图。位置从 0 到 [`Self::positions`]，一条边是盖住 `[start, end)` 的一个词。
 pub trait Lattice {
-    /// 有几个位置（拼音是音节数）。
+    /// 有几个位置（拼音是音节数，五笔是编码字母数）。
     fn positions(&self) -> usize;
 
     /// 一条边最多盖几个位置。

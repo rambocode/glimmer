@@ -1,4 +1,8 @@
-//! 五笔的候选：全码命中在前、前缀命中作逐键提示，`z` 开头走拼音反查；按键后要不要自动上屏也在这里判断。
+//! 五笔的候选：全码命中在前、前缀命中作逐键提示，`z` 开头走拼音反查。
+//! 按键后要不要自动上屏在 `auto_commit`，连着打编码出整句在 `sentence`。
+
+mod auto_commit;
+mod sentence;
 
 use std::cmp::Reverse;
 use std::time::{Duration, Instant};
@@ -10,8 +14,8 @@ use crate::candidate::{Candidate, CandidateKind, CandidateList};
 use crate::engine::{Engine, Learner, MAX_CANDIDATES, Timings, is_raw};
 use crate::parser::ParseError;
 use crate::ranking;
-use crate::sentence;
-use crate::wubi::{MAX_CODE_LEN, REVERSE_LOOKUP_KEY, is_code_key, is_reverse_lookup};
+use crate::sentence::fallback_log_prob;
+use crate::wubi::{REVERSE_LOOKUP_KEY, is_reverse_lookup};
 
 /// 一条待排序的码表命中。
 struct WubiHit<'a> {
@@ -51,7 +55,7 @@ impl WubiHit<'_> {
 
 impl Engine {
     /// 五笔查询：直输段原样出；`z` 开头按拼音反查；否则查码表（含用户词），全码命中在前、前缀命中作提示，emoji 按文本照配。
-    /// 不做整句、纠错、模糊音、英文混输。
+    /// 不做纠错、模糊音、英文混输；整句只在 `[wubi] sentence` 开着时做（[`Self::insert_wubi_sentence`]）。
     pub(super) fn query_wubi(
         &self,
         keys: &str,
@@ -69,6 +73,8 @@ impl Engine {
         let mut items = self.wubi_candidates(keys);
         let lookup = start.elapsed();
         let start = Instant::now();
+        // 整句开着：超过四码（或空码）时首选换成整句，拼音行按整句的切法用 `'` 分开
+        let typed_display = self.insert_wubi_sentence(keys, &mut items);
         self.insert_emoji(&mut items);
         Ok(Query {
             segmentations: Vec::new(),
@@ -78,7 +84,7 @@ impl Engine {
             cursor: self.composition.cursor(),
             rest,
             decoded_keys: false,
-            typed_display: None,
+            typed_display,
             correction: None,
             timings: Timings {
                 parse,
@@ -169,7 +175,7 @@ impl Engine {
                     hit,
                     full,
                     choice,
-                    score: sentence::fallback_log_prob(hit.frequency, log_total)
+                    score: fallback_log_prob(hit.frequency, log_total)
                         + ranking::weight_bonus(weight),
                     index,
                 }
@@ -195,63 +201,5 @@ impl Engine {
                 translation: None,
             })
             .collect()
-    }
-
-    /// 五笔按键之后要不要自动上屏（`c` 是刚敲的键）：
-    /// - 作用域正好四码且首选是全码命中、`auto_select` 开着 → 首选待上屏；
-    /// - 上一段已满四码却还留着（空码，或关了自动上屏）：有首选就顶字上屏，没有（空码）就整段丢掉、缓冲区只剩新键；
-    /// - 新键接上后既无全码也无前缀命中、而旧段有首选 → 顶字：旧段首选待上屏，新键先拿掉、旧段上屏后再补回；
-    /// - 其余（空码还没满四码、正常有命中）什么都不做。光标不在末尾、直输段、`z` 反查都不管。
-    pub(in crate::engine) fn check_wubi_auto_commit(&mut self, c: char) {
-        let Some(scheme) = &self.wubi else {
-            return;
-        };
-        // 英文模式（Caps Lock）下缓冲区里是英文字母，`query_inner` 也不走五笔，这里同样不介入
-        if self.english_mode {
-            return;
-        }
-        let auto_select = scheme.options().auto_select;
-        if self.composition.cursor() != self.composition.text().len() {
-            return;
-        }
-        let scope = self.composition.text().to_owned();
-        if !scope.chars().all(is_code_key) || scope.starts_with(REVERSE_LOOKUP_KEY) {
-            return;
-        }
-        let old = &scope[..scope.len() - c.len_utf8()];
-        if old.len() >= MAX_CODE_LEN {
-            let first = self.wubi_candidates(old).into_iter().next();
-            self.composition.backspace();
-            match first {
-                Some(candidate) => {
-                    self.pending_auto_commit = Some(candidate);
-                    self.deferred_key = Some(c);
-                }
-                None => {
-                    self.composition.clear();
-                    self.composition.push(c);
-                    self.chain.leave_buffer();
-                }
-            }
-            return;
-        }
-        let items = self.wubi_candidates(&scope);
-        if items.is_empty() {
-            if let Some(first) = self.wubi_candidates(old).into_iter().next() {
-                self.composition.backspace();
-                self.pending_auto_commit = Some(first);
-                self.deferred_key = Some(c);
-            }
-            return;
-        }
-        if scope.len() == MAX_CODE_LEN
-            && auto_select
-            && items[0]
-                .syllables
-                .first()
-                .is_some_and(|code| *code == scope)
-        {
-            self.pending_auto_commit = items.into_iter().next();
-        }
     }
 }
