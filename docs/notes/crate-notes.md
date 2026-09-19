@@ -196,6 +196,8 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 的前几条�
 - `--wubi 86|98|xsj|off` 覆盖 `[general] wubi`（`xsj` 即新世纪，也可写 `06`）：码表只认 `data/generated/` 下该版本的 `wubi86.qj` / `wubi98.qj` / `wubixsj.qj`
   （没有就报错，用 `dict-convert wubi` + `pack dict --output` 生成），`[wubi]` 选项照配置；
   `--user-dict` 给了时按输入串记的表落该版本的方案子目录（`wubi86/` / `wubi98/` / `wubixsj/`）。`--typing` 逐键计时不模拟四码自动上屏（`set_input` 不走 `push`）。
+- `--wubi-sentence` 覆盖 `[wubi] sentence`（五笔整句）。只用五笔（`--scheme none --wubi <版本>`）时 `--eval-text` 把句子按码表转成编码来评（`Transcriber::codes`：
+  码表有的词打词码、没有的逐字打，同一个字词取最长的那条编码即全码）；冻结的句子集照用，拼音那一列被换掉，码表里没有的字的句子跳过；`--eval-typos` 在这时忽略。
 - `--tune 名=值`（逗号分隔）覆盖个人 n-gram 插值（含整句接上文的权重 `initial`、每词代价 `word`）与敲错代价（含原样成词保护 `protect`）的常数扫网格（名字见 `apps/cli/src/tuning.rs`，Core 侧是 `Engine::set_interpolation` / `set_typo_costs`，壳只用缺省值）。
 - `--eval-text <文本>...` 整句评测：把用户自己写的中文文本按标点切句、按词库读音转成全拼，冷启动喂给引擎看整句能不能还原原句
   （首选命中率 / 字准确率 / 查询耗时；不依赖日志里当时选了什么，给整句排序与语言模型的改动当尺子），`--eval-save` 冻结成 `句子\t拼音\t上文` 三列文件，

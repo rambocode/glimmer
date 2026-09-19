@@ -89,6 +89,10 @@ pub struct Args {
     #[arg(long)]
     pub wubi: Option<String>,
 
+    /// 五笔整句输入，覆盖配置里的 [wubi] sentence：连着打编码出整句、不再四码自动上屏。配 --wubi 与 --scheme none 用；--eval-text 在只用五笔时按码表把句子转成编码来评
+    #[arg(long)]
+    pub wubi_sentence: bool,
+
     /// 神经重打分：字级 Transformer 的 .qjm 文件或导出目录（model.safetensors / config.json / vocab.json），整句前几条路径用它重排
     #[arg(long)]
     pub neural: Option<PathBuf>,

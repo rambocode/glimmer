@@ -76,7 +76,10 @@ fn reshape(engine: &Engine, pairs: Vec<Pair>, shape: Shape, report: &mut Report)
             .collect();
         report.mode.push_str(&format!("，分段输入每段 {words} 词"));
     }
-    if shape.typos {
+    // 注错按拼音音节造错，编码上没有意义
+    if shape.typos && code_table(engine).is_some() {
+        tracing::warn!("只用五笔时不注错，--eval-typos 已忽略");
+    } else if shape.typos {
         pairs = pairs
             .into_iter()
             .filter_map(|pair| {
@@ -89,8 +92,21 @@ fn reshape(engine: &Engine, pairs: Vec<Pair>, shape: Shape, report: &mut Report)
     pairs
 }
 
-/// 从引擎的词库（主词库 + 附加词库）建读音反查表。
+/// 只用五笔（拼音侧关着）时的码表：这时句子要转成编码而不是拼音。混输的方案键带 `+`，照拼音评。
+fn code_table(engine: &Engine) -> Option<&glimmer_dictionary::Dictionary> {
+    engine
+        .wubi()
+        .filter(|_| !engine.scheme_key().contains('+'))
+        .map(|scheme| scheme.dictionary())
+}
+
+/// 从引擎的词库（主词库 + 附加词库）建读音反查表；只用五笔时从码表建编码反查表。
 fn transcriber_of(engine: &Engine) -> Transcriber {
+    if let Some(table) = code_table(engine) {
+        let transcriber = Transcriber::codes(table);
+        tracing::info!(words = transcriber.len(), "编码反查表已建");
+        return transcriber;
+    }
     let dictionaries = std::iter::once(engine.dictionary()).chain(engine.extra_dictionaries());
     let transcriber = Transcriber::new(dictionaries);
     tracing::info!(words = transcriber.len(), "读音反查表已建");
@@ -106,6 +122,12 @@ fn collect(
     let mut transcriber: Option<Transcriber> = None;
     let mut seen: HashSet<String> = HashSet::new();
     let mut pairs = Vec::new();
+    let wubi = code_table(engine).is_some();
+    if wubi {
+        report
+            .mode
+            .push_str(&format!("，五笔全码 {}", engine.scheme_key()));
+    }
     for path in paths {
         let text = std::fs::read_to_string(path).map_err(|source| EvalError::Read {
             path: path.clone(),
@@ -113,11 +135,24 @@ fn collect(
         })?;
         if text.contains('\t') {
             for line in text.lines() {
-                if let Some(pair) = Pair::parse(line)
-                    && seen.insert(pair.text.clone())
-                {
-                    pairs.push(pair);
+                let Some(mut pair) = Pair::parse(line) else {
+                    continue;
+                };
+                if !seen.insert(pair.text.clone()) {
+                    continue;
                 }
+                // 冻结文件里存的是全拼：只用五笔时同一批句子改按码表转成编码，码表里没有的字就放弃这句
+                if wubi {
+                    let transcriber = transcriber.get_or_insert_with(|| transcriber_of(engine));
+                    match transcriber.transcribe(&pair.text, engine.language_model()) {
+                        Some(codes) => pair.pinyin = codes,
+                        None => {
+                            report.untranscribable += 1;
+                            continue;
+                        }
+                    }
+                }
+                pairs.push(pair);
             }
             continue;
         }

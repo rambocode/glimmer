@@ -120,6 +120,9 @@ fn load_config(args: &Args) -> Result<Config, CliError> {
             wubi.clone()
         };
     }
+    if args.wubi_sentence {
+        config.wubi.sentence = true;
+    }
     Ok(config)
 }
 
