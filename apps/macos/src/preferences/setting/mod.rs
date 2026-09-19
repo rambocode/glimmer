@@ -203,6 +203,9 @@ pub enum Setting {
     /// `[wubi] auto_select`，勾选框：敲满四码命中全码就自动上屏。
     WubiAutoSelect,
 
+    /// `[wubi] sentence`，勾选框：连着打编码由引擎切词出整句，空格上屏。
+    WubiSentence,
+
     /// `[wubi] hint`，勾选框：逐键提示候选右侧显示完整编码。
     WubiHint,
 
@@ -272,6 +275,7 @@ impl Setting {
             Self::PunctuationMode => 42,
             Self::Wubi => 43,
             Self::WubiAutoSelect => 44,
+            Self::WubiSentence => 62,
             Self::WubiHint => 45,
             Self::Renderer => 46,
             Self::Font => 47,
@@ -344,6 +348,7 @@ impl Setting {
             42 => Self::PunctuationMode,
             43 => Self::Wubi,
             44 => Self::WubiAutoSelect,
+            62 => Self::WubiSentence,
             45 => Self::WubiHint,
             50 => Self::SystemTextReplacements,
             58 => Self::UpdateCheck,
@@ -419,6 +424,7 @@ mod tests {
             Setting::OpenRepository,
             Setting::Wubi,
             Setting::WubiAutoSelect,
+            Setting::WubiSentence,
             Setting::WubiHint,
             Setting::UpdateCheck,
             Setting::CheckUpdate,

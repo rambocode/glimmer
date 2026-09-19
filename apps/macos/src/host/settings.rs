@@ -427,6 +427,9 @@ impl Host {
             (Setting::WubiAutoSelect, SettingValue::Bool(on)) => {
                 self.settings.set_bool("wubi", "auto_select", on);
             }
+            (Setting::WubiSentence, SettingValue::Bool(on)) => {
+                self.settings.set_bool("wubi", "sentence", on);
+            }
             (Setting::WubiHint, SettingValue::Bool(on)) => {
                 self.settings.set_bool("wubi", "hint", on);
             }

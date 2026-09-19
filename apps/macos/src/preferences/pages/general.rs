@@ -30,8 +30,11 @@ pub struct GeneralPage {
     /// 五笔版本（第 0 项是关）；与拼音方案同时开着就是混输。
     wubi: Retained<NSPopUpButton>,
 
-    /// 五笔：敲满四码命中全码就自动上屏。
+    /// 五笔：敲满四码命中全码就自动上屏；整句开着时置灰。
     wubi_auto_select: Retained<NSButton>,
+
+    /// 五笔：连着打编码由引擎切词出整句，空格上屏。
+    wubi_sentence: Retained<NSButton>,
 
     /// 五笔：逐键提示候选右侧显示完整编码。
     wubi_hint: Retained<NSButton>,
@@ -132,6 +135,13 @@ impl GeneralPage {
         );
         let wubi_auto_select = checkbox(mtm, "四码自动上屏", Setting::WubiAutoSelect, target);
         row_sub_checkbox(layout, &wubi_auto_select);
+        let wubi_sentence = checkbox(
+            mtm,
+            "整句输入（连着打编码，空格上屏）",
+            Setting::WubiSentence,
+            target,
+        );
+        row_sub_checkbox(layout, &wubi_sentence);
         let wubi_hint = checkbox(mtm, "显示编码提示", Setting::WubiHint, target);
         row_sub_checkbox(layout, &wubi_hint);
         sub_note(
@@ -228,6 +238,7 @@ impl GeneralPage {
             scheme,
             wubi,
             wubi_auto_select,
+            wubi_sentence,
             wubi_hint,
             traditional,
             english,
@@ -290,9 +301,13 @@ impl GeneralPage {
             })),
         );
         set_checked(&self.wubi_auto_select, config.wubi.auto_select);
+        set_checked(&self.wubi_sentence, config.wubi.sentence);
         set_checked(&self.wubi_hint, config.wubi.hint);
-        // 混输下 Core 不做四码自动上屏（四个字母也可能是拼音），置灰把这一点说清楚
+        // 混输下 Core 不做四码自动上屏（四个字母也可能是拼音），整句开着时 Core 也把它停掉，两种情况都置灰说清楚
         self.wubi_auto_select
+            .setEnabled(wubi.is_some() && !general.mixed() && !config.wubi.sentence);
+        // 整句只在只用形码时做（混输下超过四个字母本来就走拼音整句），混输时置灰
+        self.wubi_sentence
             .setEnabled(wubi.is_some() && !general.mixed());
         self.wubi_hint.setEnabled(wubi.is_some());
         set_checked(&self.traditional, general.traditional);
