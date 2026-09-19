@@ -64,6 +64,31 @@ impl Engine {
         }
     }
 
+    /// 用光标前已有的文字接上文：`before` 末尾那一小句汉字按语言模型切词，最后两个词当上屏链的上文，
+    /// 下一段拼音的第一个词就按它打分。末尾不是汉字（标点、英文、空）就是句首，链清空。
+    /// 整句评测的分段输入用它摆上文；壳读得到光标前文时也可以在链断开后调它。只改上文，不学习、不写日志。
+    pub fn seed_chain(&mut self, before: &str) {
+        self.chain.reset();
+        let clause_start = before
+            .char_indices()
+            .rev()
+            .take_while(|(_, c)| sentence::is_han(*c))
+            .last()
+            .map(|(index, _)| index);
+        let Some(clause_start) = clause_start else {
+            return;
+        };
+        let Some(clauses) = sentence::segment_text(&before[clause_start..], &*self.language_model)
+        else {
+            return;
+        };
+        let words: Vec<&String> = clauses.iter().flatten().collect();
+        if let Some((previous, rest)) = words.split_last() {
+            self.chain
+                .seed(rest.last().map(|w| w.as_str()), previous.as_str());
+        }
+    }
+
     /// 壳告知正在输入的应用（macOS bundle identifier / Windows exe 名），写进输入日志；不知道就给 `None`。
     pub fn set_application(&mut self, app: Option<String>) {
         self.application = app;

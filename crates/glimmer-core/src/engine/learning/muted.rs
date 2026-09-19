@@ -35,7 +35,7 @@ impl MutedLearner {
     }
 
     /// 两个开关任一生效就不写。
-    fn muted(&self) -> bool {
+    pub(in crate::engine) fn muted(&self) -> bool {
         self.private || self.disabled
     }
 

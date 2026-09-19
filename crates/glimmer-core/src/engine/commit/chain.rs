@@ -83,6 +83,14 @@ impl CommitChain {
         self.buffer_words.clear();
     }
 
+    /// 直接给定上文（不经过上屏）：光标前已有的文字切出来的最后两个词。不知道音节，所以不参与两词造词；
+    /// 下一个词算新一段拼音的开头。
+    pub fn seed(&mut self, earlier: Option<&str>, previous: &str) {
+        self.reset();
+        self.earlier = earlier.map(str::to_owned);
+        self.previous = Some((previous.to_owned(), Vec::new()));
+    }
+
     /// 缓冲区被清空或整段被别的东西吃掉：链不断，但下一个词不算同一段拼音。
     pub fn leave_buffer(&mut self) {
         self.same_buffer = false;

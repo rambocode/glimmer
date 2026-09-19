@@ -30,6 +30,11 @@ pub struct TypoCosts {
     /// 整段纠错里相邻换位比别的编辑便宜多少：一个位置只有一种换法、却有七八个相邻键可以换错，
     /// 同样能说通时换位的解释更可能（`mignti` 换位成 `mingti` 而不是换字母成 `mianti`）。
     pub correction_transpose_discount: f64,
+
+    /// 原样成词保护：敲的音节原样就能读成一个多音节词（`ce shi` 测试）时，整个落在这个词里面的敲错边多扣这么多。
+    /// 干净输入上敲错边的误伤（`anpaiceshirenyuan` → 安排的是人员）大半出在这里；2026-09-19 整句评测 9526 句
+    /// 首选 27.6% → 28.8%，真实日志回放的纠错一条不掉。3 到 100 结果几乎一样，取 4。
+    pub protected_extra: f64,
 }
 
 impl TypoCosts {
@@ -42,6 +47,7 @@ impl TypoCosts {
         discount_cap: 3.0,
         correction_penalty: 5.0,
         correction_transpose_discount: 1.0,
+        protected_extra: 4.0,
     };
 
     /// 这类敲错的基础代价。

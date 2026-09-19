@@ -77,7 +77,7 @@ fn typo_edges_in_the_lattice_correct_legal_but_unlikely_pinyin() {
     // 退回原样的路径时原样的整句照出：shude 词图里 是的（shu → shi 相邻键）赢，但 树德 正好拼成 shude，
     // 于是整句退回 属的
     let dictionary = Dictionary::parse(
-            "树德\tshu de\t500\n是的\tshi de\t5000000\n属\tshu\t100000\n的\tde\t8000000\n是\tshi\t7000000\n",
+            "树德\tshu de\t5\n是的\tshi de\t5000000\n属\tshu\t100000\n的\tde\t8000000\n是\tshi\t7000000\n",
         )
         .unwrap();
     let mut engine = Engine::new(dictionary);

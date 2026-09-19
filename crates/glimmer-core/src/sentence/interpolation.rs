@@ -1,6 +1,9 @@
-use super::{CONFIDENCE_K, MAX_CONFIDENCE, TRIGRAM_DISCOUNT, USER_LAMBDA};
+use super::{
+    CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, TRIGRAM_DISCOUNT, USER_LAMBDA,
+    WORD_PENALTY,
+};
 
-/// 个人 n-gram 与静态模型插值的参数（见 [`UserNgram::blend`]）。缺省值是 `sentence` 模块里的常数，
+/// 个人 n-gram 与静态模型插值的参数（见 [`UserNgram::blend`]），外加整句路径打分的两个常数（开头接上文的权重、每词代价）。缺省值是 `sentence` 模块里的常数，
 /// 回放调参（`glimmer-cli --tune`）时可以整组换掉，引擎与壳只用缺省值。
 ///
 /// [`UserNgram::blend`]: super::UserNgram::blend
@@ -17,6 +20,12 @@ pub struct Interpolation {
 
     /// 个人三元的绝对折扣 D（[`TRIGRAM_DISCOUNT`]）。
     pub trigram_discount: f64,
+
+    /// 整句第一个词按上文算的成分（[`INITIAL_CONTEXT_WEIGHT`]），0 为一律当句首。
+    pub initial_weight: f64,
+
+    /// 整句路径上每个词扣的分（[`WORD_PENALTY`]）。
+    pub word_penalty: f64,
 }
 
 impl Interpolation {
@@ -26,6 +35,8 @@ impl Interpolation {
         confidence_k: CONFIDENCE_K,
         max_confidence: MAX_CONFIDENCE,
         trigram_discount: TRIGRAM_DISCOUNT,
+        initial_weight: INITIAL_CONTEXT_WEIGHT,
+        word_penalty: WORD_PENALTY,
     };
 }
 

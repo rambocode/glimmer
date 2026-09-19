@@ -18,6 +18,7 @@ mod interpolation;
 mod language_model;
 mod personal;
 mod scorer;
+mod search;
 mod sentence_word;
 mod span;
 mod text_segment;
@@ -30,12 +31,13 @@ pub use interpolation::Interpolation;
 pub use language_model::{LanguageModel, NoLanguageModel};
 pub use personal::Personal;
 pub use scorer::SentenceScorer;
+pub use search::{PROTECTED_MIN_COST, Search};
 pub use sentence_word::SentenceWord;
 pub use span::{MAX_SPAN_CACHE_ENTRIES, SpanCache, SpanWord};
 pub(crate) use text_segment::is_han;
 pub use text_segment::{MAX_TEXT_WORD_CHARS, segment_text};
 pub use user_ngram::UserNgram;
-pub use viterbi::{convert, convert_paths, convert_whole, convert_with};
+pub use viterbi::{convert, convert_paths};
 
 /// 句首标记：个人 n-gram 里句首词的前词。与 `glimmer-lm` 语料统计用的是同一个记号。
 pub const SENTENCE_START: &str = "<s>";
@@ -53,6 +55,16 @@ pub const MAX_CONFIDENCE: f64 = 0.5;
 /// 个人三元的绝对折扣 D：每条见过的三元接续让出 D 份概率给二元回退，见得少的上文回退得多。
 /// 0.75 是 n-gram 平滑的惯用值，个人数据量小、一次见过的接续占多数时它决定了三元能压过二元多少。
 pub const TRIGRAM_DISCOUNT: f64 = 0.75;
+
+/// 一段拼音的第一个词有多大成分按「接着上文」算，其余按句首算：`ln(w·P(词|上文) + (1−w)·P(词|句首))`。
+/// 人多半在短语的边上分段上屏，新一段的开头既像接续、也像新起一句；全按接续算时，静态二元表里见过的
+/// 「前词 → 的 / 是」会压过没见过接续的实词（`dizhi` 出 的只、`danqian` 出 但前），全按句首算又白丢了上文。
+pub const INITIAL_CONTEXT_WEIGHT: f64 = 0.5;
+
+/// 路径上每个词扣多少分（词插入代价）：同一段拼音，词少的读法更可信。二元模型把句子拆得越碎，
+/// 每一步越容易碰上「见过的高频接续」（笔 → 给、点 → 是），几个单字连起来会压过一个整词（笔记、电视）。
+/// 2026-09-19 在全部尺子上扫过 0.5 / 1 / 1.5，都是正的：干净集首选 28.5% → 29.4%、回放词 5317 → 5372、注错集 14.4% → 15.7%；取 1。
+pub const WORD_PENALTY: f64 = 1.0;
 
 /// 个人 n-gram 最多存多少条转移（二元对 + 三元条），超过就整体减半（忘掉久远的偏好）。一年的个人输入远到不了这个量。
 pub const MAX_USER_TRANSITIONS: usize = 200_000;

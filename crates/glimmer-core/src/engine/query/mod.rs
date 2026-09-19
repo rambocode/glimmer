@@ -582,7 +582,7 @@ impl Engine {
         self.convert_sentence_with(patterns, typos, false)
     }
 
-    /// 同 [`Self::convert_sentence`]，`whole` 为真时末尾单字母也读（[`sentence::convert_whole`]），只给比分用。
+    /// 同 [`Self::convert_sentence`]，`whole` 为真时末尾单字母也读（[`sentence::Search::keep_partial`]），只给比分用。
     /// 接了神经重打分器时取前 [`RESCORE_PATHS`] 条路径，按「路径分 + λ·(神经分 − 静态分)」重排（[`Self::rescore_paths`]）：
     /// 神经分替换的是静态二元模型那部分判断，个人 n-gram 插值、用户加分、敲错代价原样保留，尺度也不变（纠错代价等常数照旧适用）。
     /// 返回重排后的第一条（`score` 换成重排后的分，好与别的读法比）；只有一条路径或模型还没给分时原样返回。
@@ -599,11 +599,17 @@ impl Engine {
         } else {
             1
         };
+        // 上文取上屏链：分段打、或先选了前面的词之后，剩下这段的第一个词接着前面的词算，不当句首
+        let search = sentence::Search {
+            keep_partial: whole,
+            paths: k,
+            initial: self.chain.context(),
+            protected_extra: self.typo_costs.protected_extra,
+        };
         let mut paths = sentence::convert_paths(
             &dictionaries,
             &expanded.positions(),
-            whole,
-            k,
+            search,
             &*self.language_model,
             self.personal(),
             |text| self.learner.weight(text),
