@@ -12,7 +12,12 @@ fn commit_consumes_the_whole_code_and_records_by_code() {
     assert_eq!(engine.commit(&wang), "王");
     assert!(engine.composition().is_empty());
     assert_eq!(engine.learner().weight("王"), 1);
-    assert_eq!(engine.learner().choice_weight("gggg", "王"), 1);
+    assert_eq!(
+        engine
+            .learner()
+            .choice_weight("gggg", "王", ChoicePosition::SentenceStart),
+        1
+    );
     // 提示候选（编码比敲的长）吃完作用域
     engine.set_input("gg");
     let wang = engine
@@ -25,7 +30,12 @@ fn commit_consumes_the_whole_code_and_records_by_code() {
         .unwrap();
     engine.commit(&wang);
     assert!(engine.composition().is_empty());
-    assert_eq!(engine.learner().choice_weight("gg", "王"), 1);
+    assert_eq!(
+        engine
+            .learner()
+            .choice_weight("gg", "王", ChoicePosition::Continuation),
+        1
+    );
 }
 
 #[test]

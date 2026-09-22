@@ -135,7 +135,12 @@ fn committing_takes_the_whole_code_for_code_candidates_and_the_syllables_for_pin
     assert_eq!(kai.text, "开");
     assert_eq!(engine.commit(&kai), "开");
     assert!(engine.composition().is_empty());
-    assert_eq!(engine.learner().choice_weight("ga", "开"), 1);
+    assert_eq!(
+        engine
+            .learner()
+            .choice_weight("ga", "开", ChoicePosition::SentenceStart),
+        1
+    );
 
     // 只命中编码前缀的五笔候选同样吃掉整段作用域
     engine.set_input("kai");
@@ -162,7 +167,12 @@ fn committing_takes_the_whole_code_for_code_candidates_and_the_syllables_for_pin
         .unwrap();
     engine.commit(&ni);
     assert_eq!(engine.composition().text(), "hao");
-    assert_eq!(engine.learner().choice_weight("ni", "你"), 1);
+    assert_eq!(
+        engine
+            .learner()
+            .choice_weight("ni", "你", ChoicePosition::Continuation),
+        1
+    );
 }
 
 #[test]

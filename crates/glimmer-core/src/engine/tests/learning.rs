@@ -24,7 +24,12 @@ fn erasing_the_last_commit_and_choosing_another_word_retracts_its_learning() {
     engine.note_backspace();
     pick(&mut engine, "kaifa", "开发");
     assert_eq!(engine.learner().weight("开放"), 0);
-    assert_eq!(engine.learner().choice_weight("kaifa", "开放"), 0);
+    assert_eq!(
+        engine
+            .learner()
+            .choice_weight("kaifa", "开放", ChoicePosition::SentenceStart),
+        0
+    );
     assert_eq!(engine.learner().weight("开发"), 1);
     // 只退了一格不算删掉
     pick(&mut engine, "kaifa", "开放");
@@ -68,7 +73,12 @@ fn erasing_several_commits_and_retyping_retracts_the_wrong_one() {
     }
     pick(&mut engine, "kaifa", "开发");
     assert_eq!(engine.learner().weight("开放"), 0);
-    assert_eq!(engine.learner().choice_weight("kaifa", "开放"), 0);
+    assert_eq!(
+        engine
+            .learner()
+            .choice_weight("kaifa", "开放", ChoicePosition::SentenceStart),
+        0
+    );
     // 先 重打后还是 先：不算选错，计数照旧
     pick(&mut engine, "xian", "先");
     assert_eq!(engine.learner().weight("先"), 2);
@@ -123,7 +133,11 @@ fn splitting_a_buffer_into_a_word_and_a_sentence_forms_the_whole_phrase() {
         assert_eq!(learned.1.pair(Some(&head), "先"), round);
         drop(learned);
         assert_eq!(
-            engine.learner().choice_weight("xiangkaifaxian", &phrase),
+            engine.learner().choice_weight(
+                "xiangkaifaxian",
+                &phrase,
+                ChoicePosition::SentenceStart
+            ),
             round
         );
         // 第二次：整段合成 想开X先；接缝处不造两字词
@@ -155,6 +169,8 @@ fn commit_feeds_learner_and_reorders() {
     assert_eq!(engine.commit(&kaifa), "开发");
     assert!(engine.composition().is_empty());
 
+    // 选择次数按句首 / 句中分开记，断句回到句首再打，比的才是同一桶
+    engine.note_passthrough('\n');
     // 同一输入串再打：选过的 开发 压过词频更高的 开放
     engine.set_input("kaif");
     assert_eq!(engine.query().unwrap().candidates.items[0].text, "开发");
@@ -166,6 +182,7 @@ fn commit_feeds_learner_and_reorders() {
     let kaifa = items.iter().find(|c| c.text == "开发").unwrap().clone();
     // 从长输入里选前缀词：按消耗掉的那段（`kaifa`）记
     engine.commit(&kaifa);
+    engine.note_passthrough('\n');
     engine.set_input("kaifa");
     assert_eq!(engine.query().unwrap().candidates.items[0].text, "开发");
 }
@@ -720,4 +737,46 @@ fn input_log_records_the_session_and_page_turns() {
         panic!("expected a commit");
     };
     assert_eq!(commit.pages, 2);
+}
+
+#[test]
+fn choices_learned_at_the_start_of_a_sentence_do_not_leak_into_the_middle() {
+    let dictionary = Dictionary::parse("吧\tba\t9000\n把\tba\t3000\n做了\tzuo le\t5000\n").unwrap();
+    let mut engine =
+        Engine::new(dictionary).with_learner(Box::new(CountingLearner(HashMap::new())));
+    let pick = |engine: &mut Engine, input: &str, text: &str| {
+        engine.set_input(input);
+        let candidate = engine
+            .query()
+            .unwrap()
+            .candidates
+            .items
+            .into_iter()
+            .find(|c| c.text == text)
+            .unwrap();
+        engine.commit(&candidate);
+    };
+    // 句首打 ba 选 把（词频更高的是 吧）
+    pick(&mut engine, "ba", "把");
+    engine.note_passthrough('\n');
+    // 句首再打 ba：选过的 把 排第一
+    engine.set_input("ba");
+    assert_eq!(texts_of(&engine)[0], "把");
+    // 先上屏 做了 再打 ba：句首那次选择不算数，词频高的 吧 回到第一
+    pick(&mut engine, "zuole", "做了");
+    engine.set_input("ba");
+    assert_eq!(texts_of(&engine)[0], "吧");
+    // 句中选一次 吧 之后，句首仍然是 把
+    let ba = engine
+        .query()
+        .unwrap()
+        .candidates
+        .items
+        .into_iter()
+        .find(|c| c.text == "吧")
+        .unwrap();
+    engine.commit(&ba);
+    engine.note_passthrough('\n');
+    engine.set_input("ba");
+    assert_eq!(texts_of(&engine)[0], "把");
 }

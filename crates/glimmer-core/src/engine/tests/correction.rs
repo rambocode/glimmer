@@ -25,7 +25,12 @@ fn typo_edges_in_the_lattice_correct_legal_but_unlikely_pinyin() {
     assert_eq!(engine.commit(&first), "没关系");
     assert!(engine.composition().is_empty());
     assert_eq!(engine.learner().typo_count("gan", "guan"), 1);
-    assert_eq!(engine.learner().choice_weight("meiganxi", "没关系"), 1);
+    assert_eq!(
+        engine
+            .learner()
+            .choice_weight("meiganxi", "没关系", ChoicePosition::SentenceStart),
+        1
+    );
     // 整个删掉、同一段拼音改选 美感：敲错的记录退回
     for _ in 0..3 {
         engine.note_backspace();

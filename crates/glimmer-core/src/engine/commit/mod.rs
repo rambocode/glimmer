@@ -9,6 +9,7 @@ use super::{
     AUTO_WORD_MAX_CHARS, AUTO_WORD_THRESHOLD, AUTO_WORD_THRESHOLD_SAME_BUFFER,
     EXPLICIT_TRANSITION_WEIGHT, Engine, choice_key, segment_longest_prefix,
 };
+use crate::ChoicePosition;
 use crate::candidate::{Candidate, CandidateKind, CandidateList, Language};
 use crate::correction::typo;
 use crate::{parser, sentence};
@@ -109,19 +110,22 @@ impl Engine {
             .flatten();
         // 下面每条路都可能改学习数据，格子候选的排序跟着变
         self.forget_span_cache();
+        // 选择次数按位置分桶记：要的是**这次上屏那一刻**的上文，所以在链推进之前先算好
+        let position = self.choice_position();
         // 一段拼音里的第一个词：记下整段的学习键，整段分几次选完时合起来看（见 [`Self::finish_buffer`]）；
         // `split` 表示这次上屏接在同一段拼音里前一次上屏之后
         let split = self.chain.same_buffer();
         if !split {
             let (_, key) = self.whole_scope();
-            self.chain.begin_buffer(key);
+            self.chain.begin_buffer(key, position);
         }
         let mut typos = Vec::new();
         let (consumed, input) = match candidate.kind {
             CandidateKind::Chinese => {
                 self.learner.record(candidate);
                 let (consumed, input) = self.consumed_by(candidate);
-                self.learner.record_choice(&input, &candidate.text);
+                self.learner
+                    .record_choice(&input, &candidate.text, position);
                 typos = self.accepted_typos(candidate);
                 (consumed, input)
             }
@@ -146,7 +150,8 @@ impl Engine {
                 }
                 self.learner.record(candidate);
                 let (consumed, input) = self.whole_scope();
-                self.learner.record_choice(&input, &candidate.text);
+                self.learner
+                    .record_choice(&input, &candidate.text, position);
                 (consumed, input)
             }
             // 英文词与快捷候选对应整段作用域；选中的英文词记次数并进个人英文词表，下次同样的前缀它靠前
@@ -266,7 +271,7 @@ impl Engine {
                     candidate.kind,
                     CandidateKind::Chinese | CandidateKind::Cloud
                 )
-                .then(|| candidate.text.clone()),
+                .then(|| (candidate.text.clone(), position)),
                 transitions: std::mem::take(&mut self.recording),
                 typos,
                 erased: 0,
@@ -285,7 +290,7 @@ impl Engine {
     /// 一段拼音分几次选完了（`jidiaole` 先选 挤、剩下的走整句 掉了）：这几个词合起来就是用户对这段拼音的答案。
     /// 记一次「整段拼音 → 合成词」的选择；选到 [`AUTO_WORD_THRESHOLD_SAME_BUFFER`] 次、词库里没有、
     /// 不超过 [`AUTO_WORD_MAX_CHARS`] 字就造成用户词，下次整段打出来它直接排第一。返回记下的选择，撤销时退回。
-    pub(super) fn finish_buffer(&mut self) -> Option<(String, String)> {
+    pub(super) fn finish_buffer(&mut self) -> Option<(String, String, ChoicePosition)> {
         let words = self.chain.buffer_words();
         if words.len() < 2 {
             return None;
@@ -294,11 +299,13 @@ impl Engine {
         let syllables: Vec<String> = words.iter().flat_map(|(_, s)| s.iter().cloned()).collect();
         let chars = text.chars().count();
         let key = self.chain.buffer_key().to_owned();
+        // 整段的选择按整段开头那一刻的位置记，不是按最后一个词上屏时的位置（那时链上已经有本段前面的词了）
+        let position = self.chain.buffer_position();
         if key.is_empty() || chars > AUTO_WORD_MAX_CHARS {
             return None;
         }
         let syllables = self.auto_word_syllables(&text, syllables)?;
-        self.learner.record_choice(&key, &text);
+        self.learner.record_choice(&key, &text, position);
         let candidate = Candidate {
             text,
             kind: CandidateKind::Chinese,
@@ -307,13 +314,14 @@ impl Engine {
             translation: None,
         };
         if !self.knows_word(&candidate)
-            && self.learner.choice_weight(&key, &candidate.text) >= AUTO_WORD_THRESHOLD_SAME_BUFFER
+            && self.learner.choice_weight(&key, &candidate.text, position)
+                >= AUTO_WORD_THRESHOLD_SAME_BUFFER
         {
             tracing::debug!(text = %candidate.text, "整段拼音分次选完，自动造词");
             self.learner
                 .learn_word(&candidate.text, &candidate.syllables);
         }
-        Some((key, candidate.text))
+        Some((key, candidate.text, position))
     }
 
     /// 最近删掉的上屏里有一次是同一段拼音（或它的前缀）、这次却选了别的词：把那次记的学习退回去。
@@ -351,9 +359,9 @@ impl Engine {
             text: last.text.clone(),
             chosen: text.to_owned(),
         });
-        if let Some(chosen) = &last.chosen {
+        if let Some((chosen, position)) = &last.chosen {
             self.learner.unrecord(chosen);
-            self.learner.unrecord_choice(&last.input, chosen);
+            self.learner.unrecord_choice(&last.input, chosen, *position);
         }
         for transition in &last.transitions {
             self.learner.unrecord_transition(
@@ -365,8 +373,8 @@ impl Engine {
         for (typed, intended) in &last.typos {
             self.learner.unrecord_typo(typed, intended);
         }
-        if let Some((key, phrase)) = &last.phrase {
-            self.learner.unrecord_choice(key, phrase);
+        if let Some((key, phrase, position)) = &last.phrase {
+            self.learner.unrecord_choice(key, phrase, *position);
         }
     }
 

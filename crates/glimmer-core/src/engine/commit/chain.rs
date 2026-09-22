@@ -1,3 +1,4 @@
+use crate::ChoicePosition;
 use crate::sentence::Context;
 
 /// 连续上屏的链：记住最近上屏的两个中文词，下一个词上屏时就能记一条带前二词的转移（个人 n-gram 的三元）。
@@ -19,6 +20,10 @@ pub struct CommitChain {
 
     /// 这段拼音整段的学习键（按输入串记选择用的全部字母），第一个词上屏前记下。
     buffer_key: String,
+
+    /// 这段拼音开头时的位置（句首还是句中）。整段合成词的选择要按**整段开头**那一刻记：
+    /// 整段选完时链上已经有本段前面的词了，照当时的上文算会把整段的选择全记成句中。
+    buffer_position: ChoicePosition,
 }
 
 impl CommitChain {
@@ -59,10 +64,11 @@ impl CommitChain {
             .push((text.to_owned(), syllables.to_vec()));
     }
 
-    /// 一段新拼音里的第一个词要上屏了：记下整段的学习键，上一段的词清掉。
-    pub fn begin_buffer(&mut self, key: String) {
+    /// 一段新拼音里的第一个词要上屏了：记下整段的学习键与当时的位置，上一段的词清掉。
+    pub fn begin_buffer(&mut self, key: String, position: ChoicePosition) {
         self.buffer_words.clear();
         self.buffer_key = key;
+        self.buffer_position = position;
     }
 
     /// 当前这段拼音里已上屏的词，按顺序。
@@ -73,6 +79,11 @@ impl CommitChain {
     /// 当前这段拼音整段的学习键。
     pub fn buffer_key(&self) -> &str {
         &self.buffer_key
+    }
+
+    /// 当前这段拼音开头时的位置。
+    pub fn buffer_position(&self) -> ChoicePosition {
+        self.buffer_position
     }
 
     /// 打断链。

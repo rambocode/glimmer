@@ -155,6 +155,7 @@ impl Engine {
         let total: u64 = dictionaries.iter().map(|d| d.total_frequency()).sum();
         let log_total = (total as f64).max(1.0).ln();
         let pattern = [SyllablePattern::prefix(keys)];
+        let position = self.choice_position();
         let mut hits: Vec<WubiHit<'_>> = dictionaries
             .iter()
             .flat_map(|d| d.lookup_pattern(&pattern))
@@ -162,7 +163,7 @@ impl Engine {
             .map(|(index, hit)| {
                 let full = hit.pinyin == keys;
                 let choice = if full && !fixed {
-                    self.learner.choice_weight(keys, hit.text)
+                    self.learner.choice_weight(keys, hit.text, position)
                 } else {
                     0
                 };

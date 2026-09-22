@@ -56,6 +56,11 @@ fn looks_like_english_word_in(engine: &Engine) -> bool {
     looks_like_english_word(raw, false) && engine.decode(raw).is_none_or(|d| !d.is_complete())
 }
 
+/// 选择记录在桩里的键：输入串、词与位置各占一段，与真实实现一样按位置分开数。
+fn choice_entry(input: &str, text: &str, position: ChoicePosition) -> String {
+    format!("{input}\t{text}\t{position:?}")
+}
+
 struct CountingLearner(HashMap<String, u32>);
 
 impl Learner for CountingLearner {
@@ -67,13 +72,16 @@ impl Learner for CountingLearner {
         self.0.get(text).copied().unwrap_or(0)
     }
 
-    fn record_choice(&mut self, input: &str, text: &str) {
-        *self.0.entry(format!("{input}\t{text}")).or_default() += 1;
+    fn record_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
+        *self
+            .0
+            .entry(choice_entry(input, text, position))
+            .or_default() += 1;
     }
 
-    fn choice_weight(&self, input: &str, text: &str) -> u32 {
+    fn choice_weight(&self, input: &str, text: &str, position: ChoicePosition) -> u32 {
         self.0
-            .get(&format!("{input}\t{text}"))
+            .get(&choice_entry(input, text, position))
             .copied()
             .unwrap_or(0)
     }
@@ -108,8 +116,8 @@ impl Learner for CountingLearner {
         }
     }
 
-    fn unrecord_choice(&mut self, input: &str, text: &str) {
-        if let Some(count) = self.0.get_mut(&format!("{input}\t{text}")) {
+    fn unrecord_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
+        if let Some(count) = self.0.get_mut(&choice_entry(input, text, position)) {
             *count = count.saturating_sub(1);
         }
     }
@@ -296,19 +304,22 @@ struct WordLearner {
 impl Learner for WordLearner {
     fn record(&mut self, _candidate: &Candidate) {}
 
-    fn record_choice(&mut self, input: &str, text: &str) {
-        *self.choices.entry(format!("{input}\t{text}")).or_default() += 1;
+    fn record_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
+        *self
+            .choices
+            .entry(choice_entry(input, text, position))
+            .or_default() += 1;
     }
 
-    fn choice_weight(&self, input: &str, text: &str) -> u32 {
+    fn choice_weight(&self, input: &str, text: &str, position: ChoicePosition) -> u32 {
         self.choices
-            .get(&format!("{input}\t{text}"))
+            .get(&choice_entry(input, text, position))
             .copied()
             .unwrap_or(0)
     }
 
-    fn unrecord_choice(&mut self, input: &str, text: &str) {
-        if let Some(count) = self.choices.get_mut(&format!("{input}\t{text}")) {
+    fn unrecord_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
+        if let Some(count) = self.choices.get_mut(&choice_entry(input, text, position)) {
             *count = count.saturating_sub(1);
         }
     }

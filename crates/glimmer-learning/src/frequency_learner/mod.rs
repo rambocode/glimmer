@@ -1,3 +1,4 @@
+mod choice_counts;
 mod learner_impl;
 mod tables;
 
@@ -9,10 +10,12 @@ use std::path::{Path, PathBuf};
 
 use glimmer_core::sentence::{Context, UserNgram};
 use glimmer_core::storage::{read_text_lossy, write_atomic};
-use glimmer_core::{Candidate, Forgotten, Learner};
+use glimmer_core::{Candidate, ChoicePosition, Forgotten, Learner};
 use glimmer_dictionary::{Dictionary, WordList};
 
 use crate::error::LearningError;
+
+use choice_counts::{ANY_TOKEN, ChoiceCounts};
 
 /// 用户词文件名，与词频文件放同一目录；格式与主词库 TSV 相同（`词\t拼音\t词频`）。
 const USER_WORDS_FILE: &str = "user-words.tsv";
@@ -23,7 +26,8 @@ const USER_WORD_FREQUENCY: u32 = 100;
 /// 个人 n-gram 文件名，与词频文件同目录：`前词\t后词\t次数`，句首用 `<s>`。
 const USER_NGRAM_FILE: &str = "user-ngram.tsv";
 
-/// 按输入串记的选择文件名，与词频文件同目录：`输入串\t词\t次数`。
+/// 按输入串记的选择文件名，与词频文件同目录：`输入串\t词\t次数\t位置`。
+/// 位置列是后加的（`start` / `after` / `any`），放在次数后面，老版本按前三列读仍能读出次数。
 const USER_CHOICES_FILE: &str = "user-choices.tsv";
 
 /// 个人英文词表文件名，与词频文件同目录：`词\t次数`（词按第一次敲的写法存）。
@@ -65,8 +69,8 @@ pub struct FrequencyLearner {
     /// 个人 n-gram 自上次保存后是否有变化。
     ngram_dirty: bool,
 
-    /// 输入串 → (词 → 在这个输入串下被选的次数)。
-    choices: HashMap<String, HashMap<String, u32>>,
+    /// 输入串 → (词 → 在这个输入串下被选的次数，按句首 / 句中分桶)。
+    choices: HashMap<String, HashMap<String, ChoiceCounts>>,
 
     /// 按输入串记的选择自上次保存后是否有变化。
     choices_dirty: bool,
@@ -170,6 +174,8 @@ impl FrequencyLearner {
             let skipped = learner.load_typos(&source);
             note_skipped(&typos_path, skipped);
         }
+        // 老格式的选择次数要靠个人 n-gram 拆桶，所以等两张表都读完再迁移
+        learner.migrate_choices();
         learner.path = Some(path);
         Ok(learner)
     }

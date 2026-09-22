@@ -81,6 +81,8 @@ fn english_word_yields_to_a_chinese_word_the_user_keeps_choosing() {
             .find(|c| c.text == text)
             .unwrap();
         engine.commit(&candidate);
+        // 选择次数按句首 / 句中分开记：每次选完断句，下一次仍在句首，比的是同一桶
+        engine.note_passthrough('\n');
     };
     // 开了中文优先：ke'y 再不像话，中文词也在前、英文第二
     engine.set_chinese_first(true);

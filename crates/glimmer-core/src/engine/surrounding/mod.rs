@@ -12,7 +12,7 @@
 
 mod before;
 
-use super::Engine;
+use super::{ChoicePosition, Engine};
 use crate::sentence::Context;
 
 pub(super) use before::SurroundingBefore;
@@ -45,5 +45,10 @@ impl Engine {
         self.surrounding
             .as_ref()
             .map_or(Context::START, SurroundingBefore::context)
+    }
+
+    /// 下一个词算句首还是句中：按输入串记的选择次数按这个分桶记与查（见 [`ChoicePosition`]）。
+    pub(super) fn choice_position(&self) -> ChoicePosition {
+        ChoicePosition::of(self.context())
     }
 }

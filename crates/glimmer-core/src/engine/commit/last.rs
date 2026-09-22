@@ -1,4 +1,5 @@
 use super::Transition;
+use crate::ChoicePosition;
 
 /// 最近一次上屏记了哪些学习：用户把它退格删掉、再打同一段拼音换选别的词时，把这些记录退回去。
 /// 没记学习的上屏（英文词、标点、原样上屏）也留一条只有长度的记录，退格数过它才能数到更早的词。
@@ -13,8 +14,8 @@ pub struct LastCommit {
     /// 消耗掉的那段拼音（按输入串记选择用的键）。
     pub input: String,
 
-    /// 记过一次选择次数（`Learner::record`）与输入串选择（`record_choice`）的词；整句上屏没有。
-    pub chosen: Option<String>,
+    /// 记过一次选择次数（`Learner::record`）与输入串选择（`record_choice`）的词及当时的位置；整句上屏没有。
+    pub chosen: Option<(String, ChoicePosition)>,
 
     /// 记过的词转移（含上文与份数）。
     pub transitions: Vec<Transition>,
@@ -28,8 +29,8 @@ pub struct LastCommit {
     /// 输入日志里这次上屏的序号，撤销时指回去。
     pub log_id: u64,
 
-    /// 整段拼音分几次选完时记的「整段 → 合成词」选择（学习键, 合成词），撤销时一并退回。
-    pub phrase: Option<(String, String)>,
+    /// 整段拼音分几次选完时记的「整段 → 合成词」选择（学习键, 合成词, 整段开头的位置），撤销时一并退回。
+    pub phrase: Option<(String, String, ChoicePosition)>,
 }
 
 impl LastCommit {

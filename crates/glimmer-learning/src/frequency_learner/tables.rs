@@ -77,39 +77,87 @@ impl FrequencyLearner {
         self.scheme_scoped_path(frequency_path, USER_CHOICES_FILE)
     }
 
-    /// 从 `输入串\t词\t次数` 读按输入串记的选择，返回跳过的坏行数。
+    /// 从 `输入串\t词\t次数\t位置` 读按输入串记的选择，返回跳过的坏行数。
+    /// 位置列缺省（老文件的三列行）算不分位置，读进 `any` 桶等迁移。
     pub(super) fn load_choices(&mut self, source: &str) -> usize {
         let mut skipped = 0;
         for line in data_lines(source) {
-            let Some((input, text, count)) = parse_counted_pair(line) else {
+            let Some((input, text, count, token)) = parse_choice_line(line) else {
                 skipped += 1;
                 continue;
             };
-            if count > 0 {
-                self.choices
-                    .entry(input.to_owned())
-                    .or_default()
-                    .insert(text.to_owned(), count);
+            if count == 0 {
+                continue;
+            }
+            let counts = self
+                .choices
+                .entry(input.to_owned())
+                .or_default()
+                .entry(text.to_owned())
+                .or_default();
+            if !counts.add_token(token, count) {
+                skipped += 1;
             }
         }
+        // 坏行可能留下全空的条目（认不出位置列），清掉免得占着条数上限
+        self.choices.retain(|_, texts| {
+            texts.retain(|_, counts| !counts.is_empty());
+            !texts.is_empty()
+        });
         skipped
     }
 
+    /// 老格式（不分位置）的选择次数一次性拆进句首 / 句中两桶：按个人 n-gram 里这个词的句首占比
+    /// `c(<s>, w) / c(w)` 分配（四舍五入），n-gram 不认识这个词就留在 `any`。
+    ///
+    /// 拆完 `any` 清零，所以对已经是新格式的数据是空操作，重复调用结果一样。
+    pub(super) fn migrate_choices(&mut self) {
+        let mut migrated = 0usize;
+        for texts in self.choices.values_mut() {
+            for (text, counts) in texts.iter_mut() {
+                let any = counts.any();
+                // 原样上屏标记本来就不分位置，不拆
+                if any == 0 || text == RAW_MARK {
+                    continue;
+                }
+                let total = self.ngram.count(text);
+                if total == 0 {
+                    continue;
+                }
+                let start = self.ngram.pair(None, text);
+                let share = split_share(any, start, total);
+                counts.split_any(share);
+                migrated += 1;
+            }
+        }
+        if migrated > 0 {
+            self.choices_dirty = true;
+            tracing::info!(entries = migrated, "按输入串记的选择已按句首 / 句中拆开");
+        }
+    }
+
     pub(super) fn save_choices_to(&mut self, path: &Path) -> Result<(), LearningError> {
-        let mut rows: Vec<(&String, &String, &u32)> = self
+        let mut rows: Vec<(&String, &String, u32, &'static str)> = self
             .choices
             .iter()
-            .flat_map(|(input, texts)| texts.iter().map(move |(text, count)| (input, text, count)))
+            .flat_map(|(input, texts)| {
+                texts.iter().flat_map(move |(text, counts)| {
+                    counts
+                        .rows()
+                        .map(move |(count, token)| (input, text, count, token))
+                })
+            })
             .collect();
         rows.sort_by(|a, b| {
             a.0.cmp(b.0)
-                .then_with(|| b.2.cmp(a.2))
+                .then_with(|| b.2.cmp(&a.2))
                 .then_with(|| a.1.cmp(b.1))
+                .then_with(|| a.3.cmp(b.3))
         });
         write_atomic(path, |file| {
-            writeln!(file, "# 微明按输入串记的选择：输入串\t词\t次数")?;
-            for (input, text, count) in rows {
-                writeln!(file, "{input}\t{text}\t{count}")?;
+            writeln!(file, "# 微明按输入串记的选择：输入串\t词\t次数\t位置")?;
+            for (input, text, count, token) in rows {
+                writeln!(file, "{input}\t{text}\t{count}\t{token}")?;
             }
             Ok(())
         })?;
@@ -176,12 +224,12 @@ impl FrequencyLearner {
         self.choices.values().map(HashMap::len).sum()
     }
 
-    /// 所有按输入串记的计数减半，去掉减到零的。
+    /// 所有按输入串记的计数减半（三个桶一起），去掉减到零的。
     pub(super) fn decay_choices(&mut self) {
         for texts in self.choices.values_mut() {
-            texts.retain(|_, count| {
-                *count /= 2;
-                *count > 0
+            texts.retain(|_, counts| {
+                counts.halve();
+                !counts.is_empty()
             });
         }
         self.choices.retain(|_, texts| !texts.is_empty());
@@ -263,4 +311,26 @@ impl FrequencyLearner {
         self.words_dirty = false;
         Ok(())
     }
+}
+
+/// 解析选择表的一行：四列是 `输入串\t词\t次数\t位置`，三列是老格式（位置算 `any`）。
+fn parse_choice_line(line: &str) -> Option<(&str, &str, u32, &str)> {
+    let mut fields = line.split('\t');
+    let (Some(input), Some(text), Some(count)) = (fields.next(), fields.next(), fields.next())
+    else {
+        return None;
+    };
+    let count = count.trim().parse::<u32>().ok()?;
+    let token = fields.next().map_or(ANY_TOKEN, str::trim);
+    Some((input, text, count, token))
+}
+
+/// 老计数里该分给句首的份额：`any × start / total` 四舍五入，不超过 `any`。
+fn split_share(any: u32, start: u32, total: u32) -> u32 {
+    if total == 0 {
+        return 0;
+    }
+    let total = u64::from(total);
+    let share = (u64::from(any) * u64::from(start) + total / 2) / total;
+    u32::try_from(share).unwrap_or(any).min(any)
 }

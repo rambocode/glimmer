@@ -2,6 +2,26 @@
 
 use super::*;
 
+impl FrequencyLearner {
+    /// 给一对 (输入串, 词) 的计数加一笔，`bump` 决定加进哪个桶；条数超上限就整体衰减。
+    fn bump_choice(&mut self, input: &str, text: &str, bump: impl FnOnce(&mut ChoiceCounts)) {
+        if input.is_empty() || text.is_empty() {
+            return;
+        }
+        bump(
+            self.choices
+                .entry(input.to_owned())
+                .or_default()
+                .entry(text.to_owned())
+                .or_default(),
+        );
+        self.choices_dirty = true;
+        if self.choice_count() > MAX_CHOICE_ENTRIES {
+            self.decay_choices();
+        }
+    }
+}
+
 impl Learner for FrequencyLearner {
     fn record(&mut self, candidate: &Candidate) {
         *self.counts.entry(candidate.text.clone()).or_default() += 1;
@@ -13,33 +33,20 @@ impl Learner for FrequencyLearner {
         self.counts.get(text).copied().unwrap_or(0)
     }
 
-    fn record_choice(&mut self, input: &str, text: &str) {
-        if input.is_empty() || text.is_empty() {
-            return;
-        }
-        *self
-            .choices
-            .entry(input.to_owned())
-            .or_default()
-            .entry(text.to_owned())
-            .or_default() += 1;
-        self.choices_dirty = true;
-        if self.choice_count() > MAX_CHOICE_ENTRIES {
-            self.decay_choices();
-        }
-        tracing::debug!(input, text, "记录输入串下的选择");
+    fn record_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
+        self.bump_choice(input, text, |counts| counts.add(position));
+        tracing::debug!(input, text, ?position, "记录输入串下的选择");
     }
 
-    fn choice_weight(&self, input: &str, text: &str) -> u32 {
+    fn choice_weight(&self, input: &str, text: &str, position: ChoicePosition) -> u32 {
         self.choices
             .get(input)
             .and_then(|texts| texts.get(text))
-            .copied()
-            .unwrap_or(0)
+            .map_or(0, |counts| counts.weight(position))
     }
 
     fn record_raw(&mut self, input: &str) {
-        self.record_choice(input, RAW_MARK);
+        self.bump_choice(input, RAW_MARK, ChoiceCounts::add_any);
     }
 
     fn unrecord(&mut self, text: &str) {
@@ -53,13 +60,13 @@ impl Learner for FrequencyLearner {
         }
     }
 
-    fn unrecord_choice(&mut self, input: &str, text: &str) {
+    fn unrecord_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
         let Some(texts) = self.choices.get_mut(input) else {
             return;
         };
-        if let Some(count) = texts.get_mut(text) {
-            *count = count.saturating_sub(1);
-            if *count == 0 {
+        if let Some(counts) = texts.get_mut(text) {
+            counts.sub(position);
+            if counts.is_empty() {
                 texts.remove(text);
             }
             self.choices_dirty = true;
@@ -75,7 +82,10 @@ impl Learner for FrequencyLearner {
     }
 
     fn raw_count(&self, input: &str) -> u32 {
-        self.choice_weight(input, RAW_MARK)
+        self.choices
+            .get(input)
+            .and_then(|texts| texts.get(RAW_MARK))
+            .map_or(0, ChoiceCounts::total)
     }
 
     fn learn_word(&mut self, text: &str, syllables: &[String]) {

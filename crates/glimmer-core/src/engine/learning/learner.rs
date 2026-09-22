@@ -1,6 +1,6 @@
 use glimmer_dictionary::{Dictionary, WordList};
 
-use super::Forgotten;
+use super::{ChoicePosition, Forgotten};
 use crate::candidate::Candidate;
 use crate::sentence::{Context, UserNgram};
 
@@ -12,17 +12,21 @@ pub trait Learner: Send {
     /// 该词被用户选择过的次数，没记录返回 0。
     fn weight(&self, text: &str) -> u32;
 
-    /// 用户在输入串 `input`（候选覆盖的那段拼音，不含分隔符）下选了 `text`。
+    /// 用户在输入串 `input`（候选覆盖的那段拼音，不含分隔符）下、在 `position` 这个位置选了 `text`。
     /// 词级排序里同一输入串下选过的词排最前（`mgs` 选过 美国式，下次 `mgs` 它就是首选），与不分输入的 [`Self::weight`] 分开记：
     /// `ba` 下选的是 吧，`bazhege` 下选的是 把，混在一起数就分不清。
-    fn record_choice(&mut self, _input: &str, _text: &str) {}
+    ///
+    /// 位置再分一层的理由见 [`ChoicePosition`]：同一个 `ba` 句首要 把、句中要 吧，
+    /// 不分位置地数在一起，排序第 5 级就会让次数多的那个在两处都当首选。
+    fn record_choice(&mut self, _input: &str, _text: &str, _position: ChoicePosition) {}
 
-    /// `text` 在输入串 `input` 下被选过的次数，没记录返回 0。
-    fn choice_weight(&self, _input: &str, _text: &str) -> u32 {
+    /// `text` 在输入串 `input` 下、在 `position` 这个位置被选过的次数，没记录返回 0。
+    fn choice_weight(&self, _input: &str, _text: &str, _position: ChoicePosition) -> u32 {
         0
     }
 
     /// 用户对输入串 `input` 按了回车原样上屏，而当时拼写纠错正生效：这个串就是要原样打的，以后不纠。
+    /// 只用来判「这串要不要纠错」，与句首句中无关，所以不分位置记。
     fn record_raw(&mut self, _input: &str) {}
 
     /// `input` 被原样上屏过几次（见 [`Self::record_raw`]）。
@@ -33,8 +37,8 @@ pub trait Learner: Send {
     /// 撤销一次 [`Self::record`]：用户上屏后马上整个删掉重选了别的词，刚才那次不算数。
     fn unrecord(&mut self, _text: &str) {}
 
-    /// 撤销一次 [`Self::record_choice`]。
-    fn unrecord_choice(&mut self, _input: &str, _text: &str) {}
+    /// 撤销一次 [`Self::record_choice`]：`position` 是当初记的那个位置。
+    fn unrecord_choice(&mut self, _input: &str, _text: &str, _position: ChoicePosition) {}
 
     /// 撤销 `times` 份 [`Self::record_transition`]。
     fn unrecord_transition(&mut self, _context: Context<'_>, _word: &str, _times: u32) {}

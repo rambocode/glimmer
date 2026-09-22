@@ -7,11 +7,13 @@ use super::vocabulary::{FRESH_UNTIL, VocabularySummary};
 use crate::candidate::{Candidate, CandidateKind, Translation};
 use crate::sentence;
 
+mod choice_position;
 mod forgotten;
 mod learner;
 mod muted;
 mod text;
 
+pub use choice_position::ChoicePosition;
 pub use forgotten::Forgotten;
 pub use learner::{Learner, NoLearner};
 pub(super) use muted::MutedLearner;

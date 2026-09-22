@@ -1,6 +1,6 @@
 use glimmer_dictionary::{Dictionary, WordList};
 
-use super::{Forgotten, Learner};
+use super::{ChoicePosition, Forgotten, Learner};
 use crate::candidate::Candidate;
 use crate::sentence::{Context, UserNgram};
 
@@ -64,14 +64,14 @@ impl Learner for MutedLearner {
         self.inner.weight(text)
     }
 
-    fn record_choice(&mut self, input: &str, text: &str) {
+    fn record_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
         if !self.muted() {
-            self.inner.record_choice(input, text);
+            self.inner.record_choice(input, text, position);
         }
     }
 
-    fn choice_weight(&self, input: &str, text: &str) -> u32 {
-        self.inner.choice_weight(input, text)
+    fn choice_weight(&self, input: &str, text: &str, position: ChoicePosition) -> u32 {
+        self.inner.choice_weight(input, text, position)
     }
 
     fn record_raw(&mut self, input: &str) {
@@ -90,9 +90,9 @@ impl Learner for MutedLearner {
         }
     }
 
-    fn unrecord_choice(&mut self, input: &str, text: &str) {
+    fn unrecord_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {
         if !self.muted() {
-            self.inner.unrecord_choice(input, text);
+            self.inner.unrecord_choice(input, text, position);
         }
     }
 

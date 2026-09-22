@@ -57,7 +57,7 @@ fn short_codes_keep_the_table_order_regardless_of_learning() {
             reading: None,
             translation: None,
         });
-        learner.record_choice("a", "式");
+        learner.record_choice("a", "式", ChoicePosition::SentenceStart);
     }
     let mut engine = wubi_engine().with_learner(Box::new(learner));
     // 一级简码 `a` 下 工 永远在第一，式 只是前缀提示
@@ -67,7 +67,9 @@ fn short_codes_keep_the_table_order_regardless_of_learning() {
         fixed_order_length: 0,
         ..Options::default()
     });
-    engine.learner_mut().record_choice("gg", "王");
+    engine
+        .learner_mut()
+        .record_choice("gg", "王", ChoicePosition::SentenceStart);
     assert_eq!(wubi_texts(&mut engine, "gg")[0], "五");
 }
 
@@ -84,7 +86,9 @@ fn choices_reorder_full_code_hits_beyond_the_fixed_length() {
     assert_eq!(wubi_texts(&mut engine, "gggg")[0], "王");
     let learner = CountingLearner(HashMap::new());
     let mut engine = engine.with_learner(Box::new(learner));
-    engine.learner_mut().record_choice("gggg", "五");
+    engine
+        .learner_mut()
+        .record_choice("gggg", "五", ChoicePosition::SentenceStart);
     assert_eq!(wubi_texts(&mut engine, "gggg")[0], "五");
 }
 
