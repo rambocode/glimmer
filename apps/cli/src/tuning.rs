@@ -7,7 +7,7 @@ use glimmer_lm::{BackoffMode, Smoothing};
 
 /// 可调的参数名。`lm-` 开头的是静态语言模型自己的（[`smoothing`] 读，模型加载时就要用上），
 /// 其余的应用在引擎上（[`apply`]）。
-pub const KEYS: [&str; 19] = [
+pub const KEYS: [&str; 20] = [
     "lambda",
     "k",
     "cap",
@@ -27,6 +27,7 @@ pub const KEYS: [&str; 19] = [
     "lm-mode",
     "lm-d3",
     "lm-d2",
+    "lm-trigram",
 ];
 
 /// 把一组 `名=值` 应用到引擎；没给的项保持缺省。
@@ -96,6 +97,7 @@ pub fn smoothing(settings: &[String]) -> Result<Smoothing, TuneError> {
             "lm-mode" => smoothing.mode = BackoffMode::from_code(value as u8),
             "lm-d3" => smoothing.trigram_discount = value,
             "lm-d2" => smoothing.bigram_discount = value,
+            "lm-trigram" => smoothing.use_trigram = value != 0.0,
             other => {
                 return Err(TuneError::Unknown {
                     name: other.to_owned(),

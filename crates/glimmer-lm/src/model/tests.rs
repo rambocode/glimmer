@@ -122,6 +122,22 @@ fn qj_round_trip_gives_identical_probabilities() {
 }
 
 #[test]
+fn turning_the_trigram_layer_off_matches_a_model_without_one() {
+    let with = model(Smoothing::DEFAULT);
+    let without = model(Smoothing {
+        use_trigram: false,
+        ..Smoothing::DEFAULT
+    });
+    let context = Context::after_two("我", "想");
+    assert!(with.log_prob(context, "去") > without.log_prob(context, "去"));
+    // 关掉之后与只知道前一个词的分一样
+    assert_eq!(
+        without.log_prob(context, "去"),
+        without.log_prob(Context::after("想"), "去")
+    );
+}
+
+#[test]
 fn a_file_without_the_trigram_sections_still_loads() {
     let model = NgramModel::parse(UNIGRAM, BIGRAM, "").unwrap();
     assert_eq!(model.trigram_count(), 0);

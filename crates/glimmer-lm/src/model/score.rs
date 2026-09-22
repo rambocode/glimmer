@@ -25,9 +25,11 @@ impl NgramModel {
             return unigram;
         };
         let bigram = self.bigram_probability(previous, word, unigram);
+        if !self.smoothing.use_trigram || self.trigram_offsets.is_empty() {
+            return bigram;
+        }
         // 三元上下文 (u, v) 必须自己是一条二元，否则没有段可查；句首词没有前二词
-        let (Some(earlier), false) = (self.earlier_id(context), self.trigram_offsets.is_empty())
-        else {
+        let Some(earlier) = self.earlier_id(context) else {
             return bigram;
         };
         let Some((pair, pair_count)) = self.bigram_slot(earlier, previous) else {

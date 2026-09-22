@@ -18,6 +18,9 @@ pub struct Smoothing {
 
     /// 二元的绝对折扣 D₂。
     pub bigram_discount: f64,
+
+    /// 用不用三元那一层。关掉就是「只换回退方式的二元模型」，同一份 `.qj` 上能量出三元自己的净效果。
+    pub use_trigram: bool,
 }
 
 impl Smoothing {
@@ -31,6 +34,7 @@ impl Smoothing {
         mode: BackoffMode::Continuation,
         trigram_discount: 3.0,
         bigram_discount: 3.0,
+        use_trigram: true,
     };
 
     /// 改成三元之前的行为：固定 λ = 0.8 的插值，不看三元。
