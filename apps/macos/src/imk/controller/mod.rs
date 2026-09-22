@@ -639,13 +639,12 @@ impl GlimmerInputController {
 
     /// 按当前缓冲区重新查候选、更新 marked text，回到第一页并重画候选窗口。
     fn refresh(&self, client: TextClient<'_>) {
-        // 本地整句模型要看光标前文：一段组句只在第一键读一次（组句中它不变；应用偶尔不回话也不至于让前文来回换），
+        // 光标前文既是整句与词级排序的上文（接着对方的话、挪过光标之后接着打都靠它），也是本地整句模型看的前文：
+        // 有没有模型都读。一段组句只在第一键读一次（组句中它不变；应用偶尔不回话也不至于让前文来回换），
         // 读应用文本要等应用回话，放在借 Host 之外（见 request_prediction）
-        // 模型还在后台加载也读：接上时会补这一轮的重排，前文得先备好
         let wants_context = host::with(|h| {
             h.attach_loaded_model();
-            (h.engine.has_sentence_scorer() || h.model_loading())
-                && h.engine.composition().text().chars().count() == 1
+            h.engine.composition().text().chars().count() == 1
         })
         .unwrap_or(false);
         let before = if wants_context && !secure_input::enabled() {
@@ -659,7 +658,7 @@ impl GlimmerInputController {
         };
         let Some((marked, cursor, inline)) = host::with(|h| {
             if let Some(before) = before {
-                h.engine.set_rescoring_context(before);
+                h.engine.set_surrounding_before(before);
             }
             // 查询失败（整段切不动）时退回显示原始字母
             let mut marked = h.engine.composition().text().to_owned();

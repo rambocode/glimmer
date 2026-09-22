@@ -97,11 +97,6 @@ impl Host {
         }
     }
 
-    /// 模型还在后台加载。
-    pub fn model_loading(&self) -> bool {
-        self.model_loader.is_some()
-    }
-
     /// 卸掉模型（配置关掉）。
     pub(super) fn unload_local_model(&mut self) {
         self.model_loader = None;
