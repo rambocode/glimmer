@@ -1,6 +1,6 @@
 //! 短语层的合成计数：短语不参与分词，统计完按成分的一元 / 二元估它自己的计数（算法见 `super` 的模块注释）。
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::Path;
 
 use crate::error::ConvertError;
@@ -41,6 +41,59 @@ pub(super) fn phrase_components(
         }
     }
     tracing::info!(path = %path.display(), phrases = parts.len(), skipped, "短语已从分词词表摘掉，统计完再合成计数");
+    Ok(parts)
+}
+
+/// 基础词库（`dict`，不含 `dicts/` 领域词库）里语料一次都没切出来的多字词：一行 在语料里总被切成 一 / 行
+/// （词库词频是底值，拼不过两个高频单字），一元表里就没有它，词库下一轮也只能给底值，永远翻不了身。
+/// 这些词和短语层一样处理：从分词词表摘掉，按成分合成计数（`phrases` 里的短语已摘掉、计数本来就是 0，跳过）。
+/// 领域词库的词不合成：它们按语料次数决定留在基础词库还是拆出去，合成的次数会把一堆领域词拉回基础词库。
+pub(super) fn unseen_components(
+    dict: &Path,
+    vocabulary: &mut Vocabulary,
+    unigram: &[u64],
+    phrases: &[(u32, Vec<u32>)],
+) -> Result<Vec<(u32, Vec<u32>)>, ConvertError> {
+    let phrase_ids: HashSet<u32> = phrases.iter().map(|(id, _)| *id).collect();
+    let mut unseen: Vec<(String, u32)> = Vec::new();
+    let mut seen_texts: HashSet<String> = HashSet::new();
+    for line in std::fs::read_to_string(dict)?.lines() {
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+        let Some(text) = line.split('\t').next() else {
+            continue;
+        };
+        if text.chars().count() < 2 || !seen_texts.insert(text.to_owned()) {
+            continue;
+        }
+        if let Some(&id) = vocabulary.ids.get(text)
+            && unigram[id as usize] == 0
+            && !phrase_ids.contains(&id)
+        {
+            unseen.push((text.to_owned(), id));
+        }
+    }
+    // 先全部摘掉再切：不然切 一行 时词表里还有 一行 自己
+    for (text, _) in &unseen {
+        vocabulary.ids.remove(text);
+    }
+    let mut parts = Vec::new();
+    let mut tokens = Vec::new();
+    for (text, id) in &unseen {
+        vocabulary.segment(text, &mut tokens);
+        let components: Option<Vec<u32>> = tokens.iter().copied().collect();
+        if let Some(components) = components
+            && components.len() >= 2
+        {
+            parts.push((*id, components));
+        }
+    }
+    tracing::info!(
+        unseen = unseen.len(),
+        synthesizable = parts.len(),
+        "语料没切出来的词库词按成分合成计数"
+    );
     Ok(parts)
 }
 

@@ -24,7 +24,7 @@ done
 
 PRODUCT_FILES=(dict.qj lm.qj glossary-en.qj glossary-ja.qj glossary-zh.qj glossary-es.qj english.tsv english-frequency.tsv wubi86.qj wubi98.qj wubixsj.qj)
 MODEL_FILE=data/model/model.qjm
-LLM_FILES=(gloss-llm.jsonl gloss-en-llm.jsonl pinyin-llm.jsonl)
+LLM_FILES=(gloss-llm.jsonl gloss-en-llm.jsonl pinyin-llm.jsonl pinyin-readings.jsonl)
 
 for f in "${PRODUCT_FILES[@]}"; do
   [[ -f "data/generated/$f" ]] || { echo "缺少 data/generated/${f}，先按 assets/lexicon/GLIMMER.md 生成" >&2; exit 1; }

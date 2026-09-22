@@ -30,6 +30,7 @@ README.md 只介绍项目，所有技术内容放在这里，分四类：前三�
 | [notes/phrase-layer.md](notes/phrase-layer.md) | 短语层（2026-09-12）：常用词表收不到的 我的 / 不知道 怎么从语料挖、怎么进语言模型而不伤整句、两把尺子的前后数字 |
 | [notes/common-words.md](notes/common-words.md) | 补充常用词（2026-09-17）：取餐 / 弹出 / 播放器 这类为什么挖词漏掉、CC-CEDICT 与 jieba 白名单 × lm.qj 合成次数找缺口、人工审 1,357 条、不用语料的增量补词与回归数字 |
 | [notes/internet-slang.md](notes/internet-slang.md) | 网络用语与聊天短语（2026-09-22）：候选表 752 条怎么并进词库、全量重跑 lexicon + bigram 两遍、含字母的词与 嗯 进不了词库的两个根因、冷查与整句回放的前后数字 |
+| [notes/multi-reading.md](notes/multi-reading.md) | 一词多读音（2026-09-22）：一行 打不出的两个根因（反推标注每词一个读音、底值词频永远切不出来）、多读音标注与合成计数、主读音为什么沿用旧版、前后数字 |
 | [notes/long-sentence.md](notes/long-sentence.md) | 长句准确率（2026-09-19）：按句长分桶的诊断、敲错边误伤与原样成词保护、整句接上文的权重怎么定、每词代价、从用户文本学个人 n-gram 的留出评测、试过不行的（束宽 / 每格候选 / 切分放开）与下一步 |
 | [notes/constant-sweep.md](notes/constant-sweep.md) | 排序常数扫描（2026-09-12）：插值与敲错代价在冻结日志上扫网格，全在平台区不改；没命中的构成与复现步骤 |
 | [notes/windows-win10.md](notes/windows-win10.md) | Windows 10 与设置程序（2026-09-13）：Reactor 早期绑定 Windows 11 才有的 AppModel API 导致加载期失败，改自包含部署 + 延迟加载 |

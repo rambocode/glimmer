@@ -3,6 +3,7 @@
 //! 通用词自带拼音，直接规范化；规范字与领域词没有拼音，读音来自 Unihan（Unicode 许可）：
 //! 单字按 kHanyuPinlu / kXHC1983 / kMandarin 给全部读音与权重，多字词按字拼接，多音字先看 LLM 标注
 //! （`gloss-gen pinyin` 的 JSONL，逐字对照 Unihan 校验）、再看通用词里该字最常见的读音、再看 kHanyuPinlu。
+//! 标注给了几个读音的词（一行 `yi hang` / `yi xing`）每个读音一条，词频按标注的占比分。
 //! 词频来自自己的语料统计（`bigram` 子命令的 lm-unigram.tsv），没统计到的按词表排序号 / 文档频次给一个很小的底值。
 //!
 //! 两遍跑：第一遍没有词频，只为分词与 `--emit-ambiguous` 出待标注词表；标注、统计完再跑一遍写最终 dict.tsv。
@@ -26,6 +27,7 @@ use glimmer_format::Metadata;
 
 use crate::error::ConvertError;
 use crate::syllable::{is_reading_of, is_reading_of_word};
+use annotations::Annotation;
 use entry::LexiconEntry;
 use pack::Pack;
 use readings::CharReadings;
@@ -69,13 +71,19 @@ const DOMAIN_ATTRIBUTION: &str =
     "THUOCL（清华大学自然语言处理实验室，MIT）；读音 Unihan（Unicode）";
 const DOMAIN_SOURCE: &str = "https://github.com/thunlp/THUOCL";
 
-/// 建词库。`pinyin` 是 LLM 标注 JSONL，`frequency` 是 lm-unigram.tsv，`emit_ambiguous` 写出仍靠猜的多音字词，
+/// 词频按读音占比分：每个读音至少 1，免得次要读音被舍成 0 在词库里消失。
+fn share_frequency(frequency: u32, share: f64) -> u32 {
+    (f64::from(frequency) * share).round().max(1.0) as u32
+}
+
+/// 建词库。`pinyin` 是 LLM 标注 JSONL（主读音），`pinyin_readings` 是补次要读音的多读音标注，`frequency` 是 lm-unigram.tsv，`emit_ambiguous` 写出仍靠猜的多音字词，
 /// `domain_keep_min` 是领域词留在基础词库的最低语料次数（没有词频时按领域词处理，全部拆出去）。
 #[allow(clippy::too_many_arguments)]
 pub fn convert(
     pack_dir: &Path,
     unihan: &Path,
     pinyin: Option<&Path>,
+    pinyin_readings: Option<&Path>,
     frequency: Option<&Path>,
     emit_ambiguous: Option<&Path>,
     extra_words: &[std::path::PathBuf],
@@ -97,10 +105,13 @@ pub fn convert(
         tracing::info!(path = %path.display(), rows = pack.domain.len() - before, "额外词已读取");
     }
     let readings = CharReadings::load(unihan)?;
-    let annotations = match pinyin {
+    let mut annotations = match pinyin {
         Some(path) => annotations::load(path)?,
         None => HashMap::new(),
     };
+    if let Some(path) = pinyin_readings {
+        annotations::merge_readings(&mut annotations, annotations::load(path)?);
+    }
     let mut counts = match frequency {
         Some(path) => corpus::load(path)?,
         None => HashMap::new(),
@@ -191,6 +202,7 @@ pub fn convert(
     let mut common_texts: HashSet<&str> = HashSet::new();
     let mut ambiguous: BTreeMap<String, ()> = BTreeMap::new();
     let mut disputed = 0usize;
+    let mut multi_reading = 0usize;
     let polyphonic = |text: &str| {
         text.chars().any(|ch| {
             readings
@@ -218,28 +230,31 @@ pub fn convert(
             |&c| c.max(1),
         );
         let frequency = frequency.min(u64::from(u32::MAX)) as u32;
-        let verified = annotations
-            .get(&row.text)
-            .filter(|a| readings.accepts_word(&row.text, a) && is_reading_of_word(&row.text, a));
+        let verified = verified_annotations(annotations.get(&row.text), |a| {
+            readings.accepts_word(&row.text, a) && is_reading_of_word(&row.text, a)
+        });
         match verified {
-            Some(annotation) if *annotation != row.syllables => {
-                disputed += 1;
-                insert(LexiconEntry {
-                    text: row.text.clone(),
-                    syllables: annotation.clone(),
-                    frequency,
-                });
-                insert(LexiconEntry {
-                    text: row.text.clone(),
-                    syllables: row.syllables.clone(),
-                    frequency: (frequency / DISPUTED_READING_DIVISOR).max(1),
-                });
+            Some(list) => {
+                // 标注读音各拿一份词频；原表读音不在标注里的（重庆 zhong qing）降权保留
+                for (syllables, share) in &list {
+                    insert(LexiconEntry {
+                        text: row.text.clone(),
+                        syllables: syllables.clone(),
+                        frequency: share_frequency(frequency, *share),
+                    });
+                }
+                if !list.iter().any(|(s, _)| *s == row.syllables) {
+                    disputed += 1;
+                    insert(LexiconEntry {
+                        text: row.text.clone(),
+                        syllables: row.syllables.clone(),
+                        frequency: (frequency / DISPUTED_READING_DIVISOR).max(1),
+                    });
+                }
+                if list.len() > 1 {
+                    multi_reading += 1;
+                }
             }
-            Some(_) => insert(LexiconEntry {
-                text: row.text.clone(),
-                syllables: row.syllables.clone(),
-                frequency,
-            }),
             None => {
                 if polyphonic(&row.text) {
                     ambiguous.insert(row.text.clone(), ());
@@ -273,20 +288,30 @@ pub fn convert(
             .syllables
             .as_ref()
             .filter(|s| readings.accepts_word(text, s) && is_reading_of_word(text, s));
-        let syllables = match (given_syllables, annotations.get(text)) {
-            (Some(candidate), _) => {
+        let verified = verified_annotations(annotations.get(text), |a| {
+            readings.accepts_word(text, a) && is_reading_of_word(text, a)
+        });
+        let word_readings: Vec<Annotation> = match (given_syllables, verified) {
+            (Some(candidate), verified) => {
                 given += 1;
-                candidate.clone()
+                // 额外词文件给的读音当主读音；多读音标注含它时照标注分（谁说 shui shuo / shei shuo）
+                match verified {
+                    Some(list) if list.len() > 1 && list.iter().any(|(s, _)| s == candidate) => {
+                        multi_reading += 1;
+                        list
+                    }
+                    _ => vec![(candidate.clone(), 1.0)],
+                }
             }
-            (None, Some(candidate))
-                if readings.accepts_word(text, candidate)
-                    && is_reading_of_word(text, candidate) =>
-            {
+            (None, Some(list)) => {
                 annotated += 1;
-                candidate.clone()
+                if list.len() > 1 {
+                    multi_reading += 1;
+                }
+                list
             }
-            (None, other) => {
-                if other.is_some() {
+            (None, None) => {
+                if annotations.contains_key(text) {
                     rejected_annotations += 1;
                 }
                 let mut guess = Vec::with_capacity(chars_count);
@@ -325,7 +350,7 @@ pub fn convert(
                     ambiguous.insert(text.to_owned(), ());
                 }
                 guessed += 1;
-                guess
+                vec![(guess, 1.0)]
             }
         };
         let corpus_count = counts.get(text).copied();
@@ -333,20 +358,22 @@ pub fn convert(
             || 1 + ((row.df as f64 + 1.0).log2().round() as u32).min(DOMAIN_FLOOR),
             |c| c.max(1).min(u64::from(u32::MAX)) as u32,
         );
-        let entry = LexiconEntry {
-            text: text.to_owned(),
-            syllables,
-            frequency,
-        };
-        // 语料里常见的领域词其实是通用词（医疗器械、侵权行为），留在基础词库；其余进各自的领域词库
-        match &row.domain {
-            Some(domain) if corpus_count.unwrap_or(0) < domain_keep_min => {
-                domains
-                    .entry(domain.clone())
-                    .or_default()
-                    .insert((entry.text.clone(), entry.syllables.clone()), entry);
+        for (syllables, share) in word_readings {
+            let entry = LexiconEntry {
+                text: text.to_owned(),
+                syllables,
+                frequency: share_frequency(frequency, share),
+            };
+            // 语料里常见的领域词其实是通用词（医疗器械、侵权行为），留在基础词库；其余进各自的领域词库
+            match &row.domain {
+                Some(domain) if corpus_count.unwrap_or(0) < domain_keep_min => {
+                    domains
+                        .entry(domain.clone())
+                        .or_default()
+                        .insert((entry.text.clone(), entry.syllables.clone()), entry);
+                }
+                _ => insert(entry),
             }
-            _ => insert(entry),
         }
     }
 
@@ -387,12 +414,34 @@ pub fn convert(
         annotated,
         guessed,
         disputed_common_readings = disputed,
+        multi_reading,
         still_ambiguous = ambiguous.len(),
         rejected_annotations,
         dropped,
         "词库写出完成"
     );
     Ok(())
+}
+
+/// 标注里通过校验的读音，占比重新归一；一个都不剩就是 `None`（当作没标注）。
+fn verified_annotations(
+    list: Option<&Vec<Annotation>>,
+    accepts: impl Fn(&[String]) -> bool,
+) -> Option<Vec<Annotation>> {
+    let kept: Vec<Annotation> = list?
+        .iter()
+        .filter(|(syllables, _)| accepts(syllables))
+        .cloned()
+        .collect();
+    let total: f64 = kept.iter().map(|(_, share)| share).sum();
+    if kept.is_empty() || total <= 0.0 {
+        return None;
+    }
+    Some(
+        kept.into_iter()
+            .map(|(syllables, share)| (syllables, share / total))
+            .collect(),
+    )
 }
 
 /// 每个领域写一本 `dicts/<领域>.tsv`（与主词库同格式）和一本带元数据的 `dicts/<领域>.qj`。
@@ -434,4 +483,29 @@ fn write_domains(
         tracing::info!(domain = %name, entries = entries.len(), path = %qj_path.display(), "领域词库已写出");
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn splits_frequency_by_share_and_keeps_minor_readings_alive() {
+        assert_eq!(share_frequency(5000, 0.7), 3500);
+        assert_eq!(share_frequency(3, 0.1), 1);
+    }
+
+    #[test]
+    fn drops_rejected_readings_and_renormalizes() {
+        let list = vec![
+            (vec!["yi".to_owned(), "hang".to_owned()], 0.6),
+            (vec!["yi".to_owned(), "heng".to_owned()], 0.2),
+            (vec!["yi".to_owned(), "xing".to_owned()], 0.2),
+        ];
+        let kept = verified_annotations(Some(&list), |s| s[1] != "heng").unwrap();
+        assert_eq!(kept.len(), 2);
+        assert!((kept[0].1 - 0.75).abs() < 1e-9);
+        assert!(verified_annotations(Some(&list), |_| false).is_none());
+        assert!(verified_annotations(None, |_| true).is_none());
+    }
 }

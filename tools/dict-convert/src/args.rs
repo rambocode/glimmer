@@ -47,6 +47,11 @@ pub enum Command {
         #[arg(long)]
         pinyin: Option<PathBuf>,
 
+        /// 多读音标注（同样格式，一个词可带几个读音与占比）：列表里含 `--pinyin` 的主读音时才采用，
+        /// 主读音以 `--pinyin` 为准，这份只负责补次要读音（一行 在 yi xing 之外补 yi hang）
+        #[arg(long)]
+        pinyin_readings: Option<PathBuf>,
+
         /// 语料词频（lm-unigram.tsv）；没有就按排序号 / 文档频次给底值
         #[arg(long)]
         frequency: Option<PathBuf>,

@@ -11,6 +11,9 @@
 //! 所以短语在三元那层没有条目，打分时退回二元——代价是成分词路径可能多拿一份三元的证据，
 //! 好处是短语的分仍然等于成分路径的二元分，不会凭空高出来。数字见 `docs/notes/language-model.md`。
 //!
+//! 基础词库里分词从没切出来过的多字词（一行 总被切成 一 / 行）也走同一套合成：词库给它的是底值词频，拼不过两个高频单字，
+//! 不合成的话一元表里永远没有它，词库下一轮还是底值（见 `phrase::unseen_components`）。
+//!
 //! 分词用微明自己的词库做一元最大概率切分（与输入法词图同一套词表，统计出来的词才能在整句转换里用上）；
 //! 只统计连续的汉字段，段与段之间（标点、数字、字母）算句子边界，句首用 `<s>` 标记；空格忽略（预分词语料）。
 //! 词库里没有的字跳过，并切断前后的 n-gram 关系。
@@ -29,7 +32,7 @@ use std::path::Path;
 use crate::error::ConvertError;
 
 use counts::{Counts, bigram_key, trigram_parts};
-use phrase::phrase_components;
+use phrase::{phrase_components, unseen_components};
 
 pub use mine::{MineOptions, mine};
 pub use options::ConvertOptions;
@@ -111,6 +114,15 @@ pub fn convert(options: &ConvertOptions, out_dir: &Path) -> Result<(), ConvertEr
         }
         tracing::info!(path = %path.display(), words = added, "品牌词一元与句首二元已写入");
     }
+
+    // 词库里有、分词却从没切出来的词（一行）：和短语一样按成分合成计数，词级排序才有它的真实次数
+    let unseen = unseen_components(
+        &options.dict,
+        &mut vocabulary,
+        &counts.unigram,
+        &phrase_parts,
+    )?;
+    phrase_parts.extend(unseen);
 
     // 二元：按计数降序，砍掉低频与超出上限的；短语的合成行另加，不占真实行的名额
     let mut pairs: Vec<(u64, u32)> = counts

@@ -55,3 +55,38 @@ fn counts_unigrams_bigrams_and_trigrams_of_a_tiny_corpus() {
         ["<s>\t我\t想\t10", "想\t去\t吃饭\t10", "我\t想\t去\t10"]
     );
 }
+
+#[test]
+fn synthesizes_dict_words_the_segmenter_never_picks() {
+    // 一行 词频是底值，语料里总被切成 一 / 行，一元表里本来没有它；合成后 = 成分二元 c(一, 行)
+    let dict = "一\tyi\t1000\n行\txing\t1000\n字\tzi\t1000\n一行\tyi hang\t1\n";
+    let dir: PathBuf =
+        std::env::temp_dir().join(format!("glimmer-bigram-unseen-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).unwrap();
+    std::fs::write(dir.join("dict.tsv"), dict).unwrap();
+    std::fs::write(dir.join("corpus.txt"), "一行字\n".repeat(5)).unwrap();
+    let out = dir.join("out");
+    std::fs::create_dir_all(&out).unwrap();
+    convert(
+        &ConvertOptions {
+            corpus: vec![dir.join("corpus.txt")],
+            dict: dir.join("dict.tsv"),
+            phrases: Vec::new(),
+            brand: Vec::new(),
+            min_count: 1,
+            max_bigrams: 100,
+            min_trigram_count: 1,
+            max_trigrams: 100,
+            max_trigram_entries: 1_000,
+        },
+        &out,
+    )
+    .unwrap();
+    let unigram = rows(&out, "lm-unigram.tsv");
+    let bigram = rows(&out, "lm-bigram.tsv");
+    std::fs::remove_dir_all(&dir).unwrap();
+    assert!(unigram.contains(&"一\t5".to_owned()));
+    assert!(unigram.contains(&"一行\t5".to_owned()));
+    // 后接：c(一行, 字) = c(一, 行)·c(行, 字)/c(行)
+    assert!(bigram.contains(&"一行\t字\t5".to_owned()));
+}

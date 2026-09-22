@@ -350,7 +350,7 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
 
 - `lexicon`：从 `assets/lexicon/`（自建词库源：规范字 + 常用词 + THUOCL 领域词）加 Unihan 读音（`data/unihan/Unihan_Readings.txt`）、LLM 多音字标注（`gloss-gen pinyin`，
   结果 `data/generated/pinyin-llm.jsonl`，不进 git，**随数据包的 `glimmer-llm-intermediates.tar.gz` 发**，丢了就得从已发布的词库里反推，见 `internet-slang.md`）、
-  语料词频（`lm-unigram.tsv`）建基础词库 `dict.tsv`（10.7 万条），并把 THUOCL 领域词按语料次数 < 50 拆成
+  语料词频（`lm-unigram.tsv`）建基础词库 `dict.tsv`（10.7 万条）。标注可给一个词多个读音与占比（一行 `yi hang` 0.7 / `yi xing` 0.3，占比 < 5% 的次要读音丢掉），每个读音一条、词频按占比分，引擎的多音字读音份额就从这里来；旧版只有 `pinyin` 一项的文件照读，并把 THUOCL 领域词按语料次数 < 50 拆成
   `dicts/<领域>.tsv` + `.qj`（11 本、13 万条，`--domain-keep-min`），流程见 `assets/lexicon/GLIMMER.md`；`--extra-words` 并入人工挑的领域词 `assets/lexicon/domain_words.tsv`、
   补充常用词 `common_words.tsv`、网络用语 `04_internet_slang/slang_words.tsv` 与中英混杂词 `mixed_words.tsv`。
   音节判定在 `syllable.rs`（`lexicon` 与 `supplement` 共用）：汉字只认合法拼音音节，**拉丁字母 / 数字自成一节**（`C盘` → `c pan`、`P0` → `p 0`），
@@ -361,6 +361,7 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
   三元的阈值与上限单列（`--min-trigram-count` 缺省 5、`--max-trigrams` 缺省 1000 万，一条在 `lm.qj` 里 8 字节），
   内存里三元表到 4000 万条就整批剪枝（扔掉不超过阈值的、阈值再加一，见 `bigram/counts.rs`），输出还砍掉上文本身不在二元表里的那些；
   `--phrases` 给短语层、`--brand` 给品牌词（`assets/lexicon/brand.tsv`，微明 210）与中英混杂词（`mixed_words.tsv`，C盘 / B站：合成计数要成分词在语料里，C 不是 token，只能直接给一元，次数对着同音竞争词定），领域词也走合成计数（语料里只有几十次的词当 token 统计会吸走成分词的二元证据）。
+  基础词库里语料一次都没切出来的多字词（一行：词频是底值，总被切成 一 / 行）也自动走合成计数（`bigram::phrase::unseen_components`，只管 `dict.tsv`、不管 `dicts/`，免得把领域词拉回基础词库），下一轮 `lexicon` 才有它的真实词频。
 - `gaps`：找常用词缺口，不用语料：外部词表（每行 `词[\t拼音]`，CC-CEDICT / jieba 词表转出，不进仓库）里主词库、`dicts/` 与语言模型都没有的 2–4 字词，
   按 `lm.qj` 成分二元合成次数（`bigram::phrase_count`，与 `--phrases` 同一公式），读音词表给了就用、否则由成分主读音拼，写 `gap-candidates.tsv` 供人工挑进 `common_words.tsv`。
 - `supplement`：补充词表并进已有数据，不用语料（读音判定与 `lexicon` 共用 `syllable.rs`，所以含字母的词也收）：`assets/lexicon/dict.tsv` 原行顺序不动、新词按 (词, 音节) 二分插入；`lm.qj` 展开成计数（`supplement/counts.rs` 的 `LmCounts`）后

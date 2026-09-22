@@ -56,7 +56,8 @@ impl Vocabulary {
         let mut total = 0.0_f64;
         let mut ids: HashMap<String, u32> = HashMap::new();
         let mut words = vec![SENTENCE_START.to_owned()];
-        let mut log_frequency = vec![0.0];
+        // 先累加词频，最后统一取对数
+        let mut frequencies = vec![0.0_f64];
         ids.insert(SENTENCE_START.to_owned(), 0);
         for line in files
             .iter()
@@ -77,25 +78,23 @@ impl Vocabulary {
             };
             let frequency: f64 = frequency.trim().parse().unwrap_or(0.0);
             total += frequency;
-            let log = (frequency + 1.0).ln();
             match ids.get(text) {
-                // 同一个词多个读音：取最高词频
-                Some(&id) => {
-                    if log > log_frequency[id as usize] {
-                        log_frequency[id as usize] = log;
-                    }
-                }
+                // 同一个词多个读音：词库按读音占比分了词频（一行 yi hang / yi xing），分词要的是整个词的词频，加起来
+                Some(&id) => frequencies[id as usize] += frequency,
                 None => {
                     ids.insert(text.to_owned(), words.len() as u32);
                     words.push(text.to_owned());
-                    log_frequency.push(log);
+                    frequencies.push(frequency);
                 }
             }
         }
         let log_total = total.max(1.0).ln();
-        for log in &mut log_frequency {
-            *log -= log_total;
-        }
+        let mut log_frequency: Vec<f64> = frequencies
+            .iter()
+            .map(|frequency| (frequency + 1.0).ln() - log_total)
+            .collect();
+        // 句首标记不参与切分，保持原来的 0
+        log_frequency[0] = 0.0;
         Ok(Self {
             ids,
             words,

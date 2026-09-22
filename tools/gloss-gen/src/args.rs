@@ -102,8 +102,8 @@ pub struct PinyinArgs {
     #[arg(long)]
     pub limit: Option<usize>,
 
-    /// 每个请求带几个词
-    #[arg(long, default_value_t = 60)]
+    /// 每个请求带几个词（每个词可能回多个读音，60 个一批时回复会被截断）
+    #[arg(long, default_value_t = 30)]
     pub batch: usize,
 
     /// 同时几个请求
