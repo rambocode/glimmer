@@ -1,6 +1,6 @@
 use super::{
-    CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, SPAN_CANDIDATES, TRIGRAM_DISCOUNT,
-    USER_LAMBDA, WORD_PENALTY,
+    BIGRAM_DISCOUNT, CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, SPAN_CANDIDATES,
+    TRIGRAM_DISCOUNT, USER_LAMBDA, WORD_PENALTY,
 };
 use crate::ranking::{CHOICE_BONUS, CHOICE_CAP};
 
@@ -20,7 +20,10 @@ pub struct Interpolation {
     /// 插值权重的封顶（[`MAX_CONFIDENCE`]）。
     pub max_confidence: f64,
 
-    /// 个人三元的绝对折扣 D（[`TRIGRAM_DISCOUNT`]）。
+    /// 个人二元的绝对折扣 D₂（[`BIGRAM_DISCOUNT`]）。
+    pub bigram_discount: f64,
+
+    /// 个人三元的绝对折扣 D₃（[`TRIGRAM_DISCOUNT`]）。
     pub trigram_discount: f64,
 
     /// 整句第一个词按上文算的成分（[`INITIAL_CONTEXT_WEIGHT`]），0 为一律当句首。
@@ -49,6 +52,7 @@ impl Interpolation {
         lambda: USER_LAMBDA,
         confidence_k: CONFIDENCE_K,
         max_confidence: MAX_CONFIDENCE,
+        bigram_discount: BIGRAM_DISCOUNT,
         trigram_discount: TRIGRAM_DISCOUNT,
         initial_weight: INITIAL_CONTEXT_WEIGHT,
         word_penalty: WORD_PENALTY,

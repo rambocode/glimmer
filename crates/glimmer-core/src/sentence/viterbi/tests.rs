@@ -200,11 +200,14 @@ fn personal_ngram_overrides_static_model_after_two_selections() {
     assert_eq!(text(&personal), "我翔");
     // 静态模型给 翔 的是很强的 bigram（P ≈ 0.14）：用户选过一次 我 → 想 翻不过（防误选），两次就翻。
     // 静态证据越弱（P 越小），个人偏好翻过来得越早。
-    personal.record(Context::START, "我");
-    personal.record(Context::after("我"), "想");
+    // 一次点选记 EXPLICIT_TRANSITION_WEIGHT（2）份，正好被二元 / 三元的绝对折扣 D=2 扣光。
+    let select = |personal: &mut UserNgram| {
+        personal.record_times(Context::START, "我", 2);
+        personal.record_times(Context::after("我"), "想", 2);
+    };
+    select(&mut personal);
     assert_eq!(text(&personal), "我翔");
-    personal.record(Context::START, "我");
-    personal.record(Context::after("我"), "想");
+    select(&mut personal);
     assert_eq!(text(&personal), "我想");
 }
 

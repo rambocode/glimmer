@@ -218,10 +218,13 @@ impl UserNgram {
 
     /// 把静态模型给出的 `log P(word | previous)` 与个人概率插值后返回。
     ///
-    /// 个人二元 P₂ = λ·c(v,w)/c(v) + (1-λ)·c(w)/N；这对上文 (u,v) 见过时再套一层绝对折扣的三元：
-    /// P₃ = max(c(u,v,w) − D, 0)/c(u,v) + D·N₁₊(u,v,·)/c(u,v)·P₂，没见过的接续只拿回退的份额。
+    /// 两层都是绝对折扣，折出来的质量给下一层：
+    /// 个人二元 P₂ = λ·[max(c(v,w) − D₂, 0)/c(v) + 折出来的质量·P_静态(w|v)] + (1−λ)·c(w)/N，
+    /// 这对上文 (u,v) 见过时上面再套一层 P₃ = max(c(u,v,w) − D₃, 0)/c(u,v) + 折出来的质量·P₂，
+    /// 没见过的接续只拿回退的份额。二元回退到静态模型而不是个人一元，是因为「这个前词后面用户没打过这个词」
+    /// 恰恰是该听静态模型的时候，个人一元只说这个词用户打过多少、与上文无关，撑不起回退。
     /// 插值权重 μ = c(v)/(c(v)+K)，封顶 `max_confidence`：见过这个前词越多越信个人数据，但永远压不死静态模型。
-    /// λ、K、封顶、三元折扣 D 都来自 `interpolation`（缺省是本模块的常数）。前词从没见过时（句首用句首标记）原样返回。
+    /// λ、K、封顶、两层折扣都来自 `interpolation`（缺省是本模块的常数）。前词从没见过时（句首用句首标记）原样返回。
     pub fn blend(
         &self,
         context: Context<'_>,
@@ -233,31 +236,32 @@ impl UserNgram {
         let Some(&context_total) = self.context_totals.get(previous) else {
             return base_log_prob;
         };
+        let Some(pairs) = self.pairs.get(previous) else {
+            return base_log_prob;
+        };
         if context_total == 0 || self.total == 0 {
             return base_log_prob;
         }
-        let pair = f64::from(self.pair(context.previous, word));
+        let static_prob = base_log_prob.exp();
         let unigram = f64::from(self.count(word)) / self.total as f64;
         let lambda = interpolation.lambda;
-        let bigram = lambda * pair / f64::from(context_total) + (1.0 - lambda) * unigram;
+        let (kept, freed) = discount_row(pairs, context_total, word, interpolation.bigram_discount);
+        let bigram = lambda * (kept + freed * static_prob) + (1.0 - lambda) * unigram;
         let personal = match context
             .previous
             .and_then(|p| self.triple_row(context.earlier, p))
         {
             Some((next, triple_total)) if triple_total > 0 => {
-                let triple_total = f64::from(triple_total);
-                let seen = next.get(word).copied().unwrap_or(0);
-                let discount = interpolation.trigram_discount;
-                let discounted = (f64::from(seen) - discount).max(0.0) / triple_total;
-                let backoff = discount * next.len() as f64 / triple_total;
-                discounted + backoff * bigram
+                let (kept, freed) =
+                    discount_row(next, triple_total, word, interpolation.trigram_discount);
+                kept + freed * bigram
             }
             _ => bigram,
         };
         let confidence = (f64::from(context_total)
             / (f64::from(context_total) + interpolation.confidence_k))
             .min(interpolation.max_confidence);
-        let blended = (1.0 - confidence) * base_log_prob.exp() + confidence * personal;
+        let blended = (1.0 - confidence) * static_prob + confidence * personal;
         blended.max(f64::MIN_POSITIVE).ln()
     }
 
@@ -418,6 +422,23 @@ impl UserNgram {
     }
 }
 
+/// 一层绝对折扣：返回 (`word` 折后的条件概率, 折出来让给回退分布的质量)。
+///
+/// 折出来的质量按**实际**折掉的算（`1 − Σ max(c − D, 0)/total`），不是惯用的 `D·类数/total`：
+/// 个人数据里计数比 D 小的条目占多数（一次事件记 1 或 2 份），那些条目折不满 D，
+/// 按 `D·类数` 算会把回退质量放大到超过 1（D=2、一行全是 1 时算出来是 2），整行概率不再归一。
+/// 行都很短（一个前词后面通常只有几个词），这里现算不缓存。
+fn discount_row(next: &HashMap<String, u32>, total: u32, word: &str, discount: f64) -> (f64, f64) {
+    let total = f64::from(total);
+    let kept_sum: f64 = next
+        .values()
+        .map(|count| (f64::from(*count) - discount).max(0.0))
+        .sum();
+    let seen = next.get(word).copied().unwrap_or(0);
+    let kept = (f64::from(seen) - discount).max(0.0) / total;
+    (kept, (1.0 - kept_sum / total).clamp(0.0, 1.0))
+}
+
 /// 计数表里某一项减 `by`，减到零就删掉。
 fn decrement(table: &mut HashMap<String, u32>, key: &str, by: u32) {
     if let Some(count) = table.get_mut(key) {
@@ -509,9 +530,18 @@ mod tests {
         );
     }
 
+    /// 背景转移：个人一元那一份（1−λ）按 c(w)/N 算，空模型里 N 太小会让它独占概率，
+    /// 测试里先垫一批无关的转移，接近真实数据的量级。
+    fn with_background(model: &mut UserNgram) {
+        for index in 0..100 {
+            model.record(Context::after(&format!("甲{index}")), &format!("乙{index}"));
+        }
+    }
+
     #[test]
     fn blend_favors_seen_continuations_but_never_kills_unseen_ones() {
         let mut model = UserNgram::default();
+        with_background(&mut model);
         let base_ba = (-9.0_f64).exp().ln();
         // 前词没见过：原样返回
         assert_eq!(
@@ -523,15 +553,31 @@ mod tests {
             ),
             base_ba
         );
-        // 选过两次 吃饭 → 把：个人证据抬上来
-        model.record(Context::after("吃饭"), "把");
-        model.record(Context::after("吃饭"), "把");
+        // 自己点选一次记两份（EXPLICIT_TRANSITION_WEIGHT）：正好被 D₂ 扣光，翻不过静态模型高 3 nat 的 吧
+        model.record_times(Context::after("吃饭"), "把", 2);
+        let particle = -6.0;
+        let once = model.blend(
+            Context::after("吃饭"),
+            "把",
+            base_ba,
+            &Interpolation::DEFAULT,
+        );
+        let rival = model.blend(
+            Context::after("吃饭"),
+            "吧",
+            particle,
+            &Interpolation::DEFAULT,
+        );
+        assert!(once < rival, "{once} vs {rival}");
+        // 选第二次：折扣盖不住了，个人证据抬上来
+        model.record_times(Context::after("吃饭"), "把", 2);
         let lifted = model.blend(
             Context::after("吃饭"),
             "把",
             base_ba,
             &Interpolation::DEFAULT,
         );
+        assert!(lifted > rival, "{lifted} vs {rival}");
         assert!(lifted > -2.5, "{lifted}");
         // 没跟在 吃饭 后面出现过的 吧 只是打折，不会被压死
         let base_ba_particle = -2.0;
@@ -545,6 +591,33 @@ mod tests {
         assert!(
             discounted
                 > base_ba_particle + (1.0 - Interpolation::DEFAULT.max_confidence).ln() - 1e-9
+        );
+    }
+
+    /// 接缝上屏一次会在二元与三元两张表里各记双份（用户数据里的 `收到 右键 2` + `<s> 收到 右键 2`）：
+    /// 两层的折扣都要盖得住它，静态模型里明显更常见的那个词（这里是 邮件）不能被一次误选压下去。
+    #[test]
+    fn one_seam_event_does_not_beat_a_stronger_static_bigram() {
+        let mut model = UserNgram::default();
+        with_background(&mut model);
+        // 句首的「收到」后面打过这三个词，凑出用户数据里 c(收到)=8 的样子；每次上屏二元三元各记一份
+        let after_shoudao = Context::after_two(SENTENCE_START, "收到");
+        model.record_times(after_shoudao, "信息", 4);
+        model.record_times(after_shoudao, "密码", 2);
+        model.record_times(after_shoudao, "右键", 2);
+        let context = Context::after("收到");
+        // 静态模型：P(邮件|收到) ≈ 0.004，右键 从没跟在 收到 后面
+        let wrong = model.blend(context, "右键", -14.0, &Interpolation::DEFAULT);
+        let right = model.blend(context, "邮件", -5.5, &Interpolation::DEFAULT);
+        assert!(wrong < right, "{wrong} vs {right}");
+        // 只扣二元不扣三元，一次事件会从三元层钻回来
+        let lopsided = Interpolation {
+            trigram_discount: 0.75,
+            ..Interpolation::DEFAULT
+        };
+        assert!(
+            model.blend(context, "右键", -14.0, &lopsided)
+                > model.blend(context, "邮件", -5.5, &lopsided)
         );
     }
 
