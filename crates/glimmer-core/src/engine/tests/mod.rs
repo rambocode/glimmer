@@ -86,6 +86,13 @@ impl Learner for CountingLearner {
             .unwrap_or(0)
     }
 
+    fn choice_total(&self, input: &str, text: &str) -> u32 {
+        [ChoicePosition::SentenceStart, ChoicePosition::Continuation]
+            .into_iter()
+            .map(|position| self.choice_weight(input, text, position))
+            .sum()
+    }
+
     fn record_raw(&mut self, input: &str) {
         *self.0.entry(format!("{input}\t<raw>")).or_default() += 1;
     }
@@ -316,6 +323,13 @@ impl Learner for WordLearner {
             .get(&choice_entry(input, text, position))
             .copied()
             .unwrap_or(0)
+    }
+
+    fn choice_total(&self, input: &str, text: &str) -> u32 {
+        [ChoicePosition::SentenceStart, ChoicePosition::Continuation]
+            .into_iter()
+            .map(|position| self.choice_weight(input, text, position))
+            .sum()
     }
 
     fn unrecord_choice(&mut self, input: &str, text: &str, position: ChoicePosition) {

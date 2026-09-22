@@ -83,13 +83,12 @@ impl Engine {
         let word = lists.iter().find_map(|words| words.get(text));
         // 这段字母下用户选中文词（`key` → 可以）比选英文词的次数多：中文词留在第一，英文让到后面；
         // 拼音再不像话也是他自己教的
-        let choice_position = self.choice_position();
+        // 这里比的是不分位置的总次数：中英取舍是语言偏好，与句首句中无关，
+        // 按位置分桶数会让同一段字母的英文候选名次随上文跳
         let chosen = items
             .first()
             .filter(|c| c.kind == CandidateKind::Chinese)
-            .map_or(0, |c| {
-                self.learner.choice_weight(text, &c.text, choice_position)
-            });
+            .map_or(0, |c| self.learner.choice_total(text, &c.text));
         let english_weight = word.map_or(0, |w| self.learner.weight(w));
         let english_first = !self.chinese_first && unlikely_pinyin && chosen <= english_weight;
         let mut position = if items.is_empty() || english_first {

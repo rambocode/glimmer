@@ -45,6 +45,13 @@ impl Learner for FrequencyLearner {
             .map_or(0, |counts| counts.weight(position))
     }
 
+    fn choice_total(&self, input: &str, text: &str) -> u32 {
+        self.choices
+            .get(input)
+            .and_then(|texts| texts.get(text))
+            .map_or(0, ChoiceCounts::total)
+    }
+
     fn record_raw(&mut self, input: &str) {
         self.bump_choice(input, RAW_MARK, ChoiceCounts::add_any);
     }

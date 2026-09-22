@@ -25,6 +25,12 @@ pub trait Learner: Send {
         0
     }
 
+    /// `text` 在输入串 `input` 下被选过的总次数，不分位置（句首 + 句中 + 不分位置那一档）。
+    /// 给「这段字母用户更想要中文还是英文」这类与句首句中无关的取舍用，见 `Engine::insert_english`。
+    fn choice_total(&self, _input: &str, _text: &str) -> u32 {
+        0
+    }
+
     /// 用户对输入串 `input` 按了回车原样上屏，而当时拼写纠错正生效：这个串就是要原样打的，以后不纠。
     /// 只用来判「这串要不要纠错」，与句首句中无关，所以不分位置记。
     fn record_raw(&mut self, _input: &str) {}
