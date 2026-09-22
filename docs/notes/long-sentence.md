@@ -135,6 +135,7 @@ Windows DLL 与 Linux IBus / Fcitx5 本来就每段组句都送，Server 收到 
 ## 下一步
 
 见 `docs/plan/todo.md`「长句准确率」：真 k-best + 两轮重排、长句里的敲错召回、语言模型（语料 / 三元 / 回退）、从用户文本学个人 n-gram、100 键以上的 parse 耗时。
+其中「语言模型」这一条已经做掉：静态模型换成带回退平滑的词级三元，做法与数字见 [language-model.md](language-model.md)（2026-09-22，长句 11–20 字首选 +1.1 / +1.8 个点）。
 
 ## 怎么复现
 
