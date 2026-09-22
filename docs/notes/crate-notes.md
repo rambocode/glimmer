@@ -63,8 +63,15 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   - **每词代价**：路径上每个词扣 `WORD_PENALTY` 1（`Interpolation::word_penalty`，`--tune word=`），几个单字连起来不再压过整词（笔给 / 笔记）；不进 `static_score`，神经重排后照留。
   - **原样成词保护**：一条敲错边整个落在「按敲的原样读出的多音节词」里面（`ce shi` 测试 里的 `ce` → `de`）多扣 `TypoCosts::protected_extra` 4（`SyllableLattice::typed_word_reach`，`--tune protect=`）；
     伸到原样词外面的（`mei gan xi` 没关系 对 美感）不拦，模糊音（代价 < `PROTECTED_MIN_COST`）不算猜敲错。数字见 `long-sentence.md`。
+- **个人 n-gram 怎么插值**（`sentence::UserNgram::blend`）：两层绝对折扣，每层折出来的质量给下一层——
+  三元 `max(c(u,v,w) − D₃, 0)/c(u,v)` 回退到二元，二元 `max(c(v,w) − D₂, 0)/c(v)` 回退到**静态模型** P(w|v)（不是个人一元），
+  个人一元 `c(w)/N` 只占 `1 − USER_LAMBDA`（0.8）那份兜底；最后按 μ = c(v)/(c(v) + `CONFIDENCE_K` 8)、封顶 `MAX_CONFIDENCE` 0.5 与静态模型插值。
+  `BIGRAM_DISCOUNT` = `TRIGRAM_DISCOUNT` = 2（`--tune d2=` / `d3=`）跟着「点选记 `EXPLICIT_TRANSITION_WEIGHT` 2 份」走：
+  一次事件（含接缝上屏在两张表里各记的双份）抬不动首选，选第二次才翻。折出来的质量按实际折掉的算，不是 `D·类数/总数`
+  （个人数据里计数比 D 小的占多数，后者会超过 1）。数字与取舍见 `constant-sweep.md`。
 - `Engine::learn_text(文本)`（`engine/learning/text.rs`）：从用户自己写的文本学个人 n-gram——按非汉字切小句、`segment_text` 切词、逐词 `record_transition`（每句从句首起），
-  不记词频、不造词、不写日志，私密输入中不学；文本从哪来是壳的事。留出评测首选 23% → 61%，见 `long-sentence.md`。
+  不记词频、不造词、不写日志，私密输入中不学；文本从哪来是壳的事。留出评测首选 23% → 61%，见 `long-sentence.md`
+  （每条转移只记 1 份，所以上面那两个折扣让文本里只出现一两次的搭配不起作用，留出首选因此掉 8 个点，见 `constant-sweep.md`）。
 - 两个候选开关都在 Core 生效、缺省开：`Engine::set_mixed_english`（配置 `[general] mixed_english_candidates`）关掉时 `insert_english` 直接返回（精确词与补全都不出，句末英文词 `EnglishTail` 照旧）；
   `Engine::set_emoji_candidates`（配置 `[general] emoji_candidates`）关掉时 `insert_emoji` 直接返回，emoji 表照常加载，热重载改开关不用重建 Engine。
 - `custom_phrase::merge_replacements` 把平台给的「输入码 → 短语」表（macOS 系统文本替换）并进配置里的自定义短语：每条占该码最靠前的空位（1–9），
