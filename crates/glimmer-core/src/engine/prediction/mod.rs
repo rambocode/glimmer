@@ -296,7 +296,14 @@ impl Engine {
                         self.chain.reset();
                     }
                     for word in words {
-                        self.record_word(word, &[], 1, false, buffer_left || index + 1 < count);
+                        // 云端整句是模型给的，按一次普通事件记，不当纠正
+                        self.record_word(
+                            word,
+                            &[],
+                            TRANSITION_WEIGHT,
+                            false,
+                            buffer_left || index + 1 < count,
+                        );
                     }
                 }
                 if text.chars().last().is_some_and(|c| !c.is_alphanumeric()) {

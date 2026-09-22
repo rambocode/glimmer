@@ -124,13 +124,11 @@ fn splitting_a_buffer_into_a_word_and_a_sentence_forms_the_whole_phrase() {
         engine.commit(&rest);
         assert!(engine.composition().is_empty());
         phrase = format!("想{}", rest.text);
-        // 接缝处（想 → 开X）按自选记双份，整句内部的接续记一份；整段拼音 → 合成词 记一次选择
+        // 接缝处（想 → 开X）按这次整句上屏的份数记：接受的是首选，与整句内部的接续一样是一份普通的；
+        // 整段拼音 → 合成词 记一次选择
         let learned = shared.lock().unwrap();
-        assert_eq!(
-            learned.1.pair(Some("想"), &head),
-            round * EXPLICIT_TRANSITION_WEIGHT
-        );
-        assert_eq!(learned.1.pair(Some(&head), "先"), round);
+        assert_eq!(learned.1.pair(Some("想"), &head), round * TRANSITION_WEIGHT);
+        assert_eq!(learned.1.pair(Some(&head), "先"), round * TRANSITION_WEIGHT);
         drop(learned);
         assert_eq!(
             engine.learner().choice_weight(
@@ -405,20 +403,22 @@ fn erasing_a_committed_sentence_retracts_its_transitions() {
     let sentence = engine.query().unwrap().candidates.items[0].clone();
     assert_eq!(sentence.kind, CandidateKind::Sentence);
     engine.commit(&sentence);
-    assert_eq!(shared.lock().unwrap().1.pair(Some("想"), "开发"), 1);
-    // 想开发 三个字全删掉，重打前缀 xiang 选 想：整句路径的两条转移退回，想 按点选记双份
+    assert_eq!(
+        shared.lock().unwrap().1.pair(Some("想"), "开发"),
+        TRANSITION_WEIGHT
+    );
+    // 想开发 三个字全删掉，重打前缀 xiang 选 想：整句路径的两条转移退回，想 排在整句之后、算改选，记双份
     for _ in 0..3 {
         engine.note_backspace();
     }
     engine.set_input("xiangkaifa");
-    let xiang = engine
-        .query()
-        .unwrap()
-        .candidates
-        .items
-        .into_iter()
-        .find(|c| c.text == "想" && c.kind == CandidateKind::Chinese)
+    let items = engine.query().unwrap().candidates.items;
+    let rank = items
+        .iter()
+        .position(|c| c.text == "想" && c.kind == CandidateKind::Chinese)
         .unwrap();
+    assert!(rank > 0);
+    let xiang = items[rank].clone();
     engine.commit(&xiang);
     let ngram = &shared.lock().unwrap().1;
     assert_eq!(ngram.pair(Some("想"), "开发"), 0);
@@ -441,54 +441,49 @@ fn commits_feed_the_personal_bigram_and_form_words() {
     engine.commit(&sentence);
     {
         let ngram = &shared.lock().unwrap().1;
-        assert_eq!(ngram.pair(None, "想"), 1);
-        assert_eq!(ngram.pair(Some("想"), "开发"), 1);
+        assert_eq!(ngram.pair(None, "想"), TRANSITION_WEIGHT);
+        assert_eq!(ngram.pair(Some("想"), "开发"), TRANSITION_WEIGHT);
     }
 
     // 标点断句；之后连续从同一段拼音里选 开发 + 先：第一次只记转移，第二次自动造词 开发先
     engine.punctuate('，');
-    let select = |engine: &mut Engine, text: &str| {
-        let candidate = engine
-            .query()
-            .unwrap()
-            .candidates
-            .items
-            .into_iter()
-            .find(|c| c.text == text && c.kind == CandidateKind::Chinese)
+    // 点选一个词并返回这次记了几份：接受首选是一份普通的，翻下去挑的算改选、记双份
+    let select = |engine: &mut Engine, text: &str| -> u32 {
+        let items = engine.query().unwrap().candidates.items;
+        let rank = items
+            .iter()
+            .position(|c| c.text == text && c.kind == CandidateKind::Chinese)
             .unwrap();
-        engine.commit(&candidate);
+        engine.commit(&items[rank]);
+        if rank > 0 {
+            EXPLICIT_TRANSITION_WEIGHT
+        } else {
+            TRANSITION_WEIGHT
+        }
     };
+    let (mut kaifa, mut xian) = (0, 0);
     for round in 1..=2 {
         engine.set_input("kaifaxian");
-        select(&mut engine, "开发");
+        kaifa += select(&mut engine, "开发");
         assert_eq!(engine.composition().text(), "xian");
-        select(&mut engine, "先");
+        xian += select(&mut engine, "先");
         assert!(engine.composition().is_empty());
-        // 用户自己点选的词，转移按 EXPLICIT_TRANSITION_WEIGHT 份记
         let learned = shared.lock().unwrap();
-        assert_eq!(
-            learned.1.pair(None, "开发"),
-            round * EXPLICIT_TRANSITION_WEIGHT
-        );
-        assert_eq!(
-            learned.1.pair(Some("开发"), "先"),
-            round * EXPLICIT_TRANSITION_WEIGHT
-        );
+        assert_eq!(learned.1.pair(None, "开发"), kaifa);
+        assert_eq!(learned.1.pair(Some("开发"), "先"), xian);
         assert_eq!(learned.0.len(), usize::from(round == 2), "round {round}");
         engine.note_passthrough('\n');
     }
     assert_eq!(shared.lock().unwrap().0, ["开发先"]);
 
     // 分两段打的要三次：咖啡 + 开 记两次不造词，第三次造
+    let mut kai = 0;
     for round in 1..=3 {
         engine.set_input("kafei");
         select(&mut engine, "咖啡");
         engine.set_input("kai");
-        select(&mut engine, "开");
-        assert_eq!(
-            shared.lock().unwrap().1.pair(Some("咖啡"), "开"),
-            round * EXPLICIT_TRANSITION_WEIGHT
-        );
+        kai += select(&mut engine, "开");
+        assert_eq!(shared.lock().unwrap().1.pair(Some("咖啡"), "开"), kai);
         assert_eq!(shared.lock().unwrap().0.len(), 1 + usize::from(round == 3));
         engine.punctuate('。');
     }

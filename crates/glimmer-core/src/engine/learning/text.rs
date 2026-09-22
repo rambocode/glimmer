@@ -4,7 +4,7 @@
 //! 他已经写好的笔记与文档就是现成的个人语料。2026-09-19 留出评测（学 42 个文件、测另外 10 个里没原样出现过的 1487 句）：
 //! 整句首选 24.3% → 60.8%，字准确率 70.7% → 90.1%。
 
-use crate::engine::{Engine, Learner};
+use crate::engine::{Engine, Learner, TRANSITION_WEIGHT};
 use crate::sentence::{self, Context};
 
 impl Engine {
@@ -24,8 +24,12 @@ impl Engine {
             let mut earlier: Option<&str> = None;
             let mut previous: Option<&str> = None;
             for word in words {
-                self.learner
-                    .record_transition(Context { previous, earlier }, word, 1);
+                // 与上屏一样按一次普通事件记：文本里出现一次抬不动首选，出现两次才起作用
+                self.learner.record_transition(
+                    Context { previous, earlier },
+                    word,
+                    TRANSITION_WEIGHT,
+                );
                 recorded += 1;
                 earlier = previous;
                 previous = Some(word.as_str());

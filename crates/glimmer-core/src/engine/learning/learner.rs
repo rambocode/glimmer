@@ -68,9 +68,11 @@ pub trait Learner: Send {
 
     /// 记一条词序列转移：`word` 在上文 `context`（前一个词与再前一个词，句首都是 `None`）之后上屏。
     /// 整句上屏按路径上的词逐条记，连续选词上屏也记；喂个人 n-gram（二元与三元一起记）。
-    /// `times` 是这次记几份：用户自己点选的词记双份（[`EXPLICIT_TRANSITION_WEIGHT`]），整句路径里顺带的记一份，
-    /// 否则一次误按空格上屏的整句要用户改选两次才能翻回来。
+    /// `times` 是这次记几份：一次普通事件（接受首选、整句路径上的词、从文本学到的词）记
+    /// [`TRANSITION_WEIGHT`]，用户翻下去改选了非首选的记双份（[`EXPLICIT_TRANSITION_WEIGHT`]），
+    /// 否则一次误按空格上屏的整句要用户改选两次才能翻回来。份数与个人 n-gram 的绝对折扣是一套刻度。
     ///
+    /// [`TRANSITION_WEIGHT`]: super::TRANSITION_WEIGHT
     /// [`EXPLICIT_TRANSITION_WEIGHT`]: super::EXPLICIT_TRANSITION_WEIGHT
     fn record_transition(&mut self, _context: Context<'_>, _word: &str, _times: u32) {}
 

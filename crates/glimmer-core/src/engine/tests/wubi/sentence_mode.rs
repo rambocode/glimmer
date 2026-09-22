@@ -110,8 +110,8 @@ fn committing_the_sentence_records_transitions_word_by_word() {
     assert_eq!(engine.commit(&first), "王中国");
     assert!(engine.composition().is_empty());
     let shared = shared.lock().unwrap();
-    assert_eq!(shared.1.pair(None, "王"), 1);
-    assert_eq!(shared.1.pair(Some("王"), "中国"), 1);
+    assert_eq!(shared.1.pair(None, "王"), TRANSITION_WEIGHT);
+    assert_eq!(shared.1.pair(Some("王"), "中国"), TRANSITION_WEIGHT);
     // 整句不是一个词：不造词
     assert!(shared.0.is_empty());
 }

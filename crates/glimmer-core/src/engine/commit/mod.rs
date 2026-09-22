@@ -7,7 +7,7 @@ use super::learning::Learner;
 use super::query::EnglishTail;
 use super::{
     AUTO_WORD_MAX_CHARS, AUTO_WORD_THRESHOLD, AUTO_WORD_THRESHOLD_SAME_BUFFER,
-    EXPLICIT_TRANSITION_WEIGHT, Engine, choice_key, segment_longest_prefix,
+    EXPLICIT_TRANSITION_WEIGHT, Engine, TRANSITION_WEIGHT, choice_key, segment_longest_prefix,
 };
 use crate::ChoicePosition;
 use crate::candidate::{Candidate, CandidateKind, CandidateList, Language};
@@ -112,6 +112,8 @@ impl Engine {
         self.forget_span_cache();
         // 选择次数按位置分桶记：要的是**这次上屏那一刻**的上文，所以在链推进之前先算好
         let position = self.choice_position();
+        // 这次上屏记几份转移：翻下去挑了非首选的算纠正，记双份（见 [`EXPLICIT_TRANSITION_WEIGHT`]）
+        let weight = self.transition_weight(&candidate.text);
         // 一段拼音里的第一个词：记下整段的学习键，整段分几次选完时合起来看（见 [`Self::finish_buffer`]）；
         // `split` 表示这次上屏接在同一段拼音里前一次上屏之后
         let split = self.chain.same_buffer();
@@ -212,7 +214,7 @@ impl Engine {
                 self.record_word(
                     &candidate.text,
                     &candidate.syllables,
-                    EXPLICIT_TRANSITION_WEIGHT,
+                    weight,
                     true,
                     buffer_left,
                 );
@@ -224,15 +226,16 @@ impl Engine {
                         self.learner.learn_english(&word.text);
                     }
                     // 紧接着同一段拼音里自选的词（`jidiaole` 选了 挤，剩下的 掉了 走整句）：接缝是用户自己定的，
-                    // 第一个词的转移按自选记双份。不参与两词造词：我 + 的… 这种接缝太常见、转移计数早就够了，
+                    // 第一个词的转移按这次上屏的份数记（翻下去挑的整句才是双份，接受首选与别的词一样是一份普通的）。
+                    // 不参与两词造词：我 + 的… 这种接缝太常见、转移计数早就够了，
                     // 会把 我的 一类造成用户词；整段合成词由 [`Self::finish_buffer`] 管
                     let junction = self.chain.same_buffer() && self.chain.previous().is_some();
                     let last = words.len() - 1;
                     for (index, word) in words.iter().enumerate() {
                         let times = if index == 0 && junction {
-                            EXPLICIT_TRANSITION_WEIGHT
+                            weight
                         } else {
-                            1
+                            TRANSITION_WEIGHT
                         };
                         self.record_word(
                             &word.text,
@@ -604,6 +607,23 @@ impl Engine {
         (keys.len(), input)
     }
 
+    /// 这次上屏该记几份转移：用户翻下去挑了非首选的候选（真在纠正）记 [`EXPLICIT_TRANSITION_WEIGHT`]，
+    /// 接受首选记一份普通的 [`TRANSITION_WEIGHT`]。
+    ///
+    /// 查询快照里找不到这个词时（排在 32 条之后、晚到的云端词、没经过查询的上屏）按普通算：
+    /// 宁可少记也不要把一次普通上屏当成纠正，那会让折扣拦不住误选。
+    fn transition_weight(&self, text: &str) -> u32 {
+        let rank = self
+            .last_query
+            .borrow()
+            .as_ref()
+            .and_then(|snapshot| snapshot.candidates.iter().position(|c| c == text));
+        match rank {
+            Some(rank) if rank > 0 => EXPLICIT_TRANSITION_WEIGHT,
+            _ => TRANSITION_WEIGHT,
+        }
+    }
+
     /// 一个中文词上屏了：记 `times` 份转移、推进链；`auto_word` 为真（用户自己选的词）时，
     /// 紧接着上一个词、合起来词库里没有、且这条接续记够次数还自动造词。
     pub(super) fn record_word(
@@ -625,13 +645,20 @@ impl Engine {
             } else {
                 AUTO_WORD_THRESHOLD
             };
-            self.try_auto_word(text, syllables, threshold);
+            self.try_auto_word(text, syllables, threshold, times);
         }
         self.chain.advance(text, syllables, buffer_left);
     }
 
     /// 上一个词 + 这个词合成用户词的条件见 [`AUTO_WORD_THRESHOLD`]。
-    pub(super) fn try_auto_word(&mut self, text: &str, syllables: &[String], threshold: u32) {
+    /// `times` 是这次上屏记了几份，阈值按它折算成「选了几次」。
+    pub(super) fn try_auto_word(
+        &mut self,
+        text: &str,
+        syllables: &[String],
+        threshold: u32,
+        times: u32,
+    ) {
         let Some(previous) = self.chain.previous().map(str::to_owned) else {
             return;
         };
@@ -644,12 +671,13 @@ impl Engine {
         let Some(joined_syllables) = self.auto_word_syllables(&joined, pinyin) else {
             return;
         };
-        // 这条转移刚记过，计数已含本次；阈值按「选了几次」算，计数是按份记的
+        // 这条转移刚记过，计数已含本次；阈值按「选了几次」算，计数是按份记的，
+        // 所以拿这次的份数折算：普通上屏要 threshold 次，每次都翻下去挑的（份数翻倍）也还是 threshold 次
         let seen = self
             .learner
             .user_ngram()
             .map_or(0, |b| b.pair(Some(&previous), text));
-        if seen < threshold * EXPLICIT_TRANSITION_WEIGHT {
+        if seen < threshold * times.max(1) {
             return;
         }
         let candidate = Candidate {

@@ -331,9 +331,15 @@ const RECENT_COMMITS: usize = 4;
 /// 自动造出的词最多几个字：再长就不是词而是短语了。
 const AUTO_WORD_MAX_CHARS: usize = 4;
 
-/// 用户自己点选的词，转移记几份；整句路径里顺带的记一份。
-/// 整句是模型自己算出来的，按空格接受它会把这条路径喂回模型，形成自我强化；用户明确改选的词要能压过这种回声。
-pub const EXPLICIT_TRANSITION_WEIGHT: u32 = 2;
+/// 一次普通上屏记几份转移：接受首选的词、整句路径上的词、从文本学到的词都记它。
+/// 个人 n-gram 的绝对折扣 [`sentence::BIGRAM_DISCOUNT`] 就是照着这个数定的——
+/// 一次普通事件正好被折扣扣光、抬不动首选，同一条接续再来一次才开始压静态模型。
+pub const TRANSITION_WEIGHT: u32 = 2;
+
+/// 用户改选了非首选候选（真在纠正）时转移记几份：一次普通事件的两倍。
+/// 整句是模型自己算出来的，按空格接受首选会把这条路径喂回模型，形成自我强化；
+/// 用户翻下去挑出来的那条要能一次就压过这种回声。
+pub const EXPLICIT_TRANSITION_WEIGHT: u32 = 2 * TRANSITION_WEIGHT;
 
 /// 拼音短于这个字母数不联想：一两个字母的意图太模糊，白花一次请求。
 const MIN_PREDICTION_LETTERS: usize = 2;

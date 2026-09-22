@@ -301,11 +301,12 @@ fn accepted_sentence_completion_feeds_the_personal_ngram_and_can_be_retracted() 
         "开发输入法很好用。"
     );
     {
+        // 云端整句按一次普通事件记，不当改选
         let ngram = &shared.lock().unwrap().1;
-        assert_eq!(ngram.pair(None, "开发"), 1);
-        assert_eq!(ngram.pair(Some("开发"), "输入法"), 1);
-        assert_eq!(ngram.pair(Some("输入法"), "很"), 1);
-        assert_eq!(ngram.pair(Some("很"), "好用"), 1);
+        assert_eq!(ngram.pair(None, "开发"), TRANSITION_WEIGHT);
+        assert_eq!(ngram.pair(Some("开发"), "输入法"), TRANSITION_WEIGHT);
+        assert_eq!(ngram.pair(Some("输入法"), "很"), TRANSITION_WEIGHT);
+        assert_eq!(ngram.pair(Some("很"), "好用"), TRANSITION_WEIGHT);
     }
     // 句尾是句号：下一个词按句首记
     assert_eq!(engine.chain.previous(), None);

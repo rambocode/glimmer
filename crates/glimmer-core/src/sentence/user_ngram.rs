@@ -553,7 +553,7 @@ mod tests {
             ),
             base_ba
         );
-        // 自己点选一次记两份（EXPLICIT_TRANSITION_WEIGHT）：正好被 D₂ 扣光，翻不过静态模型高 3 nat 的 吧
+        // 一次普通事件记两份（TRANSITION_WEIGHT）：正好被 D₂ 扣光，翻不过静态模型高 3 nat 的 吧
         model.record_times(Context::after("吃饭"), "把", 2);
         let particle = -6.0;
         let once = model.blend(
