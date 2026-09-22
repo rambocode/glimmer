@@ -9,7 +9,7 @@
 | `01_characters` | 8,105个规范汉字；另分一级3,500字、二级3,000字、三级1,605字 |
 | `02_common` | liuxilu版现代汉语常用词表；56,008个原始词号，拆分异写后56,064条记录、55,735个不同词形 |
 | `03_domains` | IT与计算机、财经、地名、历史人物、医学、饮食、法律、汽车、动物、成语、诗词名句 |
-| `04_internet_slang` | 网络用语与聊天短语[候选表](04_internet_slang/candidates.tsv)1,294条，**待审未并入**；收词标准、次数档位与接入命令见[目录说明](04_internet_slang/README.md) |
+| `04_internet_slang` | 网络用语与聊天短语[候选表](04_internet_slang/candidates.tsv)1,294条，其中词库没有的752条**已于2026-09-22并入**（汉字词拆成[slang_words.tsv](04_internet_slang/slang_words.tsv)，中英混杂词进[mixed_words.tsv](mixed_words.tsv)）；收词标准、次数档位与接入命令见[目录说明](04_internet_slang/README.md) |
 | `05_english` | 英文补全总表114,876词形，含常用词、扩展词、专名与技术词；附词形变化及误拼对照 |
 | `00_meta` | 分类统计、异写关系、异常DF、文件校验值与许可证 |
 
@@ -49,6 +49,7 @@
 - **规范字**：[iDvel文字转录](https://github.com/iDvel/The-Table-of-General-Standard-Chinese-Characters)，以[shengdoushi分级字表](https://github.com/shengdoushi/common-standard-chinese-characters-table)交叉核对。两份字序一致。此数据仅提供字形与级别，不含完整读音。
 - **通用词**：[liuxilu校对词表](https://github.com/liuxilu/Proofread-Modern-Chinese-Common-Lexicon)。读音仍需按输入法需求校验。
 - **领域词**：[THUOCL](https://github.com/thunlp/THUOCL)，采用[MIT许可证](00_meta/THUOCL_LICENSE.txt)，分发时保留版权及许可声明。
+- **网络用语与聊天短语**（微明加的，`04_internet_slang/slang_words.tsv` 与 `mixed_words.tsv`）：起草者（Claude）自身的中文互联网知识，没有抄任何外部词表，**不引入新的许可约束**；次数按三档固定值给，部分取微明语料的成分二元合成次数；做法与数字见[internet-slang.md](../../docs/notes/internet-slang.md)。
 - **补充常用词**（微明加的，`common_words.tsv`）：词库缺的常用词，候选来自[CC-CEDICT](https://www.mdbg.net/chinese/dictionary?page=cc-cedict)（MDBG，[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）与[jieba](https://github.com/fxsjy/jieba)词表（MIT），次数由微明语料统计合成，逐条人工审定并核对读音；做法见[GLIMMER.md](GLIMMER.md)第4f步。
 
 英文来源为ESDB、CSpell和typos，许可声明见[英文sources](05_english/README.md#sources)。

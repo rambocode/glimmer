@@ -1,0 +1,674 @@
+# 网络用语与聊天短语（汉字词），从 candidates.tsv 拆出（2026-09-22 维护者整表通过）。
+# 来源：起草者自身的中文互联网知识，没有抄任何外部词表，无许可约束；收词标准与档位见同目录 README.md。
+# 次数三档：低 20 / 中 200 / 高 2000，与 dict.tsv 词频同一尺度；gaps 合成次数高于档位值时取合成次数。
+# 词	次数	拼音
+太卷了	200	tai juan le
+精神内耗	200	jing shen nei hao
+摆烂	2000	bai lan
+开摆	200	kai bai
+破防了	2000	po fang le
+破大防	200	po da fang
+社死	2000	she si
+社死现场	200	she si xian chang
+蚌埠住了	200	beng bu zhu le
+绷不住	2000	beng bu zhu
+松弛感	200	song chi gan
+班味	200	ban wei
+发疯文学	200	fa feng wen xue
+发癫	2000	fa dian
+心态崩了	2000	xin tai beng le
+心态爆炸	200	xin tai bao zha
+麻了	2000	ma le
+人麻了	2000	ren ma le
+卷王	200	juan wang
+卷不动	200	juan bu dong
+意难平	200	yi nan ping
+寄了	2000	ji le
+润了	200	run le
+我裂开	200	wo lie kai
+血压升高	200	xue ya sheng gao
+电子榨菜	200	dian zi zha cai
+报复性熬夜	200	bao fu xing ao ye
+早八	200	zao ba
+钝感力	20	dun gan li
+无语子	20	wu yu zi
+丧文化	64	sang wen hua
+情绪价值	2000	qing xu jia zhi
+情绪稳定	200	qing xu wen ding
+边界感	200	bian jie gan
+仪式感	2000	yi shi gan
+氛围感	2000	fen wei gan
+高级感	200	gao ji gan
+戒断反应	20	jie duan fan ying
+心眼子	200	xin yan zi
+求生欲	418	qiu sheng yu
+接好运	200	jie hao yun
+祛魅	200	qu mei
+离大谱	200	li da pu
+搞抽象	200	gao chou xiang
+格局小了	200	ge ju xiao le
+格局打开	200	ge ju da kai
+显眼包	200	xian yan bao
+绝绝子	200	jue jue zi
+我服了	200	wo fu le
+太懂了	246	tai dong le
+典中典	200	dian zhong dian
+急了	1048	ji le
+笑不活了	200	xiao bu huo le
+尊嘟假嘟	200	zun du jia du
+爱了爱了	200	ai le ai le
+狠狠共情	200	hen hen gong qing
+大冤种	200	da yuan zhong
+冤种	200	yuan zhong
+整不会了	200	zheng bu hui le
+给我整不会了	200	gei wo zheng bu hui le
+好好好	6362	hao hao hao
+一整个大无语	200	yi zheng ge da wu yu
+大无语	200	da wu yu
+神仙打架	200	shen xian da jia
+人间清醒	200	ren jian qing xing
+名场面	200	ming chang mian
+前方高能	200	qian fang gao neng
+智商税	2000	zhi shang shui
+杀疯了	200	sha feng le
+太顶了	200	tai ding le
+顶不住	200	ding bu zhu
+遭不住	200	zao bu zhu
+这波	2000	zhe bo
+属于是	2000	shu yu shi
+纯纯的	200	chun chun de
+问题不大	2000	wen ti bu da
+稳了	652	wen le
+神操作	200	shen cao zuo
+迷惑行为	200	mi huo xing wei
+土味情话	200	tu wei qing hua
+爹味	200	die wei
+爆改	200	bao gai
+颜值天花板	200	yan zhi tian hua ban
+有内味了	200	you nei wei le
+那味儿	200	na wei er
+上价值	200	shang jia zhi
+硬核	2000	ying he
+硬控	200	ying kong
+拉胯	200	la kua
+爆锤	200	bao chui
+求锤得锤	200	qiu chui de chui
+真香定律	200	zhen xiang ding lv
+血亏	200	xue kui
+血赚	200	xue zhuan
+入股不亏	200	ru gu bu kui
+不愧是你	200	bu kui shi ni
+合理怀疑	200	he li huai yi
+爷青回	200	ye qing hui
+爷青结	20	ye qing jie
+雀食	200	que shi
+耗子尾汁	20	hao zi wei zhi
+夺笋	20	duo sun
+废话文学	200	fei hua wen xue
+听君一席话	20	ting jun yi xi hua
+有一说一	2000	you yi shuo yi
+懂的都懂	200	dong de dou dong
+不懂就问	200	bu dong jiu wen
+彩虹屁	200	cai hong pi
+夸夸	1501	kua kua
+喷子	200	pen zi
+细品	200	xi pin
+有点东西	200	you dian dong xi
+没苦硬吃	200	mei ku ying chi
+没福硬享	20	mei fu ying xiang
+泼天富贵	200	po tian fu gui
+上强度	200	shang qiang du
+嘴替	200	zui ti
+搭子	2000	da zi
+饭搭子	200	fan da zi
+社牛	2000	she niu
+社恐	2000	she kong
+纯爱战士	200	chun ai zhan shi
+恋爱脑	2000	lian ai nao
+打工人	2000	da gong ren
+干饭人	200	gan fan ren
+小镇做题家	200	xiao zhen zuo ti jia
+工具人	200	gong ju ren
+背锅侠	200	bei guo xia
+舔狗	200	tian gou
+普信	200	pu xin
+凡尔赛	2990	fan er sai
+家人们	2000	jia ren men
+姐妹们	703	jie mei men
+兄弟们	1065	xiong di men
+老登	200	lao deng
+乐子人	200	le zi ren
+懂王	20	dong wang
+顶流	200	ding liu
+糊了	1066	hu le
+黑粉	200	hei fen
+铲屎官	200	chan shi guan
+精神小伙	20	jing shen xiao huo
+老六	212	lao liu
+特种兵旅游	200	te zhong bing lv you
+鼠鼠	109	shu shu
+细狗	20	xi gou
+白嫖	2000	bai piao
+搞钱	2000	gao qian
+月光族	200	yue guang zu
+精致穷	20	jing zhi qiong
+氛围组	20	fen wei zu
+蹲一个	200	dun yi ge
+蹲后续	200	dun hou xu
+拉踩	200	la cai
+塌房	2000	ta fang
+掉马	200	diao ma
+挂人	200	gua ren
+开盒	200	kai he
+整活	2000	zheng huo
+整顿职场	200	zheng dun zhi chang
+拔草	200	ba cao
+踩雷	200	cai lei
+避雷	200	bi lei
+踩坑	200	cai keng
+填坑	200	tian keng
+薅羊毛	2000	hao yang mao
+砍一刀	200	kan yi dao
+平替	2000	ping ti
+断舍离	200	duan she li
+冲冲冲	200	chong chong chong
+磕糖	200	ke tang
+锁死	412	suo si
+退坑	200	tui keng
+弃坑	203	qi keng
+追更	200	zhui geng
+断更	200	duan geng
+二刷	767	er shua
+刷到	2000	shua dao
+划走	200	hua zou
+开麦	200	kai mai
+闭麦	200	bi mai
+上链接	200	shang lian jie
+代餐	200	dai can
+破圈	200	po quan
+翻红	200	fan hong
+糊穿地心	20	hu chuan di xin
+起号	200	qi hao
+掉粉	200	diao fen
+云吸猫	200	yun xi mao
+爆肝	214	bao gan
+肝不动	200	gan bu dong
+已读不回	2000	yi du bu hui
+已读乱回	200	yi du luan hui
+鸽了	2000	ge le
+咕咕咕	251	gu gu gu
+尬住	200	ga zhu
+尴尬癌	200	gan ga ai
+颗粒度	2000	ke li du
+抓手	2000	zhua shou
+干就完了	200	gan jiu wan le
+溜了溜了	200	liu le liu le
+退退退	20	tui tui tui
+吃席	36	chi xi
+断亲	20	duan qin
+狗头保命	27	gou tou bao ming
+啊这	2885	a zhe
+天塌了	2000	tian ta le
+塌了	573	ta le
+我哭死	200	wo ku si
+我悟了	200	wo wo le
+悟了	200	wu le
+主打一个	2000	zhu da yi ge
+真的会谢	200	zhen de hui xie
+求求了	200	qiu qiu le
+拿来吧你	20	na lai ba ni
+谁懂啊	200	shui dong a
+家人们谁懂啊	200	jia ren men shui dong a
+太牛了	200	tai niu le
+牛啊	660	niu a
+奥利给	200	ao li gei
+双厨狂喜	20	shuang chu kuang xi
+心巴	20	xin ba
+摸会鱼	2000	mo hui yu
+摸会儿鱼	2000	mo hui er yu
+摸会儿	200	mo hui er
+歇会儿	2000	xie hui er
+歇会	2000	xie hui
+歇会儿脚	20	xie hui er jiao
+等会儿	2000	deng hui er
+等会儿说	200	deng hui er shuo
+等会说	200	deng hui shuo
+等会儿再说	2000	deng hui er zai shuo
+聊会儿	200	liao hui er
+聊会天	200	liao hui tian
+聊会儿天	200	liao hui er tian
+睡会儿	2000	shui hui er
+睡会儿觉	200	shui hui er jiao
+玩会儿	200	wan hui er
+玩会	1135	wan hui
+玩会儿手机	200	wan hui er shou ji
+看会儿	200	kan hui er
+看会	1105	kan hui
+看会儿书	200	kan hui er shu
+看会书	20	kan hui shu
+看会儿电视	200	kan hui er dian shi
+忙会儿	20	mang hui er
+忙会	27	mang hui
+待会儿聊	200	dai hui er liao
+缓会儿	200	huan hui er
+缓会	20	huan hui
+躺会儿	200	tang hui er
+躺会	200	tang hui
+坐会儿	200	zuo hui er
+坐会	207	zuo hui
+刷会儿	200	shua hui er
+刷会手机	200	shua hui shou ji
+刷会儿手机	200	shua hui er shou ji
+打会儿游戏	200	da hui er you xi
+打会游戏	200	da hui you xi
+眯会儿	200	mi hui er
+眯会	20	mi hui
+溜达会儿	20	liu da hui er
+休息会儿	200	xiu xi hui er
+听会儿歌	20	ting hui er ge
+走会儿	20	zou hui er
+逛会儿	20	guang hui er
+发会儿呆	200	fa hui er dai
+发会呆	200	fa hui dai
+学会儿	20	xue hui er
+等一下下	20	deng yi xia xia
+等我一下	2000	deng wo yi xia
+缓一下	200	huan yi xia
+歇一下	200	xie yi xia
+想一下	592	xiang yi xia
+查一下	687	cha yi xia
+改一下	340	gai yi xia
+弄一下	200	nong yi xia
+帮一下	200	bang yi xia
+换一下	576	huan yi xia
+麻烦一下	2000	ma fan yi xia
+打扰一下	200	da rao yi xia
+确认一下	227	que ren yi xia
+休息一下	2000	xiu xi yi xia
+放松一下	982	fang song yi xia
+喝口水	2000	he kou shui
+喝杯咖啡	247	he bei ka fei
+喝个咖啡	200	he ge ka fei
+睡个觉	2000	shui ge jiao
+洗个澡	2000	xi ge zao
+洗个头	200	xi ge tou
+遛个弯	200	liu ge wan
+走一趟	244	zou yi tang
+跑一趟	232	pao yi tang
+去一趟	911	qu yi tang
+搭把手	200	da ba shou
+帮个忙	2000	bang ge mang
+发个消息	200	fa ge xiao xi
+打个电话	2000	da ge dian hua
+点个外卖	2000	dian ge wai mai
+发个红包	200	fa ge hong bao
+拍个照	200	pai ge zhao
+理个发	200	li ge fa
+吃个宵夜	200	chi ge xiao ye
+歇口气	200	xie kou qi
+喘口气	200	chuan kou qi
+吃口饭	200	chi kou fan
+碰个面	200	peng ge mian
+见个面	200	jian ge mian
+约个饭	200	yue ge fan
+聚个餐	200	ju ge can
+开个会	2000	kai ge hui
+请个假	200	qing ge jia
+打个车	200	da ge che
+买个菜	200	mai ge cai
+做个饭	200	zuo ge fan
+取个快递	200	qu ge kuai di
+充个电	200	chong ge dian
+换个地方	200	huan ge di fang
+得嘞	512	dei lei
+太客气了	200	tai ke qi le
+麻烦了	2000	ma fan le
+麻烦你了	2000	ma fan ni le
+麻烦您了	200	ma fan nin le
+真不好意思	424	zhen bu hao yi si
+我想想	2263	wo xiang xiang
+我试试	814	wo shi shi
+稍等一下	2000	shao deng yi xia
+马上来	2000	ma shang lai
+马上到	2000	ma shang dao
+这就来	2000	zhe jiu lai
+这就去	200	zhe jiu qu
+随便吧	2000	sui bian ba
+你定	1096	ni ding
+你说了算	911	ni shuo le suan
+那行	2000	na xing
+就这样吧	2000	jiu zhe yang ba
+回头说	2000	hui tou shuo
+回头聊	200	hui tou liao
+回聊	200	hui liao
+改天聊	200	gai tian liao
+改天吧	200	gai tian ba
+下次聊	200	xia ci liao
+先这样	2000	xian zhe yang
+我走了	2000	wo zou le
+我先撤了	200	wo xian che le
+先撤了	200	xian che le
+没关系的	1336	mei guan xi de
+嗯呢	200	en ne
+嗯嗯	2000	en en
+哦哦	26324	o o
+安排上了	200	an pai shang le
+搞定了	2000	gao ding le
+忙完了	2000	mang wan le
+忙着呢	2000	mang zhe ne
+在忙	2227	zai mang
+在忙呢	2000	zai mang ne
+刚下班	2000	gang xia ban
+快到了	2000	kuai dao le
+到了吗	2000	dao le ma
+我到了	2000	wo dao le
+刚起	584	gang qi
+刚起床	1009	gang qi chuang
+没睡醒	2000	mei shui xing
+睡过头了	269	shui guo tou le
+困死了	2000	kun si le
+忙死了	2000	mang si le
+急死了	200	ji si le
+我麻了	200	wo ma le
+吃了吗	2000	chi le ma
+吃过了	2000	chi guo le
+吃饭了吗	2000	chi fan le ma
+又加班	275	you jia ban
+加班中	200	jia ban zhong
+路上小心	2000	lu shang xiao xin
+到家说一声	200	dao jia shuo yi sheng
+我先睡了	2000	wo xian shui le
+睡了睡了	200	shui le shui le
+起不来床	200	qi bu lai chuang
+不想动	200	bu xiang dong
+不想上班	2000	bu xiang shang ban
+撑不住了	200	cheng bu zhu le
+有空吗	2000	you kong ma
+有时间吗	2000	you shi jian ma
+在吗	3717	zai ma
+在不在	200	zai bu zai
+忙不忙	2000	mang bu mang
+方便吗	2000	fang bian ma
+方便说话吗	200	fang bian shuo hua ma
+现在方便吗	200	xian zai fang bian ma
+几点到	861	ji dian dao
+几点了	2000	ji dian le
+几点见	200	ji dian jian
+什么时候来	1209	shen me shi hou lai
+到哪了	2000	dao na le
+到哪儿了	200	dao na er le
+怎么走	1198	zen me zou
+约个时间	200	yue ge shi jian
+定个时间	200	ding ge shi jian
+吃点什么	200	chi dian shen me
+去哪吃	289	qu na chi
+干啥呢	2000	gan sha ne
+还要多久	200	hai yao duo jiu
+明天有空吗	200	ming tian you kong ma
+周末有空吗	200	zhou mo you kong ma
+一起吗	1725	yi qi ma
+我也一样	962	wo ye yi yang
+真的假的	2000	zhen de jia de
+啥情况	2000	sha qing kuang
+咋回事	2000	za hui shi
+你想多了	200	ni xiang duo le
+随便说说	200	sui bian shuo shuo
+逗你的	200	dou ni de
+原来是这样	200	yuan lai shi zhe yang
+说得也是	200	shuo de ye shi
+有点难	1387	you dian nan
+不太行	200	bu tai xing
+应该没事	502	ying gai mei shi
+到时候再说	2000	dao shi hou zai shuo
+以后再说	334	yi hou zai shuo
+不管了	2000	bu guan le
+过会儿	2000	guo hui er
+今儿个	324	jin er ge
+明儿见	213	ming er jian
+凑合吧	284	cou he ba
+凑合着	311	cou he zhe
+将就一下	128	jiang jiu yi xia
+差不多吧	1995	cha bu duo ba
+没劲儿	102	mei jin er
+小事儿	207	xiao shi er
+慢点儿	200	man dian er
+待一会儿	200	dai yi hui er
+不一会儿	92	bu yi hui er
+好好儿	88	hao hao er
+对齐一下	2000	dui qi yi xia
+拉通	2000	la tong
+拉齐	691	la qi
+组合拳	200	zu he quan
+顶层设计	200	ding ceng she ji
+底层逻辑	2000	di ceng luo ji
+认知升级	20	ren zhi sheng ji
+降本增效	2000	jiang ben zeng xiao
+提效	2000	ti xiao
+确定性	2581	que ding xing
+强背书	20	qiang bei shu
+做深做透	20	zuo shen zuo tou
+对标	200	dui biao
+全链路	200	quan lian lu
+端到端	200	duan dao duan
+精细化	200	jing xi hua
+数据驱动	200	shu ju qu dong
+卡位	129	ka wei
+用户心智	20	yong hu xin zhi
+促活	200	cu huo
+拉个会	2000	la ge hui
+约个会	200	yue ge hui
+同步一下	2000	tong bu yi xia
+碰一下	2000	peng yi xia
+过一下	2000	guo yi xia
+对一下	2000	dui yi xia
+复盘一下	2000	fu pan yi xia
+周会	2000	zhou hui
+日会	1051	ri hui
+站会	2000	zhan hui
+双周会	200	shuang zhou hui
+月会	531	yue hui
+需求评审	2000	xu qiu ping shen
+技术评审	2000	ji shu ping shen
+走查	200	zou cha
+会议纪要	2000	hui yi ji yao
+跟进一下	2000	gen jin yi xia
+加塞	200	jia sai
+插需求	200	cha xu qiu
+拉群	2000	la qun
+建个群	200	jian ge qun
+同步给你	200	tong bu gei ni
+季度总结	200	ji du zong jie
+在忙吗	200	zai mang ma
+帮我看下	2000	bang wo kan xia
+发我一下	2000	fa wo yi xia
+安排一下	218	an pai yi xia
+请教一下	671	qing jiao yi xia
+对齐会	20	dui qi hui
+启动会	200	qi dong hui
+头脑风暴	200	tou nao feng bao
+会后同步	20	hui hou tong bu
+提测	2000	ti ce
+冒烟测试	200	mao yan ce shi
+灰度	2000	hui du
+放量	2000	fang liang
+全量	2000	quan liang
+回滚	2000	hui gun
+上生产	200	shang sheng chan
+切流量	200	qie liu liang
+缩容	200	suo rong
+重跑	2000	chong pao
+回归测试	200	hui gui ce shi
+提工单	200	ti gong dan
+开单	110	kai dan
+关单	20	guan dan
+走查代码	200	zou cha dai ma
+提交代码	2000	ti jiao dai ma
+合代码	2000	he dai ma
+拉分支	2000	la fen zhi
+开分支	200	kai fen zhi
+合分支	2000	he fen zhi
+解冲突	2000	jie chong tu
+打标签	200	da biao qian
+改需求	2000	gai xu qiu
+改方案	944	gai fang an
+定位问题	2000	ding wei wen ti
+复现一下	200	fu xian yi xia
+线上问题	2000	xian shang wen ti
+临时方案	200	lin shi fang an
+技术债	2000	ji shu zhai
+性能优化	2000	xing neng you hua
+调优	200	tiao you
+压测	200	ya ce
+性能瓶颈	200	xing neng ping jing
+调参	200	tiao can
+提需求	2000	ti xu qiu
+查日志	2000	cha ri zhi
+加日志	200	jia ri zhi
+打日志	200	da ri zhi
+测试环境	2000	ce shi huan jing
+预发环境	200	yu fa huan jing
+生产环境	2000	sheng chan huan jing
+本地跑	200	ben di pao
+跑通	2000	pao tong
+跑不通	200	pao bu tong
+内存泄漏	200	nei cun xie lou
+死锁	110	si suo
+刷缓存	200	shua huan cun
+同步数据	200	tong bu shu ju
+刷数据	200	shua shu ju
+洗数据	200	xi shu ju
+补数据	200	bu shu ju
+建表	200	jian biao
+改字段	200	gai zi duan
+加字段	200	jia zi duan
+封版	200	feng ban
+代码冻结	20	dai ma dong jie
+拉代码	200	la dai ma
+合主干	200	he zhu gan
+补测试	200	bu ce shi
+跑测试	2000	pao ce shi
+打回	859	da hui
+调岗	200	diao gang
+接锅	200	jie guo
+对线	200	dui xian
+没对齐	2000	mei dui qi
+二面	763	er mian
+终面	200	zhong mian
+谈薪	200	tan xin
+涨薪	2000	zhang xin
+裸辞	200	luo ci
+劳动仲裁	200	lao dong zhong cai
+竞业	200	jing ye
+大小周	200	da xiao zhou
+团建	2000	tuan jian
+背景调查	83	bei jing diao cha
+年终奖	2000	nian zhong jiang
+带新人	200	dai xin ren
+向上管理	20	xiang shang guan li
+画饼	2000	hua bing
+居家办公	200	ju jia ban gong
+到点下班	200	dao dian xia ban
+催一下	2000	cui yi xia
+等回复	200	deng hui fu
+凑单	200	cou dan
+加购	200	jia gou
+领券	200	ling quan
+已发货	200	yi fa huo
+待发货	200	dai fa huo
+取件码	200	qu jian ma
+送货上门	378	song huo shang men
+次日达	200	ci ri da
+运费险	200	yun fei xian
+退差价	200	tui cha jia
+仅退款	200	jin tui kuan
+转人工	200	zhuan ren gong
+追评	20	zhui ping
+晒单	200	shai dan
+七天无理由	200	qi tian wu li you
+质保	200	zhi bao
+开发票	200	kai fa piao
+收货地址	200	shou huo di zhi
+改地址	200	gai di zhi
+订单号	200	ding dan hao
+已付款	200	yi fu kuan
+待付款	200	dai fu kuan
+支付失败	200	zhi fu shi bai
+确认收货	2000	que ren shou huo
+申请退款	2000	shen qing tui kuan
+退款成功	200	tui kuan cheng gong
+到货	2000	dao huo
+拆快递	200	chai kuai di
+到手价	200	dao shou jia
+重拍	1037	chong pai
+拍下	1896	pai xia
+寄回	285	ji hui
+上门取件	200	shang men qu jian
+收货	2000	shou huo
+无广	20	wu guang
+恰饭	200	qia fan
+广子	142	guang zi
+求链接	200	qiu lian jie
+已下单	200	yi xia dan
+白菜价	200	bai cai jia
+闭眼入	20	bi yan ru
+避坑	200	bi keng
+无脑冲	20	wu nao chong
+冲一波	20	chong yi bo
+好物	200	hao wu
+点外卖	2000	dian wai mai
+预计送达	200	yu ji song da
+催单	200	cui dan
+少放辣	200	shao fang la
+不要香菜	200	bu yao xiang cai
+到店自取	20	dao dian zi qu
+堂食	457	tang shi
+打包带走	348	da bao dai zou
+打包盒	25	da bao he
+免餐具	200	mian can ju
+返现	200	fan xian
+开会员	408	kai hui yuan
+月卡	200	yue ka
+拼好饭	200	pin hao fan
+团购券	200	tuan gou quan
+代金券	200	dai jin quan
+探店	200	tan dian
+取号	200	qu hao
+扫码点单	200	sao ma dian dan
+加辣	178	jia la
+少冰	200	shao bing
+叫车	277	jiao che
+网约车	200	wang yue che
+改派	879	gai pai
+取消订单	2000	qu xiao ding dan
+等车	1104	deng che
+进站	3524	jin zhan
+出站	2563	chu zhan
+加速包	20	jia su bao
+值机	463	zhi ji
+送机	404	song ji
+充电桩	200	chong dian zhuang
+扫码骑车	20	sao ma qi che
+还车	200	huan che
+起步价	314	qi bu jia
+车牌号	338	che pai hao
+订机票	249	ding ji piao
+订酒店	200	ding jiu dian
+退房	200	tui fang
+下播	200	xia bo
+榜一	81	bang yi
+过稿	22	guo gao
+审核中	200	shen he zhong
+加好友	549	jia hao you
+发语音	260	fa yu yin
+视频通话	200	shi pin tong hua
+收款码	200	shou kuan ma
+月供	200	yue gong
+免息	200	mian xi
+到账	2000	dao zhang
+发红包	2000	fa hong bao
+抢红包	200	qiang hong bao
+拼手气	200	pin shou qi
+代付	200	dai fu
+免密	200	mian mi
+原路退回	200	yuan lu tui hui
+实名认证	200	shi ming ren zheng
