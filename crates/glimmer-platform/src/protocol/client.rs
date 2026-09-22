@@ -46,7 +46,8 @@ pub enum ClientMessage {
         session: SessionId,
     },
 
-    /// 组句起始时 DLL 主动送来的应用光标前文，给本地整句模型当前文（对应 macOS 壳在组句第一键读 `surrounding_text`）。
+    /// 组句起始时 DLL / IBus 主动送来的应用光标前文，Core 拿它当整句与词级排序的上文、也当本地整句模型的前文
+    /// （对应 macOS 壳在组句第一键读 `surrounding_text`）。
     /// 在起组句的那次编辑会话里顺手读，不另开会话、不回话；密码框 / 读不到时不发，Server 退回本会话历史。
     Surrounding {
         /// 会话标识。

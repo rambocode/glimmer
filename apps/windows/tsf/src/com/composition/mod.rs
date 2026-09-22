@@ -32,7 +32,7 @@ pub(crate) fn preedit_string(frame: &Frame) -> String {
 }
 
 /// 在编辑会话回调（持写锁 `ec`）里调：先落定 `commit`，再按 `preedit` 起 / 改 / 收组句，最后把光标位置报给 Server。
-/// 新起一段组句时顺手判输入框私密不私密（变了就告诉 Server）、把光标前的文字送给 Server（本地整句模型的前文）。
+/// 新起一段组句时顺手判输入框私密不私密（变了就告诉 Server）、把光标前的文字送给 Server（Core 拿它当上文）。
 pub(crate) fn apply(
     shared: &Rc<Shared>,
     engine: &SharedClient,

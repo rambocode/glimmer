@@ -125,7 +125,7 @@ impl<S: Read + Write> EngineClient<S> {
         }
     }
 
-    /// 组句起始时把应用光标前的文字送给 Server（本地整句模型的前文）。不回话。
+    /// 组句起始时把应用光标前的文字送给 Server（整句与词级排序的上文，也是本地整句模型的前文）。不回话。
     pub fn surrounding(&mut self, text: String) -> Result<(), ClientError> {
         self.send(&ClientMessage::Surrounding {
             session: self.session,

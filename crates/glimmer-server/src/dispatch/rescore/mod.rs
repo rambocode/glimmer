@@ -1,7 +1,8 @@
 //! 本地整句模型（与 macOS 壳的 `host/model.rs` 对齐）：后台加载、停键后请求重排、结果到了重画当前页。
 //!
 //! 按键回调里永远只跑词级模型；模型的意见在停键 80 毫秒后请求、几十毫秒后到，只换候选窗口里的整句候选，
-//! 用户翻过页或动过高亮就不打扰。前文优先用应用里光标前的文字（DLL 起组句时随 `ClientMessage::Surrounding` 送来），没有退回本会话历史。
+//! 用户翻过页或动过高亮就不打扰。前文优先用应用里光标前的文字（DLL / IBus 起组句时随 `ClientMessage::Surrounding` 送来，
+//! 见 [`Router::set_surrounding`]；它同时也是整句与词级排序的上文），没有退回本会话历史。
 //! 节拍由工人循环驱动：[`Router::next_tick`] 说下次多久来一次 [`Router::tick`]；DLL 组句期间每 80 ms 的 `Poll` 也顺带 tick。
 //! 加载在 [`loader`]，进行态在 [`state`]。
 
@@ -107,19 +108,27 @@ impl Router {
     /// 组句结束：什么都不等了；应用前文也作废（下一段组句 DLL 会再送）。
     pub(super) fn stop_rescoring(&mut self) {
         self.rescore.stop();
-        self.engine.set_rescoring_context(None);
+        self.engine.set_surrounding_before(None);
     }
 
-    /// DLL 送来聚焦会话的光标前文：给 Engine 当前文，缓存里按旧前文记的「要打分的」作废，重新攒一次并重新计时。
+    /// DLL / IBus 送来聚焦会话的光标前文：给 Engine 当前文，重查一次换掉候选顺序
+    /// （前文是整句与词级排序的上文），缓存里按旧前文记的「要打分的」也跟着重新攒一次并重新计时。
     /// 组句已经结束 / 不是聚焦会话的丢掉。
+    ///
+    /// 前文是在第一键之后才到的（壳要等编辑会话 / 应用回话），第一帧已经按「没有上文」画出去了，
+    /// 所以这里要把候选重排一遍重画；用户已经翻页或动过高亮就不打扰，只重查一次记下要打分的文本。
     pub(super) fn set_surrounding(&mut self, session: SessionId, text: String) {
         if self.focused != Some(session) || self.engine.composition().is_empty() {
             return;
         }
         self.engine
-            .set_rescoring_context((!text.is_empty()).then_some(text));
-        if matches!(self.composed, Some(Composed::Candidates { .. })) {
-            // 查一次只为按新前文重新记下要打分的文本，候选顺序此刻不变
+            .set_surrounding_before((!text.is_empty()).then_some(text));
+        if !matches!(self.composed, Some(Composed::Candidates { .. })) {
+            return;
+        }
+        if self.highlight < self.config.page_size && !self.navigated {
+            self.requery_reordered();
+        } else {
             let _ = self.engine.query();
             self.schedule_rescoring();
         }
@@ -178,15 +187,15 @@ impl Router {
         if self.highlight >= self.config.page_size || self.navigated {
             return;
         }
-        self.requery_rescored();
+        self.requery_reordered();
         // 第二轮：重查时拼出了新路径（各处赢的替换合在一起），它的分还没有，接着要
         if self.engine.rescoring_pending() && self.engine.request_rescoring() {
             self.rescore.start_polling();
         }
     }
 
-    /// 分回来了：按重排后的顺序重建候选布局，云端词与整句补全留着，重画当前页。
-    fn requery_rescored(&mut self) {
+    /// 候选顺序变了（神经分回来了，或应用前文到了）：重查一遍重建候选布局，云端词与整句补全留着，重画当前页。
+    fn requery_reordered(&mut self) {
         let Ok(query) = self.engine.query() else {
             return;
         };
