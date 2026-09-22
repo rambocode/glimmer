@@ -35,6 +35,7 @@ fn counts_unigrams_bigrams_and_trigrams_of_a_tiny_corpus() {
             max_bigrams: 100,
             min_trigram_count: 1,
             max_trigrams: 100,
+            max_trigram_entries: 1_000,
         },
         &out,
     )

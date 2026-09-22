@@ -23,7 +23,7 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   `check_wubi_auto_commit` 在 `push` 之后置 `pending_auto_commit`（四码全码命中且 `auto_select`；新键接上后无任何命中 → 旧段首选顶字、新键存 `deferred_key` 等 `commit` 后补回；满四码空码再敲字母整段丢掉），
   壳每键 `take_auto_commit` 取到就走普通 `commit`；`z` 开头走 `query_pinyin` 反查，候选 `reading` 注 `code_of`、`syllables` 是整段作用域，`typed_display` 为 `z'zhong'guo`；
   **整句**（`[wubi] sentence`，缺省关，issue #3）：连着打的编码进 `sentence::CodeLattice`（位置是字母，边是编码正好等于那 1 到 4 个字母的词，码表 + 用户词；
-  句末不满四码的边再收前缀命中、扣 `TAIL_PREFIX_PENALTY` 6，扫参数字在常数的注释里），`sentence::convert_codes` 与拼音共用 `viterbi::search_lattice`（静态 bigram、个人 n-gram、上屏链上文、`WORD_PENALTY`）；
+  句末不满四码的边再收前缀命中、扣 `TAIL_PREFIX_PENALTY` 6，扫参数字在常数的注释里），`sentence::convert_codes` 与拼音共用 `viterbi::search_lattice`（静态 n-gram、个人 n-gram、上屏链上文、`WORD_PENALTY`）；
   `convert_wubi_sentence` 按字母数取路径（至少 `MIN_RESCORE_PATHS`、到 `rescore_paths` 封顶）走 `rescore_paths`，异步重排与拼音同一条路；
   第二轮拼路径时五笔按编码字母对齐（`rescoring::PathUnit::CodeLetters`：五笔一个词只有一条编码，按音节数对不齐），所以路径上每个词的「音节」记的是敲的那段字母而不是完整编码；`SpanCache` 的键带 `\u{1}` 前缀（编码 `a` 与音节 `a` 撞键）；
   `insert_wubi_sentence`：作用域 ≤ 4 码且码表有命中时候选不动，否则首选是整句（`CandidateKind::Sentence`，`syllables = [整段]`，`typed_display` 为 `gggg'khlg`），
@@ -149,11 +149,23 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 的前几条�
 
 ## crates/glimmer-lm
 
-`BigramModel`，Core `sentence::LanguageModel` trait 的实现，从 `data/generated/lm.qj`（或 `lm-unigram.tsv` / `lm-bigram.tsv`）加载
-（没有这两个文件就退化为一元词频整句）。数据由 `tools/corpus/parquet_to_text.py`（uv 脚本，HF parquet → 简体纯文本）加
+`NgramModel`（`model/` 目录：`mod.rs` 结构与加载、`parse.rs` TSV、`write.rs` 落盘、`score.rs` 打分、`export.rs` 导出），
+Core `sentence::LanguageModel` trait 的实现，从 `data/generated/lm.qj`（或 `lm-unigram.tsv` / `lm-bigram.tsv` / 可选 `lm-trigram.tsv`）加载
+（没有这些文件就退化为一元词频整句）。数据由 `tools/corpus/parquet_to_text.py`（uv 脚本，HF parquet → 简体纯文本）加
 `cargo run --release -p glimmer-dict-convert -- bigram --phrases assets/lexicon/phrases.tsv --phrases assets/lexicon/domain_words.tsv --phrases assets/lexicon/common_words.tsv --brand assets/lexicon/brand.tsv --brand assets/lexicon/mixed_words.tsv data/corpus/*.txt` 生成；语料在 `data/corpus/`（gitignore）。
-短语层不当 token 统计（分词时摘掉、统计完按成分合成一元 / 二元，短语得分等于原来两个词的路径，见 `bigram.rs` 模块注释），品牌词按给定次数写进一元与句首二元。
-`unigrams()` / `bigrams()` 按编号顺序导出全部计数，`dict-convert supplement` 用它在已有 `lm.qj` 上补词。
+短语层不当 token 统计（分词时摘掉、统计完按成分合成一元 / 二元，短语得分等于原来两个词的路径，见 `bigram/mod.rs` 模块注释），品牌词按给定次数写进一元与句首二元；
+**三元不给短语合成**，短语在那一层没有条目、退回二元。
+
+`.qj` 的分节：`WORD` / `ENTR` / `HASH` 词表，`OFFS` / `SUCC` 二元 CSR（按前词分组），`TOFF` / `TSUC` 三元 CSR
+（段号 = 二元在 `SUCC` 里的下标，一条二元 (u,v) 就是一个三元上下文），`CSUM` / `CONT` 是回退要的派生量
+（每个前词的后继计数之和、每个词的不同前词数 N₁₊(·,w)）。后四节都是后加的，缺了照样加载：没有 `TOFF` 退化成二元，
+没有 `CSUM` / `CONT` 就加载时扫一遍 `SUCC` 算（写进文件只多 1 MB，省掉启动时把几百万条二元全读一遍）。
+
+打分是三元 → 二元 → 一元的绝对折扣回退（`Smoothing`：`mode` / `trigram_discount` D₃ / `bigram_discount` D₂，
+`glimmer-cli --tune lm-mode=,lm-d3=,lm-d2=` 可换）。二元那层的分母用语料真实的 c(v)（一元计数）而不是表里后继计数之和：
+二元表按次数砍过，用和当分母等于把留下的几条抬高十几倍。`mode` 有三档：0 是改成三元之前的固定 λ=0.8 插值（复现旧数字用）、
+1 是绝对折扣 + 一元 c(w)/N、2 再把一元换成接续概率 N₁₊(·,w)/N₁₊(·,·)。数字与取舍见 `language-model.md`。
+`unigrams()` / `bigrams()` / `trigrams()` 按编号顺序导出全部计数，`dict-convert supplement` 用它在已有 `lm.qj` 上补词（三元原样带走）。
 
 ## crates/glimmer-platform
 
@@ -201,7 +213,10 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 的前几条�
   `--user-dict` 给了时按输入串记的表落该版本的方案子目录（`wubi86/` / `wubi98/` / `wubixsj/`）。`--typing` 逐键计时不模拟四码自动上屏（`set_input` 不走 `push`）。
 - `--wubi-sentence` 覆盖 `[wubi] sentence`（五笔整句）。只用五笔（`--scheme none --wubi <版本>`）时 `--eval-text` 把句子按码表转成编码来评（`Transcriber::codes`：
   码表有的词打词码、没有的逐字打，同一个字词取最长的那条编码即全码）；冻结的句子集照用，拼音那一列被换掉，码表里没有的字的句子跳过；`--eval-typos` 在这时忽略。
-- `--tune 名=值`（逗号分隔）覆盖个人 n-gram 插值（含整句接上文的权重 `initial`、每词代价 `word`）与敲错代价（含原样成词保护 `protect`）的常数扫网格（名字见 `apps/cli/src/tuning.rs`，Core 侧是 `Engine::set_interpolation` / `set_typo_costs`，壳只用缺省值）。
+- `--tune 名=值`（逗号分隔）覆盖个人 n-gram 插值（含整句接上文的权重 `initial`、每词代价 `word`、词图每格候选数 `span`）与敲错代价（含原样成词保护 `protect`）的常数扫网格
+  （名字见 `apps/cli/src/tuning.rs`，Core 侧是 `Engine::set_interpolation` / `set_typo_costs`，壳只用缺省值）；
+  `lm-mode` / `lm-d3` / `lm-d2` 换静态语言模型的回退方式与折扣，它们在建模型时就用上（`tuning::smoothing`），不走 `Engine`。
+- `--lm <目录或 lm.qj>` 换一份语言模型（目录里认 `lm.qj` 或 `lm-unigram.tsv` + `lm-bigram.tsv` + 可选 `lm-trigram.tsv`），评测新模型不必动 `data/generated`。
 - `--eval-text <文本>...` 整句评测：把用户自己写的中文文本按标点切句、按词库读音转成全拼，冷启动喂给引擎看整句能不能还原原句
   （首选命中率 / 字准确率 / 查询耗时；不依赖日志里当时选了什么，给整句排序与语言模型的改动当尺子），`--eval-save` 冻结成 `句子\t拼音\t上文` 三列文件，
   之后直接 `--eval-text` 它保证比的是同一份句子（本机的在 `data/eval/sentences.tsv`）。排序、整句、纠错的改动先跑它们再合。
@@ -313,7 +328,10 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
   结果 `data/generated/pinyin-llm.jsonl`，不进 git）、语料词频（`lm-unigram.tsv`）建基础词库 `dict.tsv`（9.4 万条），并把 THUOCL 领域词按语料次数 < 50 拆成
   `dicts/<领域>.tsv` + `.qj`（11 本、13 万条，`--domain-keep-min`），流程见 `assets/lexicon/GLIMMER.md`；`--extra-words` 并入人工挑的领域词 `assets/lexicon/domain_words.tsv` 与补充常用词 `common_words.tsv`。
 - `english`：转 `assets/lexicon/05_english/00_all_words.tsv`；`cedict`：释义表备用来源。
-- `bigram`：统计语料；`--phrases` 给短语层、`--brand` 给品牌词（`assets/lexicon/brand.tsv`，微明 210）与中英混杂词（`mixed_words.tsv`，C盘 / B站：合成计数要成分词在语料里，C 不是 token，只能直接给一元，次数对着同音竞争词定），领域词也走合成计数（语料里只有几十次的词当 token 统计会吸走成分词的二元证据）。
+- `bigram`：统计语料的一元 / 二元 / 三元（同一遍分词），写 `lm-unigram.tsv` / `lm-bigram.tsv` / `lm-trigram.tsv`；
+  三元的阈值与上限单列（`--min-trigram-count` 缺省 5、`--max-trigrams` 缺省 1000 万，一条在 `lm.qj` 里 8 字节），
+  内存里三元表到 4000 万条就整批剪枝（扔掉不超过阈值的、阈值再加一，见 `bigram/counts.rs`），输出还砍掉上文本身不在二元表里的那些；
+  `--phrases` 给短语层、`--brand` 给品牌词（`assets/lexicon/brand.tsv`，微明 210）与中英混杂词（`mixed_words.tsv`，C盘 / B站：合成计数要成分词在语料里，C 不是 token，只能直接给一元，次数对着同音竞争词定），领域词也走合成计数（语料里只有几十次的词当 token 统计会吸走成分词的二元证据）。
 - `gaps`：找常用词缺口，不用语料：外部词表（每行 `词[\t拼音]`，CC-CEDICT / jieba 词表转出，不进仓库）里主词库、`dicts/` 与语言模型都没有的 2–4 字词，
   按 `lm.qj` 成分二元合成次数（`bigram::phrase_count`，与 `--phrases` 同一公式），读音词表给了就用、否则由成分主读音拼，写 `gap-candidates.tsv` 供人工挑进 `common_words.tsv`。
 - `supplement`：补充词表并进已有数据，不用语料：`assets/lexicon/dict.tsv` 原行顺序不动、新词按 (词, 音节) 二分插入；`lm.qj` 展开成计数（`supplement/counts.rs` 的 `LmCounts`）后

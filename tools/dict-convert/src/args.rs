@@ -126,6 +126,11 @@ pub enum Command {
         /// 最多输出多少条三元组（按计数取前 N）：一条在 lm.qj 里 8 字节，1000 万条约 80 MB
         #[arg(long, default_value_t = 10_000_000)]
         max_trigrams: usize,
+
+        /// 统计时三元表在内存里最多留多少条（一条约 48 字节，4000 万条约 2 GB），到了就整批剪枝。
+        /// 内存够就调大：剪枝会误杀语料后半段才热起来的三元
+        #[arg(long, default_value_t = 40_000_000)]
+        max_trigram_entries: usize,
     },
 
     /// 从语料里挖词库没收的词：分词时被拆成连续单字的段按子串计数，出现够多的写到 oov-candidates.tsv（再交给 gloss-gen pinyin 标音、lexicon --extra-words 并入）

@@ -7,13 +7,13 @@
 
 use std::collections::HashMap;
 
-/// 三元表最多留多少条：一条约 48 字节（键 16 + 值 4 + HashMap 的开销），4000 万条约 2 GB。
-const MAX_TRIGRAM_ENTRIES: usize = 40_000_000;
-
 /// 语料里的 n-gram 计数。词用编号（[`Vocabulary`] 的编号），0 号是句首标记。
 ///
 /// [`Vocabulary`]: super::Vocabulary
 pub(super) struct Counts {
+    /// 三元表最多留多少条，到了就剪（`--max-trigram-entries`）。
+    capacity: usize,
+
     /// 编号 → 一元计数。
     pub(super) unigram: Vec<u64>,
 
@@ -31,9 +31,10 @@ pub(super) struct Counts {
 }
 
 impl Counts {
-    /// 词数定下一元表的长度。
-    pub(super) fn new(words: usize) -> Self {
+    /// 词数定下一元表的长度，`capacity` 是三元表的条数上限。
+    pub(super) fn new(words: usize, capacity: usize) -> Self {
         Self {
+            capacity: capacity.max(2),
             unigram: vec![0; words],
             bigram: HashMap::new(),
             trigram: HashMap::new(),
@@ -70,11 +71,11 @@ impl Counts {
 
     /// 三元表超了就整批剪：扔掉计数不超过阈值的，还不够就抬阈值再扔。
     pub(super) fn prune_trigrams(&mut self) {
-        if self.trigram.len() <= MAX_TRIGRAM_ENTRIES {
+        if self.trigram.len() <= self.capacity {
             return;
         }
         let before = self.trigram.len();
-        while self.trigram.len() > MAX_TRIGRAM_ENTRIES / 2 {
+        while self.trigram.len() > self.capacity / 2 {
             self.threshold += 1;
             let threshold = self.threshold;
             self.trigram.retain(|_, count| *count > threshold);

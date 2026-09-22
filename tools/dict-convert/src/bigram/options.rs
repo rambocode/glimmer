@@ -27,4 +27,7 @@ pub struct ConvertOptions {
 
     /// 最多输出多少条三元：直接决定 `lm.qj` 多大（一条 8 字节，外加每条二元 4 字节的段偏移）。
     pub max_trigrams: usize,
+
+    /// 统计时三元表在内存里最多留多少条，到了就整批剪枝。内存够就调大：剪枝会误杀语料后半段才热起来的三元。
+    pub max_trigram_entries: usize,
 }

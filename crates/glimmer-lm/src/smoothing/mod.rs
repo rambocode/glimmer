@@ -21,11 +21,16 @@ pub struct Smoothing {
 }
 
 impl Smoothing {
-    /// 缺省：绝对折扣 + 接续概率一元，D₃ = 0.75、D₂ = 0.75（n-gram 平滑的惯用值，数字见 `docs/notes/language-model.md`）。
+    /// 缺省：绝对折扣 + 接续概率一元，D₃ = D₂ = 3。
+    ///
+    /// n-gram 平滑的惯用值是 0.75，这里取 3 是扫出来的：0.75 到 4 是一块平台，2 以上都一样
+    /// （干净集首选 28.9% → 29.2%，见 `docs/notes/language-model.md`）。表按次数砍过（二元只留次数 ≥ 3 的），
+    /// 留下来的那些本来就偏高，扣得多一点才不会把没进表的接续压死。
+    /// **D 扣的是绝对计数，换一份大小差一个数量级的语料要重扫。**
     pub const DEFAULT: Self = Self {
         mode: BackoffMode::Continuation,
-        trigram_discount: 0.75,
-        bigram_discount: 0.75,
+        trigram_discount: 3.0,
+        bigram_discount: 3.0,
     };
 
     /// 改成三元之前的行为：固定 λ = 0.8 的插值，不看三元。

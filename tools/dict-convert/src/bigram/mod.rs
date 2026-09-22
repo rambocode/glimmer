@@ -52,7 +52,7 @@ pub fn convert(options: &ConvertOptions, out_dir: &Path) -> Result<(), ConvertEr
     for path in &options.phrases {
         phrase_parts.extend(phrase_components(path, &mut vocabulary)?);
     }
-    let mut counts = Counts::new(vocabulary.words.len());
+    let mut counts = Counts::new(vocabulary.words.len(), options.max_trigram_entries);
     let mut tokens = Vec::new();
     let mut lines = 0u64;
     let mut runs = 0u64;

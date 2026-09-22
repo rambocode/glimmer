@@ -95,6 +95,7 @@ fn run() -> Result<(), ConvertError> {
             max_bigrams,
             min_trigram_count,
             max_trigrams,
+            max_trigram_entries,
         } => bigram::convert(
             &bigram::ConvertOptions {
                 corpus,
@@ -105,6 +106,7 @@ fn run() -> Result<(), ConvertError> {
                 max_bigrams,
                 min_trigram_count,
                 max_trigrams,
+                max_trigram_entries,
             },
             &args.out_dir,
         ),
