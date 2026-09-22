@@ -85,7 +85,7 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 
 ## crates/glimmer-learning
 
-- `FrequencyLearner`：用户选择次数（`user.tsv`）、按输入串记的选择（`user-choices.tsv`，词级排序里同输入串选过的优先）、用户词（`user-words.tsv`，主词库同格式，
+- `FrequencyLearner`：用户选择次数（`user.tsv`）、按输入串记的选择（`user-choices.tsv`，词级排序里同输入串、同位置选过的优先，格式与迁移见下）、用户词（`user-words.tsv`，主词库同格式，
   Engine 与主词库一起查）、个人英文词（`user-english.tsv`，回车原样上屏的英文词与选过的英文候选，与随包英文词表一起出候选且在前）、
   个人敲错表（`user-typos.tsv`，接受过的 (敲的, 要的) 音节对，词图敲错边与整段纠错的代价按它打折）与个人 n-gram（`user-ngram.tsv`，Core `sentence::UserNgram`，
   二元 + 三元在线计数，整句转换与词级排序里与静态模型插值；Tab 接受的云端整句按 `sentence::segment_text` 切词后也记；
@@ -93,6 +93,15 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   按输入串记的三张表（`user-words.tsv` / `user-choices.tsv` / `user-typos.tsv`）按方案分目录：`from_path_with_scheme(path, Some("wubi98"))` 把它们放到词频文件同目录的 `wubi98/` 下
   （三个五笔版本各一个子目录：`wubi86/` / `wubi98/` / `wubixsj/`，互不共用）
   （五笔编码与拼音音节撞键，`a` 既是音节也是 工 的简码），按文本记的 `user.tsv` / `user-ngram.tsv` / `user-english.tsv` 各方案共用；子目录首次落盘时建。
+- **`user-choices.tsv` 按句首 / 句中分桶**：四列 `输入串\t词\t次数\t位置`，位置是 `start`（句首）/ `after`（句中）/ `any`（不分位置）。
+  `ChoiceCounts` 一对 (输入串, 词) 存三个计数，查权重 = 当前位置那一桶 + `any` 那一桶；`MAX_CHOICE_ENTRIES` 与 `decay_choices` 仍按「对」算、三桶一起减半。
+  位置由 Core 的 `ChoicePosition` 定（`Engine::context()` 的 `previous.is_none()`）：记录用上屏那一刻的上文，查询用当前上文；
+  整段分次选完的合成词按**整段开头**那一刻的位置记（`CommitChain::buffer_position`）。回车原样上屏的 `<raw>` 与句首句中无关，只记 `any`。
+  为什么分：排序第 5 级（同输入串选过的次数）压着第 6 级（上下文得分），用户的 `ba` 选过 吧 25 次、把 21 次，句首也只能出 吧。
+- **`user-choices.tsv` 的迁移**：老的三列行读成 `any`，加载时（个人 n-gram 读完之后）一次性按 `c(<s>, 词) / c(词)` 的比例四舍五入拆进 `start` / `after`，
+  n-gram 不认识的词留在 `any`（两种位置都算），拆完标脏、下次落盘写成四列。`any` 拆完清零，所以重复迁移是空操作。
+  位置列放在次数后面是为了向下兼容：老版本按前三列解析、忽略多余列，读四列文件仍能读出次数，只是同一对的两行会互相覆盖（留下最后读到的那一桶），
+  不会整行当坏行丢掉。
 - `InputLog`：输入日志（`input-log.jsonl`，每次上屏一行：敲的键、切分、看到的前几个候选、选了第几个、来源、纠错、撤销，
   Core `InputLogger` trait 的落盘实现，`[general] input_log` 缺省开，只写本机，给离线回归评测与个人模型用）。
 - `UsageStats`：输入统计（`usage.tsv`，按天记汉字 / 中文词 / 英文词 / 上屏次数，Core `UsageMeter` trait 的实现，Engine 每次上屏 `Usage::of_text` + 按来源定词数，
