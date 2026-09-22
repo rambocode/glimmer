@@ -102,6 +102,8 @@ where
                     syllables: vec![code.to_owned()],
                     frequency: m.frequency,
                     penalty,
+                    // 五笔编码不是读音，没有份额一说
+                    reading: 0.0,
                 };
                 (score, word)
             })

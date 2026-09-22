@@ -6,8 +6,8 @@ use glimmer_dictionary::{Dictionary, Match, SyllablePattern};
 
 use super::Lattice;
 use crate::sentence::{
-    ABBREVIATED_SPAN_CANDIDATES, MAX_WORD_SYLLABLES, PROTECTED_MIN_COST, Personal, SpanCache,
-    SpanWord,
+    ABBREVIATED_SPAN_CANDIDATES, MAX_WORD_SYLLABLES, PROTECTED_MIN_COST, Personal, ReadingShare,
+    Search, SpanCache, SpanWord,
 };
 
 /// 拼音的词图。`positions` 每个位置是若干写法（第一种是敲的，其余是模糊音 / 敲错变体），
@@ -33,6 +33,9 @@ pub struct SyllableLattice<'a, W, C> {
     /// 格子候选的缓存。
     cache: &'a mut SpanCache,
 
+    /// 多音字的读音份额表；`None` 为不扣读音份额。
+    reading: Option<&'a ReadingShare>,
+
     /// 原样成词保护多扣的分（见 [`Self::typed_word_reach`]）；0 为不保护。
     protected_extra: f64,
 
@@ -49,6 +52,7 @@ where
     C: Fn(usize, &str) -> f64,
 {
     /// 建词图：总词频与原样成词的范围当场算好（后者查过的格子进缓存，主循环直接用）。
+    /// `search` 只取词图这一层用得上的两项（读音份额表、原样成词保护），其余是 Viterbi 的事。
     pub fn new(
         dictionaries: &'a [&'a Dictionary],
         positions: &'a [Vec<SyllablePattern<'a>>],
@@ -56,7 +60,7 @@ where
         weight: &'a W,
         cost: &'a C,
         cache: &'a mut SpanCache,
-        protected_extra: f64,
+        search: Search<'a>,
     ) -> Self {
         let total: f64 = dictionaries
             .iter()
@@ -70,7 +74,8 @@ where
             weight,
             cost,
             cache,
-            protected_extra,
+            reading: search.reading,
+            protected_extra: search.protected_extra,
             typed_reach: Vec::new(),
             log_total: total.ln(),
         };
@@ -120,6 +125,10 @@ where
     /// 个人次数只在这里保证用户常用的同音词进得了格子，不进路径打分（那是 n-gram 的事）；
     /// 打折让敲错变体命中的词只在原样命中不够多时才进格子，而常用词（关系）即使打折也留得住。
     /// 格子里有简拼位置时命中的是一大片不同读音的词，多留一些让语言模型去挑。
+    ///
+    /// 挑候选**不**看读音份额：这里用的 `m.frequency` 是词库按读音分开记的那一条（没(mo) 是 7 千不是 92 万），
+    /// 本来就只算这个读音，再扣一次就把冷门读音从格子里删掉了。份额是给语言模型那一步用的，
+    /// 算好存进 [`SpanWord::reading`]，路径打分时才减。
     fn span_candidates(
         dictionaries: &[&Dictionary],
         span: &[Vec<SyllablePattern<'_>>],
@@ -127,6 +136,7 @@ where
         personal: Personal<'_>,
         weight: &W,
         cost: &C,
+        reading: Option<&ReadingShare>,
     ) -> Vec<SpanWord> {
         let alternatives = span.iter().any(|p| p.len() > 1);
         let penalty_of = |m: &Match<'_>| {
@@ -157,6 +167,7 @@ where
         } else {
             personal.interpolation.span_candidates
         });
+        let interpolation = personal.interpolation;
         scored
             .into_iter()
             .map(|(_, penalty, hit)| SpanWord {
@@ -164,6 +175,14 @@ where
                 syllables: hit.syllables().map(str::to_owned).collect(),
                 frequency: hit.frequency,
                 penalty,
+                reading: reading.map_or(0.0, |share| {
+                    share.penalty(
+                        hit.text,
+                        hit.frequency,
+                        interpolation.reading_weight,
+                        interpolation.reading_cap,
+                    )
+                }),
             })
             .collect()
     }
@@ -188,10 +207,15 @@ where
 
     fn words(&mut self, start: usize, end: usize) -> Arc<[SpanWord]> {
         let span = &self.positions[start..end];
-        let (dictionaries, personal, weight, cost) =
-            (self.dictionaries, self.personal, self.weight, self.cost);
+        let (dictionaries, personal, weight, cost, reading) = (
+            self.dictionaries,
+            self.personal,
+            self.weight,
+            self.cost,
+            self.reading,
+        );
         self.cache.get_or_insert_with(SpanCache::key(span), || {
-            Self::span_candidates(dictionaries, span, start, personal, weight, cost)
+            Self::span_candidates(dictionaries, span, start, personal, weight, cost, reading)
         })
     }
 

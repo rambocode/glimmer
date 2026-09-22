@@ -258,6 +258,7 @@ impl Engine {
         let letters = choice_key(scope, scope.len());
         let position = self.choice_position();
         let interpolation = self.interpolation;
+        let reading_share = self.reading_share();
         ranking::rank(&mut scored, MAX_CANDIDATES, |item| {
             let hit = &item.hit;
             // 纠错生效时覆盖的是纠正后的字母，换算回原串再查「这个输入串下选过什么」
@@ -267,12 +268,20 @@ impl Engine {
             let choice = letters.get(..covered).map_or(0, |input| {
                 self.learner.choice_weight(input, hit.text, position)
             });
+            // 多音字按冷门读音命中时减掉读音份额：语言模型只看字不看音，`mo` 下的 没 拿的是 没(mei) 的分
+            let reading = reading_share.penalty(
+                hit.text,
+                hit.frequency,
+                interpolation.reading_weight,
+                interpolation.reading_cap,
+            );
             let log_prob = sentence::transition_log_prob(
                 &*self.language_model,
                 self.personal(),
                 self.context(),
                 hit.text,
                 sentence::fallback_log_prob(hit.frequency, log_total),
+                reading,
             );
             log_prob
                 + ranking::choice_bonus(
@@ -615,6 +624,7 @@ impl Engine {
             paths: k,
             initial: self.context(),
             protected_extra: self.typo_costs.protected_extra,
+            reading: Some(self.reading_share()),
         };
         let mut paths = sentence::convert_paths(
             &dictionaries,

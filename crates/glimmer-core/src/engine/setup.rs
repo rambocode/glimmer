@@ -449,6 +449,7 @@ impl Engine {
 
     pub fn with_learner(mut self, learner: Box<dyn Learner>) -> Self {
         self.learner.replace(learner);
+        self.rebuild_reading_share();
         self.forget_span_cache();
         self
     }
@@ -457,6 +458,7 @@ impl Engine {
     pub fn set_learner(&mut self, learner: Box<dyn Learner>) {
         self.learner.flush();
         self.learner.replace(learner);
+        self.rebuild_reading_share();
         self.forget_span_cache();
     }
 
@@ -504,11 +506,28 @@ impl Engine {
         &self.dictionary
     }
 
-    /// 换掉全部附加词库（导入、移除、开关之后）。格子缓存随之作废。
+    /// 换掉全部附加词库（导入、移除、开关之后）。读音份额表与格子缓存随之重建 / 作废。
     pub fn set_extra_dictionaries(&mut self, dictionaries: Vec<Dictionary>) {
         self.extra_english = WordList::from_dictionaries(&dictionaries);
         self.extra_dictionaries = dictionaries;
+        self.rebuild_reading_share();
         self.forget_span_cache();
+    }
+
+    /// 重建多音字的读音份额表：主词库 + 附加词库 + 用户词一起算。
+    ///
+    /// 只在装词库、换学习器时建，不跟着每次上屏走：建表要把全部词库扫一遍（9 万条词目），
+    /// 而用户词是零星几百条、词频也小，晚一步进表最多动到小数点后几位；
+    /// 「这个词我常用」本来就由 weight 与个人 n-gram 表达，不该由读音份额表达。
+    pub(super) fn rebuild_reading_share(&mut self) {
+        let share = ReadingShare::build(&self.all_dictionaries());
+        tracing::debug!(words = share.len(), "多音字读音份额表已建");
+        self.reading_share = share;
+    }
+
+    /// 多音字的读音份额表。
+    pub(super) fn reading_share(&self) -> &ReadingShare {
+        &self.reading_share
     }
 
     pub fn extra_dictionaries(&self) -> &[Dictionary] {

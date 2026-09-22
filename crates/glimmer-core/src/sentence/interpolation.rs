@@ -1,6 +1,6 @@
 use super::{
-    BIGRAM_DISCOUNT, CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, SPAN_CANDIDATES,
-    TRIGRAM_DISCOUNT, USER_LAMBDA, WORD_PENALTY,
+    BIGRAM_DISCOUNT, CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, READING_CAP,
+    READING_WEIGHT, SPAN_CANDIDATES, TRIGRAM_DISCOUNT, USER_LAMBDA, WORD_PENALTY,
 };
 use crate::ranking::{CHOICE_BONUS, CHOICE_CAP};
 
@@ -35,6 +35,12 @@ pub struct Interpolation {
     /// 词图每个格子最多留几个词（[`SPAN_CANDIDATES`]）。放宽它是打分模型可信度的验收尺子，所以挂在这里能调。
     pub span_candidates: usize,
 
+    /// 多音字读音份额扣分的系数（[`READING_WEIGHT`]），0 为关掉。
+    pub reading_weight: f64,
+
+    /// 读音份额最多扣多少（[`READING_CAP`]）。
+    pub reading_cap: f64,
+
     /// 词级排序里同输入串、同位置选过次数的加分系数（[`CHOICE_BONUS`]）。
     ///
     /// [`CHOICE_BONUS`]: crate::ranking::CHOICE_BONUS
@@ -57,6 +63,8 @@ impl Interpolation {
         initial_weight: INITIAL_CONTEXT_WEIGHT,
         word_penalty: WORD_PENALTY,
         span_candidates: SPAN_CANDIDATES,
+        reading_weight: READING_WEIGHT,
+        reading_cap: READING_CAP,
         choice_bonus: CHOICE_BONUS,
         choice_cap: CHOICE_CAP,
     };

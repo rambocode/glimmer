@@ -51,7 +51,7 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   查询（在查词之后、插整句之前）、上屏重算 `sentence_words` / `mixed_words`、中英混输比分、纠错的原样得分、云联想的拼音与本地参考都先调它，几处读的是同一种切分。
   只有一种同形切分时不做转换。光标按音节移动 / 按音节删与光标后剩余拼音的显示走 `Engine::preferred_segmentation`（同一种挑法）；
   查询与剩余拼音显示把挑出的切分记在 `preferred_segmentations`（最多 4 条，与 `span_cache` 一起清），方向键直接复用，不重转整句。
-- 整句搜索的参数打包在 `sentence::Search`（`keep_partial` / `paths` / `initial` / `protected_extra`），`convert_paths` 只收它；拼音的整句转换都经 `Engine::convert_sentence_with` 一处（五笔整句经 `convert_wubi_sentence`）。
+- 整句搜索的参数打包在 `sentence::Search`（`keep_partial` / `paths` / `initial` / `protected_extra` / `reading`），`convert_paths` 只收它；拼音的整句转换都经 `Engine::convert_sentence_with` 一处（五笔整句经 `convert_wubi_sentence`）。
 - 词图与找路分开：`sentence/lattice/` 的 `Lattice` trait 回答「位置 `[start, end)` 上有哪些词」，`SyllableLattice`（拼音，位置是音节，格子候选 `span_candidates` 与原样成词保护都在它里面）
   与 `CodeLattice`（五笔，位置是编码字母）各实现一份；`viterbi::search_lattice` 只认 trait，`convert_paths` / `convert_codes` 是两个入口。2026-09-19 抽出时干净集 9808 句的评测数字一位不变。
   - **接上文**：`initial` 取 `Engine::context()`（`engine/surrounding/`：**上屏链上有词就用链，链是空的才用壳给的应用光标前文，都没有才当句首**；
@@ -61,6 +61,12 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
     只在文本变了时切一次；词级排序（`query/mod.rs`）与五笔整句也用同一个 `Engine::context()`，学习记的转移仍只看上屏链。
     `Engine::seed_chain(光标前文)` 是另一条路：直接把切出来的词摆进链（不学习、不写日志），整句评测的 `chain` 口径用它。数字见 `long-sentence.md`。
   - **每词代价**：路径上每个词扣 `WORD_PENALTY` 1（`Interpolation::word_penalty`，`--tune word=`），几个单字连起来不再压过整词（笔给 / 笔记）；不进 `static_score`，神经重排后照留。
+  - **多音字读音份额**（`sentence::ReadingShare`）：语言模型只看字不看音，而词库按读音分了词频，所以一个词按某个读音命中时减掉 `ln(该读音词频 / 该词全部读音词频之和)`
+    （没(mo) 约 −4.85，单读音词 0），系数 `READING_WEIGHT` 1、封顶 `READING_CAP` 6（`--tune reading=` / `reading-cap=`）。
+    表在 `Engine::rebuild_reading_share` 里扫全部词库建一次（主词库 + 附加词库 + 用户词，871 个多读音词，约 13 ms），装词库 / 换学习器时重建，不跟着上屏走。
+    扣在 `sentence::transition_log_prob`：**只在静态模型认得这个词时减**（`fallback` 用的就是这条词目自己的词频，再减是扣两遍），减在个人插值之后
+    （个人 n-gram 也只认字不认音）；算好的值存 `SpanWord::reading`，与模糊音 / 敲错的 `penalty` 分开，也不参与格子挑候选（`span_candidates` 用的词频本来就按读音分开）。
+    不进 `static_score`：神经重排替换的是静态模型那部分，而字级模型同样不认识读音。词级排序（`query/mod.rs`）用同一个函数，同样扣。数字见 `long-sentence.md`。
   - **原样成词保护**：一条敲错边整个落在「按敲的原样读出的多音节词」里面（`ce shi` 测试 里的 `ce` → `de`）多扣 `TypoCosts::protected_extra` 4（`SyllableLattice::typed_word_reach`，`--tune protect=`）；
     伸到原样词外面的（`mei gan xi` 没关系 对 美感）不拦，模糊音（代价 < `PROTECTED_MIN_COST`）不算猜敲错。数字见 `long-sentence.md`。
 - **个人 n-gram 怎么插值**（`sentence::UserNgram::blend`）：两层绝对折扣，每层折出来的质量给下一层——

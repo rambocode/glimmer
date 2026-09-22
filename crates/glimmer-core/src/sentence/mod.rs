@@ -10,6 +10,9 @@
 //! 简拼位置（`wxq` 的 `w x q`）按前缀取词，每个格子多留一些候选，全靠语言模型在路径上分辨；
 //! 全拼句子末尾没打完的单字母不参与，简拼句子里末尾单字母就是一个音节。
 //!
+//! 语言模型只看字不看音，而词库按读音分了词频：多音字按冷门读音命中时要扣掉读音份额（[`ReadingShare`]），
+//! 不然 没(mo) 会拿着 没(mei) 的分去比。
+//!
 //! 格子查词是最贵的一步，结果放进 [`SpanCache`]：敲键是增量的，每一键只有以它结尾的几个格子是新的。
 
 mod context;
@@ -18,6 +21,7 @@ mod interpolation;
 mod language_model;
 mod lattice;
 mod personal;
+mod reading_share;
 mod scorer;
 mod search;
 mod sentence_word;
@@ -32,6 +36,7 @@ pub use interpolation::Interpolation;
 pub use language_model::{LanguageModel, NoLanguageModel};
 pub use lattice::{CodeLattice, Lattice, SyllableLattice, TAIL_PREFIX_PENALTY};
 pub use personal::Personal;
+pub use reading_share::ReadingShare;
 pub use scorer::SentenceScorer;
 pub use search::{PROTECTED_MIN_COST, Search};
 pub use sentence_word::SentenceWord;
@@ -100,6 +105,15 @@ pub const BEAM_WIDTH: usize = 8;
 /// 语言模型不认识、只能按词库词频兜底的词扣多少分：模型见过的词更可信。
 pub const FALLBACK_PENALTY: f64 = -4.0;
 
+/// 多音字读音份额扣分的系数（[`Interpolation::reading_weight`]，`--tune reading=`）：1 是按 `ln(读音词频 / 全部读音词频)` 原样扣，0 关掉。
+/// 份额是概率里本来就该有的一项，没有理由打折，所以缺省 1；留成旋钮是为了扫参时能量它自己的净效果。
+pub const READING_WEIGHT: f64 = 1.0;
+
+/// 读音份额最多扣多少（[`Interpolation::reading_cap`]，`--tune reading-cap=`）。
+/// 词库里有词频记成个位数的冷门读音，不封顶一条边能扣掉二三十分，比任何语言模型分都大，
+/// 等于把那个读音从词图里删掉；封在 6 上（份额 1/400）已经足够把冷门读音压到别的字后面。
+pub const READING_CAP: f64 = 6.0;
+
 /// 模型不认识的词的兜底 log 概率：词库词频占总词频的比例再扣 [`FALLBACK_PENALTY`]。`log_total` 是总词频的对数。
 pub fn fallback_log_prob(frequency: u32, log_total: f64) -> f64 {
     (f64::from(frequency) + 1.0).ln() - log_total + FALLBACK_PENALTY
@@ -107,13 +121,22 @@ pub fn fallback_log_prob(frequency: u32, log_total: f64) -> f64 {
 
 /// `log P(word | context)`：先问静态模型（看前两个词、自己按上下文回退，不认识就用 `fallback`），再与个人 n-gram 插值。
 /// 整句路径上的每一步和词级排序的上下文得分都用它。
+///
+/// `reading` 是这条词目的读音份额扣分（见 [`ReadingShare`]），**只在静态模型认得这个词时才减**：
+/// 模型给的是这个词全部读音合起来的概率，减掉份额才是这个读音的那一份；
+/// 而 `fallback` 用的是这条词目自己的词频，词库早按读音分开记了，再减一次就成了扣两遍。
+/// 减在插值之后（等价于把插值结果整个乘上份额）：个人 n-gram 也只认字不认音，
+/// 用户打过几次 没(mei) 不该让 没(mo) 跟着沾光。
 pub fn transition_log_prob(
     model: &dyn LanguageModel,
     personal: Personal<'_>,
     context: Context<'_>,
     word: &str,
     fallback: f64,
+    reading: f64,
 ) -> f64 {
-    let base = model.log_prob(context, word).unwrap_or(fallback);
-    personal.blend(context, word, base)
+    match model.log_prob(context, word) {
+        Some(base) => personal.blend(context, word, base) - reading,
+        None => personal.blend(context, word, fallback),
+    }
 }

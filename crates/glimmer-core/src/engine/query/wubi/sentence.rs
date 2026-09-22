@@ -79,6 +79,8 @@ impl Engine {
             paths,
             initial: self.context(),
             protected_extra: 0.0,
+            // 五笔编码不是读音
+            reading: None,
         };
         let mut paths = sentence::convert_codes(
             &dictionaries,

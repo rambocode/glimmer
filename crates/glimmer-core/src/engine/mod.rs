@@ -70,7 +70,8 @@ use crate::parser::{self, ParseError, Segmentation};
 use crate::punctuation::Punctuation;
 use crate::ranking::{self, Scored};
 use crate::sentence::{
-    self, Conversion, Interpolation, LanguageModel, NoLanguageModel, Personal, SentenceScorer,
+    self, Conversion, Interpolation, LanguageModel, NoLanguageModel, Personal, ReadingShare,
+    SentenceScorer,
 };
 use crate::shortcut;
 use crate::shuangpin::Scheme;
@@ -90,6 +91,9 @@ pub struct Engine {
     /// 附加词库（领域词库、用户导入的），与主词库一起查词、一起进整句词图；不参与语言模型（它们没有 bigram，
     /// 走词频兜底）。壳按用户目录 `dicts/` 与配置 `[dictionaries]` 装配。
     extra_dictionaries: Vec<Dictionary>,
+
+    /// 多音字的读音份额表（见 [`ReadingShare`]），装词库 / 换学习器时重建一次。
+    reading_share: ReadingShare,
 
     /// 英文候选的释义（英→中），缺省为 [`NoTranslator`]。英文候选的辅助语言是主语言中文，
     /// 与中文候选查学习语言的表分开，仍是「一个候选只显示一种辅助语言」。
@@ -371,9 +375,11 @@ pub const RESCORE_CONTEXT_CHARS: usize = 64;
 
 impl Engine {
     pub fn new(dictionary: Dictionary) -> Self {
+        let reading_share = ReadingShare::build(&[&dictionary]);
         Self {
             dictionary,
             extra_dictionaries: Vec::new(),
+            reading_share,
             translator: Box::new(NoTranslator),
             english_translator: Box::new(NoTranslator),
             modes: ModeKeys::default(),

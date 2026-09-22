@@ -94,7 +94,7 @@ pub fn convert_paths(
         &weight,
         &cost,
         cache,
-        search.protected_extra,
+        search,
     );
     search_lattice(&mut lattice, search, model, personal, &weight)
 }
@@ -167,6 +167,7 @@ fn search_lattice(
                     model,
                     personal,
                     fallback,
+                    hit.reading,
                     (gain, hit_penalty),
                 );
                 nodes[end].push(Node {
@@ -189,6 +190,7 @@ fn search_lattice(
                 &NoModel,
                 Personal::NONE,
                 UNKNOWN_LOG_PROB,
+                0.0,
                 (0.0, 0.0),
             );
             nodes[start + 1].push(Node {
@@ -279,6 +281,10 @@ impl LanguageModel for NoModel {
 /// 前一个词就是前驱的词，前二词取前驱最优走法的回指（近似，不扩状态），静态三元与个人三元都用它。
 /// 路径开头接 `search.initial`（这段拼音之前的上文）：第一个词的上文就是它，第二个词的前二词是它的 `previous`。
 /// `gain` 是这条边自己的加减分（用户加分 − 代价 − 每词代价）与其中计入 `penalty` 的那部分。
+///
+/// `reading` 是这条边的读音份额扣分。它进路径分、**不进** `static_score`：`static_score` 是留给神经重打分换掉的那一部分
+/// （最终分 = 路径分 + λ·(神经分 − 静态分)），而神经模型是字级的、同样不认识读音，
+/// 把份额算进去等于让重排一并把它还回来，多音字又会赢。
 #[allow(clippy::too_many_arguments)]
 fn arrivals(
     nodes: &[Vec<Node>],
@@ -288,6 +294,7 @@ fn arrivals(
     model: &dyn LanguageModel,
     personal: Personal<'_>,
     fallback: f64,
+    reading: f64,
     gain: (f64, f64),
 ) -> Vec<Arrival> {
     let (gain, edge_penalty) = gain;
@@ -296,7 +303,7 @@ fn arrivals(
     for (back, previous) in nodes[start].iter().enumerate() {
         let (step, static_step) = if start == 0 {
             (
-                initial_step(model, personal, initial, word, fallback),
+                initial_step(model, personal, initial, word, fallback, reading),
                 initial_log_prob(model, personal, initial, word, fallback),
             )
         } else {
@@ -309,7 +316,7 @@ fn arrivals(
                 },
             };
             (
-                transition_log_prob(model, personal, context, word, fallback),
+                transition_log_prob(model, personal, context, word, fallback, reading),
                 model.log_prob(context, word).unwrap_or(fallback),
             )
         };
@@ -359,13 +366,14 @@ fn initial_step(
     initial: Context<'_>,
     word: &str,
     fallback: f64,
+    reading: f64,
 ) -> f64 {
-    let fresh = transition_log_prob(model, personal, Context::START, word, fallback);
+    let fresh = transition_log_prob(model, personal, Context::START, word, fallback, reading);
     let weight = personal.interpolation.initial_weight.clamp(0.0, 1.0);
     if initial.previous.is_none() || weight <= 0.0 {
         return fresh;
     }
-    let following = transition_log_prob(model, personal, initial, word, fallback);
+    let following = transition_log_prob(model, personal, initial, word, fallback, reading);
     mix(weight, following, fresh)
 }
 

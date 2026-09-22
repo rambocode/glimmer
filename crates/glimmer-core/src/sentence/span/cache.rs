@@ -101,6 +101,7 @@ mod tests {
                     syllables: vec!["kai".to_owned(), "fa".to_owned()],
                     frequency: 9,
                     penalty: 0.0,
+                    reading: 0.0,
                 }]
             })
         };

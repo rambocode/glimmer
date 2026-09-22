@@ -1,6 +1,6 @@
 //! 一次整句转换的搜索参数。
 
-use super::Context;
+use super::{Context, ReadingShare};
 
 /// 替代写法的代价到这个数才算「猜用户敲错了」：模糊音（ln 2）是用户自己开的读法，不算猜，不受原样成词保护。
 pub const PROTECTED_MIN_COST: f64 = 1.0;
@@ -19,6 +19,9 @@ pub struct Search<'a> {
 
     /// 原样成词保护：一条猜敲错的边整个落在「按敲的原样读出的多音节词」里面时多扣这么多；0 为不保护。
     pub protected_extra: f64,
+
+    /// 多音字的读音份额表（见 [`ReadingShare`]）；`None` 为不扣读音份额。五笔编码没有读音，那条路一律 `None`。
+    pub reading: Option<&'a ReadingShare>,
 }
 
 impl Search<'_> {
@@ -28,5 +31,6 @@ impl Search<'_> {
         paths: 1,
         initial: Context::START,
         protected_extra: 0.0,
+        reading: None,
     };
 }
