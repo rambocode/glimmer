@@ -62,6 +62,7 @@ fn run() -> Result<(), CliError> {
             eval::Shape {
                 chunk_words: args.eval_chunk,
                 typos: args.eval_typos,
+                context: args.eval_context,
             },
             args.misses,
         )?;

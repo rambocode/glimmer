@@ -8,6 +8,7 @@
 
 mod bucket;
 mod chunk;
+mod context;
 mod extract;
 mod pair;
 mod report;
@@ -20,6 +21,7 @@ use std::time::Instant;
 
 use glimmer_core::Engine;
 
+pub use context::ContextSource;
 pub use report::Report;
 
 use bucket::LengthBucket;
@@ -34,6 +36,9 @@ pub struct Shape {
 
     /// 每条拼音注一处敲错（见 [`typo::inject`]）。
     pub typos: bool,
+
+    /// 上文经哪条途径给引擎（见 [`ContextSource`]）。
+    pub context: ContextSource,
 }
 
 /// 跑一遍评测集，返回报告；`save` 给了就把用到的句子集（变形之前的）写成三列文件。
@@ -59,8 +64,9 @@ pub fn run(
         tracing::info!(path = %path.display(), count = pairs.len(), "句子集已保存");
     }
     let pairs = reshape(engine, pairs, shape, &mut report);
+    report.mode.push_str(shape.context.label());
     for pair in &pairs {
-        evaluate(engine, pair, &mut report, show_misses);
+        evaluate(engine, pair, shape.context, &mut report, show_misses);
     }
     Ok(report)
 }
@@ -175,15 +181,19 @@ fn collect(
     Ok(pairs)
 }
 
-/// 评一句：清空引擎状态、写入上文、喂拼音、看候选。
-fn evaluate(engine: &mut Engine, pair: &Pair, report: &mut Report, show_misses: usize) {
+/// 评一句：清空引擎状态、按 `source` 写入上文、喂拼音、看候选。
+fn evaluate(
+    engine: &mut Engine,
+    pair: &Pair,
+    source: ContextSource,
+    report: &mut Report,
+    show_misses: usize,
+) {
     report.total += 1;
     engine.clear();
     engine.break_chain();
     engine.history_mut().clear();
-    engine.history_mut().record(&pair.context);
-    // 上文也摆进上屏链：壳里这段拼音之前上屏的词就在链上，整句的第一个词接着它算
-    engine.seed_chain(&pair.context);
+    seed_context(engine, &pair.context, source);
     engine.set_input(&pair.pinyin);
     let started = Instant::now();
     let query = match engine.query() {
@@ -241,6 +251,23 @@ fn evaluate(engine: &mut Engine, pair: &Pair, report: &mut Report, show_misses: 
         ));
     }
     engine.clear();
+}
+
+/// 把这条的上文按 `source` 送进引擎。两条途径给神经重打分看到的前文是一样的（本会话历史 / 应用前文），
+/// 差别只在整句与词级排序的上文从哪来，这样两组数字比的就是上文来源本身。
+fn seed_context(engine: &mut Engine, context: &str, source: ContextSource) {
+    match source {
+        ContextSource::Chain => {
+            engine.set_surrounding_before(None);
+            engine.history_mut().record(context);
+            // 上文也摆进上屏链：壳里这段拼音之前上屏的词就在链上，整句的第一个词接着它算
+            engine.seed_chain(context);
+        }
+        // 上屏链保持空（`break_chain` 已清），上文只从应用前文那一侧进
+        ContextSource::App => {
+            engine.set_surrounding_before((!context.is_empty()).then(|| context.to_owned()));
+        }
+    }
 }
 
 /// 整句评测的错误。

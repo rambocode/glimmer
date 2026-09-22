@@ -148,6 +148,11 @@ pub struct Args {
     #[arg(long, value_name = "N")]
     pub eval_chunk: Option<usize>,
 
+    /// 整句评测里上文怎么给引擎：chain 当成自己刚上屏的词（缺省），app 只经应用光标前文给、上屏链保持空
+    /// （模拟接着对方的话 / 粘贴之后接着打）
+    #[arg(long, value_name = "来源", default_value = "chain")]
+    pub eval_context: crate::eval::ContextSource,
+
     /// 整句评测时给每条拼音注一处敲错（相邻键换位 / 敲到旁边的键，按句子哈希定，可复现）：量敲错纠正的召回
     #[arg(long)]
     pub eval_typos: bool,
