@@ -21,11 +21,11 @@ use std::collections::{BTreeMap, HashMap, HashSet};
 use std::io::{BufWriter, Write};
 use std::path::Path;
 
-use glimmer_core::parser::is_syllable;
 use glimmer_dictionary::Dictionary;
 use glimmer_format::Metadata;
 
 use crate::error::ConvertError;
+use crate::syllable::{is_reading_of, is_reading_of_word};
 use entry::LexiconEntry;
 use pack::Pack;
 use readings::CharReadings;
@@ -164,7 +164,7 @@ pub fn convert(
         let weighted = readings.weighted(*ch, MINOR_READING_SHARE);
         let valid: Vec<(String, f64)> = weighted
             .into_iter()
-            .filter(|(syllable, _)| is_syllable(syllable))
+            .filter(|(syllable, _)| is_reading_of(*ch, syllable))
             .collect();
         if valid.is_empty() {
             dropped += 1;
@@ -196,13 +196,13 @@ pub fn convert(
             readings
                 .all(ch)
                 .into_iter()
-                .filter(|s| is_syllable(s))
+                .filter(|s| is_reading_of(ch, s))
                 .count()
                 > 1
         })
     };
     for row in &pack.common {
-        if !row.syllables.iter().all(|s| is_syllable(s)) {
+        if !is_reading_of_word(&row.text, &row.syllables) {
             dropped += 1;
             continue;
         }
@@ -220,7 +220,7 @@ pub fn convert(
         let frequency = frequency.min(u64::from(u32::MAX)) as u32;
         let verified = annotations
             .get(&row.text)
-            .filter(|a| readings.accepts_word(&row.text, a) && a.iter().all(|s| is_syllable(s)));
+            .filter(|a| readings.accepts_word(&row.text, a) && is_reading_of_word(&row.text, a));
         match verified {
             Some(annotation) if *annotation != row.syllables => {
                 disputed += 1;
@@ -272,7 +272,7 @@ pub fn convert(
         let given_syllables = row
             .syllables
             .as_ref()
-            .filter(|s| readings.accepts_word(text, s) && s.iter().all(|s| is_syllable(s)));
+            .filter(|s| readings.accepts_word(text, s) && is_reading_of_word(text, s));
         let syllables = match (given_syllables, annotations.get(text)) {
             (Some(candidate), _) => {
                 given += 1;
@@ -280,7 +280,7 @@ pub fn convert(
             }
             (None, Some(candidate))
                 if readings.accepts_word(text, candidate)
-                    && candidate.iter().all(|s| is_syllable(s)) =>
+                    && is_reading_of_word(text, candidate) =>
             {
                 annotated += 1;
                 candidate.clone()
@@ -296,7 +296,7 @@ pub fn convert(
                     let options: Vec<String> = readings
                         .all(ch)
                         .into_iter()
-                        .filter(|s| is_syllable(s))
+                        .filter(|s| is_reading_of(ch, s))
                         .collect();
                     if options.is_empty() {
                         ok = false;

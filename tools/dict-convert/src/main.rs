@@ -27,6 +27,7 @@ mod oov_filter;
 mod pack;
 mod phrases;
 mod supplement;
+mod syllable;
 mod wubi;
 
 use clap::Parser;

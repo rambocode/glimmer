@@ -5,12 +5,14 @@ use std::path::Path;
 
 use super::tone::strip_tone;
 use crate::error::ConvertError;
+use crate::syllable::{is_usable_syllable, letter_reading};
 
 /// 一个字的读音资料。
 #[derive(Debug, Default, Clone)]
 struct Entry {
-    /// kMandarin 的首选读音。
-    mandarin: Option<String>,
+    /// kMandarin 的读音，第一个是大陆首选读音。嗯 是 `ǹg en`：只取第一个的话
+    /// 这个字一个合法音节都剩不下，整条会被丢掉（聊天里 嗯 / 嗯嗯 极常用）。
+    mandarin: Vec<String>,
 
     /// kHanyuPinlu：读音 → 频次。
     pinlu: Vec<(String, u32)>,
@@ -53,8 +55,10 @@ impl CharReadings {
             };
             let entry = entries.entry(ch).or_default();
             match field {
-                // 两个值时第一个是大陆读音
-                "kMandarin" => entry.mandarin = value.split_whitespace().next().map(strip_tone),
+                // 多个值时第一个是大陆首选读音，其余按顺序当次要读音
+                "kMandarin" => {
+                    entry.mandarin = value.split_whitespace().map(strip_tone).collect();
+                }
                 // `xíng(2943) háng(218)`
                 "kHanyuPinlu" => {
                     entry.pinlu = value
@@ -84,7 +88,13 @@ impl CharReadings {
     }
 
     /// 这个字的全部读音，按可信度排：kHanyuPinlu 频次高的在前，然后 kMandarin，然后 kXHC1983 其余的。去重。
+    ///
+    /// 中英混杂词里的拉丁字母与数字（C盘 的 C、P0 的 0）在 Unihan 里没有条目，读音就是它的小写形式：
+    /// 不单独给这一条，含字母的词会被当成「读音推不出来」整条丢掉，而 `mixed_words.tsv` 全靠它并入。
     pub fn all(&self, ch: char) -> Vec<String> {
+        if let Some(reading) = letter_reading(ch) {
+            return vec![reading];
+        }
         let Some(entry) = self.entries.get(&ch) else {
             return Vec::new();
         };
@@ -96,10 +106,10 @@ impl CharReadings {
                 out.push(reading);
             }
         }
-        if let Some(mandarin) = &entry.mandarin
-            && !out.contains(mandarin)
-        {
-            out.push(mandarin.clone());
+        for mandarin in &entry.mandarin {
+            if !out.contains(mandarin) {
+                out.push(mandarin.clone());
+            }
         }
         for reading in &entry.xhc {
             if !out.contains(reading) {
@@ -144,7 +154,14 @@ impl CharReadings {
             && chars
                 .iter()
                 .zip(syllables)
-                .all(|(ch, syllable)| self.all(*ch).iter().any(|r| r == syllable))
+                // 拉丁字符 Unihan 里没有条目，读音由词表说了算：U盘 的 U 读 you、C盘 的 C 读 c
+                .all(|(ch, syllable)| {
+                    if ch.is_ascii_alphanumeric() {
+                        is_usable_syllable(syllable)
+                    } else {
+                        self.all(*ch).iter().any(|r| r == syllable)
+                    }
+                })
     }
 }
 

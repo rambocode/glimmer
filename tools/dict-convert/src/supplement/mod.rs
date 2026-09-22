@@ -16,13 +16,13 @@ use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::path::{Path, PathBuf};
 
-use glimmer_core::parser::is_syllable;
 use glimmer_dictionary::canonical_syllable;
 
 use crate::bigram::{Vocabulary, is_han, phrase_count, synthesize_phrases};
 use crate::error::ConvertError;
 use crate::lexicon::corpus::extra_words;
 use crate::phrases::load_readings;
+use crate::syllable::is_reading_of_word;
 use counts::LmCounts;
 
 /// `gaps` 子命令的参数。
@@ -246,7 +246,7 @@ fn read_candidates(paths: &[PathBuf]) -> Result<BTreeMap<String, Option<String>>
 /// 读音每个音节都合法、音节数等于字数。
 fn valid_pinyin(text: &str, pinyin: &str) -> bool {
     let syllables: Vec<&str> = pinyin.split(' ').collect();
-    syllables.len() == text.chars().count() && syllables.iter().all(|s| is_syllable(s))
+    is_reading_of_word(text, &syllables)
 }
 
 /// 基础词库的一行：(词, 音节) 与词频。
