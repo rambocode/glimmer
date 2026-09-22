@@ -1,4 +1,4 @@
 # 产品数据版本，data-bundle.sh 写、data-fetch.sh 读；不要手改
-tag = data-v6
-glimmer-data.tar.gz = ad913d2a80d9572d4eecd9fda668409ee9e51e13bf80b51901f51a06d7f1cff0
+tag = data-v7
+glimmer-data.tar.gz = 9450e00c359d3ab251398b1e2bea5ff1c208678721a284795da69a773ec2ddf7
 model.qjm = eed5bd0bda0c7bd8b43d1acb2dc4678d4bbe295bd47b2b0d4eeace0af9daff4d
