@@ -56,7 +56,7 @@ impl Engine {
     /// 异步结果与查询缓存不跨上下文复用，用户词频和词库仍是进程内唯一实例。
     pub fn swap_session(&mut self, session: &mut EngineSession) {
         self.cancel_prediction();
-        self.set_rescoring_context(None);
+        self.set_surrounding_before(None);
         std::mem::swap(&mut self.composition, &mut session.composition);
         std::mem::swap(&mut self.english_mode, &mut session.english_mode);
         std::mem::swap(&mut self.punctuation, &mut session.punctuation);
@@ -123,7 +123,7 @@ impl Engine {
         self.displayed.clear();
         self.history.clear();
         self.chain = CommitChain::default();
-        self.rescoring_before = None;
+        self.surrounding = None;
         self.last_prediction_scope.clear();
         self.last_question_guess.clear();
         *self.neural_cache.borrow_mut() = super::rescoring::NeuralCache::default();

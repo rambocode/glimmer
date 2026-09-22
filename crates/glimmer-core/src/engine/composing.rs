@@ -217,7 +217,7 @@ impl Engine {
         self.composition.clear();
         self.chain.leave_buffer();
         // 壳给的光标前文只对这段组句有效，下一段第一键再读
-        self.rescoring_before = None;
+        self.surrounding = None;
         self.retype_snapshot = None;
         self.composition_started = None;
         self.page_turns = 0;

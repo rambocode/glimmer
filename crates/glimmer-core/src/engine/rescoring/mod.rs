@@ -27,21 +27,16 @@ impl Engine {
             || self.rescorer.as_ref().is_some_and(RescoreWorker::is_alive)
     }
 
-    /// 给模型看的前文：壳给了应用里的光标前文就用它（[`Self::set_rescoring_context`]），
+    /// 给模型看的前文：壳给了应用里的光标前文就用它（[`Engine::set_surrounding_before`]），
     /// 否则用本会话最近上屏的字符；长度按 `neural_context` 截。
     pub(super) fn rescoring_context(&self) -> String {
         if self.neural_context == 0 {
             return String::new();
         }
-        match &self.rescoring_before {
+        match self.surrounding_before() {
             Some(before) => take_last_chars(before, self.neural_context),
             None => self.history.recent(self.neural_context).to_owned(),
         }
-    }
-
-    /// 壳告知应用里光标前的文本（每次查询前给；应用给不出就 `None`，退回本会话历史）。
-    pub fn set_rescoring_context(&mut self, before: Option<String>) {
-        self.rescoring_before = before;
     }
 
     /// 把几条整句路径按「路径分 + λ·(神经分 − 静态分)」重排。缓存里缺分的：同步打分器当场补，异步的先记下等壳来取；

@@ -23,6 +23,7 @@ mod rescoring;
 mod session;
 mod setup;
 mod statistics;
+mod surrounding;
 mod timings;
 mod translator;
 mod vocabulary;
@@ -148,8 +149,9 @@ pub struct Engine {
     /// 「前文 + 整句文本 → 神经分」缓存，同步与异步打分共用。
     neural_cache: std::cell::RefCell<rescoring::NeuralCache>,
 
-    /// 壳给的应用里光标前的文本；`None` 时前文用本会话历史。
-    rescoring_before: Option<String>,
+    /// 壳给的应用里光标前的文本，连同从它末尾切出来的两个词（见 [`surrounding`]）；
+    /// `None` 时上文只看上屏链、神经重打分的前文只看本会话历史。
+    surrounding: Option<surrounding::SurroundingBefore>,
 
     /// 重打分时神经得分的权重 λ：最终分 = 路径分 + λ·(神经分 − 静态分)。
     neural_weight: f64,
@@ -358,7 +360,7 @@ pub const NEURAL_WEIGHT: f64 = 0.5;
 /// 神经重打分的缺省门槛（nat）：路径分落后最优路径超过这么多的不参与重排。缺省不设（4 nat 试过没帮助），留作调参的旋钮。
 pub const NEURAL_MARGIN: f64 = f64::INFINITY;
 
-/// 重打分给模型看的前文：本次会话最近上屏的这么多个字符。
+/// 前文取多长：壳往光标前读这么多个字符，Core 这一侧神经重打分也按它截。
 pub const RESCORE_CONTEXT_CHARS: usize = 64;
 
 impl Engine {
@@ -387,7 +389,7 @@ impl Engine {
             sentence_scorer: None,
             rescorer: None,
             neural_cache: std::cell::RefCell::new(rescoring::NeuralCache::default()),
-            rescoring_before: None,
+            surrounding: None,
             neural_weight: NEURAL_WEIGHT,
             neural_margin: NEURAL_MARGIN,
             rescore_paths: RESCORE_PATHS,

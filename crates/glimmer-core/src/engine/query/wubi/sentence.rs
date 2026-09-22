@@ -77,7 +77,7 @@ impl Engine {
         let search = sentence::Search {
             keep_partial: false,
             paths,
-            initial: self.chain.context(),
+            initial: self.context(),
             protected_extra: 0.0,
         };
         let mut paths = sentence::convert_codes(

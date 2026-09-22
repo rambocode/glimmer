@@ -1,4 +1,4 @@
-//! 整句转换接上文：上屏链（或光标前的文字）决定这段拼音第一个词怎么读。
+//! 整句转换接上文：上屏链或应用光标前文决定这段拼音第一个词怎么读。
 
 use super::*;
 
@@ -83,4 +83,44 @@ fn learning_from_text_feeds_the_personal_ngram() {
     let recorded = engine.learn_text("做了吧，做了吧。做了吧！做了吧？abc");
     assert_eq!(recorded, 8);
     assert_eq!(sentence_of(&mut engine, "zuoleba"), "做了吧");
+}
+
+/// 应用光标前文当上文：壳给了「我做了」，上屏链是空的，`bachi` 也读 吧吃；
+/// 前文以标点结尾、壳没给前文都回到句首。
+#[test]
+fn sentence_conversion_follows_the_surrounding_text() {
+    let dictionary = Dictionary::parse(
+        "做了\tzuo le\t9000\n吧\tba\t50000\n把\tba\t60000\n吃\tchi\t40000\n我\two\t90000\n",
+    )
+    .unwrap();
+    let mut engine = Engine::new(dictionary).with_language_model(Box::new(ContextModel));
+    engine.set_surrounding_before(Some("聊了两句，我做了".to_owned()));
+    assert_eq!(sentence_of(&mut engine, "bachi"), "吧吃");
+    engine.clear();
+    // clear 把这段组句的前文作废了，壳下一段第一键再送
+    assert_eq!(sentence_of(&mut engine, "bachi"), "把吃");
+    engine.clear();
+    engine.set_surrounding_before(Some("我做了。".to_owned()));
+    assert_eq!(sentence_of(&mut engine, "bachi"), "把吃");
+    engine.clear();
+    engine.set_surrounding_before(None);
+    assert_eq!(sentence_of(&mut engine, "bachi"), "把吃");
+}
+
+/// 上屏链上有词时以链为准：链上是「做了」而应用前文早就不含它（壳只在组句起头读一次），
+/// 仍按链读 吧吃；链断开之后才轮到应用前文。
+#[test]
+fn the_commit_chain_wins_over_the_surrounding_text() {
+    let dictionary = Dictionary::parse(
+        "做了\tzuo le\t9000\n吧\tba\t50000\n把\tba\t60000\n吃\tchi\t40000\n我\two\t90000\n",
+    )
+    .unwrap();
+    let mut engine = Engine::new(dictionary).with_language_model(Box::new(ContextModel));
+    engine.set_surrounding_before(Some("聊了两句。".to_owned()));
+    engine.seed_chain("我做了");
+    assert_eq!(sentence_of(&mut engine, "bachi"), "吧吃");
+    engine.clear();
+    engine.break_chain();
+    engine.set_surrounding_before(Some("聊了两句。".to_owned()));
+    assert_eq!(sentence_of(&mut engine, "bachi"), "把吃");
 }

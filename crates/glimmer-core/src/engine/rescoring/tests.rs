@@ -99,9 +99,9 @@ fn the_shell_context_wins_over_session_history() {
     let mut engine = engine().with_sentence_scorer(Box::new(Prefers("开放")), None, None, Some(4));
     engine.history_mut().record("本会话上屏的历史");
     assert_eq!(engine.rescoring_context(), "屏的历史");
-    engine.set_rescoring_context(Some("应用里光标前的文本".to_owned()));
+    engine.set_surrounding_before(Some("应用里光标前的文本".to_owned()));
     assert_eq!(engine.rescoring_context(), "前的文本");
-    engine.set_rescoring_context(None);
+    engine.set_surrounding_before(None);
     assert_eq!(engine.rescoring_context(), "屏的历史");
 }
 

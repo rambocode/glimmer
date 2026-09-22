@@ -268,7 +268,7 @@ impl Engine {
             let log_prob = sentence::transition_log_prob(
                 &*self.language_model,
                 self.personal(),
-                self.chain.context(),
+                self.context(),
                 hit.text,
                 sentence::fallback_log_prob(hit.frequency, log_total),
             );
@@ -606,7 +606,7 @@ impl Engine {
         let search = sentence::Search {
             keep_partial: whole,
             paths: k,
-            initial: self.chain.context(),
+            initial: self.context(),
             protected_extra: self.typo_costs.protected_extra,
         };
         let mut paths = sentence::convert_paths(
