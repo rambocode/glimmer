@@ -96,6 +96,36 @@ Windows 是 CPU 推理，24 条一批要几百毫秒，待真机看要不要把�
 
 上文权重扫描（分段首选 / 回放词，个人部分只按上文算的那一版）：0 → 52.3% / 5212，0.2 → 53.4% / 5222，0.5 → 53.7% / 5228，0.7 → 53.8% / 5224，1 → 53.9% / 5216。
 
+## 整句读应用前文（2026-09-22）
+
+以前整句只按**上屏链**接上文：链是我们自己上屏的最近两个词，标点、透传、切应用都打断它。
+回消息、挪了光标之后接着打、粘贴之后接着打这三种场合链是空的，整句把句子当句首算，明显比 mac 自带输入法差。
+应用光标前文其实早就进了 Core，但只给神经重打分看。这次把它变成一等的上文来源。
+
+**取舍规则**（`engine/surrounding/`）：链上有词就用链，链是空的才用应用前文，壳给不出前文才当句首。
+链上有词说明光标就在我们刚上屏的词后面，那个词是用户亲手选的、还带音节，比从文本切出来的准；
+而且壳只在一段组句起头读一次前文，这段里后来上屏的词不在前文里，那时改用前文反而会把刚选的词丢掉。
+前文按末尾**连续的汉字**切（遇标点 / 换行 / 字母数字就断），`segment_text` 出最后两个词存成 `SurroundingBefore`，
+只在壳送来新文本时切一次，不是每键都切。学习记的转移仍只看上屏链，不拿别人的话喂个人 n-gram。
+
+**壳侧**：macOS 以前只在「有本地整句模型或模型加载中」时才读前文，现在无条件在组句第一键读（Secure Input 仍不读）；
+Windows DLL 与 Linux IBus / Fcitx5 本来就每段组句都送，Server 收到 `Surrounding` 后改成重排候选并重画
+（前文是第一键之后才到的，第一帧按「没有上文」画过了）。读多少字仍是 `RESCORE_CONTEXT_CHARS` 64。
+
+**数字**（同一份冻结句子集 9808 句，分段 `--eval-chunk 2` 共 23010 段；`--eval-context app` 是新加的模式：
+前面各段的原文只经应用前文接口给引擎、上屏链保持空）：
+
+| 组 | 首选 | 字准确率 |
+| --- | --- | --- |
+| 改前 分段 2 词（上文走上屏链） | 52.3% | 73.5% |
+| 改前 分段 2 词 + `--eval-context app` | 50.5% | 72.3% |
+| 改后 分段 2 词 + `--eval-context app` | 52.3% | 73.5% |
+
+改前 app 那组等于「上文没用上」，改后与走上屏链的那组**逐位相同**：应用前文这条路已经和自己上屏的词一样管用。
+干净集（27.5% / 71.3%）与分段集（52.3% / 73.5%）改前改后不变，回放（词首选 92.4%、命中 8850 / 9575）逐字节相同，没有退步。
+
+真实数据上的一个翻盘：光标前是「好的我做了」时 `ba` 的首选是 吧，没有前文时是 把（吧 掉到第三）。
+
 ## 试过不行的
 
 - 束宽 8 → 16 → 32：逐位一样。每格候选 6 → 12：29.3% → 28.0%，**放宽搜索反而变差**，说明找到的是分更高的错路径，瓶颈在打分模型。
@@ -114,6 +144,7 @@ target/release/glimmer-cli --eval-text docs/design/*.md docs/notes/*.md docs/pla
 target/release/glimmer-cli --eval-text /tmp/sentences.tsv --misses 0                       # 干净集，带句长分桶
 target/release/glimmer-cli --eval-text /tmp/sentences.tsv --misses 0 --eval-chunk 2        # 分段输入
 target/release/glimmer-cli --eval-text /tmp/sentences.tsv --misses 0 --eval-typos          # 注错集
+target/release/glimmer-cli --eval-text /tmp/sentences.tsv --misses 0 --eval-chunk 2 --eval-context app   # 上文只经应用前文
 target/release/glimmer-cli --eval-text /tmp/sentences.tsv --misses 0 --tune initial=0,protect=0,word=0   # 改前的行为
 target/release/glimmer-cli --learn-text <学的文件>... --eval-text <留出的句子集> --misses 0                # 从文本学，留出法
 ```

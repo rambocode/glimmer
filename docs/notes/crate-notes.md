@@ -54,9 +54,12 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 - 整句搜索的参数打包在 `sentence::Search`（`keep_partial` / `paths` / `initial` / `protected_extra`），`convert_paths` 只收它；拼音的整句转换都经 `Engine::convert_sentence_with` 一处（五笔整句经 `convert_wubi_sentence`）。
 - 词图与找路分开：`sentence/lattice/` 的 `Lattice` trait 回答「位置 `[start, end)` 上有哪些词」，`SyllableLattice`（拼音，位置是音节，格子候选 `span_candidates` 与原样成词保护都在它里面）
   与 `CodeLattice`（五笔，位置是编码字母）各实现一份；`viterbi::search_lattice` 只认 trait，`convert_paths` / `convert_codes` 是两个入口。2026-09-19 抽出时干净集 9808 句的评测数字一位不变。
-  - **接上文**：`initial` 取上屏链 `chain.context()`，一段拼音的第一个词按 `ln(w·P(词|上文) + (1−w)·P(词|句首))` 算（`viterbi::initial_step`，静态模型与个人 n-gram 两种读法各自插值后再混），
+  - **接上文**：`initial` 取 `Engine::context()`（`engine/surrounding/`：**上屏链上有词就用链，链是空的才用壳给的应用光标前文，都没有才当句首**；
+    链上的词是用户亲手选的、还带音节，且壳只在一段组句起头读一次前文，这段里后来上屏的词不在前文里），一段拼音的第一个词按 `ln(w·P(词|上文) + (1−w)·P(词|句首))` 算（`viterbi::initial_step`，静态模型与个人 n-gram 两种读法各自插值后再混），
     `w` = `INITIAL_CONTEXT_WEIGHT` 0.5（`Interpolation::initial_weight`，`--tune initial=`）；第二个词的个人三元前二词也接 `initial.previous`。全按接续算时「前词 → 的」压过实词（`dizhi` 出 的只）。
-    `Engine::seed_chain(光标前文)` 把末尾那一小句汉字切词后摆进链（不学习、不写日志），整句评测用它摆上文，壳读得到光标前文时也可在链断开后调。
+    `Engine::set_surrounding_before(Some(前文))` 是壳送应用光标前文的入口：按末尾连续汉字切出最后两个词存成 `SurroundingBefore`，
+    只在文本变了时切一次；词级排序（`query/mod.rs`）与五笔整句也用同一个 `Engine::context()`，学习记的转移仍只看上屏链。
+    `Engine::seed_chain(光标前文)` 是另一条路：直接把切出来的词摆进链（不学习、不写日志），整句评测的 `chain` 口径用它。数字见 `long-sentence.md`。
   - **每词代价**：路径上每个词扣 `WORD_PENALTY` 1（`Interpolation::word_penalty`，`--tune word=`），几个单字连起来不再压过整词（笔给 / 笔记）；不进 `static_score`，神经重排后照留。
   - **原样成词保护**：一条敲错边整个落在「按敲的原样读出的多音节词」里面（`ce shi` 测试 里的 `ce` → `de`）多扣 `TypoCosts::protected_extra` 4（`SyllableLattice::typed_word_reach`，`--tune protect=`）；
     伸到原样词外面的（`mei gan xi` 没关系 对 美感）不拦，模糊音（代价 < `PROTECTED_MIN_COST`）不算猜敲错。数字见 `long-sentence.md`。
@@ -142,7 +145,7 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 的前几条�
 每条路径按 `路径分 + λ·(神经分 − 静态二元分)` 重排（λ `NEURAL_WEIGHT` 0.5，
 个人 n-gram / 用户加分 / 代价不动），分走「前文 + 文本 → 神经分」缓存 `NeuralCache`；同步打分器（`with_sentence_scorer`，CLI 评测）当场补分，
 异步的（`with_async_sentence_scorer`，后台线程 `RescoreWorker`）查询不等模型：缺分的记下来，壳停键后 `request_rescoring`、`poll_rescoring` 到了再 `query` 一次。
-前文优先用壳给的应用光标前文（`set_rescoring_context`），没有用本会话最近 64 个上屏字符。CLI `--neural <导出目录>`（`--neural-weight` / `--neural-context` / `--neural-async`）。
+前文优先用壳给的应用光标前文（`set_surrounding_before`），没有用本会话最近 64 个上屏字符。CLI `--neural <导出目录>`（`--neural-weight` / `--neural-context` / `--neural-async`）。
 
 ## crates/glimmer-lm
 
@@ -205,6 +208,7 @@ Engine 侧在 `engine/rescoring/`：接了打分器就取 Viterbi 的前几条�
   报告按句长分桶（1–5 / 6–10 / 11–15 / 16–20 / 21 字以上，`eval/bucket.rs`），抽句上限 40 字；上文同时摆进上屏链（`Engine::seed_chain`）。
   `--learn-text <文件>...` 先从这些文本学个人 n-gram 再做后面的事（配 `--eval-text` 做留出评测；给了 `--user-dict` 随退出落盘，输入法开着时别对着它的数据目录写，会被它下一次落盘盖掉）。
   `--eval-chunk N` 分段输入：每句按语言模型切词、N 个词一段逐段喂，前面各段的原文当上文（量整句接上文）；
+  `--eval-context chain|app` 上文走哪条路：`chain` 摆进上屏链（缺省，历来口径），`app` 只经 `Engine::set_surrounding_before` 给、上屏链保持空（量「前文是别人的话 / 粘贴来的」）；
   `--eval-typos` 每条拼音注一处敲错（相邻键换位 / 敲到旁边的键，按句子哈希定、可复现），量敲错纠正的召回；两个可以叠用。
 
 ## apps/macos
@@ -232,7 +236,7 @@ IMK 输入法，源码按 `app / host / imk / candidates / menubar / preferences
   `[general] system_text_replacements` 开关（缺省开，「自定义短语」页勾选框），内容可能含证件号、地址，日志只记条数。
 - 输入法进程由 launchd 拉起，看不到 shell 的环境变量：密钥写进配置同目录的 `.env`（`GLIMMER_API_KEY=...`，输入法启动时 dotenvy 读入）或 `config.toml` 的 `api_key`。
 - 本地整句模型：`bundle.sh` 把 `data/model/`（或 `GLIMMER_MODEL_DIR`）三件套打进 `Resources/model/`，用户目录 `model/` 优先；`host/model/mod.rs` 在后台线程加载并预热（首次 Metal 编译）后
-  `set_async_sentence_scorer` 接上，`refresh` 每键先读应用光标前 64 字给 Engine 当前文、查询后 `schedule_rescoring`，`RescoreMonitor` 停键 80 ms 请求、20 ms 轮询，
+  `set_async_sentence_scorer` 接上，`refresh` 在组句第一键读应用光标前 64 字给 Engine 当上文与模型前文（有没有本地模型都读，Secure Input 不读）、查询后 `schedule_rescoring`，`RescoreMonitor` 停键 80 ms 请求、20 ms 轮询，
   结果到了重查一次只重画当前页（翻过页 / 动过高亮不动）；「云服务」页有开关（`[model] enabled`）。
 - 从文件学习（`host/learn_text.rs`）：「高级」页「从文件学习…」（`Setting::LearnText`）→ `choose_text_sources`（文件可多选、可选文件夹）→ 收 `.md` / `.markdown` / `.txt` / `.text`
   （单个 ≤ 4 MB、最多 2000 个、往下 6 层、隐藏项与符号链接不进）→ 逐个 `Engine::learn_text` → `flush_learning`，结果写底部状态行；读与学都在主线程，日志只记个数。
