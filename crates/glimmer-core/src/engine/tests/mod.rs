@@ -23,6 +23,7 @@ use std::sync::{Arc, Mutex};
 use super::*;
 
 use crate::candidate::{PartOfSpeech, Sense, Translation};
+use crate::sentence::Context;
 
 const SAMPLE: &str = "开发\tkai fa\t9000\n开发者\tkai fa zhe\t3000\n开饭\tkai fan\t800\n开放\tkai fang\t20000\n西安\txi an\t4000\n先\txian\t10000\n下\txia\t8000\n想\txiang\t9000\n开\tkai\t20000\n咖啡\tka fei\t5000\n不\tbu\t1000\n";
 
@@ -271,7 +272,7 @@ impl InputLogger for MemoryLogger {
 struct SentenceModel;
 
 impl LanguageModel for SentenceModel {
-    fn log_prob(&self, _previous: Option<&str>, word: &str) -> Option<f64> {
+    fn log_prob(&self, _context: Context<'_>, word: &str) -> Option<f64> {
         match word {
             "开发" => Some(-5.0),
             "输入法" => Some(-6.0),
@@ -354,8 +355,8 @@ impl Learner for WordLearner {
 struct BaModel;
 
 impl LanguageModel for BaModel {
-    fn log_prob(&self, previous: Option<&str>, word: &str) -> Option<f64> {
-        match (previous, word) {
+    fn log_prob(&self, context: Context<'_>, word: &str) -> Option<f64> {
+        match (context.previous, word) {
             (Some("做了"), "吧") => Some(-1.0),
             (Some("做了"), "把") => Some(-8.0),
             (None, "把") => Some(-3.0),

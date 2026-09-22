@@ -281,8 +281,8 @@ fn expression_mode_skips_pinyin_and_evaluates() {
 struct XianModel;
 
 impl LanguageModel for XianModel {
-    fn log_prob(&self, previous: Option<&str>, word: &str) -> Option<f64> {
-        match (previous, word) {
+    fn log_prob(&self, context: Context<'_>, word: &str) -> Option<f64> {
+        match (context.previous, word) {
             (None, "开发") => Some(-1.0),
             (Some("开发"), "先") => Some(-0.5),
             _ => None,

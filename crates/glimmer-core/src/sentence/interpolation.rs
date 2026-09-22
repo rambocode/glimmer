@@ -1,6 +1,6 @@
 use super::{
-    CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, TRIGRAM_DISCOUNT, USER_LAMBDA,
-    WORD_PENALTY,
+    CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, SPAN_CANDIDATES, TRIGRAM_DISCOUNT,
+    USER_LAMBDA, WORD_PENALTY,
 };
 
 /// 个人 n-gram 与静态模型插值的参数（见 [`UserNgram::blend`]），外加整句路径打分的两个常数（开头接上文的权重、每词代价）。缺省值是 `sentence` 模块里的常数，
@@ -26,6 +26,9 @@ pub struct Interpolation {
 
     /// 整句路径上每个词扣的分（[`WORD_PENALTY`]）。
     pub word_penalty: f64,
+
+    /// 词图每个格子最多留几个词（[`SPAN_CANDIDATES`]）。放宽它是打分模型可信度的验收尺子，所以挂在这里能调。
+    pub span_candidates: usize,
 }
 
 impl Interpolation {
@@ -37,6 +40,7 @@ impl Interpolation {
         trigram_discount: TRIGRAM_DISCOUNT,
         initial_weight: INITIAL_CONTEXT_WEIGHT,
         word_penalty: WORD_PENALTY,
+        span_candidates: SPAN_CANDIDATES,
     };
 }
 

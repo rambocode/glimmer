@@ -106,12 +106,16 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
     }
     // 语言模型可选：没有就退化成一元词频整句；打包过的 lm.qj 优先
     let model = if let Ok(packed) = paths::resource("lm.qj") {
-        Some(BigramModel::from_path(&packed)?)
+        Some(NgramModel::from_path(&packed)?)
     } else if let (Ok(unigram), Ok(bigram)) = (
         paths::resource("lm-unigram.tsv"),
         paths::resource("lm-bigram.tsv"),
     ) {
-        Some(BigramModel::from_paths(&unigram, &bigram)?)
+        Some(NgramModel::from_paths(
+            &unigram,
+            &bigram,
+            paths::resource("lm-trigram.tsv").ok().as_deref(),
+        )?)
     } else {
         None
     };
@@ -119,6 +123,7 @@ pub fn init(mtm: MainThreadMarker, info: &BundleInfo) -> Result<(), HostError> {
         tracing::info!(
             words = model.word_count(),
             bigrams = model.bigram_count(),
+            trigrams = model.trigram_count(),
             total_ms = started.elapsed().as_millis(),
             "语言模型已加载"
         );

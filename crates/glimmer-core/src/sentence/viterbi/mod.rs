@@ -1,7 +1,8 @@
-//! 词图上的最优路径：bigram Viterbi + 束搜索。
+//! 词图上的最优路径：Viterbi + 束搜索。
 //!
-//! 状态只按前一个词分（束宽内），个人三元要的前二词取前驱节点的回指（它那条最优路径上的前一个词）：
-//! 不扩状态，代价是三元上下文是近似的，个人数据量下够用。
+//! 状态只按前一个词分（束宽内），三元（静态模型与个人 n-gram 都看前二词）要的前二词取前驱节点的回指
+//! （它那条最优路径上的前一个词）：不扩状态，代价是三元上下文是近似的。真按前二词扩状态要多一个数量级的节点，
+//! 而回指给出的前二词与最优路径上的一致，只有束内次优走法会差。
 
 mod arrival;
 mod node;
@@ -267,7 +268,7 @@ fn backtrack(
 struct NoModel;
 
 impl LanguageModel for NoModel {
-    fn log_prob(&self, _previous: Option<&str>, _word: &str) -> Option<f64> {
+    fn log_prob(&self, _context: Context<'_>, _word: &str) -> Option<f64> {
         None
     }
 }
@@ -275,7 +276,7 @@ impl LanguageModel for NoModel {
 /// 到达「`word` 接在 `nodes[start]` 后面」这个节点的前 `search.paths` 种走法，按得分降序。
 ///
 /// 转移概率先问静态模型（不认识就用词库兜底值），再与个人 n-gram 插值；每个前驱只算一次，它的几种走法共用：
-/// 二元转移只看前驱的词，个人三元要的前二词取前驱最优走法的回指（近似，不扩状态）。
+/// 前一个词就是前驱的词，前二词取前驱最优走法的回指（近似，不扩状态），静态三元与个人三元都用它。
 /// 路径开头接 `search.initial`（这段拼音之前的上文）：第一个词的上文就是它，第二个词的前二词是它的 `previous`。
 /// `gain` 是这条边自己的加减分（用户加分 − 代价 − 每词代价）与其中计入 `penalty` 的那部分。
 #[allow(clippy::too_many_arguments)]
@@ -309,9 +310,7 @@ fn arrivals(
             };
             (
                 transition_log_prob(model, personal, context, word, fallback),
-                model
-                    .log_prob(Some(previous.text.as_str()), word)
-                    .unwrap_or(fallback),
+                model.log_prob(context, word).unwrap_or(fallback),
             )
         };
         for (back_rank, arrival) in previous.arrivals.iter().enumerate() {
@@ -343,12 +342,12 @@ fn initial_log_prob(
     word: &str,
     fallback: f64,
 ) -> f64 {
-    let fresh = model.log_prob(None, word).unwrap_or(fallback);
+    let fresh = model.log_prob(Context::START, word).unwrap_or(fallback);
     let weight = personal.interpolation.initial_weight.clamp(0.0, 1.0);
-    let Some(previous) = initial.previous.filter(|_| weight > 0.0) else {
+    if initial.previous.is_none() || weight <= 0.0 {
         return fresh;
-    };
-    let following = model.log_prob(Some(previous), word).unwrap_or(fallback);
+    }
+    let following = model.log_prob(initial, word).unwrap_or(fallback);
     mix(weight, following, fresh)
 }
 

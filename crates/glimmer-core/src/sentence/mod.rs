@@ -1,11 +1,11 @@
 //! 离线整句转换：把一串音节转成最可能的词序列（`woxiangqu` → 我想去）。
 //!
 //! 词图上每个格子放正好覆盖那几个音节的词（每格只留词频最高的几个），Viterbi + 束搜索找最优路径。
-//! 打分来自 [`LanguageModel`]（bigram，`glimmer-lm` 实现），模型不认识的词用词库词频（一元）兜底并扣分；
+//! 打分来自 [`LanguageModel`]（trigram 回退到 bigram / unigram，`glimmer-lm` 实现），模型不认识的词用词库词频（一元）兜底并扣分；
 //! 用户选过的词（Learner 的 weight）加分。没接模型时整体退化为一元词频。
 //!
 //! 个人 n-gram（[`UserNgram`]，二元 + 三元，随上屏在线更新、由 Learner 持有）与静态模型插值，让整句越用越像自己：
-//! 静态模型只看前一个词，个人部分看前两个词（[`Context`]），Viterbi 里前二词取最优前驱的回指，不扩状态。
+//! 两边都看前两个词（[`Context`]），Viterbi 里前二词取最优前驱的回指，不扩状态。
 //!
 //! 简拼位置（`wxq` 的 `w x q`）按前缀取词，每个格子多留一些候选，全靠语言模型在路径上分辨；
 //! 全拼句子末尾没打完的单字母不参与，简拼句子里末尾单字母就是一个音节。
@@ -78,6 +78,7 @@ pub const MAX_WORD_SYLLABLES: usize = 8;
 pub const MIN_PARTIAL_LETTERS: usize = 2;
 
 /// 每个格子最多留几个词（按词库词频 + 用户加分）。同音词很多，全留会让束搜索白费。
+/// 打分模型够可信时放宽不该变差，所以它也是 [`Interpolation`] 的一项（`--tune span=`），扫参时能临时改。
 pub const SPAN_CANDIDATES: usize = 6;
 
 /// 有简拼位置的格子最多留几个词：`h` 下有 和 / 好 / 会 / 还 / 很 …… 几十个常用字，
@@ -95,7 +96,7 @@ pub fn fallback_log_prob(frequency: u32, log_total: f64) -> f64 {
     (f64::from(frequency) + 1.0).ln() - log_total + FALLBACK_PENALTY
 }
 
-/// `log P(word | context)`：先问静态模型（只看前一个词，不认识就用 `fallback`），再与个人 n-gram（看前两个词）插值。
+/// `log P(word | context)`：先问静态模型（看前两个词、自己按上下文回退，不认识就用 `fallback`），再与个人 n-gram 插值。
 /// 整句路径上的每一步和词级排序的上下文得分都用它。
 pub fn transition_log_prob(
     model: &dyn LanguageModel,
@@ -104,6 +105,6 @@ pub fn transition_log_prob(
     word: &str,
     fallback: f64,
 ) -> f64 {
-    let base = model.log_prob(context.previous, word).unwrap_or(fallback);
+    let base = model.log_prob(context, word).unwrap_or(fallback);
     personal.blend(context, word, base)
 }

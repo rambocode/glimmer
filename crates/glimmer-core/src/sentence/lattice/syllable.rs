@@ -6,8 +6,8 @@ use glimmer_dictionary::{Dictionary, Match, SyllablePattern};
 
 use super::Lattice;
 use crate::sentence::{
-    ABBREVIATED_SPAN_CANDIDATES, MAX_WORD_SYLLABLES, PROTECTED_MIN_COST, Personal, SPAN_CANDIDATES,
-    SpanCache, SpanWord,
+    ABBREVIATED_SPAN_CANDIDATES, MAX_WORD_SYLLABLES, PROTECTED_MIN_COST, Personal, SpanCache,
+    SpanWord,
 };
 
 /// 拼音的词图。`positions` 每个位置是若干写法（第一种是敲的，其余是模糊音 / 敲错变体），
@@ -155,7 +155,7 @@ where
         scored.truncate(if abbreviated {
             ABBREVIATED_SPAN_CANDIDATES
         } else {
-            SPAN_CANDIDATES
+            personal.interpolation.span_candidates
         });
         scored
             .into_iter()

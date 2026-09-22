@@ -4,7 +4,7 @@
 //! 模型认识的子串才算词，单字总可以切出来（模型不认识就扣分）。Viterbi 状态是「切到哪、上一个词是什么」，
 //! 打分只用静态模型（个人 bigram 还没记这句，用它反而会自我强化）。标点等非汉字处断句，各句独立。
 
-use super::LanguageModel;
+use super::{Context, LanguageModel};
 
 /// 文本切词时一个词最多几个字。
 pub const MAX_TEXT_WORD_CHARS: usize = 6;
@@ -30,7 +30,7 @@ pub fn segment_text(text: &str, model: &dyn LanguageModel) -> Option<Vec<Vec<Str
 }
 
 /// 一句里的 Viterbi：节点 = (起点, 词)，每个节点记最优前驱；同一起点、同一个词只留一个节点，
-/// 前驱按「上一个词」区分打分。返回词序列和「有没有模型认识的词」。
+/// 前驱按「上一个词」区分打分，前二词取前驱的前驱（回指近似）。返回词序列和「有没有模型认识的词」。
 fn segment_clause(chars: &[char], model: &dyn LanguageModel) -> (Vec<String>, bool) {
     struct Node {
         word: String,
@@ -55,11 +55,18 @@ fn segment_clause(chars: &[char], model: &dyn LanguageModel) -> (Vec<String>, bo
             let word: String = chars[start..start + len].iter().collect();
             let mut best: Option<Node> = None;
             for predecessor in &predecessors {
-                let (previous, base) = match predecessor {
-                    Some(i) => (Some(nodes[*i].word.as_str()), nodes[*i].score),
-                    None => (None, 0.0),
+                // 前二词取前驱自己的前驱：与整句 Viterbi 里的回指近似同一种做法
+                let (context, base) = match predecessor {
+                    Some(i) => (
+                        Context {
+                            previous: Some(nodes[*i].word.as_str()),
+                            earlier: nodes[*i].previous.map(|j| nodes[j].word.as_str()),
+                        },
+                        nodes[*i].score,
+                    ),
+                    None => (Context::START, 0.0),
                 };
-                let (log_prob, known) = match model.log_prob(previous, &word) {
+                let (log_prob, known) = match model.log_prob(context, &word) {
                     Some(p) => (p, true),
                     None if len == 1 => (UNKNOWN_CHAR_LOG_PROB, false),
                     None => continue,
@@ -112,7 +119,7 @@ mod tests {
     struct TinyModel;
 
     impl LanguageModel for TinyModel {
-        fn log_prob(&self, previous: Option<&str>, word: &str) -> Option<f64> {
+        fn log_prob(&self, context: Context<'_>, word: &str) -> Option<f64> {
             let unigram = match word {
                 "开发" => -5.0,
                 "输入法" => -6.0,
@@ -124,7 +131,7 @@ mod tests {
                 "们" => -9.0,
                 _ => return None,
             };
-            let bonus = match (previous, word) {
+            let bonus = match (context.previous, word) {
                 (Some("开发"), "输入法") => 2.0,
                 _ => 0.0,
             };

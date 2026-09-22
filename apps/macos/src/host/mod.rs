@@ -27,7 +27,7 @@ use glimmer_core::{
 };
 use glimmer_dictionary::{Dictionary, WordList};
 use glimmer_learning::{FrequencyLearner, InputLog, UsageStats, VocabularyBook};
-use glimmer_lm::BigramModel;
+use glimmer_lm::NgramModel;
 use glimmer_platform::extra_dictionaries;
 use glimmer_platform::{
     AppsConfig, CandidateRenderer, DEFAULT_ENGLISH_CANDIDATES_OFF, DictionariesConfig,

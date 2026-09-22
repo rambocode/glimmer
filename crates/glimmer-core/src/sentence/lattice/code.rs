@@ -5,7 +5,7 @@ use std::sync::Arc;
 use glimmer_dictionary::{Dictionary, SyllablePattern};
 
 use super::Lattice;
-use crate::sentence::{Personal, SPAN_CANDIDATES, SpanCache, SpanWord};
+use crate::sentence::{Personal, SpanCache, SpanWord};
 use crate::wubi::{MAX_CODE_LEN, is_code_key};
 
 /// 末尾那条边按前缀命中（编码还没打完）时扣多少分：敲的字母本身就是一条简码时让简码赢，
@@ -121,7 +121,7 @@ where
             } else {
                 &mut prefixed
             };
-            if *count >= SPAN_CANDIDATES {
+            if *count >= personal.interpolation.span_candidates {
                 continue;
             }
             *count += 1;

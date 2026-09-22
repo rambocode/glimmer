@@ -6,8 +6,8 @@ use super::*;
 struct ContextModel;
 
 impl LanguageModel for ContextModel {
-    fn log_prob(&self, previous: Option<&str>, word: &str) -> Option<f64> {
-        match (previous, word) {
+    fn log_prob(&self, context: Context<'_>, word: &str) -> Option<f64> {
+        match (context.previous, word) {
             (_, "做了") => Some(-2.0),
             (Some("做了"), "吧") => Some(-1.0),
             (Some("做了"), "把") => Some(-8.0),
@@ -60,7 +60,7 @@ fn learning_from_text_feeds_the_personal_ngram() {
     // 静态模型里 吧 / 把 不看前词，把 占优
     struct FlatModel;
     impl LanguageModel for FlatModel {
-        fn log_prob(&self, _: Option<&str>, word: &str) -> Option<f64> {
+        fn log_prob(&self, _: Context<'_>, word: &str) -> Option<f64> {
             match word {
                 "做了" => Some(-2.0),
                 "把" => Some(-3.0),

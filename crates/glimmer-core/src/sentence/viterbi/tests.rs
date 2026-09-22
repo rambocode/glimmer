@@ -151,8 +151,8 @@ fn unknown_syllables_are_kept_as_pinyin() {
 struct XiangModel;
 
 impl LanguageModel for XiangModel {
-    fn log_prob(&self, previous: Option<&str>, word: &str) -> Option<f64> {
-        match (previous, word) {
+    fn log_prob(&self, context: Context<'_>, word: &str) -> Option<f64> {
+        match (context.previous, word) {
             (Some("我"), "翔") => Some(-2.0),
             (Some("我"), "想") => Some(-8.0),
             (None, "我") => Some(-1.0),
