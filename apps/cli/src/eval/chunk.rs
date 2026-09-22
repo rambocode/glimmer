@@ -49,13 +49,14 @@ fn last_chars(text: &str, count: usize) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use glimmer_core::sentence::Context;
     use glimmer_dictionary::Dictionary;
 
     /// 认得三个词的假模型。
     struct Model;
 
     impl LanguageModel for Model {
-        fn log_prob(&self, _: Option<&str>, word: &str) -> Option<f64> {
+        fn log_prob(&self, _: Context<'_>, word: &str) -> Option<f64> {
             matches!(word, "我们" | "需要" | "测试").then_some(-3.0)
         }
     }

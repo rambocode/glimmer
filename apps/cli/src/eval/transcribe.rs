@@ -80,7 +80,7 @@ impl Transcriber {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use glimmer_core::sentence::NoLanguageModel;
+    use glimmer_core::sentence::{Context, NoLanguageModel};
 
     const SAMPLE: &str =
         "长\tzhang\t900\n长\tchang\t800\n大\tda\t1000\n长度\tchang du\t500\n度\tdu\t700\n";
@@ -97,7 +97,7 @@ mod tests {
         // 词库有「长度」这个词：整词查到 chang
         struct Model;
         impl LanguageModel for Model {
-            fn log_prob(&self, _: Option<&str>, word: &str) -> Option<f64> {
+            fn log_prob(&self, _: Context<'_>, word: &str) -> Option<f64> {
                 (word == "长度").then_some(-3.0)
             }
         }

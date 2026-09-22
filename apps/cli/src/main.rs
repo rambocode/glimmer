@@ -20,7 +20,7 @@ use clap::Parser;
 use glimmer_core::{EmojiTable, Engine, FuzzyRules, Language};
 use glimmer_dictionary::{Dictionary, WordList};
 use glimmer_learning::FrequencyLearner;
-use glimmer_lm::BigramModel;
+use glimmer_lm::NgramModel;
 use glimmer_platform::{Config, Scheme};
 use glimmer_predict::CloudPredictor;
 use glimmer_translate::Glossary;
@@ -221,20 +221,35 @@ fn build_engine(args: &Args) -> Result<Engine, CliError> {
         );
         engine = engine.with_emoji(table);
     }
-    // 语言模型可选：没有就退化成一元词频整句；打包过的 lm.qj 优先
-    let packed = std::path::PathBuf::from("data/generated/lm.qj");
-    let unigram = std::path::PathBuf::from("data/generated/lm-unigram.tsv");
-    let bigram = std::path::PathBuf::from("data/generated/lm-bigram.tsv");
+    // 语言模型可选：没有就退化成一元词频整句；打包过的 lm.qj 优先，`--lm` 换一份别的
+    let dir = args
+        .lm
+        .clone()
+        .unwrap_or_else(|| std::path::PathBuf::from("data/generated"));
+    let (packed, unigram, bigram, trigram) = if dir.is_dir() {
+        (
+            dir.join("lm.qj"),
+            dir.join("lm-unigram.tsv"),
+            dir.join("lm-bigram.tsv"),
+            dir.join("lm-trigram.tsv"),
+        )
+    } else {
+        // 直接给了一个 .qj 文件
+        (dir.clone(), dir.clone(), dir.clone(), dir.clone())
+    };
     if packed.is_file() || (unigram.is_file() && bigram.is_file()) {
         let started = Instant::now();
-        let model = if packed.is_file() {
-            BigramModel::from_path(&packed)?
+        let mut model = if packed.is_file() {
+            NgramModel::from_path(&packed)?
         } else {
-            BigramModel::from_paths(&unigram, &bigram)?
+            NgramModel::from_paths(&unigram, &bigram, trigram.is_file().then_some(&*trigram))?
         };
+        model.set_smoothing(tuning::smoothing(&args.tune)?);
         tracing::info!(
             words = model.word_count(),
             bigrams = model.bigram_count(),
+            trigrams = model.trigram_count(),
+            smoothing = ?model.smoothing(),
             load_ms = started.elapsed().as_millis(),
             "语言模型已加载"
         );

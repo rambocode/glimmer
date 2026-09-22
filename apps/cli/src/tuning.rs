@@ -3,15 +3,18 @@
 use glimmer_core::Engine;
 use glimmer_core::correction::TypoCosts;
 use glimmer_core::sentence::Interpolation;
+use glimmer_lm::{BackoffMode, Smoothing};
 
-/// 可调的参数名。
-pub const KEYS: [&str; 15] = [
+/// 可调的参数名。`lm-` 开头的是静态语言模型自己的（[`smoothing`] 读，模型加载时就要用上），
+/// 其余的应用在引擎上（[`apply`]）。
+pub const KEYS: [&str; 19] = [
     "lambda",
     "k",
     "cap",
     "discount",
     "initial",
     "word",
+    "span",
     "transpose",
     "substitute",
     "extra",
@@ -21,6 +24,9 @@ pub const KEYS: [&str; 15] = [
     "correction-transpose",
     "protect",
     "paths",
+    "lm-mode",
+    "lm-d3",
+    "lm-d2",
 ];
 
 /// 把一组 `名=值` 应用到引擎；没给的项保持缺省。
@@ -45,6 +51,7 @@ pub fn apply(engine: &mut Engine, settings: &[String]) -> Result<(), TuneError> 
             "discount" => interpolation.trigram_discount = value,
             "initial" => interpolation.initial_weight = value,
             "word" => interpolation.word_penalty = value,
+            "span" => interpolation.span_candidates = (value as usize).max(1),
             "transpose" => costs.transpose = value,
             "substitute" => costs.substitute = value,
             "extra" => costs.extra = value,
@@ -54,6 +61,8 @@ pub fn apply(engine: &mut Engine, settings: &[String]) -> Result<(), TuneError> 
             "correction-transpose" => costs.correction_transpose_discount = value,
             "protect" => costs.protected_extra = value,
             "paths" => engine.set_rescore_paths(value as usize),
+            // 语言模型自己的参数在建模型时就用掉了，这里跳过
+            name if name.starts_with("lm-") => {}
             other => {
                 return Err(TuneError::Unknown {
                     name: other.to_owned(),
@@ -65,6 +74,36 @@ pub fn apply(engine: &mut Engine, settings: &[String]) -> Result<(), TuneError> 
     engine.set_interpolation(interpolation);
     engine.set_typo_costs(costs);
     Ok(())
+}
+
+/// 从同一组 `名=值` 里挑出静态语言模型的平滑参数（`lm-` 开头）；没给的保持缺省。
+/// 模型是在引擎装配之前建的，所以它单独读一遍，不走 [`apply`]。
+pub fn smoothing(settings: &[String]) -> Result<Smoothing, TuneError> {
+    let mut smoothing = Smoothing::DEFAULT;
+    for setting in settings {
+        let (key, value) = setting
+            .split_once('=')
+            .ok_or_else(|| TuneError::Syntax(setting.clone()))?;
+        let key = key.trim();
+        if !key.starts_with("lm-") {
+            continue;
+        }
+        let value: f64 = value
+            .trim()
+            .parse()
+            .map_err(|_| TuneError::Value(setting.clone()))?;
+        match key {
+            "lm-mode" => smoothing.mode = BackoffMode::from_code(value as u8),
+            "lm-d3" => smoothing.trigram_discount = value,
+            "lm-d2" => smoothing.bigram_discount = value,
+            other => {
+                return Err(TuneError::Unknown {
+                    name: other.to_owned(),
+                });
+            }
+        }
+    }
+    Ok(smoothing)
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -114,6 +153,21 @@ mod tests {
         let costs = engine.typo_costs();
         assert_eq!(costs.substitute, 5.5);
         assert_eq!(costs.transpose, TypoCosts::DEFAULT.transpose);
+    }
+
+    #[test]
+    fn language_model_settings_are_read_separately() {
+        let settings = ["lm-mode=1".to_owned(), "lambda=0.7".to_owned()];
+        let smoothing = smoothing(&settings).unwrap();
+        assert_eq!(smoothing.mode, glimmer_lm::BackoffMode::Absolute);
+        assert_eq!(
+            smoothing.trigram_discount,
+            Smoothing::DEFAULT.trigram_discount
+        );
+        // apply 不会因为 lm- 的名字报错
+        let mut engine = engine();
+        apply(&mut engine, &settings).unwrap();
+        assert_eq!(engine.interpolation().lambda, 0.7);
     }
 
     #[test]
