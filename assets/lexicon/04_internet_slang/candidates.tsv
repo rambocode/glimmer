@@ -1,0 +1,1299 @@
+# 网络用语与聊天短语候选表（起草，待维护者审）。2026-09-22，收词标准、次数档位与接入命令见同目录 README.md。
+# 来源：起草者自身的中文互联网知识，没有抄任何外部词表，无许可约束；每条都对着 dict.tsv / lm-unigram.tsv / phrases.tsv / common_words.tsv / domain_words.tsv 标了现状。
+# 建议次数与 dict.tsv 词频同一尺度。汉字词三档：低 20、中 200、高 2000；中英混杂另按 mixed_words.tsv 的尺度：低 300、中 2000、高 8000。
+# gaps 合成次数高于档位值时取合成次数（与 common_words.tsv 的做法一致）。词库现状为「已有」的默认不进（supplement 会跳过已有词），保留在表里供比对。
+词	拼音	类别	说明	建议次数	词库现状
+躺平	tang ping	slang	放弃努力不再挣扎	-	已有（词库 191，模型 352，来自补充常用词）
+内卷	nei juan	slang	无意义的过度竞争	-	已有（词库 80，模型 192，来自补充常用词）
+太卷了	tai juan le	slang	竞争太激烈	200	缺（成分拆不出，无合成次数）
+内耗	nei hao	slang	自己跟自己较劲	-	已有（词库 20，模型 101）
+精神内耗	jing shen nei hao	slang	反复自我消耗很疲惫	200	缺（成分拆不出，无合成次数）
+摆烂	bai lan	slang	破罐破摔不再努力	2000	缺（合成 25）
+开摆	kai bai	slang	开始摆烂不管了	200	缺（成分拆不出，无合成次数）
+破防	po fang	slang	心理防线被击穿	-	已有（词库 20，模型 35，来自补充常用词）
+破防了	po fang le	slang	被戳中情绪绷不住	2000	缺（成分拆不出，无合成次数）
+破大防	po da fang	slang	特别破防	200	缺（成分拆不出，无合成次数）
+上头	shang tou	slang	一时冲动特别入迷	-	已有（词库 598，模型 1060）
+下头	xia tou	slang	让人扫兴没了兴致	-	已有（词库 131，模型 203）
+社死	she si	slang	当众出丑极度尴尬	2000	缺（成分拆不出，无合成次数）
+社死现场	she si xian chang	slang	尴尬到极点的场面	200	缺（成分拆不出，无合成次数）
+蚌埠住了	beng bu zhu le	slang	没绷住笑了	200	缺（成分拆不出，无合成次数）
+绷不住	beng bu zhu	slang	忍不住笑或情绪失控	2000	缺（成分拆不出，无合成次数）
+松弛感	song chi gan	slang	不紧绷的从容状态	200	缺（成分拆不出，无合成次数）
+班味	ban wei	slang	上班熬出的疲惫气质	200	缺（成分拆不出，无合成次数）
+发疯	fa feng	slang	情绪外放胡言乱语	-	已有（词库 838，模型 1269）
+发疯文学	fa feng wen xue	slang	故意胡言乱语的吐槽体	200	缺（成分拆不出，无合成次数）
+发癫	fa dian	slang	行为夸张不正常	2000	缺（合成 167）
+心态崩了	xin tai beng le	slang	情绪撑不住了	2000	缺（合成 70）
+心态爆炸	xin tai bao zha	slang	情绪彻底失控	200	缺（合成 141）
+麻了	ma le	slang	无语到没有感觉	2000	缺（合成 674）
+人麻了	ren ma le	slang	被整得没脾气了	2000	缺（成分拆不出，无合成次数）
+佛系	fo xi	slang	不争不抢随缘	-	已有（词库 1100，模型 1124）
+咸鱼	xian yu	slang	没追求混日子的人	-	已有（词库 3719，模型 3980）
+躺赢	tang ying	slang	不费力就赢了	-	已有（词库 205，模型 206）
+摸鱼	mo yu	slang	上班偷懒	-	已有（词库 332，模型 404）
+划水	hua shui	slang	敷衍了事不出力	-	已有（词库 196，模型 295）
+卷王	juan wang	slang	最能内卷的人	200	缺（成分拆不出，无合成次数）
+卷不动	juan bu dong	slang	没力气再竞争了	200	缺（成分拆不出，无合成次数）
+意难平	yi nan ping	slang	心里一直放不下	200	缺（成分拆不出，无合成次数）
+上岸	shang an	slang	考试考公考研成功	-	已有（词库 1466，模型 3214）
+寄了	ji le	slang	完了没戏了	2000	缺（合成 1123）
+润了	run le	slang	跑了或移民了	200	缺（合成 23）
+裂开	lie kai	slang	心态碎了	-	已有（词库 342，模型 759）
+我裂开	wo lie kai	slang	我崩溃了	200	缺（成分拆不出，无合成次数）
+血压升高	xue ya sheng gao	slang	被气到	200	缺（合成 81）
+治愈系	zhi yu xi	slang	让人放松舒服的风格	-	已有（词库 233，模型 363，来自补充常用词）
+电子榨菜	dian zi zha cai	slang	吃饭时配着看的视频	200	缺（成分拆不出，无合成次数）
+报复性熬夜	bao fu xing ao ye	slang	白天太累晚上不肯睡	200	缺（成分拆不出，无合成次数）
+早八	zao ba	slang	早上八点的课或班	200	缺（合成 69）
+社畜	she chu	slang	被工作压榨的上班族	-	已有（词库 24，模型 112，来自补充常用词）
+钝感力	dun gan li	slang	不被小事影响的能力	20	缺（成分拆不出，无合成次数）
+无语子	wu yu zi	slang	无语的卖萌说法	20	缺（成分拆不出，无合成次数）
+丧文化	sang wen hua	slang	消极颓废的风气	64	缺（合成 64）
+情绪价值	qing xu jia zhi	slang	让人心里舒服的作用	2000	缺（合成 17）
+情绪稳定	qing xu wen ding	slang	不轻易上头发火	200	缺（合成 101）
+边界感	bian jie gan	slang	与人相处的分寸	200	缺（成分拆不出，无合成次数）
+仪式感	yi shi gan	slang	把小事办得有讲究	2000	缺（合成 420）
+氛围感	fen wei gan	slang	整体感觉很到位	2000	缺（成分拆不出，无合成次数）
+高级感	gao ji gan	slang	看上去有档次	200	缺（合成 61）
+反差	fan cha	slang	前后差别很大	-	已有（词库 756，模型 1246）
+多巴胺	duo ba an	slang	让人快乐的刺激	-	已有（词库 146，模型 1247）
+戒断反应	jie duan fan ying	slang	停掉之后特别难受	20	缺（合成 1）
+玻璃心	bo li xin	slang	太容易受伤	-	已有（词库 1348，模型 1429，来自补充常用词）
+心眼子	xin yan zi	slang	心思多会算计	200	缺（合成 16）
+求生欲	qiu sheng yu	slang	为免翻车的补救话	418	缺（合成 418）
+玄学	xuan xue	slang	说不清道理的运气	-	已有（词库 380，模型 923）
+锦鲤	jin li	slang	好运的象征	-	已有（词库 1561，模型 1735）
+接好运	jie hao yun	slang	转发求好运	200	缺（合成 18）
+本命	ben ming	slang	最喜欢的那一个	-	已有（词库 1550，模型 1695）
+祛魅	qu mei	slang	不再盲目崇拜	200	缺（合成 48）
+离谱	li pu	slang	荒唐得说不通	-	已有（词库 556，模型 821）
+离大谱	li da pu	slang	特别离谱	200	缺（成分拆不出，无合成次数）
+逆天	ni tian	slang	夸张到不可思议	-	已有（词库 1616，模型 1789）
+抽象	chou xiang	slang	行为让人看不懂	-	已有（词库 1028，模型 5329）
+搞抽象	gao chou xiang	slang	故意做让人看不懂的事	200	缺（成分拆不出，无合成次数）
+拿捏	na nie	slang	完全掌控住	-	已有（词库 191，模型 349）
+格局	ge ju	slang	眼界和胸怀	-	已有（词库 1166，模型 4513）
+格局小了	ge ju xiao le	slang	想得太窄	200	缺（成分拆不出，无合成次数）
+格局打开	ge ju da kai	slang	换个大点的思路	200	缺（成分拆不出，无合成次数）
+显眼包	xian yan bao	slang	爱出风头又可爱的人	200	缺（成分拆不出，无合成次数）
+绝绝子	jue jue zi	slang	好到极点	200	缺（成分拆不出，无合成次数）
+服了	fu le	slang	无奈又佩服	-	已有（词库 3752，模型 3846，来自短语层）
+我服了	wo fu le	slang	彻底无话可说	200	缺（合成 156）
+太懂了	tai dong le	slang	说得太对了	246	缺（合成 246）
+典中典	dian zhong dian	slang	老套到成经典的桥段	200	缺（成分拆不出，无合成次数）
+急了	ji le	slang	被说中而恼羞	1048	缺（合成 1048）
+笑死	xiao si	slang	太好笑了	-	已有（词库 15265，模型 15341）
+笑死我了	xiao si wo le	slang	实在太好笑	-	已有（词库 74，模型 72，来自短语层）
+笑不活了	xiao bu huo le	slang	笑到不行	200	缺（成分拆不出，无合成次数）
+尊嘟假嘟	zun du jia du	slang	真的假的卖萌说法	200	缺（成分拆不出，无合成次数）
+绝了	jue le	slang	好得没话说	-	已有（词库 2170，模型 2210，来自短语层）
+爱了爱了	ai le ai le	slang	太喜欢了	200	缺（成分拆不出，无合成次数）
+泪目	lei mu	slang	感动得想哭	-	已有（词库 803，模型 810）
+狂喜	kuang xi	slang	高兴到失态	-	已有（词库 121，模型 259）
+狠狠共情	hen hen gong qing	slang	特别能体会对方	200	缺（成分拆不出，无合成次数）
+大冤种	da yuan zhong	slang	吃亏受委屈的人	200	缺（成分拆不出，无合成次数）
+冤种	yuan zhong	slang	傻乎乎吃亏的人	200	缺（成分拆不出，无合成次数）
+整不会了	zheng bu hui le	slang	被搞得不知所措	200	缺（成分拆不出，无合成次数）
+给我整不会了	gei wo zheng bu hui le	slang	被弄得彻底懵了	200	缺（成分拆不出，无合成次数）
+好家伙	hao jia huo	slang	表示惊讶	-	已有（词库 307，模型 366）
+好好好	hao hao hao	slang	无奈接受或阴阳	6362	缺（合成 6362）
+一整个大无语	yi zheng ge da wu yu	slang	非常无语	200	缺（成分拆不出，无合成次数）
+大无语	da wu yu	slang	太无语了	200	缺（成分拆不出，无合成次数）
+细思极恐	xi si ji kong	slang	想深了很可怕	-	已有（词库 480，模型 483）
+不明觉厉	bu ming jue li	slang	不懂但觉得厉害	-	已有（词库 298，模型 301，来自补充常用词）
+神仙打架	shen xian da jia	slang	高手之间的较量	200	缺（合成 43）
+人间清醒	ren jian qing xing	slang	看得明白不上头	200	缺（成分拆不出，无合成次数）
+封神	feng shen	slang	被奉为顶级	-	已有（词库 231，模型 1658）
+名场面	ming chang mian	slang	让人记住的经典画面	200	缺（合成 84）
+前方高能	qian fang gao neng	slang	提醒精彩或吓人内容	200	缺（合成 40）
+智商税	zhi shang shui	slang	为无知多花的钱	2000	缺（成分拆不出，无合成次数）
+杀疯了	sha feng le	slang	表现极其出色	200	缺（成分拆不出，无合成次数）
+太顶了	tai ding le	slang	太强太震撼	200	缺（成分拆不出，无合成次数）
+顶不住	ding bu zhu	slang	受不了了	200	缺（成分拆不出，无合成次数）
+遭不住	zao bu zhu	slang	招架不住	200	缺（合成 4）
+就这	jiu zhe	slang	不过如此的轻视	-	已有（词库 4512，模型 4786，来自短语层）
+含金量	han jin liang	slang	实际价值有多高	-	已有（词库 144，模型 267）
+这波	zhe bo	slang	这一次这一下	2000	缺（合成 1429）
+属于是	shu yu shi	slang	算是妥妥的	2000	缺（合成 75）
+纯纯的	chun chun de	slang	完完全全是	200	缺（合成 36）
+妥妥的	tuo tuo de	slang	十拿九稳	-	已有（词库 1198，模型 930，来自短语层）
+问题不大	wen ti bu da	chat	表示影响有限	2000	缺（合成 7）
+稳了	wen le	slang	有把握了	652	缺（合成 652）
+神操作	shen cao zuo	slang	让人看不懂的操作	200	缺（成分拆不出，无合成次数）
+迷惑行为	mi huo xing wei	slang	让人不解的举动	200	缺（成分拆不出，无合成次数）
+辣眼睛	la yan jing	slang	难看到不想看	-	已有（词库 1293，模型 1294，来自补充常用词）
+土味	tu wei	slang	又俗又有乡土气	-	已有（词库 307，模型 334）
+土味情话	tu wei qing hua	slang	肉麻又好笑的情话	200	缺（合成 108）
+油腻	you ni	slang	做作讨人厌，贬义	-	已有（词库 2301，模型 2488）
+爹味	die wei	slang	爱说教的姿态，贬义	200	缺（成分拆不出，无合成次数）
+爆改	bao gai	slang	大幅度改造	200	缺（成分拆不出，无合成次数）
+颜值	yan zhi	slang	长相好看程度	-	已有（词库 11212，模型 11302）
+天花板	tian hua ban	slang	某领域的顶点	-	已有（词库 628，模型 2525）
+颜值天花板	yan zhi tian hua ban	slang	长相最好看的	200	缺（成分拆不出，无合成次数）
+遥遥领先	yao yao ling xian	slang	调侃自夸领先	-	已有（词库 41，模型 242）
+有内味了	you nei wei le	slang	感觉对了	200	缺（成分拆不出，无合成次数）
+那味儿	na wei er	slang	那种熟悉的感觉	200	缺（合成 35）
+上价值	shang jia zhi	slang	硬往深刻上拔	200	缺（合成 26）
+硬核	ying he	slang	又强又实在	2000	缺（合成 498）
+硬控	ying kong	slang	牢牢吸引住注意力	200	缺（合成 30）
+拉胯	la kua	slang	掉链子不给力	200	缺（成分拆不出，无合成次数）
+翻车	fan che	slang	搞砸了出丑	-	已有（词库 806，模型 1280）
+打脸	da lian	slang	被事实证明说错了	-	已有（词库 2757，模型 2839）
+实锤	shi chui	slang	有确凿证据	-	已有（词库 497，模型 503）
+爆锤	bao chui	slang	狠狠教训	200	缺（成分拆不出，无合成次数）
+求锤得锤	qiu chui de chui	slang	一要证据就来了	200	缺（成分拆不出，无合成次数）
+真香	zhen xiang	slang	打脸后又说好	-	已有（词库 240，模型 288，来自补充常用词）
+真香定律	zhen xiang ding lv	slang	先嫌弃后真香	200	缺（成分拆不出，无合成次数）
+血亏	xue kui	slang	亏大了	200	缺（合成 78）
+血赚	xue zhuan	slang	赚大了	200	缺（合成 33）
+入股不亏	ru gu bu kui	slang	加入准没错	200	缺（成分拆不出，无合成次数）
+不愧是你	bu kui shi ni	slang	调侃意料之中	200	缺（合成 22）
+合理怀疑	he li huai yi	slang	我有理由猜测	200	缺（合成 93）
+爷青回	ye qing hui	slang	青春回忆又回来了	200	缺（成分拆不出，无合成次数）
+爷青结	ye qing jie	slang	青春回忆结束了	20	缺（成分拆不出，无合成次数）
+雀食	que shi	slang	确实的谐音	200	缺（成分拆不出，无合成次数）
+耗子尾汁	hao zi wei zhi	slang	好自为之的谐音	20	缺（成分拆不出，无合成次数）
+夺笋	duo sun	slang	太损了的谐音	20	缺（成分拆不出，无合成次数）
+废话文学	fei hua wen xue	slang	说了等于没说的话	200	缺（成分拆不出，无合成次数）
+听君一席话	ting jun yi xi hua	slang	调侃对方说了废话	20	缺（成分拆不出，无合成次数）
+有一说一	you yi shuo yi	slang	实话实说	2000	缺（成分拆不出，无合成次数）
+懂的都懂	dong de dou dong	slang	心照不宣	200	缺（成分拆不出，无合成次数）
+不懂就问	bu dong jiu wen	slang	直接提问的开场	200	缺（成分拆不出，无合成次数）
+阴阳怪气	yin yang guai qi	slang	话里带刺地讽刺	-	已有（词库 443，模型 468）
+彩虹屁	cai hong pi	slang	花式吹捧	200	缺（合成 24）
+夸夸	kua kua	slang	互相夸奖	1501	缺（合成 1501）
+双标	shuang biao	slang	同事不同标准	-	已有（词库 575，模型 649）
+杠精	gang jing	slang	专爱抬杠的人	-	已有（词库 806，模型 808）
+键盘侠	jian pan xia	slang	网上逞强骂人的人	-	已有（词库 1705，模型 1712，来自补充常用词）
+喷子	pen zi	slang	爱骂人的网友	200	缺（合成 32）
+奇葩	qi pa	slang	与众不同得离谱	-	已有（词库 6965，模型 7264）
+细品	xi pin	slang	仔细体会	200	缺（合成 71）
+划重点	hua zhong dian	slang	强调关键部分	-	已有（词库 508，模型 509，来自补充常用词）
+有点东西	you dian dong xi	slang	还挺有本事	200	缺（合成 81）
+没苦硬吃	mei ku ying chi	slang	非要自找罪受	200	缺（成分拆不出，无合成次数）
+没福硬享	mei fu ying xiang	slang	硬着头皮享福	20	缺（成分拆不出，无合成次数）
+泼天富贵	po tian fu gui	slang	天上掉下的好运	200	缺（成分拆不出，无合成次数）
+上强度	shang qiang du	slang	加大力度玩得更猛	200	缺（成分拆不出，无合成次数）
+吐槽	tu cao	slang	挑毛病开玩笑	-	已有（词库 7451，模型 8592）
+卖萌	mai meng	slang	故意装可爱	-	已有（词库 7139，模型 7159）
+剧透	ju tou	slang	提前说出情节	-	已有（词库 2370，模型 2465）
+嘴替	zui ti	slang	替大家说出心里话	200	缺（成分拆不出，无合成次数）
+搭子	da zi	slang	只一起做某件事的伙伴	2000	缺（合成 161）
+饭搭子	fan da zi	slang	一起吃饭的伙伴	200	缺（成分拆不出，无合成次数）
+社牛	she niu	slang	社交毫不怯场	2000	缺（成分拆不出，无合成次数）
+社恐	she kong	slang	害怕社交	2000	缺（合成 47）
+纯爱战士	chun ai zhan shi	slang	只认真感情的人	200	缺（成分拆不出，无合成次数）
+恋爱脑	lian ai nao	slang	恋爱上头不顾一切	2000	缺（合成 33）
+牛马	niu ma	slang	被使唤的打工人	-	已有（词库 70，模型 374）
+打工人	da gong ren	slang	上班挣钱的人	2000	缺（合成 33）
+干饭人	gan fan ren	slang	热爱吃饭的人	200	缺（成分拆不出，无合成次数）
+干饭	gan fan	slang	大口吃饭	-	已有（词库 39，模型 26）
+小镇做题家	xiao zhen zuo ti jia	slang	靠刷题出头的学生	200	缺（成分拆不出，无合成次数）
+工具人	gong ju ren	slang	只被人利用的人	200	缺（合成 127）
+背锅侠	bei guo xia	slang	替别人担责的人	200	缺（合成 83）
+舔狗	tian gou	slang	一味讨好对方的人，贬义	200	缺（成分拆不出，无合成次数）
+绿茶	lv cha	slang	表面无辜实则心机，贬义	-	已有（词库 1474，模型 2069）
+普信	pu xin	slang	又普通又自信，贬义	200	缺（合成 23）
+凡尔赛	fan er sai	slang	变着法儿炫耀	2990	缺（合成 2990）
+老铁	lao tie	slang	铁哥们	-	已有（词库 7235，模型 7311）
+家人们	jia ren men	slang	对观众或网友的称呼	2000	缺（合成 345）
+姐妹们	jie mei men	slang	女生之间的招呼	703	缺（合成 703）
+兄弟们	xiong di men	slang	男生之间的招呼	1065	缺（合成 1065）
+大佬	da lao	slang	特别厉害的人	-	已有（词库 10221，模型 10751）
+萌新	meng xin	slang	刚入门的新人	-	已有（词库 416，模型 416，来自补充常用词）
+老登	lao deng	slang	讨人嫌的老男人，贬义	200	缺（成分拆不出，无合成次数）
+乐子人	le zi ren	slang	只图看热闹的人	200	缺（成分拆不出，无合成次数）
+懂王	dong wang	slang	自以为什么都懂，贬义	20	缺（成分拆不出，无合成次数）
+顶流	ding liu	slang	人气最高的	200	缺（合成 17）
+糊了	hu le	slang	不红了	1066	缺（合成 1066）
+黑粉	hei fen	slang	专门挑刺的粉丝	200	缺（合成 94）
+吃瓜群众	chi gua qun zhong	slang	围观看热闹的人	-	已有（词库 995，模型 998，来自补充常用词）
+颜控	yan kong	slang	只看脸的人	-	已有（词库 520，模型 521）
+铲屎官	chan shi guan	slang	养猫狗的人自称	200	缺（成分拆不出，无合成次数）
+精神小伙	jing shen xiao huo	slang	打扮夸张的小青年	20	缺（成分拆不出，无合成次数）
+老六	lao liu	slang	爱阴人的家伙	212	缺（合成 212）
+特种兵旅游	te zhong bing lv you	slang	极限赶行程的穷游	200	缺（成分拆不出，无合成次数）
+鼠鼠	shu shu	slang	自嘲处境卑微	109	缺（合成 109）
+细狗	xi gou	slang	瘦弱没力气的人，贬义	20	缺（合成 18）
+白嫖	bai piao	slang	只享受不付钱	2000	缺（成分拆不出，无合成次数）
+氪金	ke jin	slang	在游戏里花钱	-	已有（词库 446，模型 453）
+搞钱	gao qian	slang	一门心思挣钱	2000	缺（合成 32）
+月光族	yue guang zu	slang	工资月月花光	200	缺（合成 138）
+精致穷	jing zhi qiong	slang	没钱也要过得精致	20	缺（成分拆不出，无合成次数）
+氛围组	fen wei zu	slang	负责烘托气氛的人	20	缺（成分拆不出，无合成次数）
+吃瓜	chi gua	slang	围观八卦	-	已有（词库 2270，模型 2293）
+冲浪	chong lang	slang	上网闲逛	-	已有（词库 854，模型 2194）
+蹲一个	dun yi ge	slang	等着看某个结果	200	缺（合成 20）
+蹲后续	dun hou xu	slang	等事情的进展	200	缺（成分拆不出，无合成次数）
+蹲点	dun dian	slang	守着等时机	-	已有（词库 521，模型 576）
+拉踩	la cai	slang	抬一个踩一个	200	缺（合成 40）
+洗白	xi bai	slang	把负面说成正面	-	已有（词库 1541，模型 1642）
+塌房	ta fang	slang	喜欢的人形象崩了	2000	缺（成分拆不出，无合成次数）
+掉马	diao ma	slang	马甲被扒身份暴露	200	缺（合成 20）
+挂人	gua ren	slang	发帖公开指责某人	200	缺（合成 78）
+开盒	kai he	slang	扒出并公开他人隐私，贬义	200	缺（合成 15）
+拉黑	la hei	slang	把人加进黑名单	-	已有（词库 9183，模型 9260）
+上分	shang fen	slang	打游戏涨段位	-	已有（词库 712，模型 1133，来自补充常用词）
+整活	zheng huo	slang	搞点花样出来	2000	缺（成分拆不出，无合成次数）
+整顿职场	zheng dun zhi chang	slang	年轻人不惯着职场陋习	200	缺（成分拆不出，无合成次数）
+种草	zhong cao	slang	被安利得很想买	-	已有（词库 32，模型 84，来自补充常用词）
+拔草	ba cao	slang	买了或不想买了	200	缺（合成 16）
+安利	an li	slang	热情推荐	-	已有（词库 5872，模型 6464）
+踩雷	cai lei	slang	买到或看到很差的	200	缺（合成 144）
+避雷	bi lei	slang	提醒别人别踩坑	200	缺（合成 92）
+踩坑	cai keng	slang	遇到了坑	200	缺（成分拆不出，无合成次数）
+填坑	tian keng	slang	把没做完的补上	200	缺（合成 136）
+挖坑	wa keng	slang	留下没解决的事	-	已有（词库 281，模型 340）
+剁手	duo shou	slang	忍不住买买买	-	已有（词库 2220，模型 2241）
+薅羊毛	hao yang mao	slang	专挑优惠占便宜	2000	缺（合成 30）
+砍一刀	kan yi dao	slang	求人帮忙砍价	200	缺（成分拆不出，无合成次数）
+性价比	xing jia bi	slang	花的钱值不值	-	已有（词库 1950，模型 2163）
+平替	ping ti	slang	便宜的替代品	2000	缺（成分拆不出，无合成次数）
+开箱	kai xiang	slang	拆开新买的东西展示	-	已有（词库 258，模型 414）
+断舍离	duan she li	slang	扔掉多余的东西	200	缺（合成 1）
+冲冲冲	chong chong chong	slang	加油往前干	200	缺（合成 18）
+拿下	na xia	slang	搞定了	-	已有（词库 5905，模型 18804）
+磕糖	ke tang	slang	看情侣互动觉得甜	200	缺（合成 28）
+发糖	fa tang	slang	放出甜蜜互动	-	已有（词库 664，模型 666）
+锁死	suo si	slang	认定这一对不许分	412	缺（合成 412）
+上车	shang che	life	进到车里	-	已有（词库 7151，模型 11668）
+入坑	ru keng	slang	开始喜欢上	-	已有（词库 2214，模型 2251）
+退坑	tui keng	slang	不再喜欢了	200	缺（合成 90）
+弃坑	qi keng	slang	中途放弃不做了	203	缺（合成 203）
+爬墙	pa qiang	slang	转去喜欢别人	-	已有（词库 734，模型 793）
+追更	zhui geng	slang	追着看更新	200	缺（合成 37）
+催更	cui geng	slang	催作者快更新	-	已有（词库 237，模型 238）
+断更	duan geng	slang	停止更新	200	缺（合成 70）
+二刷	er shua	slang	再看一遍	767	缺（合成 767）
+倍速	bei su	slang	用加速播放	-	已有（词库 55，模型 238，来自补充常用词）
+考古	kao gu	slang	翻很久以前的内容	-	已有（词库 4278，模型 21564）
+刷屏	shua ping	slang	同样内容反复出现	-	已有（词库 2461，模型 2505）
+刷到	shua dao	slang	划手机时看见	2000	缺（合成 1587）
+划走	hua zou	slang	不感兴趣直接划过	200	缺（合成 37）
+开麦	kai mai	slang	打开麦克风说话	200	缺（合成 175）
+闭麦	bi mai	slang	闭嘴别说了	200	缺（合成 54）
+连麦	lian mai	slang	和别人连线聊天	-	已有（词库 181，模型 189，来自补充常用词）
+上链接	shang lian jie	slang	让主播放购买链接	200	缺（成分拆不出，无合成次数）
+下饭	xia fan	slang	适合边吃边看	-	已有（词库 1126，模型 1179）
+代餐	dai can	slang	拿相似的凑合替代	200	缺（合成 178）
+沉浸式	chen jin shi	slang	完整展示过程的视频	-	已有（词库 87，模型 270）
+出圈	chu quan	slang	被圈外人知道	-	已有（词库 65，模型 84）
+破圈	po quan	slang	突破原有受众	200	缺（成分拆不出，无合成次数）
+翻红	fan hong	slang	重新火起来	200	缺（合成 78）
+过气	guo qi	slang	不流行了	-	已有（词库 1996，模型 2247）
+糊穿地心	hu chuan di xin	slang	彻底不红了	20	缺（成分拆不出，无合成次数）
+带货	dai huo	slang	直播卖东西	-	已有（词库 105，模型 177，来自补充常用词）
+限流	xian liu	slang	内容被平台少推	-	已有（词库 353，模型 547）
+起号	qi hao	slang	把账号做起来	200	缺（成分拆不出，无合成次数）
+涨粉	zhang fen	slang	粉丝变多	-	已有（词库 20，模型 15，来自补充常用词）
+掉粉	diao fen	slang	粉丝变少	200	缺（成分拆不出，无合成次数）
+出片	chu pian	slang	拍出好照片	-	已有（词库 232，模型 298，来自补充常用词）
+摆拍	bai pai	slang	摆好姿势假装抓拍	-	已有（词库 1190，模型 1235）
+云吸猫	yun xi mao	slang	看别人的猫过瘾	200	缺（合成 67）
+吸猫	xi mao	slang	撸猫上瘾	-	已有（词库 774，模型 775）
+比心	bi xin	slang	用手比出心形	-	已有（词库 2865，模型 2876）
+爆肝	bao gan	slang	熬夜拼命做	214	缺（合成 214）
+肝不动	gan bu dong	slang	没力气再熬了	200	缺（成分拆不出，无合成次数）
+手残	shou can	slang	手笨操作不好	-	已有（词库 1222，模型 1228）
+手速	shou su	slang	操作的快慢	-	已有（词库 955，模型 980）
+秒懂	miao dong	slang	一下就明白	-	已有（词库 526，模型 533）
+秒回	miao hui	slang	立刻回消息	-	已有（词库 2710，模型 2717）
+已读不回	yi du bu hui	slang	看了不回复	2000	缺（成分拆不出，无合成次数）
+已读乱回	yi du luan hui	slang	看了瞎回一通	200	缺（成分拆不出，无合成次数）
+鸽了	ge le	slang	放人鸽子	2000	缺（合成 93）
+咕咕咕	gu gu gu	slang	又要放鸽子了	251	缺（合成 251）
+尬聊	ga liao	slang	聊不下去硬聊	-	已有（词库 1222，模型 1223）
+尬住	ga zhu	slang	当场僵住	200	缺（成分拆不出，无合成次数）
+尴尬癌	gan ga ai	slang	尴尬到受不了	200	缺（合成 122）
+闭环	bi huan	work	互联网黑话，事情有始有终	-	已有（词库 552，模型 1437）
+颗粒度	ke li du	work	互联网黑话，指粗细程度	2000	缺（合成 21）
+赋能	fu neng	work	互联网黑话，给别人提供能力	-	已有（词库 20，模型 53，来自补充常用词）
+抓手	zhua shou	work	互联网黑话，指切入点	2000	缺（合成 49）
+复盘	fu pan	slang	事后回顾总结	-	已有（词库 71，模型 94，来自补充常用词）
+干就完了	gan jiu wan le	slang	别想太多直接做	200	缺（成分拆不出，无合成次数）
+溜了溜了	liu le liu le	slang	我先走了	200	缺（成分拆不出，无合成次数）
+退退退	tui tui tui	slang	把晦气赶走	20	缺（成分拆不出，无合成次数）
+上桌	shang zhuo	slang	争取到话语权	-	已有（词库 267，模型 423，来自补充常用词）
+吃席	chi xi	slang	幸灾乐祸地围观	36	缺（合成 36）
+断亲	duan qin	slang	年轻人疏远亲戚	20	缺（成分拆不出，无合成次数）
+狗头	gou tou	slang	表示这是玩笑	-	已有（词库 2107，模型 2298）
+狗头保命	gou tou bao ming	slang	开玩笑求别当真	27	缺（合成 27）
+救命	jiu ming	slang	夸张地表示受不了	-	已有（词库 1299，模型 2085）
+啊这	a zhe	slang	一时无语的反应	2885	缺（合成 2885）
+天塌了	tian ta le	slang	出大事了	2000	缺（合成 83）
+塌了	ta le	slang	崩了完了	573	缺（合成 573）
+我哭死	wo ku si	slang	太感动或太难过	200	缺（合成 44）
+我悟了	wo wo le	slang	突然想明白了	200	缺（成分拆不出，无合成次数）
+悟了	wu le	slang	明白过来了	200	缺（合成 56）
+主打一个	zhu da yi ge	slang	强调就图这个	2000	缺（成分拆不出，无合成次数）
+真的会谢	zhen de hui xie	slang	无语到只能道谢	200	缺（成分拆不出，无合成次数）
+求求了	qiu qiu le	slang	带撒娇的恳求	200	缺（合成 17）
+拿来吧你	na lai ba ni	slang	索要东西的玩笑话	20	缺（合成 1）
+谁懂啊	shui dong a	slang	求共鸣的开场	200	缺（合成 2）
+家人们谁懂啊	jia ren men shui dong a	slang	网上诉苦的开场白	200	缺（成分拆不出，无合成次数）
+太牛了	tai niu le	slang	特别厉害	200	缺（合成 22）
+牛啊	niu a	slang	厉害的赞叹	660	缺（合成 660）
+奥利给	ao li gei	slang	加油打气	200	缺（成分拆不出，无合成次数）
+起飞	qi fei	slang	状态或热度猛涨	-	已有（词库 4008，模型 11489）
+双厨狂喜	shuang chu kuang xi	slang	两个爱好撞一起太高兴	20	缺（成分拆不出，无合成次数）
+心巴	xin ba	slang	可爱到心里一颤	20	缺（成分拆不出，无合成次数）
+yyds	y y d s	mixed	永远的神，夸到顶	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+xswl	x s w l	mixed	笑死我了	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+nbcs	n b c s	mixed	没人在乎	300	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+dddd	d d d d	mixed	懂的都懂	300	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+awsl	a w s l	mixed	被萌到不行	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+emo	e m o	mixed	情绪低落	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+PUA	p u a	mixed	精神打压操控，贬义	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+CPU	c p u	mixed	被反复洗脑说服，贬义	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+CP	c p	mixed	配成一对的情侣	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+CPDD	c p d d	mixed	想找人处对象	300	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+OMG	o m g	mixed	惊讶的感叹	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+GG	g g	mixed	完蛋了结束了	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+ojbk	o j b k	mixed	还行没问题	300	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+xdm	x d m	mixed	兄弟们	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+yygq	y y g q	mixed	阴阳怪气	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+栓Q	shuan q	mixed	谢谢你，带无奈	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+芭比Q了	ba bi q le	mixed	完蛋了	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+cue	c u e	mixed	点名提到某人	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+diss	d i s s	mixed	公开贬低攻击	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+battle	b a t t l e	mixed	正面对决比拼	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+solo	s o l o	mixed	单挑或单人表演	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+crush	c r u s h	mixed	让人心动的对象	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+flag	f l a g	mixed	立下的话常常翻车	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+get	g e t	mixed	学会或理解到	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+BGM	b g m	mixed	背景音乐	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+NPC	n p c	mixed	没主见像工具的人	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+MBTI	m b t i	mixed	性格测试类型	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+i人	i ren	mixed	内向不爱社交的人	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+e人	e ren	mixed	外向爱社交的人	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+p图	p tu	mixed	修图	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+K歌	k ge	mixed	唱卡拉OK	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+KPI	k p i	mixed	考核指标	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+BE	b e	mixed	结局是悲剧	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+rua	r u a	mixed	揉捏可爱的东西	300	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+pick	p i c k	mixed	选择并支持某人	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+carry	c a r r y	mixed	带队取胜	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+hold住	h o l d zhu	mixed	撑得住场面	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+low	l o w	mixed	档次低，贬义	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+nice	n i c e	mixed	好棒	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+cos	c o s	mixed	角色扮演	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+vlog	v l o g	mixed	记录生活的视频	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+打call	da c a l l	mixed	应援支持	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+PK	p k	mixed	一对一对决	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+AA制	a a zhi	mixed	各付各的钱	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+摸会鱼	mo hui yu	chat	上班偷懒时说	2000	缺（成分拆不出，无合成次数）
+摸会儿鱼	mo hui er yu	chat	上班偷懒时说	2000	缺（成分拆不出，无合成次数）
+摸会儿	mo hui er	chat	想偷个懒时说	200	缺（成分拆不出，无合成次数）
+歇会儿	xie hui er	chat	干累了想停一下	2000	缺（成分拆不出，无合成次数）
+歇会	xie hui	chat	干累了想停一下	2000	缺（合成 519）
+歇会儿脚	xie hui er jiao	chat	走累了想坐下	20	缺（成分拆不出，无合成次数）
+等会儿	deng hui er	chat	让对方稍后再说	2000	缺（合成 9）
+等会	deng hui	chat	让对方稍后再说	-	已有（词库 3427，模型 3645，来自短语层）
+等会儿说	deng hui er shuo	chat	现在没空聊	200	缺（成分拆不出，无合成次数）
+等会说	deng hui shuo	chat	现在没空聊	200	缺（合成 24）
+等会儿再说	deng hui er zai shuo	chat	推迟话题	2000	缺（成分拆不出，无合成次数）
+聊会儿	liao hui er	chat	约人说说话	200	缺（成分拆不出，无合成次数）
+聊会天	liao hui tian	chat	约人说说话	200	缺（成分拆不出，无合成次数）
+聊会儿天	liao hui er tian	chat	约人说说话	200	缺（成分拆不出，无合成次数）
+睡会儿	shui hui er	chat	想小睡一下	2000	缺（合成 5）
+睡会	shui hui	chat	想小睡一下	-	已有（词库 2087，模型 2092，来自短语层）
+睡会儿觉	shui hui er jiao	chat	想小睡一下	200	缺（成分拆不出，无合成次数）
+玩会儿	wan hui er	chat	放松一小段时间	200	缺（成分拆不出，无合成次数）
+玩会	wan hui	chat	放松一小段时间	1135	缺（合成 1135）
+玩会儿手机	wan hui er shou ji	chat	刷手机放松	200	缺（成分拆不出，无合成次数）
+看会儿	kan hui er	chat	看一小段时间	200	缺（成分拆不出，无合成次数）
+看会	kan hui	chat	看一小段时间	1105	缺（合成 1105）
+看会儿书	kan hui er shu	chat	读一小段书	200	缺（成分拆不出，无合成次数）
+看会书	kan hui shu	chat	读一小段书	20	缺（成分拆不出，无合成次数）
+看会儿电视	kan hui er dian shi	chat	看一小段电视	200	缺（成分拆不出，无合成次数）
+忙会儿	mang hui er	chat	还要忙一小段	20	缺（成分拆不出，无合成次数）
+忙会	mang hui	chat	还要忙一小段	27	缺（合成 27）
+待会儿	dai hui er	chat	表示过一小段时间	-	已有（词库 680，模型 684）
+待会	dai hui	chat	表示过一小段时间	-	已有（词库 1761，模型 1779，来自补充常用词）
+待会儿聊	dai hui er liao	chat	稍后再继续说	200	缺（成分拆不出，无合成次数）
+缓会儿	huan hui er	chat	累了想喘口气	200	缺（成分拆不出，无合成次数）
+缓会	huan hui	chat	累了想喘口气	20	缺（成分拆不出，无合成次数）
+躺会儿	tang hui er	chat	想躺下休息	200	缺（成分拆不出，无合成次数）
+躺会	tang hui	chat	想躺下休息	200	缺（合成 155）
+坐会儿	zuo hui er	chat	请人坐下待一会	200	缺（成分拆不出，无合成次数）
+坐会	zuo hui	chat	请人坐下待一会	207	缺（合成 207）
+刷会儿	shua hui er	chat	刷手机或视频	200	缺（成分拆不出，无合成次数）
+刷会手机	shua hui shou ji	chat	刷手机放松	200	缺（成分拆不出，无合成次数）
+刷会儿手机	shua hui er shou ji	chat	刷手机放松	200	缺（成分拆不出，无合成次数）
+打会儿游戏	da hui er you xi	chat	玩一小段游戏	200	缺（成分拆不出，无合成次数）
+打会游戏	da hui you xi	chat	玩一小段游戏	200	缺（成分拆不出，无合成次数）
+眯会儿	mi hui er	chat	小睡一下	200	缺（成分拆不出，无合成次数）
+眯会	mi hui	chat	小睡一下	20	缺（成分拆不出，无合成次数）
+溜达会儿	liu da hui er	chat	出去走走	20	缺（成分拆不出，无合成次数）
+休息会儿	xiu xi hui er	chat	停下来歇歇	200	缺（成分拆不出，无合成次数）
+听会儿歌	ting hui er ge	chat	听一小段歌	20	缺（成分拆不出，无合成次数）
+走会儿	zou hui er	chat	走一小段路	20	缺（成分拆不出，无合成次数）
+逛会儿	guang hui er	chat	逛一小段时间	20	缺（成分拆不出，无合成次数）
+发会儿呆	fa hui er dai	chat	放空一小段时间	200	缺（成分拆不出，无合成次数）
+发会呆	fa hui dai	chat	放空一小段时间	200	缺（成分拆不出，无合成次数）
+学会儿	xue hui er	chat	学一小段时间	20	缺（成分拆不出，无合成次数）
+等一下	deng yi xia	chat	让对方稍等	-	已有（词库 60，模型 1162，来自领域词）
+等一下下	deng yi xia xia	chat	撒娇式让人稍等	20	缺（合成 13）
+等我一下	deng wo yi xia	chat	让对方等自己	2000	缺（合成 28）
+看一下	kan yi xia	chat	请对方帮忙看	-	已有（词库 3623，模型 3673，来自短语层）
+问一下	wen yi xia	chat	开口打听事情	-	已有（词库 4812，模型 4824，来自短语层）
+试一下	shi yi xia	chat	提议先试试	-	已有（词库 1878，模型 1893，来自补充常用词）
+缓一下	huan yi xia	chat	请对方给点时间	200	缺（合成 59）
+歇一下	xie yi xia	chat	提议停下休息	200	缺（合成 44）
+说一下	shuo yi xia	chat	请对方讲讲	-	已有（词库 2168，模型 2184，来自短语层）
+想一下	xiang yi xia	chat	需要一点时间考虑	592	缺（合成 592）
+查一下	cha yi xia	chat	去查资料或记录	687	缺（合成 687）
+改一下	gai yi xia	chat	请对方做小修改	340	缺（合成 340）
+弄一下	nong yi xia	chat	请对方处理一下	200	缺（合成 145）
+帮一下	bang yi xia	chat	请人搭把手	200	缺（合成 40）
+换一下	huan yi xia	chat	请对方换个东西	576	缺（合成 576）
+麻烦一下	ma fan yi xia	chat	打扰别人前的客气话	2000	缺（合成 16）
+打扰一下	da rao yi xia	chat	打断别人前的客气话	200	缺（合成 176）
+确认一下	que ren yi xia	chat	再核对一遍	227	缺（合成 227）
+休息一下	xiu xi yi xia	chat	提议停下来歇歇	2000	缺（合成 1752）
+放松一下	fang song yi xia	chat	劝人别太紧张	982	缺（合成 982）
+吃个饭	chi ge fan	chat	约人吃饭	-	已有（词库 46，模型 25，来自短语层）
+喝口水	he kou shui	chat	让人先喝点水	2000	缺（合成 255）
+喝杯咖啡	he bei ka fei	chat	约人喝咖啡	247	缺（合成 247）
+喝个咖啡	he ge ka fei	chat	约人喝咖啡	200	缺（成分拆不出，无合成次数）
+喝一杯	he yi bei	chat	约人小酌	-	已有（词库 1144，模型 1206，来自补充常用词）
+睡个觉	shui ge jiao	chat	去睡一觉	2000	缺（成分拆不出，无合成次数）
+洗个澡	xi ge zao	chat	去洗澡	2000	缺（合成 979）
+洗个头	xi ge tou	chat	去洗头	200	缺（成分拆不出，无合成次数）
+遛个弯	liu ge wan	chat	出门散步	200	缺（成分拆不出，无合成次数）
+走一趟	zou yi tang	chat	跑一次某地	244	缺（合成 244）
+跑一趟	pao yi tang	chat	专门去一次	232	缺（合成 232）
+去一趟	qu yi tang	chat	去一次某地	911	缺（合成 911）
+搭把手	da ba shou	chat	请人帮个小忙	200	缺（合成 51）
+帮个忙	bang ge mang	chat	请人帮忙	2000	缺（成分拆不出，无合成次数）
+发个消息	fa ge xiao xi	chat	用聊天软件联系	200	缺（成分拆不出，无合成次数）
+打个电话	da ge dian hua	chat	用电话联系	2000	缺（合成 12）
+点个外卖	dian ge wai mai	chat	叫外卖吃饭	2000	缺（成分拆不出，无合成次数）
+发个红包	fa ge hong bao	chat	群里发红包	200	缺（成分拆不出，无合成次数）
+拍个照	pai ge zhao	chat	拍张照片	200	缺（成分拆不出，无合成次数）
+理个发	li ge fa	chat	去剪头发	200	缺（成分拆不出，无合成次数）
+吃个宵夜	chi ge xiao ye	chat	晚上加一餐	200	缺（成分拆不出，无合成次数）
+歇口气	xie kou qi	chat	累了停一下	200	缺（成分拆不出，无合成次数）
+喘口气	chuan kou qi	chat	忙完后放松	200	缺（合成 138）
+吃口饭	chi kou fan	chat	简单吃一点	200	缺（合成 44）
+碰个面	peng ge mian	chat	约人见面	200	缺（成分拆不出，无合成次数）
+见个面	jian ge mian	chat	约人见面	200	缺（合成 1）
+约个饭	yue ge fan	chat	约人一起吃饭	200	缺（合成 6）
+聚个餐	ju ge can	chat	约大家聚会吃饭	200	缺（成分拆不出，无合成次数）
+开个会	kai ge hui	work	提议开一个会	2000	缺（合成 7）
+请个假	qing ge jia	chat	跟公司请假	200	缺（成分拆不出，无合成次数）
+打个车	da ge che	chat	叫车出行	200	缺（合成 5）
+买个菜	mai ge cai	chat	去买菜	200	缺（合成 7）
+做个饭	zuo ge fan	chat	自己在家做饭	200	缺（合成 28）
+取个快递	qu ge kuai di	chat	下楼拿快递	200	缺（成分拆不出，无合成次数）
+充个电	chong ge dian	chat	给设备充电	200	缺（成分拆不出，无合成次数）
+换个地方	huan ge di fang	chat	提议挪个地点	200	缺（合成 38）
+行吧	xing ba	chat	勉强同意	-	已有（词库 6315，模型 6322，来自短语层）
+好嘞	hao lei	chat	爽快答应	-	已有（词库 6658，模型 6666）
+好的呀	hao de ya	chat	语气轻松地答应	-	已有（词库 616，模型 285，来自短语层）
+好哒	hao da	chat	可爱地答应	-	已有（词库 9602，模型 9602，来自短语层）
+收到	shou dao	chat	表示已看到并照办	-	已有（词库 24772，模型 39644）
+得嘞	dei lei	chat	利落地答应	512	缺（合成 512）
+没事儿	mei shi er	chat	对方道歉时回应	-	已有（词库 5354，模型 5361，来自短语层）
+没事的	mei shi de	chat	安慰对方	-	已有（词库 4984，模型 5017，来自短语层）
+不用谢	bu yong xie	chat	回应别人道谢	-	已有（词库 2961，模型 2964，来自短语层）
+客气了	ke qi le	chat	回应别人道谢	-	已有（词库 2724，模型 2735，来自短语层）
+别客气	bie ke qi	chat	回应别人道谢	-	已有（词库 998，模型 1000，来自补充常用词）
+太客气了	tai ke qi le	chat	收到礼物或帮助时说	200	缺（合成 81）
+不客气	bu ke qi	chat	回应别人道谢	-	已有（词库 12222，模型 12313，来自短语层）
+辛苦了	xin ku le	chat	感谢对方付出	-	已有（词库 13511，模型 13580，来自短语层）
+辛苦啦	xin ku la	chat	轻松地感谢对方	-	已有（词库 3530，模型 3530，来自短语层）
+麻烦了	ma fan le	chat	请人帮忙后说	2000	缺（合成 1855）
+麻烦你了	ma fan ni le	chat	请人帮忙后说	2000	缺（合成 36）
+麻烦您了	ma fan nin le	chat	对长辈或客户说	200	缺（合成 5）
+不好意思	bu hao yi si	chat	轻度道歉	-	已有（词库 24750，模型 24967）
+真不好意思	zhen bu hao yi si	chat	比较郑重地道歉	424	缺（合成 424）
+我看看	wo kan kan	chat	答应去查看	-	已有（词库 5227，来自短语层）
+我想想	wo xiang xiang	chat	需要时间考虑	2263	缺（合成 2263）
+我试试	wo shi shi	chat	答应尝试	814	缺（合成 814）
+稍等	shao deng	chat	让对方等一下	-	已有（词库 524，模型 556）
+稍等一下	shao deng yi xia	chat	让对方等一下	2000	缺（合成 38）
+马上来	ma shang lai	chat	表示很快到	2000	缺（合成 544）
+马上到	ma shang dao	chat	表示很快到	2000	缺（合成 910）
+这就来	zhe jiu lai	chat	立刻动身	2000	缺（合成 79）
+这就去	zhe jiu qu	chat	立刻动身	200	缺（合成 183）
+明白了	ming bai le	chat	表示听懂	-	已有（词库 5022，模型 5410，来自短语层）
+懂了	dong le	chat	表示听懂	-	已有（词库 7906，模型 8010，来自短语层）
+知道了	zhi dao le	chat	表示已知	-	已有（词库 23084，模型 24250，来自短语层）
+了解	liao jie	chat	表示明白了	-	已有（词库 31302，模型 52433）
+都行	dou xing	chat	表示无所谓	-	已有（词库 4940，模型 5024，来自短语层）
+都可以	dou ke yi	chat	表示无所谓	-	已有（词库 19367，模型 28147，来自短语层）
+随便吧	sui bian ba	chat	让对方拿主意	2000	缺（合成 231）
+听你的	ting ni de	chat	让对方决定	-	已有（词库 482，模型 497，来自短语层）
+你定	ni ding	chat	让对方拍板	1096	缺（合成 1096）
+你说了算	ni shuo le suan	chat	让对方拍板	911	缺（合成 911）
+算了吧	suan le ba	chat	放弃某件事	-	已有（词库 2612，模型 2644，来自短语层）
+那行	na xing	chat	顺着对方同意	2000	缺（合成 638）
+那好吧	na hao ba	chat	勉强同意	-	已有（词库 251，模型 239，来自短语层）
+就这样吧	jiu zhe yang ba	chat	结束讨论	2000	缺（合成 110）
+就这样	jiu zhe yang	chat	结束讨论	-	已有（词库 10564，模型 12115，来自短语层）
+再说吧	zai shuo ba	chat	先不定	-	已有（词库 2646，模型 2667，来自短语层）
+回头说	hui tou shuo	chat	改到以后再谈	2000	缺（合成 47）
+回头聊	hui tou liao	chat	改到以后再谈	200	缺（合成 32）
+回聊	hui liao	chat	暂时结束聊天	200	缺（合成 134）
+改天聊	gai tian liao	chat	约以后再谈	200	缺（合成 42）
+改天吧	gai tian ba	chat	婉拒或改期	200	缺（合成 133）
+下次聊	xia ci liao	chat	暂时结束聊天	200	缺（合成 38）
+先这样	xian zhe yang	chat	结束这轮对话	2000	缺（合成 93）
+我走了	wo zou le	chat	告知自己要离开	2000	缺（合成 1035）
+我先撤了	wo xian che le	chat	提前离开	200	缺（成分拆不出，无合成次数）
+先撤了	xian che le	chat	提前离开	200	缺（合成 11）
+没问题	mei wen ti	chat	爽快答应	-	已有（词库 15566，模型 15922）
+可以的	ke yi de	chat	表示同意	-	已有（词库 25779，模型 26144，来自短语层）
+应该的	ying gai de	chat	回应别人道谢	-	已有（词库 2626，模型 2730，来自短语层）
+谢啦	xie la	chat	轻松地道谢	-	已有（词库 5069，模型 5069）
+没关系	mei guan xi	chat	回应别人道歉	-	已有（词库 14807，模型 15319）
+没关系的	mei guan xi de	chat	安慰对方	1336	缺（合成 1336）
+嗯呢	en ne	chat	轻声应答	200	缺（成分拆不出，无合成次数）
+嗯嗯	en en	chat	表示在听	2000	缺（成分拆不出，无合成次数）
+哦哦	o o	chat	表示知道了	26324	缺（合成 26324）
+那必须的	na bi xu de	chat	爽快肯定	-	已有（词库 2533，模型 1540，来自短语层）
+安排上了	an pai shang le	chat	表示已安排好	200	缺（合成 6）
+搞定	gao ding	chat	事情办完了	-	已有（词库 3573，模型 3679）
+搞定了	gao ding le	chat	事情办完了	2000	缺（合成 895）
+忙完了	mang wan le	chat	手头事做完	2000	缺（合成 788）
+忙着呢	mang zhe ne	chat	表示正在忙	2000	缺（合成 187）
+在忙	zai mang	chat	表示正在忙	2227	缺（合成 2227）
+在忙呢	zai mang ne	chat	表示正在忙	2000	缺（合成 17）
+刚下班	gang xia ban	chat	汇报刚离开公司	2000	缺（合成 1012）
+快到了	kuai dao le	chat	告知马上到	2000	缺（合成 520）
+到了吗	dao le ma	chat	问对方到没到	2000	缺（合成 1897）
+我到了	wo dao le	chat	告知已到达	2000	缺（合成 711）
+在路上	zai lu shang	chat	告知正在赶来	-	已有（词库 6958，模型 8177，来自短语层）
+还没睡	hai mei shui	chat	深夜还醒着	-	已有（词库 2814，模型 2760，来自短语层）
+刚起	gang qi	chat	刚刚起床	584	缺（合成 584）
+刚起床	gang qi chuang	chat	刚刚起床	1009	缺（合成 1009）
+没睡醒	mei shui xing	chat	早上迷糊	2000	缺（合成 1148）
+睡过头了	shui guo tou le	chat	起晚了	269	缺（合成 269）
+饿了	e le	chat	想吃东西	-	已有（词库 21458，模型 21650，来自短语层）
+好饿	hao e	chat	很想吃东西	-	已有（词库 6345，模型 6374，来自短语层）
+饿死了	e si le	chat	非常饿	-	已有（词库 2402，模型 2439，来自短语层）
+困了	kun le	chat	想睡觉	-	已有（词库 4543，模型 4563，来自短语层）
+好困	hao kun	chat	很想睡	-	已有（词库 3604，模型 3605，来自短语层）
+困死了	kun si le	chat	非常困	2000	缺（合成 1494）
+累了	lei le	chat	体力或精神耗尽	-	已有（词库 13110，模型 13214，来自短语层）
+好累	hao lei	chat	很疲惫	-	已有（词库 10195，模型 10218，来自短语层）
+累死了	lei si le	chat	非常累	-	已有（词库 3389，模型 3393，来自短语层）
+忙死了	mang si le	chat	忙得不可开交	2000	缺（合成 684）
+急死了	ji si le	chat	非常着急	200	缺（合成 29）
+我麻了	wo ma le	chat	无语到麻木	200	缺（合成 7）
+吃了吗	chi le ma	chat	问对方吃饭没	2000	缺（合成 993）
+吃过了	chi guo le	chat	回答已经吃了	2000	缺（合成 1301）
+还没吃	hai mei chi	chat	回答还没吃饭	-	已有（词库 2680，模型 2635，来自短语层）
+吃饭了吗	chi fan le ma	chat	问候对方	2000	缺（合成 105）
+下班了	xia ban le	chat	告知已下班	-	已有（词库 3038，模型 3042，来自短语层）
+上班了	shang ban le	chat	告知开始工作	-	已有（词库 10152，模型 10167，来自短语层）
+又加班	you jia ban	chat	抱怨再次加班	275	缺（合成 275）
+加班中	jia ban zhong	chat	告知正在加班	200	缺（合成 130）
+早点睡	zao dian shui	chat	劝对方早休息	-	已有（词库 11412，模型 11413，来自短语层）
+早点休息	zao dian xiu xi	chat	劝对方早休息	-	已有（词库 9343，模型 9345，来自短语层）
+注意身体	zhu yi shen ti	chat	关心对方健康	-	已有（词库 11115，模型 11128，来自短语层）
+多喝热水	duo he re shui	chat	关心对方	-	已有（词库 2277，模型 2278，来自短语层）
+多喝水	duo he shui	chat	提醒对方补水	-	已有（词库 4805，模型 4867）
+保重	bao zhong	chat	告别时的关心	-	已有（词库 7278，模型 7438）
+路上小心	lu shang xiao xin	chat	送别时叮嘱	2000	缺（合成 1067）
+注意安全	zhu yi an quan	chat	出门时叮嘱	-	已有（词库 11619，模型 11694，来自短语层）
+到家了	dao jia le	chat	报平安	-	已有（词库 5614，模型 5627，来自短语层）
+到家说一声	dao jia shuo yi sheng	chat	让对方报平安	200	缺（成分拆不出，无合成次数）
+我先睡了	wo xian shui le	chat	结束夜聊	2000	缺（成分拆不出，无合成次数）
+睡了睡了	shui le shui le	chat	要去睡觉	200	缺（成分拆不出，无合成次数）
+起不来	qi bu lai	chat	早上赖床	-	已有（词库 33，模型 30，来自短语层）
+起不来床	qi bu lai chuang	chat	早上赖床	200	缺（成分拆不出，无合成次数）
+不想动	bu xiang dong	chat	懒得行动	200	缺（合成 125）
+不想上班	bu xiang shang ban	chat	抱怨工作	2000	缺（合成 142）
+撑不住了	cheng bu zhu le	chat	快要顶不住	200	缺（成分拆不出，无合成次数）
+受不了	shou bu liao	chat	忍不下去	-	已有（词库 12519，模型 13179）
+受不了了	shou bu liao le	chat	忍不下去	-	已有（词库 2508，模型 2531，来自短语层）
+emo了	e m o le	mixed	情绪低落	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+我emo了	wo e m o le	mixed	情绪低落	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+有空吗	you kong ma	chat	约人前先问	2000	缺（合成 499）
+有时间吗	you shi jian ma	chat	约人前先问	2000	缺（合成 34）
+在吗	zai ma	chat	开场问对方在不在	3717	缺（合成 3717）
+在不在	zai bu zai	chat	催对方回消息	200	缺（合成 121）
+忙不忙	mang bu mang	chat	问对方方不方便	2000	缺（成分拆不出，无合成次数）
+方便吗	fang bian ma	chat	问对方是否得空	2000	缺（合成 355）
+方便说话吗	fang bian shuo hua ma	chat	打电话前先问	200	缺（成分拆不出，无合成次数）
+现在方便吗	xian zai fang bian ma	chat	打扰前先问	200	缺（成分拆不出，无合成次数）
+几点	ji dian	chat	问时间	-	已有（词库 13248，模型 13854）
+几点到	ji dian dao	chat	问对方几点到	861	缺（合成 861）
+几点了	ji dian le	chat	问现在时间	2000	缺（合成 1081）
+几点见	ji dian jian	chat	约见面时间	200	缺（合成 28）
+什么时候	shen me shi hou	chat	问时间点	-	已有（词库 68924，模型 69455，来自短语层）
+啥时候	sha shi hou	chat	口语问时间点	-	已有（词库 36511，模型 36515，来自短语层）
+什么时候来	shen me shi hou lai	chat	问对方何时到	1209	缺（合成 1209）
+在哪儿	zai na er	chat	问对方位置	-	已有（词库 8144，模型 8204，来自短语层）
+在哪	zai na	chat	问对方位置	-	已有（词库 37569，模型 37993）
+到哪了	dao na le	chat	催问对方位置	2000	缺（合成 68）
+到哪儿了	dao na er le	chat	催问对方位置	200	缺（合成 73）
+怎么走	zen me zou	chat	问路线	1198	缺（合成 1198）
+怎么去	zen me qu	chat	问交通方式	-	已有（词库 3221，模型 3270，来自短语层）
+约个时间	yue ge shi jian	chat	商量见面时间	200	缺（合成 4）
+定个时间	ding ge shi jian	chat	把时间敲定	200	缺（成分拆不出，无合成次数）
+约吗	yue ma	chat	问对方要不要一起	-	已有（词库 2394，模型 2398，来自短语层）
+要不要	yao bu yao	chat	征求意愿	-	已有（词库 34952，模型 35374，来自短语层）
+去不去	qu bu qu	chat	问对方去不去	-	已有（词库 92，模型 79，来自短语层）
+来不来	lai bu lai	chat	问对方来不来	-	已有（词库 56，模型 53，来自短语层）
+行不行	xing bu xing	chat	征求同意	-	已有（词库 2329，模型 2500，来自短语层）
+可以吗	ke yi ma	chat	征求同意	-	已有（词库 8237，模型 8316，来自短语层）
+好不好	hao bu hao	chat	征求同意	-	已有（词库 17771，模型 17898，来自短语层）
+对不对	dui bu dui	chat	求对方确认	-	已有（词库 37，模型 36，来自短语层）
+是不是	shi bu shi	chat	求对方确认	-	已有（词库 135408，模型 136897）
+能不能	neng bu neng	chat	提出请求	-	已有（词库 1852，模型 2051，来自短语层）
+好吗	hao ma	chat	征求同意	-	已有（词库 43358，模型 43840，来自短语层）
+吃什么	chi shen me	chat	商量吃饭	-	已有（词库 10051，模型 10131，来自短语层）
+吃啥	chi sha	chat	口语商量吃饭	-	已有（词库 6414，模型 6419，来自短语层）
+吃点什么	chi dian shen me	chat	商量点餐	200	缺（合成 81）
+去哪吃	qu na chi	chat	商量吃饭地点	289	缺（合成 289）
+干嘛呢	gan ma ne	chat	问对方在做什么	-	已有（词库 4130，模型 4137，来自短语层）
+在干嘛	zai gan ma	chat	问对方在做什么	-	已有（词库 6150，模型 6163，来自短语层）
+干啥呢	gan sha ne	chat	口语问对方在忙什么	2000	缺（合成 1021）
+咋样	za yang	chat	问情况或征求意见	-	已有（词库 8194，模型 8195）
+怎么样	zen me yang	chat	问情况或征求意见	-	已有（词库 36970，模型 37535）
+怎么说	zen me shuo	chat	问对方的说法	-	已有（词库 8919，模型 9164，来自短语层）
+还要多久	hai yao duo jiu	chat	催进度	200	缺（合成 48）
+你说呢	ni shuo ne	chat	反问对方意见	-	已有（词库 909，模型 746，来自短语层）
+明天有空吗	ming tian you kong ma	chat	约明天	200	缺（合成 5）
+周末有空吗	zhou mo you kong ma	chat	约周末	200	缺（合成 4）
+一起吗	yi qi ma	chat	问对方要不要同行	1725	缺（合成 1725）
+来吗	lai ma	chat	简短邀约	-	已有（词库 2954，模型 2998，来自短语层）
+我也是	wo ye shi	chat	表示相同	-	已有（词库 97317，模型 97503，来自短语层）
+我也一样	wo ye yi yang	chat	表示相同	962	缺（合成 962）
+确实	que shi	chat	表示认同	-	已有（词库 50388，模型 58372）
+就是说	jiu shi shuo	chat	强烈认同	-	已有（词库 4078，模型 4922，来自短语层）
+可不是	ke bu shi	chat	附和对方	-	已有（词库 6242，模型 6342）
+说的对	shuo de dui	chat	认同对方	-	已有（词库 117，模型 75，来自短语层）
+有道理	you dao li	chat	认同对方说法	-	已有（词库 12953，模型 13103，来自短语层）
+我不信	wo bu xin	chat	表示怀疑	-	已有（词库 726，模型 622，来自短语层）
+真的假的	zhen de jia de	chat	表示惊讶	2000	缺（成分拆不出，无合成次数）
+真的吗	zhen de ma	chat	求证	-	已有（词库 1787，模型 781，来自短语层）
+什么情况	shen me qing kuang	chat	问发生了什么	-	已有（词库 5621，模型 5694，来自短语层）
+啥情况	sha qing kuang	chat	口语问发生了什么	2000	缺（合成 1162）
+咋回事	za hui shi	chat	问缘由	2000	缺（合成 1963）
+怎么回事	zen me hui shi	chat	问缘由	-	已有（词库 5793，模型 5900，来自短语层）
+怎么了	zen me le	chat	关心对方	-	已有（词库 29687，模型 29846，来自短语层）
+不至于	bu zhi yu	chat	觉得没那么严重	-	已有（词库 3970，模型 4574）
+没必要	mei bi yao	chat	觉得不用这样	-	已有（词库 5117，模型 5340，来自短语层）
+想多了	xiang duo le	chat	说对方过度联想	-	已有（词库 893，模型 526，来自短语层）
+你想多了	ni xiang duo le	chat	说对方过度联想	200	缺（合成 22）
+随便说说	sui bian shuo shuo	chat	表示不必当真	200	缺（合成 14）
+开玩笑的	kai wan xiao de	chat	说明只是玩笑	-	已有（词库 3085，模型 3300，来自短语层）
+逗你的	dou ni de	chat	说明只是玩笑	200	缺（合成 129）
+别闹	bie nao	chat	让对方别胡闹	-	已有（词库 4738，模型 4805）
+别急	bie ji	chat	安抚对方	-	已有（词库 2338，模型 2348）
+慢慢来	man man lai	chat	让对方别赶	-	已有（词库 6164，模型 6229，来自短语层）
+不着急	bu zhao ji	chat	表示不催	-	已有（词库 2578，模型 2592，来自短语层）
+不急	bu ji	chat	表示不催	-	已有（词库 5564，模型 5654，来自短语层）
+不清楚	bu qing chu	chat	表示不了解	-	已有（词库 9085，模型 13061，来自短语层）
+没想到	mei xiang dao	chat	表示意外	-	已有（词库 624，模型 739，来自短语层）
+怪不得	guai bu de	chat	恍然明白	-	已有（词库 5938，模型 5956）
+原来是这样	yuan lai shi zhe yang	chat	听懂来龙去脉	200	缺（合成 42）
+也是	ye shi	chat	轻度附和	-	已有（词库 289391，模型 424508）
+说得也是	shuo de ye shi	chat	被说服了	200	缺（合成 7）
+没毛病	mei mao bing	chat	表示挑不出问题	-	已有（词库 9586，模型 9586，来自短语层）
+有点难	you dian nan	chat	表示不容易	1387	缺（合成 1387）
+不太行	bu tai xing	chat	委婉否定	200	缺（合成 129）
+应该可以	ying gai ke yi	chat	不太确定的同意	-	已有（词库 2456，模型 2640，来自短语层）
+应该没事	ying gai mei shi	chat	不太确定的安慰	502	缺（合成 502）
+看情况	kan qing kuang	chat	不给准话	-	已有（词库 2059，模型 2107，来自短语层）
+看着办	kan zhe ban	chat	让对方自己决定	-	已有（词库 1293，模型 1300，来自补充常用词）
+再看看	zai kan kan	chat	暂不决定	-	已有（词库 734，来自短语层）
+到时候再说	dao shi hou zai shuo	chat	推到以后	2000	缺（合成 23）
+以后再说	yi hou zai shuo	chat	推到以后	334	缺（合成 334）
+不管了	bu guan le	chat	放弃纠结	2000	缺（合成 1460）
+无所谓	wu suo wei	chat	表示都可以	-	已有（词库 6788，模型 7196）
+太难了	tai nan le	chat	抱怨事情不容易	-	已有（词库 334，模型 244，来自短语层）
+太好了	tai hao le	chat	表示高兴	-	已有（词库 1141，模型 1133，来自短语层）
+这会儿	zhe hui er	chat	指现在这段时间	-	已有（词库 1536，模型 1540）
+那会儿	na hui er	chat	指过去某段时间	-	已有（词库 1977，模型 1986）
+一会儿	yi hui er	chat	指很短的时间	-	已有（词库 8257，模型 8631）
+过会儿	guo hui er	chat	指稍后	2000	缺（成分拆不出，无合成次数）
+今儿	jin er	chat	口语说今天	-	已有（词库 4714，模型 4729）
+明儿	ming er	chat	口语说明天	-	已有（词库 3615，模型 3633）
+昨儿	zuo er	chat	口语说昨天	-	已有（词库 1211，模型 1217）
+今儿个	jin er ge	chat	口语说今天	324	缺（合成 324）
+明儿见	ming er jian	chat	明天再见	213	缺（合成 213）
+有点儿	you dian er	chat	表示程度轻	-	已有（词库 3351，模型 3394）
+好玩儿	hao wan er	chat	觉得有意思	-	已有（词库 1453，模型 1456）
+一块儿	yi kuai er	chat	表示一起	-	已有（词库 1224，模型 1265）
+大伙儿	da huo er	chat	称呼一群人	-	已有（词库 148，模型 181）
+哥们儿	ge men er	chat	称呼男性朋友	-	已有（词库 987，模型 1002）
+姐们儿	jie men er	chat	称呼女性朋友	-	已有（词库 253，模型 254，来自补充常用词）
+爷们儿	ye men er	chat	称呼男性	-	已有（词库 575，模型 582）
+挺好的	ting hao de	chat	表示还不错	-	已有（词库 19403，模型 19433，来自短语层）
+还行吧	hai xing ba	chat	勉强满意	-	已有（词库 826，模型 450，来自短语层）
+还行	hai xing	chat	表示一般偏好	-	已有（词库 16566，模型 16590，来自短语层）
+凑合	cou he	chat	勉强能接受	-	已有（词库 2949，模型 3072）
+凑合吧	cou he ba	chat	勉强能接受	284	缺（合成 284）
+凑合着	cou he zhe	chat	将就着做	311	缺（合成 311）
+将就	jiang jiu	chat	降低要求接受	-	已有（词库 2864，模型 3045）
+将就一下	jiang jiu yi xia	chat	请对方降低要求	128	缺（合成 128）
+差不多	cha bu duo	chat	表示接近	-	已有（词库 37246，模型 40208）
+差不多吧	cha bu duo ba	chat	含糊肯定	1995	缺（合成 1995）
+差不多了	cha bu duo le	chat	快完成了	-	已有（词库 4598，模型 4626，来自短语层）
+没劲儿	mei jin er	chat	觉得无趣	102	缺（合成 102）
+小事儿	xiao shi er	chat	表示不值一提	207	缺（合成 207）
+没门儿	mei men er	chat	断然拒绝	-	已有（词库 34，模型 34）
+差点儿	cha dian er	chat	表示险些	-	已有（词库 412，模型 440）
+玩意儿	wan yi er	chat	口语指东西	-	已有（词库 2232，模型 2324）
+压根儿	ya gen er	chat	表示从来没有	-	已有（词库 236，模型 258）
+慢点儿	man dian er	chat	叮嘱对方放慢	200	缺（合成 50）
+快点儿	kuai dian er	chat	催促对方	-	已有（词库 303，模型 309，来自补充常用词）
+待一会儿	dai yi hui er	chat	停留一小段时间	200	缺（合成 32）
+不一会儿	bu yi hui er	chat	表示很快	92	缺（合成 92）
+好好儿	hao hao er	chat	口语强调认真	88	缺（合成 88）
+对齐	dui qi	work	互联网黑话，统一大家的认识	-	已有（词库 302，模型 1095，来自领域词）
+对齐一下	dui qi yi xia	work	互联网黑话，开口先说这句	2000	缺（成分拆不出，无合成次数）
+拉通	la tong	work	互联网黑话，打通多个团队	2000	缺（合成 92）
+拉齐	la qi	work	互联网黑话，把信息拉到同一层	691	缺（合成 691）
+心智	xin zhi	work	互联网黑话，指用户认知	-	已有（词库 762，模型 2470）
+打法	da fa	work	互联网黑话，指做事策略	-	已有（词库 373，模型 1157，来自补充常用词）
+生态	sheng tai	work	互联网黑话，指上下游全局	-	已有（词库 3736，模型 26708）
+链路	lian lu	work	互联网黑话，也指调用全过程	-	已有（词库 149，模型 1061）
+沉淀	chen dian	work	互联网黑话，把经验留下来	-	已有（词库 1281，模型 3280）
+复用	fu yong	work	互联网黑话，也指代码重用	-	已有（词库 87，模型 676）
+组合拳	zu he quan	work	互联网黑话，多个手段一起上	200	缺（合成 19）
+方法论	fang fa lun	work	互联网黑话，一套通用做法	-	已有（词库 201，模型 1193）
+护城河	hu cheng he	work	互联网黑话，指竞争壁垒	-	已有（词库 329，模型 1472）
+顶层设计	ding ceng she ji	work	互联网黑话，指上层规划	200	缺（合成 39）
+底层逻辑	di ceng luo ji	work	互联网黑话，指根本道理	2000	缺（成分拆不出，无合成次数）
+认知升级	ren zhi sheng ji	work	互联网黑话，指想法更新	20	缺（成分拆不出，无合成次数）
+降本增效	jiang ben zeng xiao	work	互联网黑话，省钱又提速	2000	缺（成分拆不出，无合成次数）
+提效	ti xiao	work	互联网黑话，提高效率	2000	缺（成分拆不出，无合成次数）
+确定性	que ding xing	work	互联网黑话，指可预期的结果	2581	缺（合成 2581）
+强背书	qiang bei shu	work	互联网黑话，有大人物站台	20	缺（成分拆不出，无合成次数）
+做深做透	zuo shen zuo tou	work	互联网黑话，把一件事做到底	20	缺（成分拆不出，无合成次数）
+落地	luo di	work	互联网黑话，把想法真做出来	-	已有（词库 2603，模型 5227）
+对标	dui biao	work	互联网黑话，跟同类产品比	200	缺（合成 148）
+全链路	quan lian lu	work	互联网黑话，从头到尾整条路	200	缺（成分拆不出，无合成次数）
+端到端	duan dao duan	work	互联网黑话，从起点到终点打通	200	缺词库，模型有（197 次）
+精细化	jing xi hua	work	互联网黑话，做得更细	200	缺（合成 79）
+数据驱动	shu ju qu dong	work	互联网黑话，用数据做决定	200	缺（成分拆不出，无合成次数）
+卡位	ka wei	work	互联网黑话，抢占位置	129	缺（合成 129）
+势能	shi neng	work	互联网黑话，指积累的优势	-	已有（词库 84，模型 874）
+用户心智	yong hu xin zhi	work	互联网黑话，用户心里的印象	20	缺（成分拆不出，无合成次数）
+双赢	shuang ying	work	互联网黑话，两边都得好处	-	已有（词库 198，模型 400）
+增长	zeng zhang	work	互联网黑话，指用户或收入变多	-	已有（词库 4889，模型 25014）
+转化	zhuan hua	work	互联网黑话，用户变成付费	-	已有（词库 1848，模型 10323）
+留存	liu cun	work	互联网黑话，用户继续用	-	已有（词库 530，模型 2147）
+拉新	la xin	work	互联网黑话，拉来新用户	-	已有（词库 26，模型 37，来自补充常用词）
+促活	cu huo	work	互联网黑话，让用户更活跃	200	缺（成分拆不出，无合成次数）
+拉个会	la ge hui	work	临时召集大家开会	2000	缺（成分拆不出，无合成次数）
+约个会	yue ge hui	work	约时间开会	200	缺（合成 3）
+同步一下	tong bu yi xia	work	互相通个气	2000	缺（成分拆不出，无合成次数）
+碰一下	peng yi xia	work	约着简单聊聊	2000	缺（合成 140）
+过一下	guo yi xia	work	快速看一遍	2000	缺（合成 188）
+对一下	dui yi xia	work	核对一下信息	2000	缺（合成 46）
+复盘一下	fu pan yi xia	work	提议事后做总结	2000	缺（成分拆不出，无合成次数）
+周会	zhou hui	work	每周的例会	2000	缺（合成 215）
+日会	ri hui	work	每天的短会	1051	缺（合成 1051）
+站会	zhan hui	work	站着开的短会	2000	缺（合成 250）
+双周会	shuang zhou hui	work	两周一次的会	200	缺（成分拆不出，无合成次数）
+月会	yue hui	work	每月的例会	531	缺（合成 531）
+评审	ping shen	work	集体审查方案	-	已有（词库 3259，模型 13969）
+需求评审	xu qiu ping shen	work	评审产品需求	2000	缺词库，模型有（1 次）
+技术评审	ji shu ping shen	work	评审技术方案	2000	缺（合成 28）
+走查	zou cha	work	逐条检查一遍	200	缺（成分拆不出，无合成次数）
+会议纪要	hui yi ji yao	work	会后的文字记录	2000	缺（合成 217）
+待办	dai ban	work	还没做的事	-	已有（词库 21，模型 52）
+跟进	gen jin	work	继续推动某件事	-	已有（词库 1083，模型 3503）
+跟进一下	gen jin yi xia	work	请人继续推动	2000	缺（成分拆不出，无合成次数）
+推进	tui jin	work	把事情往前推	-	已有（词库 4582，模型 20914）
+排期	pai qi	work	安排时间计划	-	已有（词库 127，模型 255，来自补充常用词）
+优先级	you xian ji	work	事情的先后顺序	-	已有（词库 172，模型 729）
+加塞	jia sai	work	临时插进来的活	200	缺（合成 108）
+插需求	cha xu qiu	work	中途临时加需求	200	缺（成分拆不出，无合成次数）
+对焦	dui jiao	work	把目标聊清楚	-	已有（词库 1047，模型 2308）
+拍板	pai ban	work	负责人做最后决定	-	已有（词库 85，模型 435）
+拉群	la qun	work	建群把人拉进来	2000	缺（合成 57）
+建个群	jian ge qun	work	提议开一个群	200	缺（成分拆不出，无合成次数）
+同步给你	tong bu gei ni	work	把信息发给对方	200	缺（成分拆不出，无合成次数）
+抄送	chao song	work	邮件同时抄给别人	-	已有（词库 38，模型 72）
+知会	zhi hui	work	提前告诉一声	-	已有（词库 204，模型 629）
+报备	bao bei	work	提前打招呼登记	-	已有（词库 260，模型 620）
+汇报	hui bao	work	向上说明进展	-	已有（词库 2477，模型 6656）
+述职	shu zhi	work	定期讲自己的成果	-	已有（词库 114，模型 340）
+周报	zhou bao	work	每周的工作小结	-	已有（词库 546，模型 2236）
+日报	ri bao	work	每天的工作小结	-	已有（词库 6236，模型 31023）
+月报	yue bao	work	每月的工作小结	-	已有（词库 89，模型 509）
+季度总结	ji du zong jie	work	一个季度的总结	200	缺（成分拆不出，无合成次数）
+在忙吗	zai mang ma	work	问对方忙不忙	200	缺（合成 52）
+麻烦你	ma fan ni	work	请人帮忙的客气话	-	已有（词库 2386，模型 2415，来自短语层）
+帮我看下	bang wo kan xia	work	请同事帮忙看看	2000	缺（成分拆不出，无合成次数）
+发我一下	fa wo yi xia	work	请对方把东西发来	2000	缺（成分拆不出，无合成次数）
+安排一下	an pai yi xia	work	请人去办这件事	218	缺（合成 218）
+请教一下	qing jiao yi xia	work	客气地问问题	671	缺（合成 671）
+会议室	hui yi shi	work	订会议室时说	-	已有（词库 436，模型 2102，来自补充常用词）
+对齐会	dui qi hui	work	专门统一认识的会	20	缺（成分拆不出，无合成次数）
+例会	li hui	work	固定时间的会	-	已有（词库 170，模型 391）
+启动会	qi dong hui	work	项目开始时的会	200	缺（合成 28）
+头脑风暴	tou nao feng bao	work	集体一起想点子	200	缺（合成 91）
+会后同步	hui hou tong bu	work	会开完再通气	20	缺（成分拆不出，无合成次数）
+提测	ti ce	work	开发完交给测试	2000	缺（成分拆不出，无合成次数）
+联调	lian tiao	work	两边一起调试	-	已有（词库 86，模型 339，读音不同：lian diao，来自补充常用词）
+自测	zi ce	work	自己先测一遍	-	已有（词库 13，模型 48）
+冒烟	mao yan	work	上线前的基本验证	-	已有（词库 422，模型 824）
+冒烟测试	mao yan ce shi	work	最基本的通过性测试	200	缺词库，模型有（26 次）
+灰度	hui du	work	先给一小部分人用	2000	缺（成分拆不出，无合成次数）
+放量	fang liang	work	逐步扩大使用范围	2000	缺（成分拆不出，无合成次数）
+全量	quan liang	work	所有用户都用上	2000	缺（合成 17）
+上线	shang xian	work	发到线上给用户用	-	已有（词库 6090，模型 12257）
+回滚	hui gun	work	退回上一个版本	2000	缺词库，模型有（112 次）
+发版	fa ban	work	发布新版本	-	已有（词库 20，模型 12，来自补充常用词）
+打包	da bao	work	构建出安装包	-	已有（词库 6966，模型 7526）
+部署	bu shu	work	把服务装到机器上	-	已有（词库 2879，模型 13961）
+上生产	shang sheng chan	work	发到正式环境	200	缺（合成 106）
+切流量	qie liu liang	work	把请求导到别处	200	缺（成分拆不出，无合成次数）
+扩容	kuo rong	work	加机器加资源	-	已有（词库 98，模型 352）
+缩容	suo rong	work	减机器省资源	200	缺（成分拆不出，无合成次数）
+重启	chong qi	work	把服务重新启动	-	已有（词库 2568，模型 5663）
+重跑	chong pao	work	把任务再跑一次	2000	缺（合成 27）
+回归	hui gui	work	改完再测老功能	-	已有（词库 10478，模型 29137）
+回归测试	hui gui ce shi	work	验证老功能没坏	200	缺词库，模型有（38 次）
+验收	yan shou	work	需求方确认结果	-	已有（词库 761，模型 2544）
+提单	ti dan	work	提一个工作单	-	已有（词库 3，模型 39）
+提工单	ti gong dan	work	走流程提申请	200	缺（成分拆不出，无合成次数）
+开单	kai dan	work	新建一个单子	110	缺（合成 110）
+关单	guan dan	work	把单子关掉	20	缺（成分拆不出，无合成次数）
+走查代码	zou cha dai ma	work	逐行看别人代码	200	缺（成分拆不出，无合成次数）
+提交代码	ti jiao dai ma	work	把改动交上去	2000	缺词库，模型有（8 次）
+合代码	he dai ma	work	把分支并进去	2000	缺（成分拆不出，无合成次数）
+拉分支	la fen zhi	work	从主干新开分支	2000	缺（成分拆不出，无合成次数）
+开分支	kai fen zhi	work	新建一个分支	200	缺（成分拆不出，无合成次数）
+合分支	he fen zhi	work	把分支合并掉	2000	缺（成分拆不出，无合成次数）
+解冲突	jie chong tu	work	处理代码冲突	2000	缺（成分拆不出，无合成次数）
+打标签	da biao qian	work	给版本打个标记	200	缺（成分拆不出，无合成次数）
+改需求	gai xu qiu	work	需求中途变了	2000	缺（成分拆不出，无合成次数）
+改方案	gai fang an	work	换一套做法	944	缺（合成 944）
+返工	fan gong	work	推翻重做一遍	-	已有（词库 147，模型 244）
+兜底	dou di	work	出问题时的保底做法	-	已有（词库 25，模型 52）
+埋点	mai dian	work	加数据采集代码	-	已有（词库 20，模型 19，来自补充常用词）
+监控	jian kong	work	盯着系统的指标	-	已有（词库 2657，模型 6905）
+告警	gao jing	work	系统自动报异常	-	已有（词库 55，模型 249）
+报警	bao jing	work	系统发出警报	-	已有（词库 4763，模型 6833）
+值班	zhi ban	work	轮流盯线上	-	已有（词库 3818，模型 4651）
+排查	pai cha	work	一步步找原因	-	已有（词库 427，模型 1240）
+定位问题	ding wei wen ti	work	找到出错的地方	2000	缺词库，模型有（46 次）
+复现	fu xian	work	把问题重新弄出来	-	已有（词库 48，模型 164）
+复现一下	fu xian yi xia	work	请对方再操作一遍	200	缺（成分拆不出，无合成次数）
+线上问题	xian shang wen ti	work	正式环境出的问题	2000	缺（成分拆不出，无合成次数）
+故障	gu zhang	work	系统坏了	-	已有（词库 2545，模型 10569）
+事故	shi gu	work	造成影响的严重故障	-	已有（词库 9555，模型 40711）
+止血	zhi xue	work	先把影响压下去	-	已有（词库 101，模型 616）
+临时方案	lin shi fang an	work	先顶一阵的做法	200	缺（成分拆不出，无合成次数）
+技术债	ji shu zhai	work	欠下的烂代码	2000	缺词库，模型有（1 次）
+重构	chong gou	work	不改功能整理代码	-	已有（词库 289，模型 1103）
+性能优化	xing neng you hua	work	让程序跑得更快	2000	缺词库，模型有（42 次）
+调优	tiao you	work	调参数让性能更好	200	缺（成分拆不出，无合成次数）
+压测	ya ce	work	用大流量测承受力	200	缺（成分拆不出，无合成次数）
+性能瓶颈	xing neng ping jing	work	拖慢整体的那一环	200	缺词库，模型有（9 次）
+调参	tiao can	work	调整参数试效果	200	缺（成分拆不出，无合成次数）
+调研	diao yan	work	先去查资料了解	-	已有（词库 470，模型 1656）
+提需求	ti xu qiu	work	向开发提要求	2000	缺（成分拆不出，无合成次数）
+查日志	cha ri zhi	work	翻日志找线索	2000	缺（成分拆不出，无合成次数）
+加日志	jia ri zhi	work	补打印方便排查	200	缺（成分拆不出，无合成次数）
+打日志	da ri zhi	work	输出调试信息	200	缺（成分拆不出，无合成次数）
+抓包	zhua bao	work	截网络请求来看	-	已有（词库 130，模型 188）
+测试环境	ce shi huan jing	work	供测试用的那套	2000	缺词库，模型有（42 次）
+预发环境	yu fa huan jing	work	上线前的演练环境	200	缺（成分拆不出，无合成次数）
+生产环境	sheng chan huan jing	work	用户真正用的环境	2000	缺词库，模型有（83 次）
+本地跑	ben di pao	work	在自己机器上运行	200	缺（成分拆不出，无合成次数）
+跑通	pao tong	work	流程从头到尾成功	2000	缺（成分拆不出，无合成次数）
+跑不通	pao bu tong	work	流程走不下去	200	缺（成分拆不出，无合成次数）
+挂了	gua le	work	服务或程序崩了	-	已有（词库 3735，模型 3886，来自短语层）
+炸了	zha le	work	出大问题了	-	已有（词库 3350，模型 3402，来自短语层）
+白屏	bai ping	work	页面一片空白	-	已有（词库 20，模型 24，来自补充常用词）
+超时	chao shi	work	请求等太久失败	-	已有（词库 440，模型 1140）
+内存泄漏	nei cun xie lou	work	内存一直涨不释放	200	缺词库，模型有（51 次）
+死锁	si suo	work	两边互相等住了	110	缺词库，模型有（110 次）
+掉线	diao xian	work	连接断开了	-	已有（词库 303，模型 333，来自补充常用词）
+降级	jiang ji	work	关次要功能保主流程	-	已有（词库 1665，模型 7465）
+熔断	rong duan	work	出错太多就先断开	-	已有（词库 95，模型 186）
+缓存	huan cun	work	存一份加快访问	-	已有（词库 745，模型 2546）
+刷缓存	shua huan cun	work	把旧缓存刷新掉	200	缺（成分拆不出，无合成次数）
+清缓存	qing huan cun	work	把缓存删掉重来	-	已有（词库 32，模型 32，来自补充常用词）
+同步数据	tong bu shu ju	work	把两边数据对齐	200	缺（合成 19）
+刷数据	shua shu ju	work	批量修一批数据	200	缺（合成 47）
+洗数据	xi shu ju	work	清理脏数据	200	缺（成分拆不出，无合成次数）
+补数据	bu shu ju	work	把缺的数据补上	200	缺（成分拆不出，无合成次数）
+建表	jian biao	work	新建数据库表	200	缺（成分拆不出，无合成次数）
+改字段	gai zi duan	work	动数据库字段	200	缺（成分拆不出，无合成次数）
+加字段	jia zi duan	work	表里增加一列	200	缺（成分拆不出，无合成次数）
+接口	jie kou	work	系统之间的调用口	-	已有（词库 1094，模型 5791）
+对接	dui jie	work	两边系统接上	-	已有（词库 721，模型 2752）
+封版	feng ban	work	停止改动准备发布	200	缺（合成 15）
+代码冻结	dai ma dong jie	work	发版前不许再改	20	缺（成分拆不出，无合成次数）
+拉代码	la dai ma	work	把最新代码取下来	200	缺（成分拆不出，无合成次数）
+合主干	he zhu gan	work	把改动并回主分支	200	缺（成分拆不出，无合成次数）
+主干	zhu gan	work	指主分支	-	已有（词库 262，模型 1090）
+补测试	bu ce shi	work	把缺的测试加上	200	缺（成分拆不出，无合成次数）
+跑测试	pao ce shi	work	执行测试用例	2000	缺（成分拆不出，无合成次数）
+打回	da hui	work	不通过退回去改	859	缺（合成 859）
+加班	jia ban	work	下班后继续干	-	已有（词库 17155，模型 18307）
+通宵	tong xiao	work	干一整夜	-	已有（词库 6049，模型 7469）
+连轴转	lian zhou zhuan	work	连着干没停过	-	已有（词库 80，模型 82）
+调休	tiao xiu	work	换个时间补休	-	已有（词库 659，模型 705）
+请假	qing jia	work	申请不上班	-	已有（词库 6749，模型 7569）
+调岗	diao gang	work	换到别的岗位	200	缺（合成 37）
+转正	zhuan zheng	work	试用期通过	-	已有（词库 683，模型 854）
+试用期	shi yong qi	work	刚入职的考察期	-	已有（词库 237，模型 396）
+绩效	ji xiao	work	工作表现的评分	-	已有（词库 385，模型 1520）
+考核	kao he	work	定期评定表现	-	已有（词库 811，模型 3388）
+晋升	jin sheng	work	升职级	-	已有（词库 4044，模型 15716）
+答辩	da bian	work	晋升时当面讲成果	-	已有（词库 4162，模型 4919）
+背锅	bei guo	work	替别人担责任	-	已有（词库 1030，模型 1038）
+甩锅	shuai guo	work	把责任推给别人	-	已有（词库 251，模型 265）
+接锅	jie guo	work	被迫接下责任	200	缺（成分拆不出，无合成次数）
+对线	dui xian	work	当面争论起来	200	缺（合成 143）
+扯皮	che pi	work	互相推来推去	-	已有（词库 148，模型 171）
+没对齐	mei dui qi	work	双方没说到一块	2000	缺（成分拆不出，无合成次数）
+老板	lao ban	work	指公司或部门负责人	-	已有（词库 23570，模型 32550）
+领导	ling dao	work	指自己的上级	-	已有（词库 21963，模型 101425）
+同事	tong shi	work	一起工作的人	-	已有（词库 13619，模型 20243）
+下属	xia shu	work	自己带的人	-	已有（词库 7192，模型 33877）
+直属	zhi shu	work	指直接上级	-	已有（词库 2709，模型 12981）
+面试	mian shi	work	应聘时的问答	-	已有（词库 9119，模型 10904）
+面试官	mian shi guan	work	负责面人的人	-	已有（词库 239，模型 331，来自补充常用词）
+一面	yi mian	work	第一轮面试	-	已有（词库 7189，模型 16666）
+二面	er mian	work	第二轮面试	763	缺（合成 763）
+终面	zhong mian	work	最后一轮面试	200	缺（合成 37）
+谈薪	tan xin	work	谈工资待遇	200	缺（成分拆不出，无合成次数）
+涨薪	zhang xin	work	工资变多	2000	缺（合成 26）
+跳槽	tiao cao	work	换一家公司	-	已有（词库 1027，模型 1749）
+裸辞	luo ci	work	没找好下家就辞职	200	缺（成分拆不出，无合成次数）
+毕业	bi ye	work	指被裁员的委婉说法	-	已有（词库 72861，模型 149074）
+优化	you hua	work	指裁员的委婉说法	-	已有（词库 2465，模型 7453）
+劳动仲裁	lao dong zhong cai	work	和公司打劳动官司	200	缺（合成 22）
+竞业	jing ye	work	离职后不许去同行	200	缺（合成 107）
+出差	chu chai	work	去外地办公	-	已有（词库 10504，模型 11336）
+同行	tong hang	work	指同一行业的人	-	已有（词库 3591，模型 7627）
+入职	ru zhi	work	到公司上班	-	已有（词库 1145，模型 2045）
+离职	li zhi	work	从公司离开	-	已有（词库 2148，模型 6283）
+交接	jiao jie	work	把工作移交出去	-	已有（词库 824，模型 3214）
+裁员	cai yuan	work	公司辞退一批人	-	已有（词库 297，模型 1263）
+大小周	da xiao zhou	work	隔周上六天班	200	缺（成分拆不出，无合成次数）
+双休	shuang xiu	work	周末休两天	-	已有（词库 1562，模型 1572）
+团建	tuan jian	work	公司组织的集体活动	2000	缺（合成 169）
+背景调查	bei jing diao cha	work	入职前查经历	83	缺（合成 83）
+年终奖	nian zhong jiang	work	年底发的奖金	2000	缺（成分拆不出，无合成次数）
+老油条	lao you tiao	work	说人老到会躲活	-	已有（词库 265，模型 275）
+新人	xin ren	work	刚来的同事	-	已有（词库 6534，模型 23954）
+带新人	dai xin ren	work	教刚来的同事	200	缺（合成 39）
+向上管理	xiang shang guan li	work	管好和上级的关系	20	缺（成分拆不出，无合成次数）
+画饼	hua bing	work	只给承诺不兑现	2000	缺（合成 93）
+工位	gong wei	work	自己的座位	-	已有（词库 91，模型 155）
+居家办公	ju jia ban gong	work	在家上班	200	缺（合成 96）
+远程	yuan cheng	work	不在办公室工作	-	已有（词库 1298，模型 4190）
+到点下班	dao dian xia ban	work	准时走人	200	缺（合成 1）
+催一下	cui yi xia	work	提醒对方快一点	2000	缺（合成 77）
+等回复	deng hui fu	work	在等对方答复	200	缺（合成 52）
+OKR	o k r	mixed	目标与关键结果，考核用	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+PPT	p p t	mixed	汇报用的演示文稿	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+TODO	t o d o	mixed	待办事项	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+DDL	d d l	mixed	最后期限	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+PRD	p r d	mixed	产品需求文档	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+MVP	m v p	mixed	最小可用版本	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+ROI	r o i	mixed	投入产出比	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+GMV	g m v	mixed	成交总额	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+DAU	d a u	mixed	日活用户数	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+MAU	m a u	mixed	月活用户数	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+PV	p v	mixed	页面浏览量	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+UV	u v	mixed	独立访客数	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+CTO	c t o	mixed	技术负责人	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+CEO	c e o	mixed	公司一把手	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+PM	p m	mixed	产品经理或项目经理	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+QA	q a	mixed	测试同学	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+RD	r d	mixed	研发同学	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+UI	u i	mixed	界面设计或设计师	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+HR	h r	mixed	人力资源同事	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+OA	o a	mixed	办公审批系统	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+SOP	s o p	mixed	标准作业流程	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+API	a p i	mixed	程序调用接口	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+SDK	s d k	mixed	开发工具包	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+CI	c i	mixed	持续集成	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+CD	c d	mixed	持续部署	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+PR	p r	mixed	代码合并请求	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+QPS	q p s	mixed	每秒请求数	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+P0	p 0	mixed	最高优先级的问题	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+P1	p 1	mixed	次高优先级的问题	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+bug	b u g	mixed	程序里的缺陷	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+review	r e v i e w	mixed	代码或方案评审	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+demo	d e m o	mixed	演示用的样例	8000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+下单	xia dan	life	在网上提交订单	-	已有（词库 89，模型 387）
+拼单	pin dan	life	和别人合在一起下一单	-	已有（词库 294，模型 300）
+凑单	cou dan	life	多买点凑到满减门槛	200	缺（合成 105）
+加购	jia gou	life	把商品加进购物车	200	缺（合成 93）
+购物车	gou wu che	life	暂存想买商品的地方	-	已有（词库 1615，模型 1661，来自补充常用词）
+收藏	shou cang	life	把商品或内容存起来	-	已有（词库 6893，模型 21183）
+比价	bi jia	life	对比几家的价格	-	已有（词库 44，模型 253）
+砍价	kan jia	life	让卖家便宜一点	-	已有（词库 319，模型 341）
+优惠券	you hui quan	life	下单时能抵钱的券	-	已有（词库 60，模型 200，来自补充常用词）
+领券	ling quan	life	把优惠券领到账户	200	缺（合成 82）
+满减	man jian	life	买够多少减多少	-	已有（词库 135，模型 138，来自补充常用词）
+秒杀	miao sha	life	限时低价抢购	-	已有（词库 1573，模型 2048）
+预售	yu shou	life	先付定金后发货	-	已有（词库 1359，模型 2322）
+现货	xian huo	life	有货可以马上发	-	已有（词库 43，模型 239）
+补货	bu huo	life	卖家重新上货	-	已有（词库 529，模型 577）
+断货	duan huo	life	卖完了暂时没有	-	已有（词库 565，模型 615）
+缺货	que huo	life	库存不足	-	已有（词库 313，模型 449）
+发货	fa huo	life	卖家把货寄出	-	已有（词库 76，模型 305）
+已发货	yi fa huo	life	订单状态：货已寄出	200	缺（成分拆不出，无合成次数）
+待发货	dai fa huo	life	订单状态：还没寄出	200	缺（成分拆不出，无合成次数）
+物流	wu liu	life	包裹的运送过程	-	已有（词库 2233，模型 6840）
+快递	kuai di	life	寄送包裹的服务	-	已有（词库 15118，模型 17001）
+运单号	yun dan hao	life	查快递用的编号	-	已有（词库 25，模型 25，来自补充常用词）
+单号	dan hao	life	订单或快递的编号	-	已有（词库 467，模型 605）
+签收	qian shou	life	收下包裹	-	已有（词库 592，模型 659）
+驿站	yi zhan	life	代收快递的小店	-	已有（词库 436，模型 1588）
+快递柜	kuai di gui	life	放包裹的自助柜子	-	已有（词库 67，模型 119，来自补充常用词）
+取件	qu jian	life	去拿包裹	-	已有（词库 76，模型 111，来自补充常用词）
+取件码	qu jian ma	life	开柜取包裹的号码	200	缺（成分拆不出，无合成次数）
+送货上门	song huo shang men	life	快递送到家门口	378	缺（合成 378）
+次日达	ci ri da	life	第二天就能收到	200	缺（合成 23）
+包邮	bao you	life	不用另付运费	-	已有（词库 3443，模型 3457）
+邮费	you fei	life	寄东西的费用	-	已有（词库 1778，模型 1829）
+运费险	yun fei xian	life	退货运费由保险赔	200	缺（合成 46）
+退货	tui huo	life	把货寄回给卖家	-	已有（词库 1067，模型 1345）
+退款	tui kuan	life	把钱退回来	-	已有（词库 1282，模型 1731）
+退换	tui huan	life	退货或换货	-	已有（词库 239，模型 286）
+退差价	tui cha jia	life	降价后退回差的钱	200	缺（成分拆不出，无合成次数）
+仅退款	jin tui kuan	life	不退货只退钱	200	缺（成分拆不出，无合成次数）
+售后	shou hou	life	买完之后的服务	-	已有（词库 1565，模型 2100）
+客服	ke fu	life	平台或店铺的服务人员	-	已有（词库 5163，模型 5945）
+转人工	zhuan ren gong	life	从机器人转到真人	200	缺（合成 21）
+投诉	tou su	life	向平台反映问题	-	已有（词库 1544，模型 5959）
+差评	cha ping	life	打低分的评价	-	已有（词库 3818，模型 4269）
+好评	hao ping	life	打高分的评价	-	已有（词库 6204，模型 15520）
+追评	zhui ping	life	用一段时间后再评	20	缺（成分拆不出，无合成次数）
+晒单	shai dan	life	把买到的东西发出来	200	缺（合成 116）
+评价	ping jia	life	对商品或服务打分留言	-	已有（词库 11809，模型 51290）
+七天无理由	qi tian wu li you	life	七天内可直接退货	200	缺（成分拆不出，无合成次数）
+质保	zhi bao	life	一定期限内保证质量	200	缺（合成 75）
+保修	bao xiu	life	坏了可以免费修	-	已有（词库 707，模型 972）
+发票	fa piao	life	购物的正式凭证	-	已有（词库 1127，模型 1818）
+开发票	kai fa piao	life	让商家出具发票	200	缺（合成 40）
+收货地址	shou huo di zhi	life	包裹要寄到的地址	200	缺（成分拆不出，无合成次数）
+改地址	gai di zhi	life	修改收货地址	200	缺（合成 89）
+订单号	ding dan hao	life	一笔订单的编号	200	缺（成分拆不出，无合成次数）
+已付款	yi fu kuan	life	订单状态：钱已付	200	缺（合成 29）
+待付款	dai fu kuan	life	订单状态：还没付钱	200	缺（成分拆不出，无合成次数）
+支付失败	zhi fu shi bai	life	付钱没成功	200	缺（成分拆不出，无合成次数）
+确认收货	que ren shou huo	life	点一下表示货已收到	2000	缺（成分拆不出，无合成次数）
+申请退款	shen qing tui kuan	life	向卖家提出退钱	2000	缺（合成 169）
+退款成功	tui kuan cheng gong	life	钱已经退回来了	200	缺（合成 19）
+到货	dao huo	life	东西送到了	2000	缺（合成 193）
+库存	ku cun	life	店里还剩多少货	-	已有（词库 410，模型 1879）
+尺码	chi ma	life	衣服鞋子的大小	-	已有（词库 646，模型 858）
+旗舰店	qi jian dian	life	品牌在平台的官方店	-	已有（词库 790，模型 1569，来自补充常用词）
+拆快递	chai kuai di	life	打开收到的包裹	200	缺（合成 108）
+下架	xia jia	life	商品不再卖了	-	已有（词库 2370，模型 3994）
+上架	shang jia	life	商品开始卖	-	已有（词库 2069，模型 4324）
+到手价	dao shou jia	life	算完优惠的实付价	200	缺（合成 22）
+尾款	wei kuan	life	预售时后付的那部分	-	已有（词库 137，模型 183，来自补充常用词）
+定金	ding jin	life	预售时先付的那部分	-	已有（词库 26，模型 111）
+重发	chong fa	life	让卖家再寄一次	-	已有（词库 575，模型 743）
+重拍	chong pai	life	重新下一次单	1037	缺（合成 1037）
+拍下	pai xia	life	把商品买下来	1896	缺（合成 1896）
+换货	huan huo	life	换一件同样的商品	-	已有（词库 109，模型 136）
+寄回	ji hui	life	把东西寄还给卖家	285	缺（合成 285）
+上门取件	shang men qu jian	life	快递上门来收退货	200	缺（成分拆不出，无合成次数）
+派送	pai song	life	快递正在送	-	已有（词库 309，模型 538）
+便宜	pian yi	life	价格低	-	已有（词库 19718，模型 23158）
+加急	jia ji	life	让对方快点处理	-	已有（词库 193，模型 238）
+收货	shou huo	life	把包裹收下	2000	缺（合成 127）
+测评	ce ping	life	对比试用后写结论	-	已有（词库 709，模型 1067）
+实测	shi ce	life	自己亲自试过	-	已有（词库 211，模型 625）
+无广	wu guang	life	不是广告	20	缺（成分拆不出，无合成次数）
+恰饭	qia fan	life	博主接广告赚钱	200	缺（合成 117）
+广子	guang zi	life	广告的俗称	142	缺（合成 142）
+求推荐	qiu tui jian	life	请大家推荐	-	已有（词库 2208，模型 2208，来自短语层）
+求链接	qiu lian jie	life	问在哪买	200	缺（成分拆不出，无合成次数）
+已下单	yi xia dan	life	已经买了	200	缺（成分拆不出，无合成次数）
+回购	hui gou	life	用得好再买一次	-	已有（词库 155，模型 636）
+白菜价	bai cai jia	life	非常便宜的价格	200	缺（合成 96）
+闭眼入	bi yan ru	life	不用犹豫直接买	20	缺（成分拆不出，无合成次数）
+避坑	bi keng	life	绕开已知的问题	200	缺（成分拆不出，无合成次数）
+无脑冲	wu nao chong	life	不用多想赶紧买	20	缺（成分拆不出，无合成次数）
+冲一波	chong yi bo	life	一起去买或参与	20	缺（成分拆不出，无合成次数）
+好物	hao wu	life	值得买的东西	200	缺（合成 106）
+点外卖	dian wai mai	life	在手机上叫饭	2000	缺（合成 847）
+外卖	wai mai	life	送上门的餐	-	已有（词库 9960，模型 10731）
+骑手	qi shou	life	送外卖的人	-	已有（词库 229，模型 744）
+送达	song da	life	已经送到	-	已有（词库 334，模型 948）
+预计送达	yu ji song da	life	大概什么时候到	200	缺（成分拆不出，无合成次数）
+催单	cui dan	life	催商家快一点	200	缺（合成 52）
+备注	bei zhu	life	下单时写的要求	-	已有（词库 3397，模型 15822）
+少放辣	shao fang la	life	让厨房少加辣	200	缺（成分拆不出，无合成次数）
+不要香菜	bu yao xiang cai	life	常见的点餐要求	200	缺（合成 15）
+自取	zi qu	life	自己去拿	-	已有（词库 1220，模型 1573）
+到店自取	dao dian zi qu	life	去店里自己拿餐	20	缺（成分拆不出，无合成次数）
+堂食	tang shi	life	在店里吃	457	缺（合成 457）
+打包带走	da bao dai zou	life	装好带出店	348	缺（合成 348）
+打包盒	da bao he	life	装饭菜的盒子	25	缺（合成 25）
+餐具	can ju	life	筷子勺子等	-	已有（词库 798，模型 1451）
+免餐具	mian can ju	life	下单时不要餐具	200	缺（成分拆不出，无合成次数）
+配送费	pei song fei	life	送餐要付的钱	-	已有（词库 119，模型 123，来自补充常用词）
+红包	hong bao	life	可抵钱的优惠或现金	-	已有（词库 215，模型 743）
+返现	fan xian	life	买完退回一部分钱	200	缺（合成 125）
+会员	hui yuan	life	付费享受权益的身份	-	已有（词库 16629，模型 40701）
+开会员	kai hui yuan	life	付费成为会员	408	缺（合成 408）
+续费	xu fei	life	继续付费延长	-	已有（词库 386，模型 406）
+月卡	yue ka	life	一个月有效的卡	200	缺（合成 97）
+拼好饭	pin hao fan	life	拼在一起的便宜餐	200	缺（成分拆不出，无合成次数）
+团购	tuan gou	life	多人一起低价买	-	已有（词库 2148，模型 2435）
+团购券	tuan gou quan	life	团购买来的券	200	缺（合成 18）
+代金券	dai jin quan	life	能当钱花的券	200	缺（合成 184）
+探店	tan dian	life	去店里试并分享	200	缺（合成 150）
+排队	pai dui	life	等着轮到自己	-	已有（词库 8499，模型 9968）
+取号	qu hao	life	拿一个等候号	200	缺（合成 185）
+叫号	jiao hao	life	喊号轮到谁	-	已有（词库 26）
+扫码点单	sao ma dian dan	life	扫桌上的码点菜	200	缺（成分拆不出，无合成次数）
+买单	mai dan	life	付饭钱	-	已有（词库 1573，模型 1740）
+请客	qing ke	life	我来付钱	-	已有（词库 6651，模型 6822）
+加辣	jia la	life	多放一点辣	178	缺（合成 178）
+微辣	wei la	life	一点点辣	-	已有（词库 474，模型 576）
+少冰	shao bing	life	饮料少放冰	200	缺（合成 37）
+送餐	song can	life	把饭送过来	-	已有（词库 362，模型 509）
+打车	da che	life	叫出租或网约车	-	已有（词库 3001，模型 3102）
+叫车	jiao che	life	在手机上下单用车	277	缺（合成 277）
+拼车	pin che	life	和别人合坐一辆	-	已有（词库 690，模型 801）
+顺风车	shun feng che	life	顺路捎带的车	-	已有（词库 713，模型 848，来自补充常用词）
+专车	zhuan che	life	车型更好的网约车	-	已有（词库 711，模型 1397）
+快车	kuai che	life	便宜的网约车	-	已有（词库 1367，模型 5990）
+网约车	wang yue che	life	手机叫的车	200	缺（成分拆不出，无合成次数）
+司机	si ji	life	开车的人	-	已有（词库 14613，模型 25496）
+师傅	shi fu	life	对司机的称呼	-	已有（词库 9335，模型 13032）
+下车	xia che	life	从车里出来	-	已有（词库 6857，模型 14757）
+改派	gai pai	life	换一个司机接单	879	缺（合成 879）
+取消订单	qu xiao ding dan	life	把已下的单取消	2000	缺（合成 45）
+等车	deng che	life	在路边等	1104	缺（合成 1104）
+发车	fa che	life	车开始出发	-	已有（词库 1796，模型 5846）
+晚点	wan dian	life	比表定时间晚	-	已有（词库 5339，模型 5663）
+高铁	gao tie	life	快速铁路列车	-	已有（词库 8951，模型 17965）
+动车	dong che	life	一种铁路列车	-	已有（词库 6073，模型 16437）
+候车	hou che	life	在站里等车	-	已有（词库 1306，模型 4616）
+检票	jian piao	life	进站时查票	-	已有（词库 899，模型 2277）
+进站	jin zhan	life	走进车站	3524	缺（合成 3524）
+出站	chu zhan	life	走出车站	2563	缺（合成 2563）
+改签	gai qian	life	换一个班次	-	已有（词库 1143，模型 1273）
+退票	tui piao	life	把票退掉	-	已有（词库 739，模型 951）
+抢票	qiang piao	life	抢紧张的车票	-	已有（词库 1378，模型 1433）
+候补	hou bu	life	排队等别人退票	-	已有（词库 2991，模型 10757）
+加速包	jia su bao	life	号称抢票更快的付费项	20	缺（合成 18）
+值机	zhi ji	life	坐飞机前选座办登机	463	缺（合成 463）
+登机	deng ji	life	上飞机	-	已有（词库 1468，模型 3669）
+托运	tuo yun	life	把行李交给航司运	-	已有（词库 2104，模型 2838）
+行李	xing li	life	出门带的箱包	-	已有（词库 5155，模型 9039）
+安检	an jian	life	进站上机前的检查	-	已有（词库 2377，模型 3521）
+延误	yan wu	life	航班或车次晚了	-	已有（词库 2114，模型 4384）
+接机	jie ji	life	去机场接人	-	已有（词库 1277，模型 1511）
+送机	song ji	life	送人去机场	404	缺（合成 404）
+堵车	du che	life	路上车多走不动	-	已有（词库 2764，模型 2879）
+绕路	rao lu	life	走了更远的路	-	已有（词库 310，模型 432）
+限行	xian xing	life	某些车某天不能上路	-	已有（词库 291，模型 472）
+限号	xian hao	life	按车牌尾号限制出行	-	已有（词库 213，模型 230）
+停车	ting che	life	把车停下	-	已有（词库 4543，模型 12362）
+停车场	ting che chang	life	停车的地方	-	已有（词库 3745，模型 15337）
+车位	che wei	life	停一辆车的位置	-	已有（词库 1074，模型 2529）
+充电桩	chong dian zhuang	life	给电车充电的设备	200	缺（合成 169）
+充电	chong dian	life	给电池补电	-	已有（词库 5740，模型 8969）
+续航	xu hang	life	能跑多远或用多久	-	已有（词库 1223，模型 2625）
+扫码骑车	sao ma qi che	life	扫码解锁共享单车	20	缺（成分拆不出，无合成次数）
+共享单车	gong xiang dan che	life	街边可扫码骑的自行车	-	已有（词库 644，模型 794，来自补充常用词）
+还车	huan che	life	把车还回去	200	缺（合成 163）
+开锁	kai suo	life	把车锁打开	-	已有（词库 411，模型 732）
+起步价	qi bu jia	life	最低要付的车费	314	缺（合成 314）
+高峰期	gao feng qi	life	人多车多的时段	-	已有（词库 876，模型 2207）
+导航	dao hang	life	手机指路	-	已有（词库 1886，模型 5930）
+路线	lu xian	life	走哪条道	-	已有（词库 20188，模型 102359）
+目的地	mu di di	life	要去的地方	-	已有（词库 2070，模型 7636）
+到站	dao zhan	life	车到了站	-	已有（词库 651，模型 1923）
+换乘	huan cheng	life	中途换一趟车	-	已有（词库 3200，模型 15654）
+地铁	di tie	life	城市轨道交通	-	已有（词库 26484，模型 79859）
+公交	gong jiao	life	公共汽车	-	已有（词库 11572，模型 26544）
+车牌号	che pai hao	life	车的牌照号码	338	缺（合成 338）
+订机票	ding ji piao	life	买飞机票	249	缺（合成 249）
+订酒店	ding jiu dian	life	预订住的地方	200	缺（合成 121）
+退房	tui fang	life	离店结束住宿	200	缺（合成 190）
+入住	ru zhu	life	办手续住进去	-	已有（词库 1414，模型 3899）
+ETC	e t c	mixed	高速不停车收费	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+点赞	dian zan	life	点一下表示喜欢	-	已有（词库 194，模型 407，来自补充常用词）
+转发	zhuan fa	life	把内容发给别处	-	已有（词库 9209，模型 11068）
+分享	fen xiang	life	把内容发给别人	-	已有（词库 2415，模型 10674）
+评论	ping lun	life	在内容下面留言	-	已有（词库 11775，模型 49816）
+私信	si xin	life	私下发消息	-	已有（词库 36，模型 125，来自补充常用词）
+关注	guan zhu	life	订阅某个账号	-	已有（词库 52137，模型 76402）
+取关	qu guan	life	取消关注	-	已有（词库 4215，模型 4244）
+屏蔽	ping bi	life	不再看到某人或内容	-	已有（词库 4723，模型 6873）
+置顶	zhi ding	life	固定在最上面	-	已有（词库 1340，模型 1423）
+发帖	fa tie	life	在论坛发内容	-	已有（词库 810，模型 1318）
+楼主	lou zhu	life	发帖的那个人	-	已有（词库 2134，模型 2419）
+盖楼	gai lou	life	跟帖一层一层堆	-	已有（词库 366，模型 389）
+沙发	sha fa	life	第一条评论	-	已有（词库 164，模型 896）
+后续	hou xu	life	之后发生的事	-	已有（词库 4969，模型 19778）
+更新	geng xin	life	发出新的内容或版本	-	已有（词库 20976，模型 40957）
+开播	kai bo	life	开始直播	-	已有（词库 3760，模型 13830）
+直播	zhi bo	life	实时播出	-	已有（词库 27036，模型 43329）
+下播	xia bo	life	结束直播	200	缺（合成 92）
+打赏	da shang	life	给主播送钱或礼物	-	已有（词库 529，模型 638）
+榜一	bang yi	life	打赏最多的那个人	81	缺（合成 81）
+上热搜	shang re sou	life	进了热门搜索榜	-	已有（词库 1142，模型 1157，来自补充常用词）
+热搜	re sou	life	热门搜索榜	-	已有（词库 4501，模型 4936）
+热榜	re bang	life	热门内容排行	-	已有（词库 20，模型 54，来自补充常用词）
+话题	hua ti	life	带标签的讨论主题	-	已有（词库 9865，模型 16167）
+超话	chao hua	life	某个主题的聚集区	-	已有（词库 2130，模型 2167）
+投稿	tou gao	life	把作品交给平台	-	已有（词库 1542，模型 3499）
+过稿	guo gao	life	投稿被采用	22	缺（合成 22）
+审核中	shen he zhong	life	平台正在检查	200	缺（合成 35）
+违规	wei gui	life	不符合平台规则	-	已有（词库 1116，模型 4172）
+封号	feng hao	life	账号被禁用	-	已有（词库 872，模型 3010）
+解封	jie feng	life	账号恢复使用	-	已有（词库 441，模型 988）
+小号	xiao hao	life	备用的账号	-	已有（词库 6143，模型 7616）
+大号	da hao	life	主要用的账号	-	已有（词库 2321，模型 2820）
+已阅	yi yue	life	看过了	-	已有（词库 260，模型 277）
+已读	yi du	life	对方已经看过	-	已有（词库 229，模型 390，来自补充常用词）
+回复	hui fu	life	回一条消息	-	已有（词库 42254，模型 50309）
+艾特	ai te	life	在消息里点名某人	-	已有（词库 10531，模型 11359）
+引流	yin liu	life	把人引到别处	-	已有（词库 119，模型 393）
+粉丝	fen si	life	关注某账号的人	-	已有（词库 5091，模型 16803）
+博主	bo zhu	life	发内容的账号主人	-	已有（词库 14553，模型 14881）
+主页	zhu ye	life	账号的首页	-	已有（词库 2591，模型 6280）
+动态	dong tai	life	发出的近况	-	已有（词库 4219，模型 13280）
+朋友圈	peng you quan	life	好友近况的页面	-	已有（词库 10129，模型 10294，来自短语层）
+群聊	qun liao	life	多人一起的聊天	-	已有（词库 234，模型 279）
+加好友	jia hao you	life	添加联系人	549	缺（合成 549）
+扫一扫	sao yi sao	life	用相机扫码	-	已有（词库 85，模型 89）
+发语音	fa yu yin	life	发一条语音消息	260	缺（合成 260）
+视频通话	shi pin tong hua	life	带画面的通话	200	缺（成分拆不出，无合成次数）
+P图	p tu	mixed	修改图片	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+转账	zhuan zhang	life	把钱转给别人	-	已有（词库 70，模型 274）
+收款	shou kuan	life	收别人给的钱	-	已有（词库 79，模型 312）
+付款码	fu kuan ma	life	给别人扫的付钱码	-	已有（词库 20，模型 19，来自补充常用词）
+收款码	shou kuan ma	life	别人扫来付钱的码	200	缺（成分拆不出，无合成次数）
+扫码	sao ma	life	扫二维码	-	已有（词库 465，模型 878）
+账单	zhang dan	life	花钱的明细	-	已有（词库 346，模型 572）
+月供	yue gong	life	每月要还的钱	200	缺（合成 89）
+还款	huan kuan	life	把借的钱还上	-	已有（词库 255，模型 713，来自补充常用词）
+分期	fen qi	life	分几次付款	-	已有（词库 802，模型 2158）
+免息	mian xi	life	分期不收利息	200	缺（合成 157）
+到账	dao zhang	life	钱已经收到	2000	缺（成分拆不出，无合成次数）
+提现	ti xian	life	把余额转到银行卡	-	已有（词库 501，模型 567）
+余额	yu e	life	账户里还剩的钱	-	已有（词库 288，模型 1338）
+充值	chong zhi	life	往账户里存钱	-	已有（词库 1322，模型 2163）
+发红包	fa hong bao	life	给别人发钱	2000	缺（合成 16）
+抢红包	qiang hong bao	life	去点群里的红包	200	缺（成分拆不出，无合成次数）
+拼手气	pin shou qi	life	金额随机的红包	200	缺（合成 32）
+凑份子	cou fen zi	life	几个人一起出钱	-	已有（词库 15，模型 17）
+代付	dai fu	life	让别人帮忙付	200	缺（合成 76）
+免密	mian mi	life	小额不用输密码	200	缺（合成 15）
+刷脸	shua lian	life	用人脸验证	-	已有（词库 527，模型 552）
+刷卡	shua ka	life	用银行卡付钱	-	已有（词库 1160，模型 2343）
+原路退回	yuan lu tui hui	life	按原来的方式退钱	200	缺（成分拆不出，无合成次数）
+实名认证	shi ming ren zheng	life	提交真实身份信息	200	缺（合成 197）
+VIP	v i p	mixed	付费会员身份	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
+APP	a p p	mixed	手机上的应用	2000	缺（中英混杂，走 mixed_words.tsv，次数按那份的尺度）
