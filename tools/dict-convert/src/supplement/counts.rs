@@ -1,11 +1,12 @@
 //! 已有语言模型（`lm.qj`）的计数，展开成 `bigram` 统计时同样的内存形状，好在上面合成补充词的计数。
+//! 三元原样带着走：补词只按成分合成一元与二元（理由见 `bigram` 的模块注释），三元不动也不能丢。
 
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::path::Path;
 
-use glimmer_lm::BigramModel;
+use glimmer_lm::NgramModel;
 
 use crate::bigram::Vocabulary;
 use crate::error::ConvertError;
@@ -26,12 +27,15 @@ pub(crate) struct LmCounts {
 
     /// 模型里原有的二元，按 (前词, 后词) 编号升序，写回 TSV 时保持原顺序。
     rows: Vec<(u32, u32, u32)>,
+
+    /// 模型里原有的三元 (前二词, 前词, 后词, 计数)，原样写回。
+    triples: Vec<(u32, u32, u32, u32)>,
 }
 
 impl LmCounts {
     /// 打开 `lm.qj` 并展开全部计数。
     pub(crate) fn load(path: &Path) -> Result<Self, ConvertError> {
-        let model = BigramModel::from_path(path)?;
+        let model = NgramModel::from_path(path)?;
         let mut words = Vec::with_capacity(model.word_count());
         let mut ids = HashMap::with_capacity(model.word_count());
         let mut unigram = Vec::with_capacity(model.word_count());
@@ -41,17 +45,19 @@ impl LmCounts {
             unigram.push(u64::from(count));
         }
         let rows: Vec<(u32, u32, u32)> = model.bigrams().collect();
+        let triples: Vec<(u32, u32, u32, u32)> = model.trigrams().collect();
         let bigram = rows
             .iter()
             .map(|&(first, second, count)| ((u64::from(first) << 32) | u64::from(second), count))
             .collect();
-        tracing::info!(words = words.len(), bigrams = rows.len(), path = %path.display(), "语言模型计数已展开");
+        tracing::info!(words = words.len(), bigrams = rows.len(), trigrams = triples.len(), path = %path.display(), "语言模型计数已展开");
         Ok(Self {
             words,
             ids,
             unigram,
             bigram,
             rows,
+            triples,
         })
     }
 
@@ -81,7 +87,8 @@ impl LmCounts {
         id
     }
 
-    /// 写 `lm-unigram.tsv` / `lm-bigram.tsv`：原有二元原样照抄，`extra` 是合成的行；一元只写次数大于 0 的词（与 `bigram` 一致）。
+    /// 写 `lm-unigram.tsv` / `lm-bigram.tsv` / `lm-trigram.tsv`：原有二元原样照抄，`extra` 是合成的行；
+    /// 一元只写次数大于 0 的词（与 `bigram` 一致）；三元原样写回（模型里没有三元时不写这张表）。
     pub(crate) fn write_tsv(
         &self,
         extra: &[(u64, u32)],
@@ -121,6 +128,26 @@ impl LmCounts {
             }
         }
         writer.flush()?;
+
+        if !self.triples.is_empty() {
+            let trigram_path = out_dir.join("lm-trigram.tsv");
+            let mut writer = BufWriter::new(File::create(&trigram_path)?);
+            writeln!(
+                writer,
+                "# 由 glimmer-dict-convert supplement 原样写回。前前词\t前词\t后词\t计数"
+            )?;
+            for &(earlier, previous, word, count) in &self.triples {
+                writeln!(
+                    writer,
+                    "{}\t{}\t{}\t{count}",
+                    self.words[earlier as usize],
+                    self.words[previous as usize],
+                    self.words[word as usize]
+                )?;
+            }
+            writer.flush()?;
+            tracing::info!(path = %trigram_path.display(), trigrams = self.triples.len(), "三元表已原样写回");
+        }
         tracing::info!(
             unigram = %unigram_path.display(),
             words = written,

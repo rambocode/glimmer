@@ -3,7 +3,7 @@
 use std::path::{Path, PathBuf};
 
 use glimmer_format::Metadata;
-use glimmer_lm::BigramModel;
+use glimmer_lm::NgramModel;
 
 use super::{GapOptions, SupplementOptions, gaps, read_dict, supplement};
 
@@ -15,13 +15,16 @@ const DICT: &str =
 const UNIGRAM: &str = "<s>\t100\n取\t40\n餐\t20\n午餐\t50\n播放\t60\n器\t30\n去\t10\n";
 const BIGRAM: &str = "取\t餐\t30\n播放\t器\t12\n去\t取\t8\n餐\t<s>\t5\n器\t去\t6\n";
 
+/// 三元：补词不碰它，只验它原样写回。
+const TRIGRAM: &str = "去\t取\t餐\t7\n";
+
 /// 在临时目录里写好词库与 `lm.qj`，返回目录。
 fn fixture(name: &str) -> PathBuf {
     let dir =
         std::env::temp_dir().join(format!("glimmer-supplement-{name}-{}", std::process::id()));
     std::fs::create_dir_all(&dir).unwrap();
     std::fs::write(dir.join("dict.tsv"), DICT).unwrap();
-    let model = BigramModel::parse(UNIGRAM, BIGRAM).unwrap();
+    let model = NgramModel::parse(UNIGRAM, BIGRAM, TRIGRAM).unwrap();
     model
         .write_qj(&dir.join("lm.qj"), &Metadata::default())
         .unwrap();
@@ -101,8 +104,15 @@ fn supplement_adds_words_to_dict_and_model_and_is_idempotent() {
     assert!(bigram.lines().any(|l| l == "去\t取餐\t6"));
 
     // 在补过的词库与模型上再跑一次，输出不变
-    let model =
-        BigramModel::from_paths(&out.join("lm-unigram.tsv"), &out.join("lm-bigram.tsv")).unwrap();
+    // 三元原样写回，补词不动它
+    let trigram = std::fs::read_to_string(out.join("lm-trigram.tsv")).unwrap();
+    assert!(trigram.lines().any(|l| l == "去\t取\t餐\t7"));
+    let model = NgramModel::from_paths(
+        &out.join("lm-unigram.tsv"),
+        &out.join("lm-bigram.tsv"),
+        Some(&out.join("lm-trigram.tsv")),
+    )
+    .unwrap();
     model
         .write_qj(&out.join("lm.qj"), &Metadata::default())
         .unwrap();

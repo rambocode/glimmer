@@ -118,6 +118,14 @@ pub enum Command {
         /// 最多输出多少条二元组（按计数取前 N）
         #[arg(long, default_value_t = 3_000_000)]
         max_bigrams: usize,
+
+        /// 计数低于此值的三元组不输出。三元比二元稀疏得多，阈值太低表会大到没法随包发
+        #[arg(long, default_value_t = 5)]
+        min_trigram_count: u32,
+
+        /// 最多输出多少条三元组（按计数取前 N）：一条在 lm.qj 里 8 字节，1000 万条约 80 MB
+        #[arg(long, default_value_t = 10_000_000)]
+        max_trigrams: usize,
     },
 
     /// 从语料里挖词库没收的词：分词时被拆成连续单字的段按子串计数，出现够多的写到 oov-candidates.tsv（再交给 gloss-gen pinyin 标音、lexicon --extra-words 并入）

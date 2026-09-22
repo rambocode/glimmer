@@ -6,7 +6,7 @@ use std::time::Instant;
 use glimmer_core::Language;
 use glimmer_dictionary::Dictionary;
 use glimmer_format::Metadata;
-use glimmer_lm::BigramModel;
+use glimmer_lm::NgramModel;
 use glimmer_translate::Glossary;
 
 use crate::args::PackKind;
@@ -40,17 +40,25 @@ pub fn pack(
             report(&out, dictionary.len(), started);
         }
         PackKind::Lm => {
-            let (unigram, bigram) = match inputs {
-                [unigram, bigram, ..] => (unigram.clone(), bigram.clone()),
-                _ => (
-                    out_dir.join("lm-unigram.tsv"),
-                    out_dir.join("lm-bigram.tsv"),
-                ),
+            // 显式给输入时第三个是三元表（可省）；不给就在 out_dir 里找，三元表在就一起打
+            let (unigram, bigram, trigram) = match inputs {
+                [unigram, bigram, trigram, ..] => {
+                    (unigram.clone(), bigram.clone(), Some(trigram.clone()))
+                }
+                [unigram, bigram] => (unigram.clone(), bigram.clone(), None),
+                _ => {
+                    let trigram = out_dir.join("lm-trigram.tsv");
+                    (
+                        out_dir.join("lm-unigram.tsv"),
+                        out_dir.join("lm-bigram.tsv"),
+                        trigram.is_file().then_some(trigram),
+                    )
+                }
             };
-            let model = BigramModel::from_paths(&unigram, &bigram)?;
+            let model = NgramModel::from_paths(&unigram, &bigram, trigram.as_deref())?;
             let out = out_path("lm.qj".to_owned());
             model.write_qj(&out, &metadata)?;
-            report(&out, model.bigram_count(), started);
+            report(&out, model.bigram_count() + model.trigram_count(), started);
         }
         PackKind::Glossary => {
             let language: Language = language.parse().map_err(|_| ConvertError::Format {
