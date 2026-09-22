@@ -42,6 +42,9 @@ impl WubiHit<'_> {
     /// 归一化后的 log 概率差在千分位以下，`(score * 1000).round()` 取整后完全打平，
     /// 按文本序排会把「五一」顶到「王」前面。词库 `assemble` 已经把同键条目按词频降序、平手保 TSV 原序排好，
     /// 所以码表顺序就是想要的词频顺序。
+    ///
+    /// 选择次数在这里仍是硬规则（拼音侧已改成 `ranking::choice_bonus` 那样的软加分）：五笔候选只按码表静态词频排，
+    /// 没有上下文得分这一项，选择记录要压的只是词频，不存在「上下文明明说该出别的词、却被一次选择锁死」的情形。
     fn key(&self) -> (Reverse<bool>, usize, Reverse<u32>, Reverse<i64>, usize) {
         (
             Reverse(self.full),

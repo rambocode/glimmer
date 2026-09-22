@@ -30,17 +30,16 @@ pub struct Scored<'a> {
 /// 预选键：结构项之后按用户选择次数与词库词频，命中太多时先用它砍到够排的量（不必算上下文得分）。
 /// 打包成一个整数、越大越靠前：单字母简拼一键命中几万条，逐条比元组太慢。
 /// 位从高到低：精确(1) 覆盖字母数(8) 简拼数的补(8) 末音节完整(1) 选择次数(32) 打折后词频(32) 原样命中(1) 字数的补(8)；
-/// 与 [`SortKey`] 的前几项同序，只是不拿文本做最后的平手项（预选边界上的平手谁留下无所谓）。
+/// 与 [`SortKey`] 的前四项同序，之后用选择次数与词频替代得分（预选阶段还没算上下文，边界上的平手谁留下无所谓）。
 pub type PreselectKey = u128;
 
-/// 排序键，越小越靠前。元组的顺序即排序规则，见模块文档；第五项是同输入串下的选择次数，
-/// 第六项是上下文得分（毫分，整数才能比较）。文本借自词库，键可以脱离 `Scored` 存放。
+/// 排序键，越小越靠前。元组的顺序即排序规则，见模块文档；第五项是得分
+/// （毫分，整数才能比较：上下文 + 选择加分 − 扣分）。文本借自词库，键可以脱离 `Scored` 存放。
 pub type SortKey<'a> = (
     Reverse<bool>,
     Reverse<usize>,
     usize,
     Reverse<bool>,
-    Reverse<u32>,
     Reverse<i64>,
     bool,
     usize,
@@ -72,14 +71,13 @@ impl<'a> Scored<'a> {
             | (0xFF - chars)
     }
 
-    /// `choice` 是同输入串下的选择次数，`score` 是上下文得分（log 概率，已含用户加分与模糊音 / 敲错扣分）。
-    pub(super) fn key(&self, choice: u32, score: f64) -> SortKey<'a> {
+    /// `score` 是这条命中的得分（log 概率，已含同输入串选过的加分、用户词频加分与模糊音 / 敲错扣分）。
+    pub(super) fn key(&self, score: f64) -> SortKey<'a> {
         (
             Reverse(self.hit.exact),
             Reverse(self.coverage),
             self.abbreviated,
             Reverse(self.full_last),
-            Reverse(choice),
             Reverse((score * 1000.0).round() as i64),
             self.altered(),
             self.hit.text.chars().count(),

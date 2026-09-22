@@ -85,7 +85,7 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
 
 ## crates/glimmer-learning
 
-- `FrequencyLearner`：用户选择次数（`user.tsv`）、按输入串记的选择（`user-choices.tsv`，词级排序里同输入串、同位置选过的优先，格式与迁移见下）、用户词（`user-words.tsv`，主词库同格式，
+- `FrequencyLearner`：用户选择次数（`user.tsv`）、按输入串记的选择（`user-choices.tsv`，词级排序里同输入串、同位置选过的次数换成得分加分，格式与迁移见下）、用户词（`user-words.tsv`，主词库同格式，
   Engine 与主词库一起查）、个人英文词（`user-english.tsv`，回车原样上屏的英文词与选过的英文候选，与随包英文词表一起出候选且在前）、
   个人敲错表（`user-typos.tsv`，接受过的 (敲的, 要的) 音节对，词图敲错边与整段纠错的代价按它打折）与个人 n-gram（`user-ngram.tsv`，Core `sentence::UserNgram`，
   二元 + 三元在线计数，整句转换与词级排序里与静态模型插值；Tab 接受的云端整句按 `sentence::segment_text` 切词后也记；
@@ -97,7 +97,8 @@ TSV 解析、查询与生成工具把 `lue` / `nue` 统一成 `lve` / `nve`。
   `ChoiceCounts` 一对 (输入串, 词) 存三个计数，查权重 = 当前位置那一桶 + `any` 那一桶；`MAX_CHOICE_ENTRIES` 与 `decay_choices` 仍按「对」算、三桶一起减半。
   位置由 Core 的 `ChoicePosition` 定（`Engine::context()` 的 `previous.is_none()`）：记录用上屏那一刻的上文，查询用当前上文；
   整段分次选完的合成词按**整段开头**那一刻的位置记（`CommitChain::buffer_position`）。回车原样上屏的 `<raw>` 与句首句中无关，只记 `any`。
-  为什么分：排序第 5 级（同输入串选过的次数）压着第 6 级（上下文得分），用户的 `ba` 选过 吧 25 次、把 21 次，句首也只能出 吧。
+  为什么分：这一项是得分里的一份加分（`ranking::choice_bonus`，系数 1.5 / 封顶 20 次），不分位置时同一份加分在句首句中给同一个词，
+  用户的 `ba` 选过 吧 25 次、把 21 次，句首也只能出 吧。
   只有「这段字母更想要中文还是英文」（`Engine::insert_english`）用不分位置的总数 `Learner::choice_total`：中英取舍是语言偏好，与句首句中无关。
 - **`user-choices.tsv` 的迁移**：老的三列行读成 `any`，加载时（个人 n-gram 读完之后）一次性按 `c(<s>, 词) / c(词)` 的比例四舍五入拆进 `start` / `after`，
   n-gram 不认识的词留在 `any`（两种位置都算），拆完标脏、下次落盘写成四列。`any` 拆完清零，所以重复迁移是空操作。

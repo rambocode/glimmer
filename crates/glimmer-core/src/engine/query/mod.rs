@@ -252,11 +252,12 @@ impl Engine {
             self.remember_preferred(keys, &segmentations[0], tail.len());
         }
         // 再往后翻也翻不到的候选不必再造：单字母简拼能命中两万个词，排完序只留前面这些。
-        // 同输入串（候选覆盖的那段字母）下、同位置（句首 / 句中）选过的优先；上下文是上一个上屏的词（句首为 None）：
+        // 上下文是上一个上屏的词（句首为 None），同输入串（候选覆盖的那段字母）下、同位置（句首 / 句中）选过的加分：
         // `ba` 在「做了」后面出 吧、句首出 把
         let log_total = (self.total_frequency() as f64).max(1.0).ln();
         let letters = choice_key(scope, scope.len());
         let position = self.choice_position();
+        let interpolation = self.interpolation;
         ranking::rank(&mut scored, MAX_CANDIDATES, |item| {
             let hit = &item.hit;
             // 纠错生效时覆盖的是纠正后的字母，换算回原串再查「这个输入串下选过什么」
@@ -273,7 +274,12 @@ impl Engine {
                 hit.text,
                 sentence::fallback_log_prob(hit.frequency, log_total),
             );
-            (choice, log_prob)
+            log_prob
+                + ranking::choice_bonus(
+                    choice,
+                    interpolation.choice_bonus,
+                    interpolation.choice_cap,
+                )
         });
         let mut items: Vec<Candidate> = scored
             .into_iter()

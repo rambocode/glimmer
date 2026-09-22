@@ -2,8 +2,10 @@ use super::{
     CONFIDENCE_K, INITIAL_CONTEXT_WEIGHT, MAX_CONFIDENCE, SPAN_CANDIDATES, TRIGRAM_DISCOUNT,
     USER_LAMBDA, WORD_PENALTY,
 };
+use crate::ranking::{CHOICE_BONUS, CHOICE_CAP};
 
-/// 个人 n-gram 与静态模型插值的参数（见 [`UserNgram::blend`]），外加整句路径打分的两个常数（开头接上文的权重、每词代价）。缺省值是 `sentence` 模块里的常数，
+/// 个人 n-gram 与静态模型插值的参数（见 [`UserNgram::blend`]），外加整句路径打分的两个常数（开头接上文的权重、每词代价）
+/// 与词级排序里同输入串选择加分的两个常数。缺省值是 `sentence` 与 `ranking` 两个模块里的常数，
 /// 回放调参（`glimmer-cli --tune`）时可以整组换掉，引擎与壳只用缺省值。
 ///
 /// [`UserNgram::blend`]: super::UserNgram::blend
@@ -29,6 +31,16 @@ pub struct Interpolation {
 
     /// 词图每个格子最多留几个词（[`SPAN_CANDIDATES`]）。放宽它是打分模型可信度的验收尺子，所以挂在这里能调。
     pub span_candidates: usize,
+
+    /// 词级排序里同输入串、同位置选过次数的加分系数（[`CHOICE_BONUS`]）。
+    ///
+    /// [`CHOICE_BONUS`]: crate::ranking::CHOICE_BONUS
+    pub choice_bonus: f64,
+
+    /// 上一项加分里计入的次数上限（[`CHOICE_CAP`]）。
+    ///
+    /// [`CHOICE_CAP`]: crate::ranking::CHOICE_CAP
+    pub choice_cap: u32,
 }
 
 impl Interpolation {
@@ -41,6 +53,8 @@ impl Interpolation {
         initial_weight: INITIAL_CONTEXT_WEIGHT,
         word_penalty: WORD_PENALTY,
         span_candidates: SPAN_CANDIDATES,
+        choice_bonus: CHOICE_BONUS,
+        choice_cap: CHOICE_CAP,
     };
 }
 

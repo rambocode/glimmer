@@ -744,6 +744,11 @@ fn choices_learned_at_the_start_of_a_sentence_do_not_leak_into_the_middle() {
     let dictionary = Dictionary::parse("吧\tba\t9000\n把\tba\t3000\n做了\tzuo le\t5000\n").unwrap();
     let mut engine =
         Engine::new(dictionary).with_learner(Box::new(CountingLearner(HashMap::new())));
+    // 选择次数是得分里的一项加分（不再是硬规则），这里把系数调大，测的才是位置分桶本身、不是加分的大小
+    engine.set_interpolation(Interpolation {
+        choice_bonus: 3.0,
+        ..Interpolation::DEFAULT
+    });
     let pick = |engine: &mut Engine, input: &str, text: &str| {
         engine.set_input(input);
         let candidate = engine
