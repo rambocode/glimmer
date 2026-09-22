@@ -349,8 +349,13 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
 - `ai`：AI 与软件开发领域词库，从 `assets/lexicon/ai/{terms,names}.tsv` 和 `domains/*.tsv` 校验生成 `dicts/ai.tsv` / `ai.qj`、`ai-audit.tsv`、`ai-coverage.tsv`；8,279 源条目，主词库去重后 8,179 条。`--exclude` 只排除必选主词库，`--corpus` 同时给 `corpus.txt` 和 `development.txt`，人工权重与真实次数分列，英文按标识符边界计数。`alias` 支持 `C++/@cpp`，`mixed` 支持 `Git分支/@gitfenzhi`，构建拒绝同码不同词。Core 统一开关，英文补全个人选择优先、领域次之；配置 `domains` 仍用 `ai`。见 [设计](../design/ai-dictionary.md)。
 
 - `lexicon`：从 `assets/lexicon/`（自建词库源：规范字 + 常用词 + THUOCL 领域词）加 Unihan 读音（`data/unihan/Unihan_Readings.txt`）、LLM 多音字标注（`gloss-gen pinyin`，
-  结果 `data/generated/pinyin-llm.jsonl`，不进 git）、语料词频（`lm-unigram.tsv`）建基础词库 `dict.tsv`（9.4 万条），并把 THUOCL 领域词按语料次数 < 50 拆成
-  `dicts/<领域>.tsv` + `.qj`（11 本、13 万条，`--domain-keep-min`），流程见 `assets/lexicon/GLIMMER.md`；`--extra-words` 并入人工挑的领域词 `assets/lexicon/domain_words.tsv` 与补充常用词 `common_words.tsv`。
+  结果 `data/generated/pinyin-llm.jsonl`，不进 git，**随数据包的 `glimmer-llm-intermediates.tar.gz` 发**，丢了就得从已发布的词库里反推，见 `internet-slang.md`）、
+  语料词频（`lm-unigram.tsv`）建基础词库 `dict.tsv`（10.7 万条），并把 THUOCL 领域词按语料次数 < 50 拆成
+  `dicts/<领域>.tsv` + `.qj`（11 本、13 万条，`--domain-keep-min`），流程见 `assets/lexicon/GLIMMER.md`；`--extra-words` 并入人工挑的领域词 `assets/lexicon/domain_words.tsv`、
+  补充常用词 `common_words.tsv`、网络用语 `04_internet_slang/slang_words.tsv` 与中英混杂词 `mixed_words.tsv`。
+  音节判定在 `syllable.rs`（`lexicon` 与 `supplement` 共用）：汉字只认合法拼音音节，**拉丁字母 / 数字自成一节**（`C盘` → `c pan`、`P0` → `p 0`），
+  否则 Unihan 查不到读音、整条会被 `dropped`。给定读音以词表为准（`U盘` 读 `you pan`）；放行只对非汉字生效——`儿` 的 Unihan 读音里有儿化的 `r`，
+  对汉字放行会顶掉 `er` 成主读音。`kMandarin` 取全部值而不是第一个：`嗯` 是 `ǹg en`，只取第一个这个字就一个合法音节都不剩。
 - `english`：转 `assets/lexicon/05_english/00_all_words.tsv`；`cedict`：释义表备用来源。
 - `bigram`：统计语料的一元 / 二元 / 三元（同一遍分词），写 `lm-unigram.tsv` / `lm-bigram.tsv` / `lm-trigram.tsv`；
   三元的阈值与上限单列（`--min-trigram-count` 缺省 5、`--max-trigrams` 缺省 1000 万，一条在 `lm.qj` 里 8 字节），
@@ -358,7 +363,7 @@ IBus 引擎进程 `glimmer-ibus`（package `glimmer-linux`），设计见 `docs/
   `--phrases` 给短语层、`--brand` 给品牌词（`assets/lexicon/brand.tsv`，微明 210）与中英混杂词（`mixed_words.tsv`，C盘 / B站：合成计数要成分词在语料里，C 不是 token，只能直接给一元，次数对着同音竞争词定），领域词也走合成计数（语料里只有几十次的词当 token 统计会吸走成分词的二元证据）。
 - `gaps`：找常用词缺口，不用语料：外部词表（每行 `词[\t拼音]`，CC-CEDICT / jieba 词表转出，不进仓库）里主词库、`dicts/` 与语言模型都没有的 2–4 字词，
   按 `lm.qj` 成分二元合成次数（`bigram::phrase_count`，与 `--phrases` 同一公式），读音词表给了就用、否则由成分主读音拼，写 `gap-candidates.tsv` 供人工挑进 `common_words.tsv`。
-- `supplement`：补充词表并进已有数据，不用语料：`assets/lexicon/dict.tsv` 原行顺序不动、新词按 (词, 音节) 二分插入；`lm.qj` 展开成计数（`supplement/counts.rs` 的 `LmCounts`）后
+- `supplement`：补充词表并进已有数据，不用语料（读音判定与 `lexicon` 共用 `syllable.rs`，所以含字母的词也收）：`assets/lexicon/dict.tsv` 原行顺序不动、新词按 (词, 音节) 二分插入；`lm.qj` 展开成计数（`supplement/counts.rs` 的 `LmCounts`）后
   走 `synthesize_phrases` 合成，写 `dict.tsv` + `lm-unigram.tsv` / `lm-bigram.tsv` 再 `pack`。已有的词跳过，幂等；与全量 `lexicon --extra-words` + `bigram --phrases` 等价。做法与数字见 `common-words.md`。
 - `mine`：从语料挖词库没收的高频词并过滤（`oov_filter.rs`：虚词规则 + 相邻字对 PMI≥3，`--candidates` 只重过滤）。
 - `phrases`：挖短语层（两遍扫语料：相邻两词、两段二元都够频的相邻三词，总次数与对话语料次数都 ≥ 2000 + 边界规则，读音由成分词拼出；我的 / 不知道 / 有没有 这类常用词表不收的组合，
